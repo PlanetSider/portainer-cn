@@ -1,0 +1,116 @@
+<page-header
+  ng-if="ctrl.state.viewReady"
+  title="'应用统计'"
+  breadcrumbs="[
+    { label:'命名空间', link:'kubernetes.resourcePools' },
+    {
+      label:ctrl.state.transition.namespace,
+      link: 'kubernetes.resourcePools.resourcePool',
+      linkParams:{ id: ctrl.state.transition.namespace }
+    },
+    { label:'应用', link:'kubernetes.applications' },
+    {
+      label:ctrl.state.transition.applicationName,
+      link: 'kubernetes.applications.application',
+      linkParams:{ name: ctrl.state.transition.applicationName, namespace: ctrl.state.transition.namespace }
+    },
+     'Pod',
+     ctrl.state.transition.podName,
+     '容器',
+     ctrl.state.transition.containerName,
+     '统计'
+     ]"
+  reload="true"
+>
+</page-header>
+
+<kubernetes-view-loading view-ready="ctrl.state.viewReady"></kubernetes-view-loading>
+
+<information-panel ng-if="!ctrl.state.getMetrics" title-text="无法获取容器指标">
+  <span class="small text-warning vertical-center">
+    <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
+    Portainer 无法获取与该容器关联的任何指标。请联系管理员，确保 Kubernetes 指标功能已正确配置。
+  </span>
+</information-panel>
+<div class="row" ng-if="ctrl.state.getMetrics">
+  <div class="col-md-12">
+    <rd-widget>
+      <div class="toolBar px-5 pt-5">
+        <div class="toolBarTitle flex">
+          <div class="widget-icon space-right">
+            <pr-icon icon="'info'"></pr-icon>
+          </div>
+          <span class="vertical-center"> 关于统计 </span>
+        </div>
+      </div>
+      <rd-widget-body>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <span class="small text-warning">
+                此视图显示容器 <b>{{ ctrl.state.transition.containerName | trimcontainername }}</b> 的实时统计信息。
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="refreshRate" class="col-sm-3 col-md-2 col-lg-2 margin-sm-top control-label text-left"> 刷新频率 </label>
+            <div class="col-sm-3 col-md-2">
+              <select id="refreshRate" ng-model="ctrl.state.refreshRate" ng-change="ctrl.changeUpdateRepeater()" class="form-control" data-cy="app-stats-refresh-rate">
+                <option value="30">30s</option>
+                <option value="60">60s</option>
+              </select>
+            </div>
+            <span>
+              <pr-icon id="refreshRateChange" icon="'check'" mode="'success'" size="'sm'"></pr-icon>
+            </span>
+          </div>
+          <div class="form-group" ng-if="ctrl.state.networkStatsUnavailable">
+            <div class="col-sm-12">
+              <span class="small text-muted">
+                <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
+                该容器的网络统计信息不可用。
+              </span>
+            </div>
+          </div>
+        </form>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+</div>
+
+<div class="row" ng-if="ctrl.state.getMetrics">
+  <div class="col-lg-6 col-md-12 col-sm-12">
+    <rd-widget>
+      <div class="toolBar px-5 pt-5">
+        <div class="toolBarTitle flex">
+          <div class="widget-icon space-right">
+            <pr-icon icon="'svg-memory'"></pr-icon>
+          </div>
+          <span class="vertical-center"> 内存使用率 </span>
+        </div>
+      </div>
+      <rd-widget-body>
+        <div class="chart-container" style="position: relative">
+          <canvas id="memoryChart" width="770" height="300"></canvas>
+        </div>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-lg-6 col-md-12 col-sm-12" ng-if="!ctrl.state.networkStatsUnavailable">
+    <rd-widget>
+      <div class="toolBar px-5 pt-5">
+        <div class="toolBarTitle flex">
+          <div class="widget-icon space-right">
+            <pr-icon icon="'cpu'"></pr-icon>
+          </div>
+          <span class="vertical-center"> CPU 使用率 </span>
+        </div>
+      </div>
+      <rd-widget-body>
+        <div class="chart-container" style="position: relative">
+          <canvas id="cpuChart" width="770" height="300"></canvas>
+        </div>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+</div>

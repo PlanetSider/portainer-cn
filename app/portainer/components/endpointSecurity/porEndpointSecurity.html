@@ -1,0 +1,84 @@
+<div>
+  <!-- tls-checkbox -->
+  <div class="form-group">
+    <div class="col-sm-12">
+      <por-switch-field
+        label="'TLS'"
+        label-class="'col-sm-2'"
+        checked="$ctrl.formData.TLS"
+        on-change="($ctrl.onToggleTLS)"
+        tooltip="'如果你需要通过 TLS 连接到 Docker 环境，请启用此选项。'"
+      ></por-switch-field>
+    </div>
+  </div>
+  <!-- !tls-checkbox -->
+  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS"> TLS 模式 </div>
+  <!-- note -->
+  <div class="form-group" ng-if="$ctrl.formData.TLS">
+    <div class="col-sm-12">
+      <span class="small text-muted">
+        你可以在
+        <a href="https://docs.docker.com/engine/security/https/" target="_blank">Docker 文档</a>
+        中了解更多关于如何使用 TLS 保护 Docker 环境的信息。
+      </span>
+    </div>
+  </div>
+
+  <box-selector
+    ng-if="$ctrl.formData.TLS"
+    slim="true"
+    radio-name="'tls_mode'"
+    options="$ctrl.tlsOptions"
+    value="$ctrl.formData.TLSMode"
+    on-change="($ctrl.onChangeTLSMode)"
+  ></box-selector>
+
+  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS && $ctrl.formData.TLSMode !== 'tls_only'"> 必需的 TLS 文件 </div>
+  <!-- tls-file-upload -->
+  <div ng-if="$ctrl.formData.TLS">
+    <!-- tls-file-ca -->
+    <div class="form-group" ng-if="$ctrl.formData.TLSMode === 'tls_client_ca' || $ctrl.formData.TLSMode === 'tls_ca'">
+      <label class="col-sm-3 col-lg-2 control-label text-left">TLS CA 证书</label>
+      <div class="col-sm-9 col-lg-10">
+        <button type="button" class="btn btn-sm btn-primary" ngf-select ng-model="$ctrl.formData.TLSCACert">选择文件</button>
+        <span class="space-left">
+          {{ $ctrl.formData.TLSCACert.name }}
+          <pr-icon icon="'check'" ng-if="$ctrl.formData.TLSCACert && $ctrl.formData.TLSCACert === $ctrl.endpoint.TLSConfig.TLSCACert" mode="'success'"></pr-icon>
+          <pr-icon icon="'x'" ng-if="!$ctrl.formData.TLSCACert" mode="'danger'"></pr-icon>
+        </span>
+      </div>
+    </div>
+    <!-- !tls-file-ca -->
+    <!-- tls-files-cert-key -->
+    <div ng-if="$ctrl.formData.TLSMode === 'tls_client_ca' || $ctrl.formData.TLSMode === 'tls_client_noca'">
+      <!-- tls-file-cert -->
+      <div class="form-group">
+          <label for="tls_cert" class="col-sm-3 col-lg-2 control-label text-left">TLS 证书</label>
+        <div class="col-sm-9 col-lg-10">
+            <button type="button" class="btn btn-sm btn-primary" ngf-select ng-model="$ctrl.formData.TLSCert">选择文件</button>
+          <span class="space-left">
+            {{ $ctrl.formData.TLSCert.name }}
+            <pr-icon icon="'check'" ng-if="$ctrl.formData.TLSCert && $ctrl.formData.TLSCert === $ctrl.endpoint.TLSConfig.TLSCert" mode="'success'"></pr-icon>
+            <pr-icon icon="'x'" ng-if="!$ctrl.formData.TLSCert" mode="'danger'"></pr-icon>
+          </span>
+        </div>
+      </div>
+      <!-- !tls-file-cert -->
+      <!-- tls-file-key -->
+      <div class="form-group">
+          <label class="col-sm-3 col-lg-2 control-label text-left">TLS 密钥</label>
+        <div class="col-sm-9 col-lg-10">
+          <button type="button" class="btn btn-sm btn-primary" ngf-select ng-model="$ctrl.formData.TLSKey">选择文件</button>
+          <span class="space-left">
+            {{ $ctrl.formData.TLSKey.name }}
+            <pr-icon icon="'check'" ng-if="$ctrl.formData.TLSKey && $ctrl.formData.TLSKey === $ctrl.endpoint.TLSConfig.TLSKey" mode="'success'"></pr-icon>
+            <pr-icon icon="'x'" ng-if="!$ctrl.formData.TLSKey" mode="'danger'"></pr-icon>
+          </span>
+        </div>
+      </div>
+      <!-- !tls-file-key -->
+    </div>
+    <!-- tls-files-cert-key -->
+  </div>
+  <!-- !tls-file-upload -->
+</div>

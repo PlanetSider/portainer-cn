@@ -1,0 +1,40 @@
+<page-header
+  ng-if="state.viewReady"
+  title="'安全约束'"
+  breadcrumbs="[
+{ label:'环境', link:'portainer.endpoints' }, 
+{ label:endpoint.Name, link:'portainer.endpoints.endpoint', linkParams:{id: endpoint.Id} }, 
+ '安全约束'
+]"
+  reload="true"
+></page-header>
+
+<kubernetes-view-loading view-ready="state.viewReady"></kubernetes-view-loading>
+
+<div ng-if="state.viewReady">
+  <div class="row">
+    <div class="col-sm-12">
+      <rd-widget>
+          <rd-widget-header icon="shield" title-text="Pod 安全约束"></rd-widget-header>
+        <rd-widget-body>
+          <form class="form-horizontal" name="kubernetesSecurityConstraintForm">
+            <!--  main toggle  -->
+            <div class="form-group">
+              <div class="col-sm-12">
+                <por-switch-field
+                  checked="formValues.enabled"
+                  name="'disableSysctlSettingForRegularUsers'"
+                    label="'启用 Pod 安全约束'"
+                  feature-id="limitedFeaturePodSecurityPolicy"
+                  label-class="'col-sm-3 col-lg-2 px-0'"
+                  switch-class="'col-sm-8'"
+                >
+                </por-switch-field>
+              </div>
+            </div>
+          </form>
+        </rd-widget-body>
+      </rd-widget>
+    </div>
+  </div>
+</div>

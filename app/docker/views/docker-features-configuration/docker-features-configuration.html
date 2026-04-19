@@ -1,0 +1,230 @@
+<page-header title="'Docker 功能配置'" breadcrumbs="['Docker 配置']"> </page-header>
+
+<div class="row">
+  <div class="col-sm-12">
+    <rd-widget>
+      <rd-widget-body>
+        <form class="form-horizontal" name="$ctrl.form">
+          <div class="col-sm-12 form-section-title"> 主机与文件系统 </div>
+          <div class="form-group">
+            <span class="col-sm-12 text-muted small vertical-center">
+              <pr-icon icon="'info'" mode="'primary'" class-name="'space-right'"></pr-icon>
+              <span class="text-muted"
+                >环境必须<a href="https://docs.portainer.io/start/agent">运行 Portainer Agent</a>才能使用此功能，并且主机根目录必须在 agent 部署中绑定挂载到 <b>/host</b>。更多信息请查看<a href="https://docs.portainer.io/user/docker/host/setup#enable-host-management-features">文档</a>。</span
+              >
+            </span>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.enableHostManagementFeatures"
+                name="'enableHostManagementFeatures'"
+                label="'启用主机管理功能'"
+                tooltip="'启用主机管理功能：浏览主机文件系统和查看高级主机详情。'"
+                label-class="'col-sm-7 col-lg-4'"
+                disabled="!$ctrl.isAgent"
+                on-change="($ctrl.onChangeEnableHostManagementFeatures)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.allowVolumeBrowserForRegularUsers"
+                name="'allowVolumeBrowserForRegularUsers'"
+                label="'为非管理员启用卷管理'"
+                tooltip="'启用后，普通用户将可以使用 Portainer 的卷管理功能。'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeAllowVolumeBrowserForRegularUsers)"
+                disabled="!$ctrl.isAgent"
+              ></por-switch-field>
+            </div>
+          </div>
+          <!-- auto update window -->
+          <div class="col-sm-12 form-section-title"> 变更窗口设置 </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.state.autoUpdateSettings.Enabled"
+                name="'disableSysctlSettingForRegularUsers'"
+                label="'启用变更窗口'"
+                label-class="'col-sm-7 col-lg-4'"
+                feature-id="$ctrl.limitedFeatureAutoUpdate"
+                tooltip="'指定此环境中允许进行 GitOps 更新的时间窗口。'"
+                on-change="($ctrl.onToggleAutoUpdate)"
+              >
+              </por-switch-field>
+            </div>
+          </div>
+
+          <!-- security -->
+          <div class="col-sm-12 form-section-title"> Docker 安全设置 </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableBindMountsForRegularUsers"
+                name="'disableBindMountsForRegularUsers'"
+                label="'对非管理员隐藏 bind mounts'"
+                tooltip="'启用后，普通用户在创建容器时将无法使用 bind mounts。'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableBindMountsForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disablePrivilegedModeForRegularUsers"
+                name="'disablePrivilegedModeForRegularUsers'"
+                label="'对非管理员隐藏 privileged mode'"
+                tooltip="'启用后，普通用户在创建容器时将无法使用 privileged mode。'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisablePrivilegedModeForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableHostNamespaceForRegularUsers"
+                name="'disableHostNamespaceForRegularUsers'"
+                label="'对非管理员隐藏 host PID 1 的使用'"
+                tooltip="'阻止用户通过 host PID namespace 访问主机文件系统。'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableHostNamespaceForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableStackManagementForRegularUsers"
+                name="'disableStackManagementForRegularUsers'"
+                label="'对非管理员隐藏 Stacks 的使用'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableStackManagementForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableDeviceMappingForRegularUsers"
+                name="'disableDeviceMappingForRegularUsers'"
+                label="'对非管理员隐藏设备映射'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableDeviceMappingForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableContainerCapabilitiesForRegularUsers"
+                name="'disableContainerCapabilitiesForRegularUsers'"
+                label="'对非管理员隐藏容器 capabilities'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableContainerCapabilitiesForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableSysctlSettingForRegularUsers"
+                name="'disableSysctlSettingForRegularUsers'"
+                label="'对非管理员隐藏 sysctl 设置'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableSysctlSettingForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                checked="$ctrl.formValues.disableSecurityOptForRegularUsers"
+                name="'disableSecurityOptForRegularUsers'"
+                label="'对非管理员隐藏 security-opt'"
+                label-class="'col-sm-7 col-lg-4'"
+                on-change="($ctrl.onChangeDisableSecurityOptForRegularUsers)"
+              ></por-switch-field>
+            </div>
+          </div>
+
+          <div class="form-group" ng-if="$ctrl.isContainerEditDisabled()">
+            <span class="col-sm-12 text-muted small">
+              <pr-icon icon="'info'" mode="'primary'" class-name="'mr-0.5'"></pr-icon>
+              说明：由于一项或多项安全设置，recreate/duplicate/edit 功能当前对非管理员用户隐藏。
+            </span>
+          </div>
+          <!-- !security -->
+
+          <!-- other -->
+          <div class="col-sm-12 form-section-title"> 其他 </div>
+          <div class="form-group">
+            <div class="col-sm-12" ng-if="!$ctrl.isDockerStandaloneEnv">
+              <text-tip children="'当前仅在 Docker Standalone 下支持在 UI 中显示 GPU，且仅限 NVIDIA 显卡。'" color="'blue'" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                label="'在 UI 中显示 GPU'"
+                tooltip="'允许通过 Portainer UI 管理容器/Stack 的 GPU 硬件加速。'"
+                checked="$ctrl.state.enableGPUManagement"
+                name="'enableGPUManagement'"
+                on-change="($ctrl.onToggleGPUManagement)"
+                label-class="'col-sm-7 col-lg-4'"
+                disabled="!$ctrl.isDockerStandaloneEnv"
+              ></por-switch-field>
+            </div>
+
+            <div ng-if="$ctrl.state.enableGPUManagement">
+              <div class="col-sm-12">
+                <text-tip children="'当前 GPU 支持仅限 NVIDIA 显卡。'" color="'blue'" />
+              </div>
+              <div class="col-sm-12">
+                <div class="pl-4">
+                  <gpus-list ng-if="$ctrl.state.enableGPUManagement" value="$ctrl.endpoint.Gpus" on-change="($ctrl.onGpusChange)"></gpus-list>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <por-switch-field
+                label="'为 Stacks、Services 和 Containers 显示镜像是否最新的指示器'"
+                checked="false"
+                name="'outOfDateImageToggle'"
+                label-class="'col-sm-7 col-lg-4'"
+                feature-id="$ctrl.limitedFeatureUpToDateImage"
+              ></por-switch-field>
+            </div>
+          </div>
+          <!-- !other -->
+
+          <!-- actions -->
+          <div class="col-sm-12 form-section-title"> 操作 </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm !ml-0"
+                ng-click="$ctrl.save()"
+                ng-disabled="$ctrl.state.actionInProgress"
+                button-spinner="$ctrl.state.actionInProgress"
+              >
+                 <span ng-hide="$ctrl.state.actionInProgress">保存配置</span>
+                 <span ng-show="$ctrl.state.actionInProgress">保存中...</span>
+              </button>
+            </div>
+          </div>
+          <!-- !actions -->
+        </form>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+</div>

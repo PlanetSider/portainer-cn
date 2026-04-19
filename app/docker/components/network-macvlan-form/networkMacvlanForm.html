@@ -1,0 +1,91 @@
+<div>
+  <div class="col-sm-12 form-section-title"> Macvlan 配置 </div>
+
+  <div class="form-group">
+    <span class="col-sm-12 text-muted small vertical-center">
+      <pr-icon icon="'alert-circle'" mode="'primary'"></pr-icon>
+      要创建 MACVLAN 网络，你需要先创建一个配置，然后基于该配置创建网络。
+    </span>
+  </div>
+
+  <box-selector slim="true" options="$ctrl.options" value="$ctrl.data.Scope" on-change="($ctrl.onChangeScope)"></box-selector>
+
+  <ng-form name="macvlanConfigurationForm">
+    <!-- configuration-inputs -->
+    <div ng-show="$ctrl.data.Scope === 'local'">
+      <!-- network-card-input -->
+      <div class="form-group">
+        <label for="network_card" class="col-sm-3 col-lg-2 control-label text-left">父网络网卡</label>
+        <div class="col-sm-9 col-lg-10">
+          <input
+            type="text"
+            data-cy="macvlan-network-card-input"
+            class="form-control"
+            name="network_card"
+            ng-model="$ctrl.data.ParentNetworkCard"
+            placeholder="例如 eth0 或 ens160 ..."
+            ng-required="$ctrl.data.Scope === 'local' && !$ctrl.data.ParentNetworkCard"
+          />
+        </div>
+      </div>
+      <div class="form-group" ng-show="macvlanConfigurationForm.network_card.$invalid">
+        <div class="col-sm-12 small text-warning">
+          <div ng-messages="macvlanConfigurationForm.network_card.$error">
+            <p ng-message="required" class="vertical-center"> <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon> 必须指定父网络网卡。</p>
+          </div>
+        </div>
+      </div>
+      <!-- network-card-input -->
+      <!-- nodes-selector -->
+      <div ng-if="$ctrl.applicationState.endpoint.mode.agentProxy && $ctrl.applicationState.endpoint.mode.provider === 'DOCKER_SWARM_MODE'">
+        <macvlan-nodes-selector
+          dataset="$ctrl.nodes"
+          is-ip-column-visible="$ctrl.applicationState.endpoint.apiVersion >= 1.25"
+          have-access-to-node="$ctrl.isAdmin"
+          value="$ctrl.data.DatatableState.selectedItems"
+          on-change="($ctrl.onChangeSelectedNodes)"
+        ></macvlan-nodes-selector>
+
+        <div class="form-group" ng-show="macvlanConfigurationForm.node_selector.$invalid">
+          <div class="col-sm-12 small text-warning">
+            <div ng-messages="macvlanConfigurationForm.node_selector.$error">
+              <p ng-message="required" class="vertical-center"> <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon> 至少需要选择一个节点。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- !nodes-selector -->
+    </div>
+    <!-- configuration-inputs -->
+    <!-- deploy-inputs -->
+    <div ng-show="$ctrl.data.Scope === 'swarm'">
+      <!-- configuration-selector -->
+      <!-- network-input -->
+      <div class="form-group">
+        <label for="config_network" class="col-sm-3 col-lg-2 control-label text-left">配置</label>
+        <div class="col-sm-9 col-lg-10">
+          <select
+            class="form-control"
+            ng-options="net.Name for net in $ctrl.availableNetworks"
+            ng-model="$ctrl.data.SelectedNetworkConfig"
+            name="config_network"
+            ng-required="$ctrl.requiredConfigSelection()"
+            data-cy="macvlanConfigNetworkSelector"
+          >
+            <option selected disabled hidden value="">请选择网络</option>
+          </select>
+        </div>
+      </div>
+      <!-- !network-input -->
+      <div class="form-group" ng-show="macvlanConfigurationForm.config_network.$invalid">
+        <div class="col-sm-12 small text-warning">
+          <div ng-messages="macvlanConfigurationForm.config_network.$error">
+            <p ng-message="required" class="vertical-center"> <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon> 请选择一个配置网络。</p>
+          </div>
+        </div>
+      </div>
+      <!-- !configuration-selector -->
+    </div>
+    <!-- deploy-inputs -->
+  </ng-form>
+</div>
