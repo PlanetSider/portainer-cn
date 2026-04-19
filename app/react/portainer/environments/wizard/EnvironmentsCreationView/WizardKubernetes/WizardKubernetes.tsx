@@ -49,10 +49,7 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
           <Badge type="infoSecondary">支持策略</Badge>
         </span>
         <span className="mt-1 block">
-          The remote environment will initiate connections to the Portainer
-          server, with the ability to open a secure on-demand tunnel for
-          real-time interaction. The Portainer server must be accessible from
-          the Edge Agent environment.
+          远程环境会主动与 Portainer server 建立连接，并可按需打开安全隧道进行实时交互。Portainer server 必须可从 Edge Agent 所在环境访问。
         </span>
       </>
     ),
@@ -64,7 +61,7 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
     iconType: 'badge',
     label: 'Edge Agent Async',
     description:
-      'The remote environment will initiate connections to the Portainer server, without the ability to open a real-time tunnel. The Portainer server must be accessible from the Edge Agent environment.',
+      '远程环境会主动与 Portainer server 建立连接，但无法打开实时隧道。Portainer server 必须可从 Edge Agent 所在环境访问。',
     value: 'edgeAgentAsync',
   },
 ]);
@@ -77,15 +74,15 @@ const legacyOptions: BoxSelectorOption<CreationType>[] = [
     label: 'Agent',
     value: 'agent',
     description:
-      'The Portainer Server will initiate connections to the remote environment. The agent on the remote environment must be accessible from the Portainer server environment.',
+      'Portainer Server 会主动连接远程环境。远程环境中的 agent 必须可从 Portainer server 所在环境访问。',
   },
   {
     id: 'kubeconfig_endpoint',
     icon: UploadCloud,
     iconType: 'badge',
-    label: 'Import',
+    label: '导入',
     value: 'kubeconfig',
-    description: 'Import an existing Kubernetes config.',
+    description: '导入现有的 Kubernetes 配置。',
     feature: FeatureId.K8S_CREATE_FROM_KUBECONFIG,
   },
 ];
@@ -112,20 +109,19 @@ export function WizardKubernetes({ onCreate }: Props) {
 
       <FormSection
         key="legacy-options"
-        title="More options"
+        title="更多选项"
         titleSize="sm"
         isFoldable
         defaultFolded={false}
         className="[&>label]:mb-5"
       >
         <p className="text-muted mb-2 text-xs">
-          These are legacy options that don&apos;t support edge features or
-          policy management. For most use cases,{' '}
+          这些是旧版选项，不支持 Edge 功能或策略管理。对于大多数使用场景，{' '}
           <ExternalLink
             to={edgeAgentDocsUrl}
             data-cy="wizard-edge-agent-docs-link"
           >
-            the Edge Agent is recommended
+            推荐使用 Edge Agent
           </ExternalLink>
         </p>
         <BoxSelector

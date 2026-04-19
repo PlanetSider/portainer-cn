@@ -19,9 +19,9 @@ export function IntervalField({
 
   return (
     <FormControl
-      label="Fetch interval"
+      label="拉取间隔"
       inputId="repository_fetch_interval"
-      tooltip="Specify how frequently polling occurs using syntax such as, 5m = 5 minutes, 24h = 24 hours, 6h40m = 6 hours and 40 minutes."
+      tooltip="指定轮询发生的频率，可使用如下语法：5m = 5 分钟，24h = 24 小时，6h40m = 6 小时 40 分钟。"
       required
       errors={errors}
     >
@@ -44,8 +44,8 @@ export function IntervalField({
 
 export function intervalValidation() {
   return durationValidation(false) // Don't allow empty - field is required
-    .required('This field is required.')
-    .test('minimumInterval', 'Minimum interval is 1m', (value) => {
+    .required('此字段为必填项。')
+    .test('minimumInterval', '最小间隔为 1m', (value) => {
       if (!value) {
         return false;
       }

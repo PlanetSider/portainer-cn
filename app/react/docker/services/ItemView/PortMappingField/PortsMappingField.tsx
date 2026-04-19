@@ -55,7 +55,7 @@ export function PortsMappingField({
   return (
     <ServiceWidget
       titleIcon={List}
-      title="Published ports"
+      title="已发布端口"
       labelForAddButton="port mapping"
       onAdd={handleAdd}
       hasChanges={hasChanges}
@@ -69,7 +69,7 @@ export function PortsMappingField({
             <tr>
               <th>主机端口</th>
               <th>容器端口</th>
-              <th>Protocol</th>
+              <th>协议</th>
               <th>发布模式</th>
               <Authorized authorizations="DockerServiceUpdate">
                 <th>操作</th>

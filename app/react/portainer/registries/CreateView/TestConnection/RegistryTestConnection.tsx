@@ -33,7 +33,7 @@ export function RegistryTestConnection({
     if (!isConnectionTested) {
       setTestResult({
         success: false,
-        message: 'Connection not tested yet.',
+        message: '尚未测试连接。',
       });
     }
   }, [isConnectionTested]);
@@ -48,13 +48,13 @@ export function RegistryTestConnection({
         className="!ml-0 w-min"
         isLoading={pingMutation.isLoading}
         icon={ArrowLeftRight}
-        loadingText="Testing connection..."
+        loadingText="正在测试连接..."
         onClick={handleTestConnection}
         disabled={disabled || !values.Username || !values.Password}
         type="button"
         data-cy="registry-test-connection-button"
       >
-        Test connection
+        测试连接
       </LoadingButton>
 
       {testResult && (
@@ -74,7 +74,7 @@ export function RegistryTestConnection({
       setTestResult({
         success: false,
         message:
-          'Please fill in all required fields before testing the connection.',
+          '请先填写所有必填字段后再测试连接。',
       });
       return;
     }
@@ -94,7 +94,7 @@ export function RegistryTestConnection({
             success: true,
             message:
               response.message ||
-              'Registry connection successful! You can now save the registry.',
+              '仓库连接成功！现在可以保存该仓库。',
           });
           onTestSuccess();
         } else {
@@ -102,7 +102,7 @@ export function RegistryTestConnection({
             success: false,
             message:
               response.message ||
-              'Failed to connect to the registry. Please check your credentials.',
+              '连接仓库失败。请检查你的凭据。',
           });
         }
       },
@@ -110,7 +110,7 @@ export function RegistryTestConnection({
         setTestResult({
           success: false,
           message:
-            'Failed to test registry connection. Please try again later.',
+            '测试仓库连接失败。请稍后重试。',
         });
       },
     });

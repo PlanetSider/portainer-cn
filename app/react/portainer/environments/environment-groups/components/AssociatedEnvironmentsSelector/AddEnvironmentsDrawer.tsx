@@ -23,7 +23,7 @@ const columnHelper = createColumnHelper<EnvironmentTableData>();
 
 const columns = [
   columnHelper.accessor('Name', {
-    header: 'Name',
+    header: '名称',
     id: 'Name',
     cell: ({ getValue }) => (
       <span title={getValue()}>{truncate(getValue(), { length: 64 })}</span>

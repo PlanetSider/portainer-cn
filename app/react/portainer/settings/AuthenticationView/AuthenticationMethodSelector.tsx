@@ -58,7 +58,7 @@ export function AuthenticationMethodSelector({
       options={options}
       value={value}
       onChange={onChange}
-      label="Authentication method"
+      label="认证方式"
     />
   );
 }

@@ -23,7 +23,7 @@ export function WebhookSettings({
           <>
             See{' '}
             <HelpLink docLink={docsLink}>
-              Portainer documentation on webhook usage
+              Portainer 关于 Webhook 用法的文档
             </HelpLink>
             .
           </>
@@ -44,7 +44,7 @@ export function WebhookSettings({
           color="light"
           data-cy="copy-webhook-link-button"
         >
-          Copy link
+          复制链接
         </CopyButton>
       </div>
     </FormControl>

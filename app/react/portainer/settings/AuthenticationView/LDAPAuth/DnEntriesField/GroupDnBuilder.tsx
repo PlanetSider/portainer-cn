@@ -63,7 +63,7 @@ export function GroupDnBuilder({
             onChange(index, buildGroupDN(groupName, entries, suffix));
           }
         }}
-        label="Path to group"
+        label="组路径"
         limitedFeatureId={limitedFeatureId}
       />
     </>

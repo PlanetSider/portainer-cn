@@ -160,7 +160,7 @@ export function RelativePathFieldset({
               <div className="form-group">
                 <div className="col-sm-12">
                   <FormControl
-                    label="Local filesystem path"
+                    label="本地文件系统路径"
                     errors={errors?.FilesystemPath}
                     required
                   >
@@ -287,18 +287,16 @@ export function RelativePathFieldset({
                   <TextTip color="blue">
                     <div>
                         你可以将其作为环境变量用于镜像：{' '}
-                      <code>myapp:$&#123;PORTAINER_EDGE_ID&#125;</code> or{' '}
-                      <code>myapp:$&#123;PORTAINER_EDGE_GROUP&#125;</code>. You
-                      can also use it with the relative path for volumes:{' '}
+                      <code>myapp:$&#123;PORTAINER_EDGE_ID&#125;</code> 或{' '}
+                      <code>myapp:$&#123;PORTAINER_EDGE_GROUP&#125;</code>。你也可以将它与卷的相对路径一起使用：{' '}
                       <code>
                         ./config/$&#123;PORTAINER_EDGE_ID&#125;:/myapp/config
                       </code>{' '}
-                      or{' '}
+                      或{' '}
                       <code>
                         ./config/$&#123;PORTAINER_EDGE_GROUP&#125;:/myapp/groupconfig
                       </code>
-                      。更多文档可参见{' '}
-                      <a href={gitoptsEdgeConfigDocUrl}>here</a>.
+                      。更多文档可参见 <a href={gitoptsEdgeConfigDocUrl}>这里</a>。
                     </div>
                   </TextTip>
                 </div>

@@ -70,7 +70,7 @@ function parseMeta<D extends DefaultType = DefaultType>(
     return {
       className: '',
       width: undefined,
-      filter: filterHOC('Filter'),
+      filter: filterHOC('筛选'),
     };
   }
 
@@ -83,7 +83,7 @@ function parseMeta<D extends DefaultType = DefaultType>(
   const filter =
     'filter' in meta && typeof meta.filter === 'function'
       ? meta.filter
-      : filterHOC('Filter');
+      : filterHOC('筛选');
 
   return { className, width, filter };
 }

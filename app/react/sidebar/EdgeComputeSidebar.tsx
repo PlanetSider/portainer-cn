@@ -27,7 +27,7 @@ export function EdgeComputeSidebar() {
       />
       <SidebarItem
         to="edge.stacks"
-        label="Edge Stacks"
+        label="Edge 堆栈"
         icon={Layers}
         data-cy="portainerSidebar-edgeStacks"
       />
