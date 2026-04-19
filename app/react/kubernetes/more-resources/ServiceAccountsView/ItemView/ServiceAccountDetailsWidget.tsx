@@ -147,14 +147,14 @@ function ImagePullSecretsRow({
               >
                 <span>
                   <Badge type="muted" className="min-w-max cursor-default">
-                    + {hiddenSecrets.length} more
+                     另有 {hiddenSecrets.length} 项
                   </Badge>
                 </span>
               </TooltipWithChildren>
             )}
           </div>
         ) : (
-          <span className="text-muted">None</span>
+          <span className="text-muted">无</span>
         )}
       </div>
     </DetailsRow>

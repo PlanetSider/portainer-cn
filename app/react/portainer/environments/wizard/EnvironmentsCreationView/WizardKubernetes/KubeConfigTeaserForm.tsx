@@ -37,28 +37,22 @@ export function KubeConfigTeaserForm() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Import the kubeconfig file
+                    导入 kubeconfig 文件
                   </a>{' '}
-                  of an existing Kubernetes cluster located on-premise or on a
-                  cloud platform. This will create a corresponding environment
-                  in Portainer and install the agent on the cluster. Please
-                  ensure:
+                  到现有的本地或云平台 Kubernetes 集群中。这将在 Portainer 中创建对应环境，并在集群上安装 agent。请确保：
                 </span>
               </TextTip>
             </div>
             <div className="col-sm-12 text-muted text-xs">
               <ul className="p-2 pl-4">
-                <li>You have a load balancer enabled in your cluster</li>
-                <li>You specify current-context in your kubeconfig</li>
+                <li>你的集群已启用负载均衡器</li>
+                <li>你已在 kubeconfig 中指定 current-context</li>
                 <li>
-                  The kubeconfig is self-contained - including any required
-                  credentials.
+                  kubeconfig 是自包含的，并且包含所需的凭据。
                 </li>
               </ul>
               <p>
-                Note: Officially supported cloud providers are Civo, Akamai
-                Connected Cloud, DigitalOcean and Microsoft Azure (others are
-                not guaranteed to work at present)
+                注意：当前官方支持的云服务商为 Civo、Akamai Connected Cloud、DigitalOcean 和 Microsoft Azure（其他平台暂不保证可用）。
               </p>
             </div>
           </div>
@@ -74,12 +68,12 @@ export function KubeConfigTeaserForm() {
           </FormControl>
 
           <FormControl
-            label="Kubeconfig file"
+            label="kubeconfig 文件"
             required
             inputId="kubeconfig_file"
           >
             <Button disabled data-cy="kubeconfig-file-upload">
-              Select a file
+              选择文件
             </Button>
           </FormControl>
 
@@ -88,12 +82,12 @@ export function KubeConfigTeaserForm() {
               <LoadingButton
                 className="wizard-connect-button !ml-0"
                 data-cy="kubeconfig-connect-environment-button"
-                loadingText="Connecting environment..."
+                loadingText="连接环境中..."
                 isLoading={false}
                 disabled
                 icon={Plug2}
               >
-                Connect
+                连接
               </LoadingButton>
             </div>
           </div>

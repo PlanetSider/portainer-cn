@@ -51,7 +51,7 @@ export function SecretDetailsTable({
         {isSystem && <SystemBadge />}
       </DetailsRow>
       {secretTypeLabel && (
-        <DetailsRow label="Secret Type">{secretTypeLabel}</DetailsRow>
+        <DetailsRow label="Secret 类型">{secretTypeLabel}</DetailsRow>
       )}
       {parsedRegistryId && (
         <DetailsRow label="Registry">
@@ -93,8 +93,8 @@ function LinkedServiceAccountsRow({
     <DetailsRow
       label={
         <span className="flex items-center">
-          Linked service accounts
-          <Tooltip message="Service accounts that use this secret as an image pull secret." />
+          关联的服务账号
+          <Tooltip message="将此 Secret 用作镜像拉取凭据的服务账号。" />
         </span>
       }
     >
@@ -115,21 +115,20 @@ function LinkedServiceAccountsRow({
             ))}
             {hidden.length > 0 && (
               <Badge type="muted" className="min-w-max cursor-default">
-                + {hidden.length} more
+                 另有 {hidden.length} 项
               </Badge>
             )}
           </>
         ) : (
           <span className="text-muted">
-            None - Link{' '}
+            无，可将{' '}
             <Link
               to="kubernetes.moreResources.serviceAccounts"
               data-cy="service-account-link"
             >
-              service accounts
+              服务账号
             </Link>{' '}
-            to this secret by referencing it in the{' '}
-            <code>imagePullSecrets</code> field in the service account spec.
+            通过在服务账号规范中的 <code>imagePullSecrets</code> 字段引用到此 Secret。
           </span>
         )}
       </div>

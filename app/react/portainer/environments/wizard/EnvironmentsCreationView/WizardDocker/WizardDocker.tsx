@@ -46,8 +46,8 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
     description: (
       <>
         <span>
-          <Badge type="infoSecondary">Recommended</Badge>{' '}
-          <Badge type="infoSecondary">Supports Policies</Badge>
+          <Badge type="infoSecondary">推荐</Badge>{' '}
+          <Badge type="infoSecondary">支持策略</Badge>
         </span>
         <span className="mt-1 block">
           The remote environment will initiate connections to the Portainer

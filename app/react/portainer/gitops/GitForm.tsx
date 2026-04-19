@@ -191,10 +191,10 @@ export function buildGitValidationSchema(
     RepositoryReferenceName: refFieldValidation(),
     ComposeFilePathInRepository: string().required(
       deployMethod === 'compose'
-        ? 'Compose file path is required'
-        : 'Manifest file path is required'
+        ? '必须填写 Compose 文件路径'
+        : '必须填写 Manifest 文件路径'
     ),
-    AdditionalFiles: array(string().required('Path is required')).default([]),
+    AdditionalFiles: array(string().required('必须填写路径')).default([]),
     RepositoryURLValid: boolean().default(false),
     AutoUpdate: autoUpdateValidation().nullable(),
     TLSSkipVerify: boolean().default(false),

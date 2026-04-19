@@ -18,7 +18,7 @@ export const stackName = helper.accessor('StackName', {
 });
 
 export const namespace = helper.accessor('ResourcePool', {
-  header: 'Namespace',
+  header: '命名空间',
   cell: NamespaceCell,
 });
 
