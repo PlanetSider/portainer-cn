@@ -78,7 +78,7 @@ export function NamespaceInnerForm({
     <Form className="form-horizontal">
       <FormControl
         inputId="namespace"
-        label="Name"
+        label="名称"
         required={!isEdit}
         errors={errors.name}
       >
@@ -115,12 +115,12 @@ export function NamespaceInnerForm({
       {useLoadBalancer && <LoadBalancerFormSection />}
       {enableIngressControllersPerNamespace && (
         <Authorized authorizations={[namespaceWriteAuth]}>
-          <FormSection title="Networking">
+            <FormSection title="网络">
             <IngressClassDatatable
               onChange={(classes) => setFieldValue('ingressClasses', classes)}
               values={values.ingressClasses}
-              description="Enable the ingress controllers that users can select when publishing applications in this namespace."
-              noIngressControllerLabel="No ingress controllers available in the cluster. Go to the cluster setup view to configure and allow the use of ingress controllers in the cluster."
+               description="启用用户在此命名空间中发布应用时可选择的 ingress controller。"
+               noIngressControllerLabel="集群中没有可用的 ingress controller。前往集群设置页面进行配置，并允许在集群中使用 ingress controller。"
               view="namespace"
               isLoading={ingressClassesQuery.isLoading}
               initialValues={initialValues.ingressClasses}
@@ -146,8 +146,8 @@ export function NamespaceInnerForm({
           isValid={isValid}
         />
         <FormActions
-          submitLabel={isEdit ? 'Update namespace' : 'Create namespace'}
-          loadingText={isEdit ? 'Updating namespace' : 'Creating namespace'}
+          submitLabel={isEdit ? '更新命名空间' : '创建命名空间'}
+          loadingText={isEdit ? '正在更新命名空间' : '正在创建命名空间'}
           isLoading={isUpdating}
           isValid={isValid && dirty}
           data-cy="k8sNamespaceCreate-submitButton"

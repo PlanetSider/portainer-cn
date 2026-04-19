@@ -53,7 +53,7 @@ export function SecretItemTabsWidget({
     {
       name: (
         <div className="flex items-center gap-x-2">
-          Events
+          事件
           {eventWarningCount >= 1 && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />

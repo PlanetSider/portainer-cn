@@ -9,9 +9,9 @@ import { columnHelper } from './helper';
 export const kind = columnHelper.accessor(
   (event) => event.involvedObject.kind,
   {
-    header: 'Kind',
+    header: '类型',
     meta: {
-      filter: filterHOC('Filter by kind'),
+      filter: filterHOC('按类型筛选'),
     },
     enableColumnFilter: true,
     filterFn: (row: Row<Event>, _: string, filterValue: string[]) =>

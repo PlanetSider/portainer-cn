@@ -1,0 +1,30 @@
+{
+  "reactExample": {
+    "registries": {
+      "link": "镜像仓库 <strong>链接</strong>",
+      "useSref": "镜像仓库 useSref"
+    }
+  },
+  "users": {
+    "access-tokens": {
+      "create": {
+        "add-button": "添加访问令牌",
+        "description-field-label": "说明",
+        "done-button": "完成",
+        "form": {
+          "description-field": {
+            "error": {
+              "required": "此字段为必填项"
+            },
+            "label": "说明"
+          }
+        },
+        "new-access-token": {
+          "copy-button": "复制访问令牌",
+          "explanation": "请复制新的访问令牌。之后你将无法再次查看该令牌。",
+          "title": "新的访问令牌"
+        }
+      }
+    }
+  }
+}

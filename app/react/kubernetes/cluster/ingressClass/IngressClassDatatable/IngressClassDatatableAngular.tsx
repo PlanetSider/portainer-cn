@@ -127,7 +127,7 @@ export function IngressClassDatatableAngular({
             }
             data-cy="k8s-disallow-selected-ingress-controllers-button"
           >
-            Disallow selected
+            禁用所选项
           </Button>
           <Button
             disabled={
@@ -145,7 +145,7 @@ export function IngressClassDatatableAngular({
             }
             data-cy="k8s-allow-selected-ingress-controllers-button"
           >
-            Allow selected
+            允许所选项
           </Button>
         </ButtonGroup>
       </div>
@@ -161,7 +161,7 @@ export function IngressClassDatatableAngular({
           isUnsavedChanges(
             initialIngressControllers,
             ingControllerFormValues
-          ) && <TextTip>Unsaved changes.</TextTip>}
+          ) && <TextTip>有未保存的更改。</TextTip>}
       </div>
     );
   }
@@ -203,7 +203,7 @@ export function IngressClassDatatableAngular({
 
       if (usedControllersToDisallow.length > 0) {
         const confirmed = await confirm({
-          title: 'Disallow in-use ingress controllers?',
+            title: '禁用正在使用的 ingress controller？',
           modalType: ModalType.Warn,
           message: (
             <div>

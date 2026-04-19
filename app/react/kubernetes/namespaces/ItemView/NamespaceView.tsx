@@ -30,7 +30,7 @@ export function NamespaceView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Namespace',
+      name: '命名空间',
       icon: Layers,
       widget: <UpdateNamespaceForm />,
       selectedTabParam: 'namespace',
@@ -38,7 +38,7 @@ export function NamespaceView() {
     {
       name: (
         <div className="flex items-center gap-x-2">
-          Events
+          事件
           {eventWarningCount >= 1 && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />
@@ -69,9 +69,9 @@ export function NamespaceView() {
   return (
     <>
       <PageHeader
-        title="Namespace details"
+        title="命名空间详情"
         breadcrumbs={[
-          { label: 'Namespaces', link: 'kubernetes.resourcePools' },
+          { label: '命名空间', link: 'kubernetes.resourcePools' },
           namespace,
         ]}
         reload

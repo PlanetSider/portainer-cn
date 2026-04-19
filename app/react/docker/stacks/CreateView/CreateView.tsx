@@ -21,7 +21,7 @@ export function CreateView() {
 
   return (
     <>
-      <PageHeader title="Create stack" breadcrumbs="Stack creation" reload />
+      <PageHeader title="创建 Stack" breadcrumbs="Stack 创建" reload />
 
       <div className="row">
         <div className="col-sm-12">

@@ -87,7 +87,7 @@ export function ApplicationsDatatable({
       dataset={filteredApplications ?? []}
       settingsManager={tableState}
       columns={columns}
-      title="Applications"
+      title="应用"
       titleIcon={BoxIcon}
       isLoading={applicationsQuery.isLoading}
       disableSelect={!hasWriteAuth}
@@ -110,11 +110,11 @@ export function ApplicationsDatatable({
               data-cy="k8sApp-removeAppButton"
               disabled={selectedItems.length === 0}
               isLoading={removeApplicationsMutation.isLoading}
-              confirmMessage="Do you want to remove the selected application(s)?"
+              confirmMessage="确定要删除所选应用吗？"
               onConfirmed={() => handleRemoveApplications(selectedItems)}
             />
             <AddButton data-cy="k8sApp-addApplicationButton" color="secondary">
-              Add with form
+              通过表单添加
             </AddButton>
             <CreateFromManifestButton data-cy="k8sApp-deployFromManifestButton" />
           </>

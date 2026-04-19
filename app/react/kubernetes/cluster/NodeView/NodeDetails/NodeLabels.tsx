@@ -26,13 +26,13 @@ export function NodeLabels({
   hasNodeWriteAccess,
 }: Props) {
   return (
-    <FormSection title="Labels">
+    <FormSection title="标签">
       <InputList<NodeLabel>
         value={labels}
         onChange={onChangeLabels}
         data-cy="node-labels-input"
         item={NodeLabelItem}
-        addLabel="Add label"
+        addLabel="添加标签"
         canUndoDelete
         itemBuilder={createNewLabel}
         errors={errors}
@@ -58,9 +58,9 @@ function NodeLabelItem({
           size="small"
           className={clsx(item.needsDeletion && 'striked')}
         >
-          <InputGroup.Addon>Name</InputGroup.Addon>
+          <InputGroup.Addon>名称</InputGroup.Addon>
           <InputGroup.Input
-            placeholder="e.g. foo.bar"
+            placeholder="例如：foo.bar"
             value={item.key}
             onChange={(e) => handleChange('key', e.target.value)}
             disabled={disabled || item.isSystem}
@@ -76,9 +76,9 @@ function NodeLabelItem({
           size="small"
           className={clsx(item.needsDeletion && 'striked')}
         >
-          <InputGroup.Addon>Value</InputGroup.Addon>
+          <InputGroup.Addon>值</InputGroup.Addon>
           <InputGroup.Input
-            placeholder="e.g. true"
+            placeholder="例如：true"
             value={item.value}
             onChange={(e) => handleChange('value', e.target.value)}
             disabled={disabled || item.isSystem}
@@ -92,7 +92,7 @@ function NodeLabelItem({
       {item.isSystem && (
         <div className="flex flex-none items-center">
           <Badge type="info" className="my-auto">
-            System
+            系统
           </Badge>
         </div>
       )}

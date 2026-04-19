@@ -7,19 +7,19 @@ export function AnnotationsBeTeaser() {
   return (
     <div className="col-sm-12 text-muted mb-2 block px-0">
       <div className="control-label !mb-2 text-left font-medium">
-        Annotations
+        注解
         <Tooltip
           message={
             <div className="vertical-center">
               <span>
-                Allows specifying of{' '}
+                允许为对象指定{' '}
                 <a
                   href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/"
                   target="_black"
                 >
                   annotations
                 </a>{' '}
-                for the object. See further Kubernetes documentation on{' '}
+                。更多信息请参考 Kubernetes 文档中的{' '}
                 <a
                   href="https://kubernetes.io/docs/reference/labels-annotations-taints/"
                   target="_black"
@@ -35,9 +35,9 @@ export function AnnotationsBeTeaser() {
       <div className="block">
         <BETeaserButton
           className="!p-0"
-          heading="Add annotation"
-          buttonText="Add annotation"
-          message="Allows specifying of annotations on this resource."
+          heading="添加注解"
+          buttonText="添加注解"
+          message="允许为此资源指定注解。"
           featureId={FeatureId.K8S_ANNOTATIONS}
           buttonClassName="!ml-0"
           data-cy="annotations-be-teaser"

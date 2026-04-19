@@ -151,7 +151,7 @@ export function ClusterIpServiceForm({
                     data-cy={`k8sAppCreate-rmPortButton-${serviceIndex}-${portIndex}`}
                     icon={Trash2}
                   >
-                    Remove port
+                    删除端口
                   </Button>
                 </div>
                 <AppIngressPathsForm
@@ -183,7 +183,7 @@ export function ClusterIpServiceForm({
                 onChangePort(newServicesPorts);
               }}
             >
-              Add port
+              添加端口
             </Button>
           </div>
         </div>

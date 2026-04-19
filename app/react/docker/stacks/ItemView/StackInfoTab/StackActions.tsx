@@ -69,7 +69,7 @@ export function StackActions({
               disabled={isMutating}
               data-cy="stack-stop-btn"
             >
-              Stop this stack
+              停止此 Stack
             </Button>
           )}
           {status === StackStatus.Inactive && (
@@ -81,7 +81,7 @@ export function StackActions({
               disabled={isMutating}
               onClick={() => handleStart()}
             >
-              Start this stack
+              启动此 Stack
             </Button>
           )}
         </Authorized>
@@ -96,7 +96,7 @@ export function StackActions({
           disabled={isMutating || isDeploying}
           data-cy="stack-delete-btn"
         >
-          Delete this stack
+          删除此 Stack
         </Button>
       </Authorized>
 
@@ -115,7 +115,7 @@ export function StackActions({
             },
           }}
         >
-          Create template from stack
+          从 Stack 创建模板
         </Button>
       )}
 
@@ -134,9 +134,9 @@ export function StackActions({
                 disabled={isMutating}
                 data-cy="stack-detach-git-btn"
                 isLoading={detachFromGitMutation.isLoading}
-                loadingText="Detachment in progress..."
+                loadingText="正在分离..."
               >
-                Detach from Git
+                从 Git 分离
               </LoadingButton>
             </Authorized>
           )}
@@ -150,11 +150,11 @@ export function StackActions({
       { id: stackId, environmentId },
       {
         onError(err) {
-          notifyError('Failure', err as Error, 'Unable to start stack');
+          notifyError('失败', err as Error, '无法启动 Stack');
           router.stateService.reload();
         },
         onSuccess() {
-          notifySuccess('Success', `Stack ${stack.Name} started successfully`);
+          notifySuccess('成功', `Stack ${stack.Name} 启动成功`);
           router.stateService.reload();
         },
       }
@@ -163,10 +163,10 @@ export function StackActions({
 
   async function handleStop() {
     const confirmed = await confirm({
-      title: 'Are you sure?',
+      title: '确定吗？',
       modalType: ModalType.Warn,
-      message: 'Are you sure you want to stop this stack?',
-      confirmButton: buildConfirmButton('Stop', 'danger'),
+      message: '确定要停止此 Stack 吗？',
+      confirmButton: buildConfirmButton('停止', 'danger'),
     });
 
     if (!confirmed) {
@@ -177,10 +177,10 @@ export function StackActions({
       { id: stackId, environmentId },
       {
         onError(err) {
-          notifyError('Failure', err as Error, 'Unable to stop stack');
+          notifyError('失败', err as Error, '无法停止 Stack');
         },
         onSuccess() {
-          notifySuccess('Success', `Stack ${stack.Name} stopped successfully`);
+          notifySuccess('成功', `Stack ${stack.Name} 停止成功`);
           router.stateService.reload();
         },
       }
@@ -189,7 +189,7 @@ export function StackActions({
 
   async function handleDelete() {
     const confirmed = await confirmDelete(
-      'Do you want to remove the stack? Associated services will be removed as well'
+      '确定要删除此 Stack 吗？关联的服务也会一并删除。'
     );
     if (!confirmed) {
       return;
@@ -204,13 +204,13 @@ export function StackActions({
       {
         onError(err) {
           notifyError(
-            'Failure',
+            '失败',
             err as Error,
-            `Unable to remove stack ${stack.Name}`
+            `无法删除 Stack ${stack.Name}`
           );
         },
         onSuccess() {
-          notifySuccess('Stack successfully removed', stack.Name);
+          notifySuccess('Stack 删除成功', stack.Name);
           router.stateService.go('^');
         },
       }
@@ -220,9 +220,9 @@ export function StackActions({
   async function handleDetachFromGit() {
     const confirmed = await confirm({
       modalType: ModalType.Warn,
-      title: 'Are you sure?',
-      message: 'Do you want to detach the stack from Git?',
-      confirmButton: buildConfirmButton('Detach', 'danger'),
+      title: '确定吗？',
+      message: '确定要将此 Stack 与 Git 分离吗？',
+      confirmButton: buildConfirmButton('分离', 'danger'),
     });
 
     if (!confirmed) {

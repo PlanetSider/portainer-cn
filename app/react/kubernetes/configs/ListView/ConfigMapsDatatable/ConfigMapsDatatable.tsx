@@ -62,7 +62,7 @@ export function ConfigMapsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={configMapsQuery.isLoading || namespacesQuery.isLoading}
-      emptyContentLabel="No ConfigMaps found"
+      emptyContentLabel="未找到 ConfigMaps"
       title="ConfigMaps"
       titleIcon={FileCode}
       getRowId={(row) => row.UID ?? ''}
@@ -121,10 +121,10 @@ function TableActions({
       <DeleteButton
         disabled={selectedItems.length === 0}
         onConfirmed={() => handleRemoveClick(selectedItems)}
-        confirmMessage={`Are you sure you want to remove the selected ${pluralize(
-          selectedItems.length,
-          'ConfigMap'
-        )}`}
+         confirmMessage={`确定要删除所选 ${pluralize(
+           selectedItems.length,
+           'ConfigMap'
+         )} 吗？`}
         data-cy="k8sConfig-removeConfigButton"
       />
 
@@ -134,7 +134,7 @@ function TableActions({
           data-cy="k8sConfig-addConfigWithFormButton"
           color="secondary"
         >
-          Add with form
+          通过表单添加
         </AddButton>
       )}
 

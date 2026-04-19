@@ -27,10 +27,10 @@ const helper = createColumnHelper<StorageClassViewModel>();
 const columns = [
   buildExpandColumn<StorageClassViewModel>(),
   helper.accessor('Name', {
-    header: 'Storage',
+    header: '存储类',
   }),
   helper.accessor('size', {
-    header: 'Usage',
+    header: '使用量',
     cell: ({ row: { original: item } }) => <>{humanize(item.size)}</>,
   }),
 ];
@@ -55,7 +55,7 @@ export function StorageDatatable() {
       disableSelect
       dataset={storages}
       columns={columns}
-      title="Storage"
+      title="存储"
       titleIcon={HardDrive}
       settingsManager={tableState}
       isLoading={storagesQuery.isLoading}

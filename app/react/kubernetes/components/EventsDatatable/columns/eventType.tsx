@@ -8,13 +8,13 @@ import { filterHOC } from '@@/datatables/Filter';
 import { columnHelper } from './helper';
 
 export const eventType = columnHelper.accessor('type', {
-  header: 'Type',
+  header: '事件类型',
   cell: ({ getValue }) => (
     <Badge type={getBadgeColor(getValue())}>{getValue()}</Badge>
   ),
 
   meta: {
-    filter: filterHOC('Filter by event type'),
+    filter: filterHOC('按事件类型筛选'),
   },
   enableColumnFilter: true,
   filterFn: (row: Row<Event>, _: string, filterValue: string[]) =>

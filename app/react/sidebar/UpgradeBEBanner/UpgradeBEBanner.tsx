@@ -69,7 +69,7 @@ function UpgradeBEBanner() {
             'fill-gray-6 stroke-[#023959] th-highcontrast:stroke-black th-dark:stroke-black'
           )}
         />
-        {isSidebarOpen && <>Upgrade to Business Edition</>}
+        {isSidebarOpen && <>升级到商业版</>}
       </button>
 
       {isOpen && <UpgradeDialog onDismiss={() => setIsOpen(false)} />}

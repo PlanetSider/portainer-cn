@@ -9,7 +9,12 @@ i18n
   .use(initReactI18next)
   .init({
     debug: true,
-    fallbackLng: 'en',
+    lng: 'zh-CN',
+    fallbackLng: 'zh-CN',
+    supportedLngs: ['zh-CN', 'en'],
+    backend: {
+      loadPath: '/locales/{{lng}}/translation.json',
+    },
     interpolation: {
       escapeValue: false,
     },

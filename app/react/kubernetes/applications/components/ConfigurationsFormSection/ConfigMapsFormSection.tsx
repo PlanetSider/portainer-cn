@@ -28,16 +28,14 @@ export function ConfigMapsFormSection({
   const configMaps = configMapsQuery.data || [];
 
   if (configMapsQuery.isLoading) {
-    return <InlineLoader>Loading ConfigMaps...</InlineLoader>;
+    return <InlineLoader>正在加载 ConfigMaps...</InlineLoader>;
   }
 
   return (
     <FormSection title="ConfigMaps" titleSize="sm">
       {!!values.length && (
         <TextTip color="blue">
-          Portainer will automatically expose all the keys of a ConfigMap as
-          environment variables. This behavior can be overridden to filesystem
-          mounts for each key via the override option.
+          Portainer 会自动将 ConfigMap 的所有键暴露为环境变量。你也可以通过 override 选项将每个键改为文件系统挂载方式。
         </TextTip>
       )}
 
@@ -50,7 +48,7 @@ export function ConfigMapsFormSection({
         disabled={configMaps.length === 0}
         addButtonError={
           configMaps.length === 0
-            ? 'There are no ConfigMaps available in this namespace.'
+            ? '此命名空间中没有可用的 ConfigMaps。'
             : undefined
         }
         renderItem={(item, onChange, index, error) => (
@@ -70,7 +68,7 @@ export function ConfigMapsFormSection({
           overridenKeys: [],
           selectedConfiguration: configMaps[0],
         })}
-        addLabel="Add ConfigMap"
+        addLabel="添加 ConfigMap"
       />
     </FormSection>
   );

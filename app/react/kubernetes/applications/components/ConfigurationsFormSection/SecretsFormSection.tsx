@@ -28,16 +28,14 @@ export function SecretsFormSection({
   const secrets = secretsQuery.data || [];
 
   if (secretsQuery.isLoading) {
-    return <InlineLoader>Loading Secrets...</InlineLoader>;
+    return <InlineLoader>正在加载 Secrets...</InlineLoader>;
   }
 
   return (
     <FormSection title="Secrets" titleSize="sm">
       {!!values.length && (
         <TextTip color="blue">
-          Portainer will automatically expose all the keys of a Secret as
-          environment variables. This behavior can be overridden to filesystem
-          mounts for each key via the override option.
+          Portainer 会自动将 Secret 的所有键暴露为环境变量。你也可以通过 override 选项将每个键改为文件系统挂载方式。
         </TextTip>
       )}
 
@@ -50,7 +48,7 @@ export function SecretsFormSection({
         disabled={secrets.length === 0}
         addButtonError={
           secrets.length === 0
-            ? 'There are no Secrets available in this namespace.'
+            ? '此命名空间中没有可用的 Secrets。'
             : undefined
         }
         renderItem={(item, onChange, index, error) => (
@@ -70,7 +68,7 @@ export function SecretsFormSection({
           overridenKeys: [],
           selectedConfiguration: secrets[0],
         })}
-        addLabel="Add Secret"
+        addLabel="添加 Secret"
       />
     </FormSection>
   );

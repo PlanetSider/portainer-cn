@@ -34,13 +34,13 @@ export function NodeTaints({
   hasNodeWriteAccess,
 }: Props) {
   return (
-    <FormSection title="Taints">
+    <FormSection title="污点">
       <InputList<NodeTaint>
         value={taints}
         onChange={onChangeTaints}
         data-cy="node-taints-input"
         item={NodeTaintItem}
-        addLabel="Add taint"
+        addLabel="添加污点"
         canUndoDelete
         itemBuilder={createNewTaint}
         errors={errors}
@@ -66,9 +66,9 @@ function NodeTaintItem({
           size="small"
           className={clsx(item.needsDeletion && 'striked')}
         >
-          <InputGroup.Addon>Key</InputGroup.Addon>
+          <InputGroup.Addon>键</InputGroup.Addon>
           <InputGroup.Input
-            placeholder="e.g. foo"
+            placeholder="例如：foo"
             value={item.key}
             onChange={(e) => handleChange('key', e.target.value)}
             disabled={disabled}
@@ -84,9 +84,9 @@ function NodeTaintItem({
           size="small"
           className={clsx(item.needsDeletion && 'striked')}
         >
-          <InputGroup.Addon>Value</InputGroup.Addon>
+          <InputGroup.Addon>值</InputGroup.Addon>
           <InputGroup.Input
-            placeholder="e.g. bar"
+            placeholder="例如：bar"
             value={item.value}
             onChange={(e) => handleChange('value', e.target.value)}
             disabled={disabled}
@@ -102,7 +102,7 @@ function NodeTaintItem({
           size="small"
           className={clsx(item.needsDeletion && 'striked')}
         >
-          <InputGroup.Addon>Effect</InputGroup.Addon>
+          <InputGroup.Addon>效果</InputGroup.Addon>
           <PortainerSelect
             value={item.effect}
             onChange={(value) => handleChange('effect', value as TaintEffect)}

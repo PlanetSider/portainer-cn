@@ -18,11 +18,11 @@ export function VolumesSection({ volumes, nodeName }: Props) {
 
   return (
     <Widget>
-      <Widget.Title icon={DatabaseIcon} title="Volumes" />
+      <Widget.Title icon={DatabaseIcon} title="卷" />
       <WidgetBody className="no-padding">
         <DetailsTable
           dataCy="containerDetails-volumesTable"
-          headers={['Host/volume', 'Path in container']}
+          headers={['主机/卷', '容器内路径']}
         >
           {volumes.map((volume) => (
             <VolumeRow

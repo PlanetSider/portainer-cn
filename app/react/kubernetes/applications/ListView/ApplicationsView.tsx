@@ -19,7 +19,7 @@ export function ApplicationsView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Applications',
+      name: '应用',
       icon: BoxIcon,
       widget: <ApplicationsDatatable tableState={tableState} />,
       selectedTabParam: 'applications',
@@ -36,7 +36,7 @@ export function ApplicationsView() {
 
   return (
     <>
-      <PageHeader title="Application list" breadcrumbs="Applications" reload />
+      <PageHeader title="应用列表" breadcrumbs="应用" reload />
       {hideStacks ? (
         <ApplicationsDatatable tableState={tableState} hideStacks />
       ) : (

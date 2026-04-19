@@ -51,7 +51,7 @@ export function RedeployApplicationButton({
         data-cy="k8sAppDetail-redeployButton"
       >
         <Icon icon={RotateCw} className="mr-1" />
-        Redeploy
+        重新部署
       </Button>
     </Authorized>
   );
@@ -64,21 +64,21 @@ export function RedeployApplicationButton({
     try {
       if (!app?.spec?.selector?.matchLabels) {
         throw new Error(
-          `Application has no 'matchLabels' selector to redeploy pods.`
+          `应用缺少 'matchLabels' 选择器，无法重新部署 Pod。`
         );
       }
     } catch (error) {
-      notifyError('Failure', error as Error);
+       notifyError('失败', error as Error);
       return;
     }
 
     // confirm the action
     const confirmed = await confirm({
-      title: 'Are you sure?',
+      title: '确定吗？',
       modalType: ModalType.Warn,
-      confirmButton: buildConfirmButton('Redeploy'),
+      confirmButton: buildConfirmButton('重新部署'),
       message:
-        'Redeploying terminates and restarts the application, which will cause service interruption. Do you wish to continue?',
+        '重新部署会终止并重启该应用，这会导致服务中断。是否继续？',
     });
     if (!confirmed) {
       return;
@@ -92,7 +92,7 @@ export function RedeployApplicationButton({
       { labelSelector },
       {
         onSuccess: () => {
-          notifySuccess('Success', 'Application successfully redeployed');
+          notifySuccess('成功', '应用重新部署成功');
           router.stateService.reload();
         },
       }

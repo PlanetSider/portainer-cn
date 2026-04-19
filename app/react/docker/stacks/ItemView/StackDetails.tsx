@@ -101,7 +101,7 @@ export function StackDetails({
     };
 
     const editorTab: Tab = {
-      name: 'Editor',
+      name: '编辑器',
       icon: Edit2,
       widget: (
         <Widget>

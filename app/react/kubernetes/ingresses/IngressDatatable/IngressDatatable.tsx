@@ -82,7 +82,7 @@ export function IngressDatatable() {
       dataset={ingressesWithIsSystem}
       columns={columns}
       isLoading={ingressesQuery.isLoading || namespacesQuery.isLoading}
-      emptyContentLabel="No supported ingresses found"
+      emptyContentLabel="未找到受支持的 Ingress"
       title="Ingresses"
       titleIcon={Route}
       getRowId={(row) => row.Name + row.Type + row.Namespace}
@@ -126,7 +126,7 @@ export function IngressDatatable() {
         <DeleteButton
           disabled={selectedFlatRows.length === 0}
           onConfirmed={() => handleRemoveClick(selectedFlatRows)}
-          confirmMessage="Are you sure you want to delete the selected ingresses?"
+          confirmMessage="确定要删除所选 Ingress 吗？"
           data-cy="remove-ingresses-button"
         />
 
@@ -136,7 +136,7 @@ export function IngressDatatable() {
             color="secondary"
             data-cy="add-ingress-button"
           >
-            Add with form
+            通过表单添加
           </AddButton>
         )}
 

@@ -82,8 +82,8 @@ export function ApplicationDetailsWidget() {
                   ) : (
                     <EditButton to=".edit">
                       {externalApp
-                        ? 'Edit external application'
-                        : 'Edit this application'}
+                        ? '编辑外部应用'
+                        : '编辑此应用'}
                     </EditButton>
                   )}
                 </Authorized>
@@ -114,7 +114,7 @@ export function ApplicationDetailsWidget() {
                       fileContent: appStackFileContent,
                     }}
                   >
-                    Create template from application
+                    从应用创建模板
                   </AddButton>
                 )}
               </div>

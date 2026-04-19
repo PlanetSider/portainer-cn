@@ -67,7 +67,7 @@ export function ServicesDatatable({
 
   return (
     <ExpandableDatatable
-      title="Services"
+      title="服务"
       titleIcon={titleIcon}
       dataset={dataset || []}
       isLoading={!dataset}

@@ -28,20 +28,19 @@ export function RegistriesSelector({
       <p className="text-muted mb-1 mt-2 text-xs">
         {isPureAdmin ? (
           <span>
-            No registries available. Head over to the{' '}
+            没有可用镜像仓库。前往{' '}
             <Link
               to="portainer.registries"
               target="_blank"
               data-cy="namespace-permissions-registries-selector"
             >
-              registry view
+              镜像仓库页面
             </Link>{' '}
-            to define a container registry.
+            去定义一个容器镜像仓库。
           </span>
         ) : (
           <span>
-            No registries available. Contact your administrator to create a
-            container registry.
+            没有可用镜像仓库。请联系管理员创建容器镜像仓库。
           </span>
         )}
       </p>
@@ -51,7 +50,7 @@ export function RegistriesSelector({
   if (isEditingDisabled) {
     return (
       <p className="text-muted mb-1 mt-2 text-xs">
-        {value.length === 0 ? 'None' : value.map((v) => v.Name).join(', ')}
+        {value.length === 0 ? '无' : value.map((v) => v.Name).join(', ')}
       </p>
     );
   }
@@ -68,7 +67,7 @@ export function RegistriesSelector({
       inputId={inputId}
       data-cy="namespaceCreate-registrySelect"
       id="namespaceCreate-registrySelect"
-      placeholder="Select one or more registries"
+      placeholder="选择一个或多个镜像仓库"
       isDisabled={isEditingDisabled}
     />
   );

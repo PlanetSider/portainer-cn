@@ -40,20 +40,20 @@ export function HelmTemplatesList({
     <section className="datatable" aria-label="Helm charts">
       <div className="toolBar vertical-center relative w-full !gap-x-5 !gap-y-1 overflow-auto !px-0">
         <div className="toolBarTitle vertical-center whitespace-nowrap">
-          Select a helm chart from {selectedRegistry?.name}
+          从 {selectedRegistry?.name} 选择 Helm Chart
         </div>
 
         <SearchBar
           value={textFilter}
           onChange={(value) => setTextFilter(value)}
-          placeholder="Search..."
+            placeholder="搜索..."
           data-cy="helm-templates-search"
           className="!mr-0 h-9"
         />
 
         <div className="w-full flex-none sm:w-1/4">
           <PortainerSelect
-            placeholder="Select a category"
+            placeholder="选择分类"
             value={selectedCategory}
             options={categories}
             onChange={setSelectedCategory}
@@ -74,17 +74,17 @@ export function HelmTemplatesList({
         ))}
 
         {filteredCharts.length === 0 && textFilter && !isLoadingCharts && (
-          <div className="text-muted small mt-4">No Helm charts found</div>
+          <div className="text-muted small mt-4">未找到 Helm Chart</div>
         )}
 
         {isLoadingCharts && (
           <div className="flex flex-col">
             <InlineLoader className="justify-center">
-              Loading helm charts...
+              正在加载 Helm Chart...
             </InlineLoader>
             {charts.length === 0 && (
               <div className="text-muted text-center">
-                Initial download of Helm charts can take a few minutes
+                Helm Chart 首次下载可能需要几分钟
               </div>
             )}
           </div>
@@ -92,13 +92,13 @@ export function HelmTemplatesList({
 
         {isSelectedRegistryEmpty && (
           <div className="text-muted text-center">
-            No helm charts available in this repository.
+            此仓库中没有可用的 Helm Chart。
           </div>
         )}
 
         {!selectedRegistry && (
           <div className="text-muted text-center">
-            Please select a repository to view available Helm charts.
+            请选择仓库以查看可用的 Helm Chart。
           </div>
         )}
       </div>

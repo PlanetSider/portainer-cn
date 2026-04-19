@@ -186,7 +186,7 @@ export function LoadBalancerServiceForm({
                     data-cy={`k8sAppCreate-rmPortButton_${portIndex}`}
                     icon={Trash2}
                   >
-                    Remove port
+                    删除端口
                   </Button>
                 </div>
                 {initiallyHasIngressPath && (
@@ -222,7 +222,7 @@ export function LoadBalancerServiceForm({
                 onChangePort(newServicesPorts);
               }}
             >
-              Add port
+              添加端口
             </Button>
           </div>
         </div>

@@ -37,22 +37,22 @@ export function RollbackButton({
     <LoadingButton
       onClick={handleClick}
       isLoading={rollbackMutation.isLoading}
-      loadingText="Rolling back..."
+      loadingText="正在回滚..."
       data-cy="rollback-button"
       icon={RotateCcw}
       color="default"
       size="medium"
     >
-      Rollback to #{rollbackRevision}
+      回滚到 #{rollbackRevision}
     </LoadingButton>
   );
 
   async function handleClick() {
     const confirmed = await confirm({
-      title: 'Are you sure?',
+      title: '确定吗？',
       modalType: ModalType.Warn,
-      confirmButton: buildConfirmButton('Rollback'),
-      message: `Rolling back will restore the application to revision #${rollbackRevision}, which could cause service interruption. Do you wish to continue?`,
+      confirmButton: buildConfirmButton('回滚'),
+      message: `回滚会将应用恢复到修订版本 #${rollbackRevision}，这可能导致服务中断。是否继续？`,
     });
     if (!confirmed) {
       return;
@@ -66,8 +66,8 @@ export function RollbackButton({
       {
         onSuccess: () => {
           notifySuccess(
-            'Success',
-            `Application rolled back to revision #${rollbackRevision} successfully.`
+            '成功',
+            `应用已成功回滚到修订版本 #${rollbackRevision}。`
           );
           // set the revision url param to undefined to refresh the page at the latest revision
           router.stateService.go('kubernetes.helm', {

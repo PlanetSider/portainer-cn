@@ -9,7 +9,7 @@ import type { IngressControllerClassMap } from '../../types';
 import { columnHelper } from './helper';
 
 export const availability = columnHelper.accessor('Availability', {
-  header: 'Availability',
+  header: '可用性',
   cell: Cell,
   id: 'availability',
   invertSorting: true,
@@ -22,7 +22,7 @@ function Cell({ getValue }: CellContext<IngressControllerClassMap, boolean>) {
   return (
     <Badge type={availability ? 'success' : 'danger'}>
       <Icon icon={availability ? Check : X} className="!mr-1" />
-      {availability ? 'Allowed' : 'Disallowed'}
+      {availability ? '允许' : '禁用'}
     </Badge>
   );
 }

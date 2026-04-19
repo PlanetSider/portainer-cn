@@ -21,27 +21,27 @@ export function ApplicationServicesTable({
     <>
       <div className="text-muted mb-4 flex items-center">
         <Icon icon={ExternalLink} className="!mr-2" />
-        Accessing the application
+        访问应用
       </div>
       {appServices && appServices.length === 0 && (
         <TextTip color="blue" className="mb-4">
-          This application is not exposing any port.
+          此应用未暴露任何端口。
         </TextTip>
       )}
       {appServices && appServices.length > 0 && (
         <>
           <TextTip color="blue" className="mb-4">
-            This application is exposed through service(s) as below:
+            此应用通过以下服务对外暴露：
           </TextTip>
           <table className="table">
             <tbody>
               <tr className="text-muted">
-                <td className="w-[15%]">Service name</td>
-                <td className="w-[10%]">Type</td>
+                <td className="w-[15%]">服务名称</td>
+                <td className="w-[10%]">类型</td>
                 <td className="w-[10%]">Cluster IP</td>
-                <td className="w-[10%]">External IP</td>
-                <td className="w-[10%]">Container port</td>
-                <td className="w-[15%]">Service port(s)</td>
+                <td className="w-[10%]">外部 IP</td>
+                <td className="w-[10%]">容器端口</td>
+                <td className="w-[15%]">服务端口</td>
               </tr>
               {appServices.map((service) => (
                 <tr key={service.metadata?.name}>
@@ -60,7 +60,7 @@ export function ApplicationServicesTable({
                           >
                             <Icon icon={ExternalLink} className="!mr-1" />
                             <span data-cy="k8sAppDetail-containerPort">
-                              Access
+                              访问
                             </span>
                           </a>
                         )}
@@ -68,7 +68,7 @@ export function ApplicationServicesTable({
                         <div>
                           {service.spec.externalIPs?.[0]
                             ? service.spec.externalIPs[0]
-                            : 'pending...'}
+                            : '等待中...'}
                         </div>
                       )}
                     </td>

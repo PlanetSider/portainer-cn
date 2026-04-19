@@ -18,10 +18,10 @@ export function EdgeComputeSidebar() {
   const settings = settingsQuery.data;
 
   return (
-    <SidebarSection title="Edge compute">
+    <SidebarSection title="Edge 计算">
       <SidebarItem
         to="edge.groups"
-        label="Edge Groups"
+        label="Edge 分组"
         icon={LayoutGrid}
         data-cy="portainerSidebar-edgeGroups"
       />
@@ -33,14 +33,14 @@ export function EdgeComputeSidebar() {
       />
       <SidebarItem
         to="edge.jobs"
-        label="Edge Jobs"
+        label="Edge 任务"
         icon={Clock}
         data-cy="portainerSidebar-edgeJobs"
       />
       {isBE && (
         <SidebarItem
           to="edge.configurations"
-          label="Edge Configurations"
+          label="Edge 配置"
           icon={Puzzle}
           data-cy="portainerSidebar-edgeConfigurations"
         />
@@ -48,27 +48,27 @@ export function EdgeComputeSidebar() {
       {isBE && !settings.TrustOnFirstConnect && (
         <SidebarItem
           to="edge.devices.waiting-room"
-          label="Waiting Room"
+          label="等待区"
           icon={Box}
           data-cy="portainerSidebar-edgeDevicesWaitingRoom"
         />
       )}
       <SidebarParent
         icon={Edit}
-        label="Edge Templates"
+        label="Edge 模板"
         to="edge.templates"
         data-cy="edgeSidebar-templates"
         listId="edgeSidebar-templates"
       >
         <SidebarItem
-          label="Application"
+          label="应用模板"
           to="edge.templates"
           ignorePaths={['edge.templates.custom']}
           isSubMenu
           data-cy="edgeSidebar-appTemplates"
         />
         <SidebarItem
-          label="Custom"
+          label="自定义"
           to="edge.templates.custom"
           isSubMenu
           data-cy="edgeSidebar-customTemplates"

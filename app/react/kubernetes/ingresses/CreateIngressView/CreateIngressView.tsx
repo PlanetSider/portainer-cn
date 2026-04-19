@@ -54,8 +54,8 @@ export function CreateIngressView() {
 
   useEffect(() => {
     if (!isAuthorizedToAddEdit) {
-      const message = `Not authorized to ${isEdit ? 'edit' : 'add'} ingresses`;
-      notifyError('Error', new Error(message));
+      const message = `无权${isEdit ? '编辑' : '新增'} Ingress`;
+      notifyError('错误', new Error(message));
       router.stateService.go('kubernetes.ingresses');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -565,14 +565,14 @@ export function CreateIngressView() {
   return (
     <>
       <PageHeader
-        title={isEdit ? 'Edit ingress' : 'Create ingress'}
+        title={isEdit ? '编辑 Ingress' : '创建 Ingress'}
         breadcrumbs={[
           {
             link: 'kubernetes.ingresses',
             label: 'Ingresses',
           },
           {
-            label: isEdit ? 'Edit ingress' : 'Create ingress',
+            label: isEdit ? '编辑 Ingress' : '创建 Ingress',
           },
         ]}
         reload
@@ -616,7 +616,7 @@ export function CreateIngressView() {
               data-cy="ingresses-create-button"
               disabled={Object.keys(errors).length > 0}
             >
-              {isEdit ? 'Update' : 'Create'}
+              {isEdit ? '更新' : '创建'}
             </Button>
           </div>
         )}
@@ -839,7 +839,7 @@ export function CreateIngressView() {
         { environmentId, ingress },
         {
           onSuccess: () => {
-            notifySuccess('Success', 'Ingress updated successfully');
+            notifySuccess('成功', 'Ingress 更新成功');
             router.stateService.go('kubernetes.ingresses');
           },
         }
@@ -849,7 +849,7 @@ export function CreateIngressView() {
         { environmentId, ingress },
         {
           onSuccess: () => {
-            notifySuccess('Success', 'Ingress created successfully');
+            notifySuccess('成功', 'Ingress 创建成功');
             router.stateService.go('kubernetes.ingresses');
           },
         }

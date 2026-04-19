@@ -35,7 +35,7 @@ export function YAMLInspector({
   }
 
   if (isError) {
-    return <Alert color="error">Error loading YAML</Alert>;
+    return <Alert color="error">加载 YAML 失败</Alert>;
   }
 
   return (
@@ -46,7 +46,7 @@ export function YAMLInspector({
         textTip={
           hideMessage
             ? undefined
-            : 'Define or paste the content of your manifest here'
+             : '在这里编写或粘贴 manifest 内容'
         }
         readonly
         hideTitle
@@ -63,13 +63,13 @@ export function YAMLInspector({
           className="!ml-0"
           onClick={() => setExpanded(!expanded)}
         >
-          {expanded ? 'Collapse' : 'Expand'}
+          {expanded ? '收起' : '展开'}
         </Button>
         <BETeaserButton
           featureId={FeatureId.K8S_EDIT_YAML}
-          heading="Apply YAML changes"
-          message="Applies any changes that you make in the YAML editor by calling the Kubernetes API to patch the relevant resources. Any resource removals or unexpected resource additions that you make in the YAML will be ignored. Note that editing is disabled for resources in namespaces marked as system."
-          buttonText="Apply changes"
+          heading="应用 YAML 更改"
+          message="通过调用 Kubernetes API 对相关资源执行 patch，以应用你在 YAML 编辑器中所做的更改。YAML 中删除资源或意外新增资源的操作会被忽略。注意：位于 system 命名空间中的资源禁止编辑。"
+          buttonText="应用更改"
           data-cy="yaml-inspector-apply-changes-teaser-button"
         />
       </div>

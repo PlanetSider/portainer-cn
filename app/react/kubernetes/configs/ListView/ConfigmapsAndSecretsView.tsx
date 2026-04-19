@@ -26,8 +26,8 @@ export function ConfigmapsAndSecretsView() {
   return (
     <>
       <PageHeader
-        title="ConfigMap & Secret lists"
-        breadcrumbs="ConfigMaps & Secrets"
+        title="ConfigMap 与 Secret 列表"
+        breadcrumbs="ConfigMaps 与 Secrets"
         reload
       />
       <>

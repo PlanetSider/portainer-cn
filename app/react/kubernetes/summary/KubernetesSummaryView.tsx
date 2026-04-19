@@ -31,13 +31,13 @@ export function KubernetesSummaryView({
 
   return (
     <FormSection
-      title="Summary"
+      title="摘要"
       isFoldable
       defaultFolded={!isExpanded}
       setIsDefaultFolded={(isFolded) => setIsExpanded(!isFolded)}
     >
       <TextTip color="blue">
-        Portainer will execute the following Kubernetes actions.
+        Portainer 将执行以下 Kubernetes 操作。
       </TextTip>
       <ul className="small text-muted ml-5 w-full">
         {actions.map((action, idx) => {
@@ -46,13 +46,13 @@ export function KubernetesSummaryView({
           }
           return (
             <li key={`${idx}-${action.kind}-${action.name}`}>
-              {`${action.action} ${getArticle(action.action)} `}
+              {`${translateAction(action.action)} ${getArticle(action.action)} `}
               <span className="bold">{action.kind}</span>
-              {' named '}
+              {' 名称为 '}
               <code>{action.name}</code>
               {!!action.type && (
                 <span>
-                  {' of type '}
+                  {' 类型为 '}
                   <code>{action.type}</code>
                 </span>
               )}
@@ -61,13 +61,13 @@ export function KubernetesSummaryView({
         })}
         {!!memoryLimit && (
           <li>
-            Set the memory resources limits and requests to{' '}
+            将内存资源限制和请求设置为{' '}
             <code>{memoryLimit}M</code>
           </li>
         )}
         {!!cpuLimit && (
           <li>
-            Set the CPU resources limits and requests to <code>{cpuLimit}</code>
+            将 CPU 资源限制和请求设置为 <code>{cpuLimit}</code>
           </li>
         )}
       </ul>
@@ -77,7 +77,22 @@ export function KubernetesSummaryView({
 
 function getArticle(resourceAction: string): string {
   if (resourceAction !== 'Create') {
-    return 'the';
+    return '';
   }
-  return 'a';
+  return '';
+}
+
+function translateAction(resourceAction: string): string {
+  switch (resourceAction) {
+    case 'Create':
+      return '创建';
+    case 'Update':
+      return '更新';
+    case 'Delete':
+      return '删除';
+    case 'Patch':
+      return '修补';
+    default:
+      return resourceAction;
+  }
 }

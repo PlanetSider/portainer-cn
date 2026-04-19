@@ -42,8 +42,8 @@ export function DashboardView() {
   return (
     <>
       <PageHeader
-        title="Dashboard"
-        breadcrumbs={[{ label: 'Environment summary' }]}
+        title="仪表盘"
+        breadcrumbs={[{ label: '环境概览' }]}
         reload
         onReload={() =>
           queryClient.invalidateQueries(['environments', environmentId])
@@ -58,7 +58,7 @@ export function DashboardView() {
             isRefetching={namespacesCountQuery.isRefetching}
             icon={Layers}
             to="kubernetes.resourcePools"
-            type="Namespace"
+            type="命名空间"
             data-cy="dashboard-namespace"
           />
           <DashboardItem
@@ -67,7 +67,7 @@ export function DashboardView() {
             isRefetching={applicationsCountQuery.isRefetching}
             icon={Box}
             to="kubernetes.applications"
-            type="Application"
+            type="应用"
             data-cy="dashboard-application"
           />
           <DashboardItem
@@ -76,7 +76,7 @@ export function DashboardView() {
             isRefetching={servicesCountQuery.isRefetching}
             icon={Shuffle}
             to="kubernetes.services"
-            type="Service"
+            type="服务"
             data-cy="dashboard-service"
           />
           <DashboardItem
@@ -115,7 +115,7 @@ export function DashboardView() {
             isRefetching={volumesCountQuery.isRefetching}
             icon={Database}
             to="kubernetes.volumes"
-            type="Volume"
+            type="卷"
             data-cy="dashboard-volume"
           />
         </DashboardGrid>

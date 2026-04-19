@@ -1,11 +1,11 @@
 <div id="service-update-config">
   <rd-widget>
-    <rd-widget-header icon="list" title-text="Update configuration"> </rd-widget-header>
+    <rd-widget-header icon="list" title-text="更新配置"> </rd-widget-header>
     <rd-widget-body classes="no-padding">
       <table class="mb-0 table">
         <tbody>
           <tr>
-            <td>Update Parallelism</td>
+            <td>并行更新数</td>
             <td>
               <input
                 class="input-sm"
@@ -17,11 +17,11 @@
               />
             </td>
             <td>
-              <p class="small text-muted" style="margin-top: 10px"> Maximum number of tasks to be updated simultaneously (0 to update all at once). </p>
+              <p class="small text-muted" style="margin-top: 10px"> 同时更新的最大任务数（0 表示一次更新全部）。 </p>
             </td>
           </tr>
           <tr>
-            <td>Update Delay</td>
+            <td>更新延迟</td>
             <td>
               <input
                 class="input-sm"
@@ -34,11 +34,11 @@
               />
             </td>
             <td>
-              <p class="small text-muted" style="margin-top: 10px"> Amount of time between updates expressed by a number followed by unit (ns|us|ms|s|m|h). Example: 1m. </p>
+              <p class="small text-muted" style="margin-top: 10px"> 更新间隔时间，格式为数字加单位（ns|us|ms|s|m|h），例如：1m。 </p>
             </td>
           </tr>
           <tr>
-            <td>Update Failure Action</td>
+            <td>更新失败动作</td>
             <td>
               <div class="form-group !mb-0">
                 <label class="radio-inline align-baseline">
@@ -51,7 +51,7 @@
                     ng-change="updateServiceAttribute(service, 'UpdateFailureAction')"
                     disable-authorization="DockerServiceUpdate"
                   />
-                  Continue
+                  继续
                 </label>
                 <label class="radio-inline align-baseline">
                   <input
@@ -63,16 +63,16 @@
                     ng-change="updateServiceAttribute(service, 'UpdateFailureAction')"
                     disable-authorization="DockerServiceUpdate"
                   />
-                  Pause
+                  暂停
                 </label>
               </div>
             </td>
             <td>
-              <p class="small text-muted" style="margin-top: 10px"> Action taken on failure to start after update. </p>
+              <p class="small text-muted" style="margin-top: 10px"> 更新后启动失败时采取的动作。 </p>
             </td>
           </tr>
           <tr ng-if="applicationState.endpoint.apiVersion >= 1.29">
-            <td>Order</td>
+            <td>顺序</td>
             <td>
               <div class="form-group !mb-0">
                 <label class="radio-inline">
@@ -102,7 +102,7 @@
               </div>
             </td>
             <td>
-              <p class="small text-muted" style="margin-top: 10px"> Operation order on failure. </p>
+              <p class="small text-muted" style="margin-top: 10px"> 更新操作的执行顺序。 </p>
             </td>
           </tr>
         </tbody>
@@ -116,14 +116,14 @@
             class="btn btn-primary btn-sm"
             ng-disabled="!hasChanges(service, ['UpdateFailureAction', 'UpdateDelay', 'UpdateParallelism', 'UpdateOrder'])"
             ng-click="updateService(service)"
-            >Apply changes</button
+            >应用更改</button
           >
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <pr-icon icon="'chevron-down'"></pr-icon>
           </button>
           <ul class="dropdown-menu">
-            <li><a ng-click="cancelChanges(service, ['UpdateFailureAction', 'UpdateDelay', 'UpdateParallelism', 'UpdateOrder'])">Reset changes</a></li>
-            <li><a ng-click="cancelChanges(service)">Reset all changes</a></li>
+             <li><a ng-click="cancelChanges(service, ['UpdateFailureAction', 'UpdateDelay', 'UpdateParallelism', 'UpdateOrder'])">重置更改</a></li>
+             <li><a ng-click="cancelChanges(service)">重置所有更改</a></li>
           </ul>
         </div>
       </div>

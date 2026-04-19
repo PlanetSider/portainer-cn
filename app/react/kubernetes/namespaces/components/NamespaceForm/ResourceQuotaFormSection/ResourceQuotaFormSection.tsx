@@ -41,14 +41,11 @@ export function ResourceQuotaFormSection({
   const memoryLimit = resourceLimitsQuery.data?.Memory ?? 0;
 
   return (
-    <FormSection title="Resource Quota">
+      <FormSection title="资源配额">
       {!isEditingDisabled && (
         <>
           <TextTip color="blue" className="mb-2">
-            A resource quota sets boundaries on the compute resources a
-            namespace can use. It&apos;s good practice to set a quota for a
-            namespace to manage resources effectively. Alternatively, you can
-            disable assigning a quota for unrestricted access (not recommended).
+            资源配额用于限制命名空间可使用的计算资源。为命名空间设置配额是管理资源的良好实践。你也可以关闭配额分配以获得不受限制的访问权限，但不推荐这样做。
           </TextTip>
 
           <div className="form-group">
@@ -56,7 +53,7 @@ export function ResourceQuotaFormSection({
               <SwitchField
                 data-cy="k8sNamespaceCreate-resourceAssignmentToggle"
                 disabled={!enableResourceOverCommit}
-                label="Resource assignment"
+                label="资源分配"
                 labelClass="col-sm-3 col-lg-2"
                 checked={values.enabled || !enableResourceOverCommit}
                 onChange={(enabled) => onChange({ ...values, enabled })}
@@ -68,16 +65,15 @@ export function ResourceQuotaFormSection({
 
       {(values.enabled || !enableResourceOverCommit) && !isEditingDisabled && (
         <div>
-          <FormSectionTitle>Resource Limits</FormSectionTitle>
+          <FormSectionTitle>资源限制</FormSectionTitle>
           {(!cpuLimit || !memoryLimit) && (
             <FormError>
-              Not enough resources available in the cluster to apply a resource
-              reservation.
+              集群中可用资源不足，无法应用资源预留。
             </FormError>
           )}
 
           <FormControl
-            label="Memory limit (MB)"
+            label="内存限制 (MB)"
             inputId="memory-limit"
             className="[&>label]:mt-8"
             errors={errors?.memory}
@@ -99,7 +95,7 @@ export function ResourceQuotaFormSection({
           </FormControl>
 
           <FormControl
-            label="CPU limit"
+            label="CPU 限制"
             inputId="cpu-limit"
             className="[&>label]:mt-8"
             errors={errors?.cpu}

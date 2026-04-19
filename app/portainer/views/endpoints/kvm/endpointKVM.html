@@ -1,14 +1,14 @@
 <page-header
-  title="'KVM Control'"
+  title="'KVM 控制'"
   breadcrumbs="[
-    { label:'Environments', link:'portainer.endpoints' },
+    { label:'环境', link:'portainer.endpoints' },
     {
       label:$state.endpoint.Name,
       link: 'portainer.endpoints.endpoint',
       linkParams:{id: $state.endpoint.Id}
     },
     $state.deviceName,
-    'KVM Control']"
+    'KVM 控制']"
   reload="true"
 >
 </page-header>
@@ -19,10 +19,10 @@
       <rd-widget>
         <rd-widget-body classes="no-padding">
           <div class="toolBar">
-            <div class="toolBarTitle">KVM Control</div>
+            <div class="toolBarTitle">KVM 控制</div>
             <pr-icon icon="'x'" ui-sref="edge.devices" class-name="'interactive pull-right'" size="'lg'"></pr-icon>
-            <pr-icon ng-click="maximize()" title="Maximize" icon="'maximize-2'" class-name="'!mr-2 interactive  pull-right'" size="'lg'"></pr-icon>
-            <pr-icon ng-click="minimize()" title="Minimize" icon="'minimize-2'" class-name="'!mr-2 interactive pull-right'" size="'lg'"></pr-icon>
+            <pr-icon ng-click="maximize()" title="最大化" icon="'maximize-2'" class-name="'!mr-2 interactive  pull-right'" size="'lg'"></pr-icon>
+            <pr-icon ng-click="minimize()" title="最小化" icon="'minimize-2'" class-name="'!mr-2 interactive pull-right'" size="'lg'"></pr-icon>
           </div>
           <div class="actionBar">
             <kvm-control device-id="$state.deviceId" server="$state.mpsServer" token="$state.mpsToken"> </kvm-control>

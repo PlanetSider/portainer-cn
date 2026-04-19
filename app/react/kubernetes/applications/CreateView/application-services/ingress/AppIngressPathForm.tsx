@@ -105,12 +105,12 @@ export function AppIngressPathForm({
     <div className="flex w-full flex-wrap gap-x-4 gap-y-1">
       <div className="flex min-w-[250px] basis-1/3 flex-col">
         <InputGroup size="small">
-          <InputGroup.Addon>Hostname</InputGroup.Addon>
+          <InputGroup.Addon>主机名</InputGroup.Addon>
           <Select
             options={ingressHostOptions}
             value={selectedIngress}
             defaultValue={ingressHostOptions[0]}
-            placeholder="Select a hostname..."
+            placeholder="选择主机名..."
             size="sm"
             onChange={(ingressOption) => {
               setSelectedIngress(ingressOption);
@@ -135,15 +135,15 @@ export function AppIngressPathForm({
         </InputGroup>
         {ingressHostOptions.length === 0 && !ingressPath?.Host && (
           <FormError>
-            No ingress hostnames are available for the namespace &apos;
-            {namespace}&apos;. Please select another namespace or{' '}
+            命名空间 &apos;
+            {namespace}&apos; 中没有可用的 Ingress 主机名。请选择其他命名空间或{' '}
             <Link
               to="kubernetes.ingresses.create"
               target="_blank"
               rel="noopener noreferrer"
               data-cy="k8sAppCreate-ingressPathCreateIngressLink"
             >
-              create an ingress
+              创建一个 Ingress
             </Link>
             .
           </FormError>
@@ -154,7 +154,7 @@ export function AppIngressPathForm({
       </div>
       <div className="flex min-w-[250px] basis-1/3 flex-col">
         <InputGroup size="small">
-          <InputGroup.Addon required>Path</InputGroup.Addon>
+          <InputGroup.Addon required>路径</InputGroup.Addon>
           <InputGroup.Input
             value={ingressPath?.Path ?? ''}
             data-cy={`k8sAppCreate-ingressPathPathInput-${ingressPath?.Host}`}

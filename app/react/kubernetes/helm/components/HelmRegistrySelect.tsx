@@ -34,7 +34,7 @@ export function HelmRegistrySelect({
   selectedRegistry,
   onRegistryChange,
   namespace,
-  placeholder = 'Select a repository',
+  placeholder = '选择仓库',
   'data-cy': dataCy = 'helm-registry-select',
   isRepoAvailable,
   isLoading,
@@ -45,7 +45,7 @@ export function HelmRegistrySelect({
 
   return (
     <FormControl
-      label="Helm chart source"
+      label="Helm Chart 来源"
       tooltip={<HelmChartSourceTooltip isPureAdmin={isPureAdmin} />}
     >
       <PortainerSelect<RepoValue>
@@ -64,7 +64,7 @@ export function HelmRegistrySelect({
         namespace={namespace}
         isPureAdmin={isPureAdmin}
       />
-      {isError && <Alert color="error">Unable to load registry options.</Alert>}
+      {isError && <Alert color="error">无法加载镜像仓库选项。</Alert>}
     </FormControl>
   );
 }
@@ -101,7 +101,7 @@ function NoReposWarning({
 
   return (
     <TextTip color="blue" className="mt-2">
-      There are no repositories available.
+      没有可用仓库。
       <CreateRepoMessage isPureAdmin={isPureAdmin} />
     </TextTip>
   );
@@ -125,15 +125,15 @@ function CreateRepoMessage({ isPureAdmin }: { isPureAdmin: boolean }) {
 function CreateUserRepoMessage() {
   return (
     <>
-      You can define <b>repositories</b> in the{' '}
+      你可以在{' '}
       <Link
         to="portainer.account"
         params={{ '#': 'helm-repositories' }}
         data-cy="helm-repositories-link"
       >
-        User settings - Helm repositories
+        用户设置 - Helm 仓库
       </Link>
-      .
+      中定义 <b>repositories</b>。
     </>
   );
 }
@@ -141,16 +141,16 @@ function CreateUserRepoMessage() {
 function CreateGlobalRepoMessage() {
   return (
     <>
-      You can also define repositories in the{' '}
+      你也可以在{' '}
       <Link
         to="portainer.settings"
         params={{ '#': 'kubernetes-settings' }}
         data-cy="portainer-settings-link"
         target="_blank"
       >
-        Portainer settings
+        Portainer 设置
       </Link>
-      .
+      中定义仓库。
     </>
   );
 }

@@ -151,12 +151,12 @@ export function IngressForm({
                 className="control-label text-muted col-sm-3 col-lg-2"
                 htmlFor="namespace"
               >
-                Namespace
+                命名空间
               </label>
               {isNamespaceOptionsLoading && (
                 <div className="col-sm-4">
                   <InlineLoader className="pt-2">
-                    Loading namespaces...
+                    正在加载命名空间...
                   </InlineLoader>
                 </div>
               )}
@@ -179,10 +179,10 @@ export function IngressForm({
                       }
                       placeholder={
                         namespacesOptions.length
-                          ? 'Select a namespace'
-                          : 'No namespaces available'
+                          ? '选择命名空间'
+                          : '没有可用命名空间'
                       }
-                      noOptionsMessage={() => 'No namespaces available'}
+                      noOptionsMessage={() => '没有可用命名空间'}
                       data-cy="k8sAppCreate-namespaceSelect"
                       id="k8sAppCreate-namespaceSelect"
                     />
@@ -201,7 +201,7 @@ export function IngressForm({
                   className="control-label text-muted col-sm-3 col-lg-2 required"
                   htmlFor="ingress_name"
                 >
-                  Ingress name
+                  Ingress 名称
                 </label>
                 <div className="col-sm-4">
                   {isEdit ? (
@@ -211,7 +211,7 @@ export function IngressForm({
                       name="ingress_name"
                       type="text"
                       className="form-control"
-                      placeholder="Ingress name"
+                      placeholder="Ingress 名称"
                       defaultValue={rule.IngressName}
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         handleIngressChange('IngressName', e.target.value)
@@ -233,12 +233,12 @@ export function IngressForm({
                   className="control-label text-muted col-sm-3 col-lg-2 required"
                   htmlFor="ingress_class"
                 >
-                  Ingress class
+                  Ingress Class
                 </label>
                 <div className="col-sm-4">
                   {isIngressClassOptionsLoading && (
                     <InlineLoader className="pt-2">
-                      Loading ingress classes...
+                      正在加载 ingress class...
                     </InlineLoader>
                   )}
                   {!isIngressClassOptionsLoading && (
@@ -247,8 +247,8 @@ export function IngressForm({
                         name="ingress_class"
                         placeholder={
                           ingressClassOptions.length
-                            ? 'Select an ingress class'
-                            : 'No ingress classes available'
+                            ? '选择 ingress class'
+                            : '没有可用 ingress class'
                         }
                         options={ingressClassOptions}
                         value={
@@ -265,7 +265,7 @@ export function IngressForm({
                             ingressClassOption?.value || ''
                           )
                         }
-                        noOptionsMessage={() => 'No ingress classes available'}
+                        noOptionsMessage={() => '没有可用 ingress class'}
                         data-cy="k8sAppCreate-ingressClassSelect"
                         id="k8sAppCreate-ingressClassSelect"
                       />
@@ -282,19 +282,19 @@ export function IngressForm({
 
             <div className="col-sm-12 text-muted !mb-0 px-0">
               <div className="control-label !mb-3 text-left font-medium">
-                Annotations
+                注解
                 <Tooltip
                   message={
                     <div className="vertical-center">
                       <span>
-                        Allows specifying of{' '}
+                        允许为对象指定{' '}
                         <a
                           href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/"
                           target="_black"
                         >
                           annotations
                         </a>{' '}
-                        for the object. See further Kubernetes documentation on{' '}
+                        。更多信息请参考 Kubernetes 文档中的{' '}
                         <a
                           href="https://kubernetes.io/docs/reference/labels-annotations-taints/"
                           target="_black"
@@ -320,7 +320,7 @@ export function IngressForm({
             )}
 
             <div className="col-sm-12 anntation-actions p-0">
-              <TooltipWithChildren message="Use annotations to configure options for an ingress. Review Nginx or Traefik documentation to find the annotations supported by your choice of ingress type.">
+              <TooltipWithChildren message="使用注解来配置 Ingress 选项。请查阅 Nginx 或 Traefik 文档，了解所选 ingress 类型支持的注解。">
                 <span>
                   <Button
                     className="btn btn-sm btn-light !ml-0 mb-2"
@@ -329,14 +329,14 @@ export function IngressForm({
                     icon={Plus}
                   >
                     {' '}
-                    Add annotation
+                    添加注解
                   </Button>
                 </span>
               </TooltipWithChildren>
 
               {rule.IngressType === 'nginx' && (
                 <>
-                  <TooltipWithChildren message="When the exposed URLs for your applications differ from the specified paths in the ingress, use the rewrite target annotation to denote the path to redirect to.">
+                  <TooltipWithChildren message="当应用的暴露 URL 与 Ingress 中指定的路径不一致时，可使用 rewrite target 注解来指定重定向路径。">
                     <span>
                       <Button
                         className="btn btn-sm btn-light mb-2 ml-2"
@@ -344,12 +344,12 @@ export function IngressForm({
                         icon={Plus}
                         data-cy="add-rewrite-annotation"
                       >
-                        Add rewrite annotation
+                        添加 rewrite 注解
                       </Button>
                     </span>
                   </TooltipWithChildren>
 
-                  <TooltipWithChildren message="Enable use of regular expressions in ingress paths (set in the ingress details of an application). Use this along with rewrite-target to specify the regex capturing group to be replaced, e.g. path regex of ^/foo/(,*) and rewrite-target of /bar/$1 rewrites example.com/foo/account to example.com/bar/account.">
+                  <TooltipWithChildren message="在 Ingress 路径中启用正则表达式（可在应用的 ingress 详情中设置）。通常与 rewrite-target 配合使用，以指定要替换的正则捕获组。">
                     <span>
                       <Button
                         className="btn btn-sm btn-light mb-2 ml-2"
@@ -357,7 +357,7 @@ export function IngressForm({
                         icon={Plus}
                         data-cy="add-regex-annotation"
                       >
-                        Add regular expression annotation
+                        添加正则表达式注解
                       </Button>
                     </span>
                   </TooltipWithChildren>
@@ -371,12 +371,12 @@ export function IngressForm({
                   icon={Plus}
                   data-cy="add-ingress-class-annotation"
                 >
-                  Add kubernetes.io/ingress.class annotation
+                  添加 kubernetes.io/ingress.class 注解
                 </Button>
               )}
             </div>
 
-            <div className="col-sm-12 text-muted px-0">Rules</div>
+            <div className="col-sm-12 text-muted px-0">规则</div>
           </div>
         )}
 
@@ -386,7 +386,7 @@ export function IngressForm({
               <div className="flex flex-col">
                 <div className="row rule-actions">
                   <div className="col-sm-3 p-0">
-                    {!host.NoHost ? 'Rule' : 'Fallback rule'}
+                    {!host.NoHost ? '规则' : '回退规则'}
                   </div>
                   <div className="col-sm-9 p-0 text-right">
                     <Button
@@ -398,7 +398,7 @@ export function IngressForm({
                       disabled={rule.Hosts.length === 1}
                       icon={Trash2}
                     >
-                      Remove rule
+                      删除规则
                     </Button>
                   </div>
                 </div>
@@ -411,7 +411,7 @@ export function IngressForm({
                           as="label"
                           htmlFor={`ingress_host_${hostIndex}`}
                         >
-                          Hostname
+                          主机名
                         </InputGroup.Addon>
                         <InputGroup.Input
                           name={`ingress_host_${hostIndex}`}
@@ -419,7 +419,7 @@ export function IngressForm({
                           id={`ingress_host_${hostIndex}`}
                           type="text"
                           className="form-control form-control-sm"
-                          placeholder="e.g. example.com"
+                          placeholder="例如：example.com"
                           defaultValue={host.Host}
                           onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             handleHostChange(hostIndex, e.target.value)
@@ -440,7 +440,7 @@ export function IngressForm({
                           as="label"
                           htmlFor={`ingress_tls_${hostIndex}`}
                         >
-                          TLS secret
+                          TLS Secret
                         </InputGroup.Addon>
                         <Select
                           key={tlsOptions.toString() + host.Secret}
@@ -451,7 +451,7 @@ export function IngressForm({
                             host.Secret !== undefined
                               ? {
                                   value: host.Secret,
-                                  label: host.Secret || 'No TLS',
+                                   label: host.Secret || '无 TLS',
                                 }
                               : null
                           }
@@ -460,10 +460,10 @@ export function IngressForm({
                           }
                           placeholder={
                             tlsOptions.length
-                              ? 'Select a TLS secret'
-                              : 'No TLS secrets available'
+                               ? '选择 TLS Secret'
+                               : '没有可用 TLS Secret'
                           }
-                          noOptionsMessage={() => 'No TLS secrets available'}
+                           noOptionsMessage={() => '没有可用 TLS Secret'}
                           size="sm"
                           data-cy={`k8sAppCreate-tlsSelect_${hostIndex}`}
                           id={`k8sAppCreate-tlsSelect_${hostIndex}`}
@@ -483,7 +483,7 @@ export function IngressForm({
 
                     <div className="col-sm-12 col-lg-4 flex h-[30px] items-center pl-2">
                       <TextTip color="blue">
-                        You may also use the{' '}
+                        你也可以使用{' '}
                         <Link
                           to="kubernetes.secrets.new"
                           params={{ id: environmentID }}
@@ -491,32 +491,28 @@ export function IngressForm({
                           target="_blank"
                           data-cy={`k8sAppCreate-createSecretLink_${hostIndex}`}
                         >
-                          Create secret
+                          创建 Secret
                         </Link>{' '}
-                        function, and reload the dropdown.
+                        功能，然后重新加载下拉框。
                       </TextTip>
                     </div>
                   </div>
                 )}
                 {host.NoHost && (
                   <TextTip color="blue">
-                    A fallback rule has no host specified. This rule only
-                    applies when an inbound request has a hostname that does not
-                    match with any of your other rules.
+                    回退规则没有指定主机名。只有当传入请求的主机名与其他规则都不匹配时，才会应用此规则。
                   </TextTip>
                 )}
 
                 <div className="row">
                   <div className="col-sm-12 text-muted !mb-0 mt-2 px-0">
-                    Paths
+                    路径
                   </div>
                 </div>
 
                 {!host.Paths.length && (
                   <TextTip className="mt-2" color="blue">
-                    You may save the ingress without a path and it will then be
-                    an <b>ingress default</b> that a user may select via the
-                    hostname dropdown in Create/Edit application.
+                    你可以在不填写路径的情况下保存 Ingress，这样它会成为一个<b>默认 ingress</b>，用户可在创建或编辑应用时通过主机名下拉框选择它。
                   </TextTip>
                 )}
 
@@ -560,10 +556,10 @@ export function IngressForm({
                           }
                           placeholder={
                             serviceOptions.length
-                              ? 'Select a service'
-                              : 'No services available'
+                              ? '选择服务'
+                              : '没有可用服务'
                           }
-                          noOptionsMessage={() => 'No services available'}
+                          noOptionsMessage={() => '没有可用服务'}
                           size="sm"
                           data-cy={`k8sAppCreate-serviceSelect_${hostIndex}_${pathIndex}`}
                         />
@@ -590,7 +586,7 @@ export function IngressForm({
                               as="label"
                               htmlFor={`ingress_servicePort_${hostIndex}_${pathIndex}`}
                             >
-                              Service port
+                              服务端口
                             </InputGroup.Addon>
                             <Select
                               key={servicePorts.toString() + path.ServicePort}
@@ -622,10 +618,10 @@ export function IngressForm({
                               }
                               placeholder={
                                 servicePorts[path.ServiceName]?.length
-                                  ? 'Select a port'
-                                  : 'No ports available'
+                                  ? '选择端口'
+                                  : '没有可用端口'
                               }
-                              noOptionsMessage={() => 'No ports available'}
+                              noOptionsMessage={() => '没有可用端口'}
                               size="sm"
                               data-cy={`k8sAppCreate-servicePortSelect_${hostIndex}_${pathIndex}`}
                             />
@@ -651,7 +647,7 @@ export function IngressForm({
                           as="label"
                           htmlFor={`ingress_pathType_${hostIndex}_${pathIndex}`}
                         >
-                          Path type
+                          路径类型
                         </InputGroup.Addon>
                         <Select
                           key={servicePorts.toString() + path.PathType}
@@ -681,10 +677,10 @@ export function IngressForm({
                           }
                           placeholder={
                             pathTypes?.length
-                              ? 'Select a path type'
-                              : 'No path types available'
+                              ? '选择路径类型'
+                              : '没有可用路径类型'
                           }
-                          noOptionsMessage={() => 'No path types available'}
+                          noOptionsMessage={() => '没有可用路径类型'}
                           size="sm"
                           data-cy={`k8sAppCreate-pathTypeSelect_${hostIndex}_${pathIndex}`}
                         />
@@ -709,7 +705,7 @@ export function IngressForm({
                           as="label"
                           htmlFor={`ingress_route_${hostIndex}-${pathIndex}`}
                         >
-                          Path
+                          路径
                         </InputGroup.Addon>
                         <InputGroup.Input
                           className="form-control"
@@ -765,7 +761,7 @@ export function IngressForm({
                     icon={Plus}
                     data-cy={`k8sAppCreate-addPathButton_${hostIndex}`}
                   >
-                    Add path
+                    添加路径
                   </Button>
                 </div>
               </div>
@@ -782,7 +778,7 @@ export function IngressForm({
                 icon={Plus}
                 data-cy="k8sAppCreate-addHostButton"
               >
-                Add new host
+                添加主机
               </Button>
 
               <Button
@@ -793,9 +789,9 @@ export function IngressForm({
                 icon={Plus}
                 data-cy="k8sAppCreate-addFallbackButton"
               >
-                Add fallback rule
+                添加回退规则
               </Button>
-              <Tooltip message="A fallback rule will be applied to all requests that do not match any of the defined hosts." />
+              <Tooltip message="回退规则会应用于所有未匹配任何已定义主机的请求。" />
             </div>
           </div>
         )}

@@ -30,20 +30,19 @@ export function RegistriesFormSection({
     hideDefault: true,
   });
   return (
-    <FormSection title="Registries">
+    <FormSection title="镜像仓库">
       {!isEditingDisabled && (
         <TextTip color="blue" className="mb-2">
-          Define which registries can be used by users who have access to this
-          namespace.
+          定义哪些镜像仓库可供拥有此命名空间访问权限的用户使用。
         </TextTip>
       )}
       <FormControl
         inputId="registries"
-        label={isEditingDisabled ? 'Selected registries' : 'Select registries'}
+        label={isEditingDisabled ? '已选镜像仓库' : '选择镜像仓库'}
         errors={errors}
       >
         {registriesQuery.isLoading && (
-          <InlineLoader>Loading registries...</InlineLoader>
+          <InlineLoader>正在加载镜像仓库...</InlineLoader>
         )}
         {registriesQuery.data && (
           <RegistriesSelector

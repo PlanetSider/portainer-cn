@@ -70,7 +70,7 @@ export function IngressClassDatatable({
               updateIngressControllers(selectedRows, values || [], false)
             }
           >
-            Disallow selected
+            禁用所选项
           </Button>
           <Button
             data-cy="allow-ingress-controllers-button"
@@ -84,7 +84,7 @@ export function IngressClassDatatable({
               updateIngressControllers(selectedRows, values || [], true)
             }
           >
-            Allow selected
+            允许所选项
           </Button>
         </ButtonGroup>
       </div>
@@ -102,7 +102,7 @@ export function IngressClassDatatable({
           {initialValues &&
             values &&
             isUnsavedChanges(initialValues, values) && (
-              <TextTip>Unsaved changes.</TextTip>
+              <TextTip>有未保存的更改。</TextTip>
             )}
         </div>
       </div>
@@ -145,13 +145,12 @@ export function IngressClassDatatable({
 
       if (usedControllersToDisallow.length > 0) {
         const confirmed = await confirm({
-          title: 'Disallow in-use ingress controllers?',
+            title: '禁用正在使用的 ingress controller？',
           modalType: ModalType.Warn,
           message: (
             <div>
               <p>
-                There are ingress controllers you want to disallow that are in
-                use:
+                以下你想禁用的 ingress controller 当前正在使用：
               </p>
               <ul className="ml-6">
                 {usedControllersToDisallow.map((controller) => (
@@ -159,12 +158,11 @@ export function IngressClassDatatable({
                 ))}
               </ul>
               <p>
-                No new ingress rules can be created for the disallowed
-                controllers.
+                被禁用的 controller 将无法再用于创建新的 ingress 规则。
               </p>
             </div>
           ),
-          confirmButton: buildConfirmButton('Disallow', 'warning'),
+            confirmButton: buildConfirmButton('禁用', 'warning'),
         });
 
         if (!confirmed) {

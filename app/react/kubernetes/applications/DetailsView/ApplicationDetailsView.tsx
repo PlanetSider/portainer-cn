@@ -48,7 +48,7 @@ export function ApplicationDetailsView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Application',
+      name: '应用',
       icon: LaptopCode,
       widget: <ApplicationSummaryWidget />,
       selectedTabParam: 'application',
@@ -56,7 +56,7 @@ export function ApplicationDetailsView() {
     {
       name: (
         <div className="flex items-center gap-x-2">
-          Placement
+          调度
           {hasPlacementWarning && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />1
@@ -78,7 +78,7 @@ export function ApplicationDetailsView() {
     {
       name: (
         <div className="flex items-center gap-x-2">
-          Events
+          事件
           {appEventWarningCount >= 1 && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />
@@ -110,15 +110,15 @@ export function ApplicationDetailsView() {
   return (
     <>
       <PageHeader
-        title="Application details"
+        title="应用详情"
         breadcrumbs={[
-          { label: 'Namespaces', link: 'kubernetes.resourcePools' },
+          { label: '命名空间', link: 'kubernetes.resourcePools' },
           {
             label: namespace,
             link: 'kubernetes.resourcePools.resourcePool',
             linkParams: { id: namespace },
           },
-          { label: 'Applications', link: 'kubernetes.applications' },
+          { label: '应用', link: 'kubernetes.applications' },
           name,
         ]}
         reload

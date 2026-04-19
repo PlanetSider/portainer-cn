@@ -40,7 +40,7 @@ export function Header({ logo: customLogo }: Props) {
               'th-dark:text-gray-warm-6'
             )}
           >
-            <span className="font-medium">Powered by</span>
+            <span className="font-medium">技术支持</span>
             <span className="font-semibold">
               {isBE ? (
                 'portainer business'
@@ -73,8 +73,8 @@ export function Header({ logo: customLogo }: Props) {
           'absolute',
           { '-right-[10px]': !isOpen, 'right-6': isOpen }
         )}
-        aria-label="Toggle Sidebar"
-        title="Toggle Sidebar"
+        aria-label="切换侧边栏"
+        title="切换侧边栏"
       >
         {isOpen ? <ChevronsLeft /> : <ChevronsRight />}
       </button>

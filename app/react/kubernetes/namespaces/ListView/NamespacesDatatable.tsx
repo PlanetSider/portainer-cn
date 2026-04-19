@@ -63,7 +63,7 @@ export function NamespacesDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={namespacesQuery.isLoading}
-      title="Namespaces"
+      title="命名空间"
       titleIcon={Layers}
       getRowId={(item) => item.Id}
       disableSelect={!hasWriteAuthQuery.authorized}
@@ -106,8 +106,8 @@ function TableActions({
     (ns) => ns.Status.phase === 'Terminating'
   );
   const message = includesTerminatingNamespace
-    ? 'At least one namespace is in a terminating state. For terminating state namespaces, you may continue and force removal, but doing so without having properly cleaned up may lead to unstable and unpredictable behavior. Are you sure you wish to proceed?'
-    : `Do you want to remove the selected ${selectedNamespacePlural}? All the resources associated to the selected ${selectedNamespacePlural} will be removed too. Are you sure you wish to proceed?`;
+    ? '至少有一个命名空间处于 terminating 状态。对于 terminating 状态的命名空间，你可以继续并强制删除，但如果未正确清理，可能导致不稳定和不可预测的行为。确定要继续吗？'
+    : `确定要删除所选${selectedNamespacePlural}吗？与所选${selectedNamespacePlural}关联的所有资源也会一并删除。确定要继续吗？`;
 
   return (
     <Authorized authorizations="K8sResourcePoolDetailsW" adminOnlyCE>
@@ -119,7 +119,7 @@ function TableActions({
       />
 
       <AddButton color="secondary" data-cy="add-namespace-form-button">
-        Add with form
+        通过表单添加
       </AddButton>
 
       <CreateFromManifestButton data-cy="k8s-namespaces-deploy-button" />
@@ -150,9 +150,9 @@ function TableActions({
           // notify user of success and errors
           if (errors.length > 0) {
             notifyError(
-              'Error',
+              '错误',
               new Error(
-                `Failed to delete ${erroredNamespacePlural}: ${errors
+                 `删除${erroredNamespacePlural}失败：${errors
                   .map((err) => `${err.namespaceName}: ${err.error}`)
                   .join(', ')}`
               )
@@ -160,8 +160,8 @@ function TableActions({
           }
           if (deletedNamespaces.length > 0) {
             notifySuccess(
-              'Success',
-              `Successfully deleted ${deletedNamespacePlural}: ${deletedNamespaces.join(
+              '成功',
+              `已成功删除${deletedNamespacePlural}：${deletedNamespaces.join(
                 ', '
               )}`
             );

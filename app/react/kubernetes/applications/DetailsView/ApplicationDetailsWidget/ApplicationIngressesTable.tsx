@@ -36,12 +36,12 @@ export function ApplicationIngressesTable({
     <table className="mt-4 table">
       <tbody>
         <tr className="text-muted">
-          <td className="w-[15%]">Ingress name</td>
-          <td className="w-[10%]">Service name</td>
-          <td className="w-[10%]">Host</td>
-          <td className="w-[10%]">Port</td>
-          <td className="w-[10%]">Path</td>
-          <td className="w-[15%]">HTTP Route</td>
+            <td className="w-[15%]">Ingress 名称</td>
+            <td className="w-[10%]">服务名称</td>
+            <td className="w-[10%]">主机</td>
+            <td className="w-[10%]">端口</td>
+            <td className="w-[10%]">路径</td>
+            <td className="w-[15%]">HTTP 路由</td>
         </tr>
         {ingressPathsForAppServices?.map((ingressPath, index) => (
           <tr key={index}>

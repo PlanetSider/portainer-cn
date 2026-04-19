@@ -64,7 +64,7 @@ export function RollbackApplicationButton({
     !app ||
     !appRevisions ||
     appRevisions?.length < 2 ||
-    appDeployMethod !== 'application form' ||
+      appDeployMethod !== 'application form' ||
     patchAppMutation.isLoading;
 
   const rollbackButton = (
@@ -79,7 +79,7 @@ export function RollbackApplicationButton({
       data-cy="k8sAppDetail-rollbackButton"
     >
       <Icon icon={RotateCcw} className="mr-1" />
-      Rollback to previous configuration
+      回滚到上一版本配置
     </Button>
   );
 
@@ -87,13 +87,13 @@ export function RollbackApplicationButton({
     <Authorized authorizations="K8sApplicationDetailsW">
       <div className="flex gap-x-2">
         {isRollbackNotAvailable ? (
-          <TooltipWithChildren message="Cannot roll back to previous configuration as none currently exists">
+          <TooltipWithChildren message="当前没有可回滚的上一版本配置">
             <span>{rollbackButton}</span>
           </TooltipWithChildren>
         ) : (
           rollbackButton
         )}
-        <Tooltip message="Only one level of rollback is available, i.e. if you roll back from v2 to v1, and then roll back again, you will end up back at v2. Note that service changes and autoscaler rule changes are not included in rollback functionality. This is how Kubernetes works natively." />
+        <Tooltip message="只支持一级回滚，也就是说如果你从 v2 回滚到 v1，然后再次回滚，将会回到 v2。注意：服务变更和自动扩缩容规则变更不包含在回滚功能中，这是 Kubernetes 的原生行为。" />
       </div>
     </Authorized>
   );
@@ -110,11 +110,11 @@ export function RollbackApplicationButton({
 
     // confirm the action
     const confirmed = await confirm({
-      title: 'Are you sure?',
+      title: '确定吗？',
       modalType: ModalType.Warn,
-      confirmButton: buildConfirmButton('Rollback'),
+      confirmButton: buildConfirmButton('回滚'),
       message:
-        'Rolling back the application to a previous configuration may cause service interruption. Do you wish to continue?',
+        '将应用回滚到先前配置可能导致服务中断。是否继续？',
     });
     if (!confirmed) {
       return;
@@ -133,19 +133,19 @@ export function RollbackApplicationButton({
         },
         {
           onSuccess: () => {
-            notifySuccess('Success', 'Application successfully rolled back');
+            notifySuccess('成功', '应用回滚成功');
             router.stateService.reload();
           },
           onError: (error) =>
             notifyError(
-              'Failure',
+              '失败',
               error as Error,
-              'Unable to rollback the application'
+              '无法回滚应用'
             ),
         }
       );
     } catch (error) {
-      notifyError('Failure', error as Error);
+      notifyError('失败', error as Error);
     }
   }
 }

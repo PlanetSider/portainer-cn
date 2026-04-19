@@ -122,7 +122,7 @@ export function UpgradeHelmModal({
               />
             </FormControl>
             <FormControl
-              label="Namespace"
+              label="命名空间"
               inputId="namespace-input"
               size="medium"
             >
@@ -140,7 +140,7 @@ export function UpgradeHelmModal({
                 data-cy="helm-namespace-input"
               />
             </FormControl>
-            <FormControl label="Version" inputId="version-input" size="medium">
+            <FormControl label="版本" inputId="version-input" size="medium">
               <PortainerSelect<ChartVersion>
                 value={version}
                 options={versionOptions}
@@ -153,8 +153,8 @@ export function UpgradeHelmModal({
               />
             </FormControl>
             <FormControl
-              label="Rollback on failure"
-              tooltip="Enables automatic rollback on failure. It may increase the time to upgrade."
+              label="失败时回滚"
+              tooltip="启用失败时自动回滚。这可能会增加升级所需时间。"
               inputId="atomic-input"
               size="medium"
             >
@@ -175,7 +175,7 @@ export function UpgradeHelmModal({
               <ManifestPreviewFormSection
                 payload={submitPayload}
                 onChangePreviewValidation={setPreviewIsValid}
-                title="Manifest changes"
+                title="Manifest 变更"
                 currentManifest={releaseManifest}
                 environmentId={environmentId}
               />
@@ -192,15 +192,15 @@ export function UpgradeHelmModal({
             size="medium"
             data-cy="cancel-button-cy"
           >
-            Cancel
+            取消
           </Button>
           <Button
             onClick={async () => {
               if (!previewIsValid) {
                 const confirmed = await confirm({
-                  title: 'Chart validation failed',
+                  title: 'Chart 校验失败',
                   message:
-                    'The Helm manifest preview validation failed, which may indicate configuration issues. This can be normal when creating new resources. Do you want to proceed with the upgrade?',
+                    'Helm manifest 预览校验失败，这可能表示存在配置问题。在创建新资源时这也可能是正常现象。是否继续升级？',
                 });
                 if (!confirmed) {
                   return;
@@ -213,7 +213,7 @@ export function UpgradeHelmModal({
             size="medium"
             data-cy="update-button-cy"
           >
-            Upgrade
+            升级
           </Button>
         </Modal.Footer>
       </div>

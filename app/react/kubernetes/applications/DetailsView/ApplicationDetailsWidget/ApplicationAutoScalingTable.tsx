@@ -33,11 +33,11 @@ export function ApplicationAutoScalingTable({
     <>
       <div className="text-muted mb-4 flex items-center">
         <Icon icon={Move} className="!mr-2" />
-        Auto-scaling
+        自动扩缩容
       </div>
       {!appAutoScalar && (
         <TextTip color="blue">
-          This application does not have an autoscaling policy defined.
+          此应用未定义自动扩缩容策略。
         </TextTip>
       )}
       {appAutoScalar && (
@@ -45,12 +45,12 @@ export function ApplicationAutoScalingTable({
           <table className="table">
             <tbody>
               <tr className="text-muted">
-                <td className="w-1/3">Minimum instances</td>
-                <td className="w-1/3">Maximum instances</td>
+                <td className="w-1/3">最小实例数</td>
+                <td className="w-1/3">最大实例数</td>
                 <td className="w-1/3">
                   <div className="flex min-w-max items-center gap-1">
-                    Target CPU usage
-                    <Tooltip message="The autoscaler will ensure enough instances are running to maintain an average CPU usage across all instances." />
+                    目标 CPU 使用率
+                    <Tooltip message="自动扩缩容器会确保有足够的实例运行，以维持所有实例的平均 CPU 使用率。" />
                   </div>
                 </td>
               </tr>

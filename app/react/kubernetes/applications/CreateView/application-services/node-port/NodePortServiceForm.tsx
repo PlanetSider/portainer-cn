@@ -187,7 +187,7 @@ export function NodePortServiceForm({
                     data-cy={`k8sAppCreate-rmPortButton_${portIndex}`}
                     icon={Trash2}
                   >
-                    Remove port
+                    删除端口
                   </Button>
                 </div>
                 {initiallyHasIngressPath && (
@@ -223,7 +223,7 @@ export function NodePortServiceForm({
                 onChangePort(newServicesPorts);
               }}
             >
-              Add port
+              添加端口
             </Button>
           </div>
         </div>

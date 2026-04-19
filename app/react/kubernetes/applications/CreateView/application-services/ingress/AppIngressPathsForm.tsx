@@ -168,7 +168,7 @@ export function AppIngressPathsForm({
               onChangeIngressPaths(newIngressPaths);
             }}
           >
-            Add path
+            添加路径
           </Button>
         </div>
       )}

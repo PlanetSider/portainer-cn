@@ -32,9 +32,9 @@ export function HomeView() {
   useEffect(() => {
     async function redirect() {
       const options = {
-        title: `Failed connecting to ${params.environmentName}`,
-        message: `There was an issue connecting to edge agent via tunnel. Click 'Retry' below to retry now, or wait 10 seconds to automatically retry.`,
-        confirmButton: buildConfirmButton('Retry', 'primary', 10),
+        title: `连接 ${params.environmentName} 失败`,
+        message: `通过隧道连接 edge agent 时出现问题。点击下方“重试”可立即重试，或等待 10 秒后自动重试。`,
+        confirmButton: buildConfirmButton('重试', 'primary', 10),
         modalType: ModalType.Destructive,
       };
 
@@ -62,8 +62,8 @@ export function HomeView() {
     <>
       <PageHeader
         reload
-        title="Home"
-        breadcrumbs={[{ label: 'Environments' }]}
+        title="首页"
+        breadcrumbs={[{ label: '环境' }]}
       />
 
       {process.env.PORTAINER_EDITION !== 'CE' && <LicenseNodePanel />}
@@ -90,13 +90,13 @@ export function HomeView() {
     }
     try {
       await snapshotEndpoints();
-      notifications.success('Success', 'Environments updated');
+      notifications.success('成功', '环境已更新');
       router.stateService.reload();
     } catch (err) {
       notifications.error(
-        'Failure',
+        '失败',
         err as Error,
-        'An error occurred during environment snapshot'
+        '环境快照过程中发生错误'
       );
     }
   }
@@ -110,9 +110,9 @@ export function HomeView() {
 
 async function confirmEndpointSnapshot() {
   return confirm({
-    title: 'Are you sure?',
+    title: '确定吗？',
     modalType: ModalType.Warn,
     message:
-      'Triggering a manual refresh will poll each environment to retrieve its information, this may take a few moments.',
+      '手动刷新将轮询每个环境以获取其信息，这可能需要一些时间。',
   });
 }

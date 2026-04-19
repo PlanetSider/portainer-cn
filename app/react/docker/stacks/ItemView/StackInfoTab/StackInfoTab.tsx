@@ -64,7 +64,7 @@ export function StackInfoTab({
         />
       )}
 
-      <FormSection title="Stack details">
+      <FormSection title="Stack 详情">
         <div className="form-group">
           {stackName}
 
@@ -129,11 +129,11 @@ function DeploymentStatusSection({
 }) {
   if (status === StackStatus.Deploying) {
     return (
-      <FormSection title="Deployment">
+      <FormSection title="部署">
         <div className="form-group">
           <p className="text-muted flex items-center gap-2">
             <Loader2 className="animate-spin" size={14} />
-            Deployment in progress...
+            正在部署...
           </p>
         </div>
       </FormSection>
@@ -143,9 +143,9 @@ function DeploymentStatusSection({
   if (status === StackStatus.Error) {
     const errorMessage = getLastDeploymentError(deploymentStatus);
     return (
-      <FormSection title="Deployment error">
+      <FormSection title="部署错误">
         <div className="form-group">
-          <Alert color="error">{errorMessage || 'Deployment failed.'}</Alert>
+          <Alert color="error">{errorMessage || '部署失败。'}</Alert>
         </div>
       </FormSection>
     );
@@ -172,22 +172,19 @@ function ExternalOrphanedWarning({
   if (!isExternal && !isOrphaned) return null;
 
   return (
-    <FormSection title="Information">
+      <FormSection title="信息">
       <div className="form-group">
         <span className="small">
           <p className="text-muted flex items-start gap-1">
             <Icon icon={AlertTriangle} mode="warning" className="!mr-0" />
             {isExternal && (
               <span>
-                This stack was created outside of Portainer. Control over this
-                stack is limited.
+                此 Stack 不是通过 Portainer 创建的，因此可控范围受限。
               </span>
             )}
             {isOrphaned && (
               <span>
-                This stack is orphaned. You can re-associate it with the current
-                environment using the &quot;Associate to this environment&quot;
-                feature.
+                此 Stack 处于 orphaned 状态。你可以使用“关联到当前环境”功能将其重新关联到当前环境。
               </span>
             )}
           </p>
