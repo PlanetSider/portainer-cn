@@ -72,8 +72,8 @@ export function useUpdateGitCredentialMutation() {
       },
       meta: {
         error: {
-          title: 'Failure',
-          message: 'Unable to update credential',
+          title: '失败',
+          message: '无法更新凭据',
         },
       },
     }
@@ -90,8 +90,8 @@ export function useDeleteGitCredentialMutation() {
     },
     meta: {
       error: {
-        title: 'Failure',
-        message: 'Unable to delete git credential',
+        title: '失败',
+        message: '无法删除 Git 凭据',
       },
     },
   });
@@ -105,8 +105,8 @@ export function useGitCredentials(
     enabled: isBE && enabled,
     meta: {
       error: {
-        title: 'Failure',
-        message: 'Unable to retrieve git credentials',
+        title: '失败',
+        message: '无法获取 Git 凭据列表',
       },
     },
   });
@@ -116,8 +116,8 @@ export function useGitCredential(userId: number, id: number) {
   return useQuery(['gitcredentials', id], () => getGitCredential(userId, id), {
     meta: {
       error: {
-        title: 'Failure',
-        message: 'Unable to retrieve git credential',
+        title: '失败',
+        message: '无法获取 Git 凭据',
       },
     },
   });

@@ -151,18 +151,18 @@ export function GitReferenceCard({
         data-cy="git-reference-card-info"
       >
         <LineItem
-          label="Repo"
-          value={url || 'missing'}
-          title={url || 'missing'}
+          label="仓库"
+          value={url || '缺失'}
+          title={url || '缺失'}
           isLoading={isRefLoading}
           isValid={!!url && !hasRepoError}
           isError={!url || hasRepoError}
           data-cy="git-url"
         />
         <LineItem
-          label="Ref"
-          value={reference || 'missing'}
-          title={reference || 'missing'}
+          label="引用"
+          value={reference || '缺失'}
+          title={reference || '缺失'}
           isLoading={isRefLoading}
           isValid={foundRef}
           isError={!reference || hasRefError}
@@ -170,9 +170,9 @@ export function GitReferenceCard({
         />
         {enableFileCheck && (
           <LineItem
-            label="File"
-            value={configFilePath || 'missing'}
-            title={configFilePath || 'missing'}
+            label="文件"
+            value={configFilePath || '缺失'}
+            title={configFilePath || '缺失'}
             isLoading={isFileLoading}
             isValid={foundFile}
             isError={!configFilePath || hasFileError}
@@ -181,21 +181,21 @@ export function GitReferenceCard({
         )}
         {!!commitId && (
           <LineItem
-            label="Commit"
+            label="提交"
             value={<GitCommitLink baseURL={url || ''} commitHash={commitId} />}
             title={commitId}
             data-cy="git-commit"
           />
         )}
         <LineItem
-          label="Auto-update"
-          value={autoUpdate ? 'On' : 'Off'}
+          label="自动更新"
+          value={autoUpdate ? '开启' : '关闭'}
           title="auto-update"
           data-cy="git-auto-update"
         />
         {!!autoUpdateInterval && (
           <LineItem
-            label="Interval"
+            label="间隔"
             value={autoUpdateInterval}
             title="auto-update-interval"
             data-cy="git-interval"
@@ -214,7 +214,7 @@ export function GitReferenceCard({
                   color="light"
                   data-cy="git-webhook-copy-button"
                 >
-                  Copy link
+                  复制链接
                 </CopyButton>
               </>
             }
@@ -251,10 +251,10 @@ function DivergenceAlert({
   return (
     <Alert color="info" className="mt-4">
       <div className="flex flex-col gap-1 text-sm">
-        <strong>Settings changed since last deploy</strong>
+        <strong>自上次部署以来设置已发生变化</strong>
         <div>
-          Next: {urlChanged && <code>{gitConfig.URL ?? ''}</code>}{' '}
-          {refChanged && <code>{gitConfig.ReferenceName ?? ''}</code>} Config:{' '}
+          新值: {urlChanged && <code>{gitConfig.URL ?? ''}</code>}{' '}
+          {refChanged && <code>{gitConfig.ReferenceName ?? ''}</code>} 配置:{' '}
           <code>{gitConfig.ConfigFilePath ?? ''}</code>
         </div>
       </div>
@@ -272,7 +272,7 @@ function getExplainedError(...errors: Array<unknown | null>) {
         )
     )
   ) {
-    return 'The configured Git Credentials are invalid or expired. Update the credentials to restore access.';
+    return '已配置的 Git 凭据无效或已过期。请更新凭据以恢复访问。';
   }
   return '';
 }

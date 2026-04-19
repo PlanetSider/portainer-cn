@@ -25,7 +25,7 @@ export function KubectlShellButton({ environmentId }: Props) {
       className={clsx('sidebar', !isSidebarOpen && '!p-1')}
       icon={Terminal}
     >
-      {isSidebarOpen ? 'kubectl Shell' : ''}
+      {isSidebarOpen ? 'kubectl 命令行' : ''}
     </Button>
   );
 
@@ -34,7 +34,7 @@ export function KubectlShellButton({ environmentId }: Props) {
       {!isSidebarOpen && (
         <SidebarTooltip
           content={
-             <span className="whitespace-nowrap text-sm">kubectl Shell</span>
+             <span className="whitespace-nowrap text-sm">kubectl 命令行</span>
           }
         >
           <span className="flex w-full justify-center">{button}</span>

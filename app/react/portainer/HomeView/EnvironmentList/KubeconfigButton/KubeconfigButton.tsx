@@ -29,10 +29,10 @@ export function KubeconfigButton({ environments, envQueryParams }: Props) {
 
   let tooltipMessage = '';
   if (isHttp) {
-    tooltipMessage =
-      'Kubeconfig download is not available when Portainer is accessed via HTTP. Please use HTTPS';
+      tooltipMessage =
+        '通过 HTTP 访问 Portainer 时无法下载 Kubeconfig，请改用 HTTPS';
   } else if (noKubeEnvs) {
-    tooltipMessage = 'No Kubernetes environments detected';
+      tooltipMessage = '未检测到 Kubernetes 环境';
   }
 
   const button = (

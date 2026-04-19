@@ -572,9 +572,9 @@ angular.module('portainer.docker').controller('ServiceController', [
         })
         .catch(function (e) {
           if (e.data.message && e.data.message.includes('does not have a previous spec')) {
-            Notifications.error('Failure', { message: 'No previous config to rollback to.' });
+            Notifications.error('失败', { message: '没有可回滚到的上一版配置。' });
           } else {
-            Notifications.error('Failure', e, 'Unable to rollback service');
+            Notifications.error('失败', e, '无法回滚服务');
           }
         })
         .finally(function () {
@@ -584,8 +584,8 @@ angular.module('portainer.docker').controller('ServiceController', [
 
     $scope.rollbackService = function (service) {
       confirm({
-        title: 'Rollback service',
-        message: 'Are you sure you want to rollback?',
+        title: '回滚服务',
+        message: '确定要回滚吗？',
         modalType: ModalType.Warn,
         confirmButton: buildConfirmButton('Yes', 'danger'),
       }).then((confirmed) => {

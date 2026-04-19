@@ -75,8 +75,8 @@ export function EnvironmentCreationView() {
   return (
     <div className="pb-20">
       <PageHeader
-        title="Quick Setup"
-        breadcrumbs={[{ label: 'Environment Wizard' }]}
+        title="快速设置"
+        breadcrumbs={[{ label: '环境向导' }]}
         reload
       />
 
@@ -91,16 +91,12 @@ export function EnvironmentCreationView() {
       </div>
       <div className={styles.wizardWrapper}>
         <Widget>
-          <WidgetTitle icon={Wand2} title="Environment Wizard" />
+          <WidgetTitle icon={Wand2} title="环境向导" />
           <WidgetBody>
             <FormSection title={formTitles[currentStep.id]}>
               {currentStep.id === 'kaas' && (
-                <Alert color="warn" title="Deprecated Feature" className="mb-2">
-                  Provisioning a KaaS environment from Portainer is deprecated
-                  and will be removed in a future release. You will still be
-                  able to use any Kubernetes clusters provisioned using this
-                  method but will no longer have access to any of the
-                  KaaS-specific management functionality.
+                <Alert color="warn" title="已弃用功能" className="mb-2">
+                  通过 Portainer 创建 KaaS 环境的功能已被弃用，并将在未来版本中移除。你仍然可以继续使用通过此方式创建的 Kubernetes 集群，但将无法再使用任何 KaaS 专属管理功能。
                 </Alert>
               )}
               <Component
@@ -123,7 +119,7 @@ export function EnvironmentCreationView() {
           data-cy="environment-wizard-back-button"
           size="medium"
         >
-          Back
+          上一步
         </Button>
         <Button
           color="primary"
@@ -131,7 +127,7 @@ export function EnvironmentCreationView() {
           data-cy="environment-wizard-continue-button"
           size="medium"
         >
-          {isLastStep ? 'Close' : 'Continue'}
+          {isLastStep ? '关闭' : '继续'}
         </Button>
       </StickyFooter>
     </div>

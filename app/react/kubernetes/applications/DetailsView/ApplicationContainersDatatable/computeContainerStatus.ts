@@ -28,7 +28,7 @@ export function computeContainerStatus(
     return {
       status: 'Unknown',
       type: 'muted',
-      message: 'Container status information is not available',
+      message: '容器状态信息不可用',
     };
   }
 

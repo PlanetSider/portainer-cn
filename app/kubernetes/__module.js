@@ -190,7 +190,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Service details',
+          title: 'Service 详情',
           breadcrumbLabel: 'Services',
           breadcrumbLink: 'kubernetes.services',
           resourceType: 'service',
@@ -664,7 +664,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Job details',
+          title: 'Job 详情',
           breadcrumbLabel: 'Cron Jobs & Jobs',
           breadcrumbLink: 'kubernetes.moreResources.jobs',
           breadcrumbTab: 'jobs',
@@ -687,7 +687,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Cron Job details',
+          title: 'Cron Job 详情',
           breadcrumbLabel: 'Cron Jobs & Jobs',
           breadcrumbLink: 'kubernetes.moreResources.jobs',
           breadcrumbTab: 'cronJobs',
@@ -749,7 +749,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Cluster Role details',
+          title: '集群角色详情',
           breadcrumbLabel: 'Cluster Roles',
           breadcrumbLink: 'kubernetes.moreResources.clusterRoles',
           breadcrumbTab: 'clusterRoles',
@@ -772,7 +772,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Cluster Role Binding details',
+          title: '集群角色绑定详情',
           breadcrumbLabel: 'Cluster Roles',
           breadcrumbLink: 'kubernetes.moreResources.clusterRoles',
           breadcrumbTab: 'clusterRoleBindings',
@@ -808,7 +808,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Role details',
+          title: '角色详情',
           breadcrumbLabel: 'Roles',
           breadcrumbLink: 'kubernetes.moreResources.roles',
           breadcrumbTab: 'roles',
@@ -831,7 +831,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Role Binding details',
+          title: '角色绑定详情',
           breadcrumbLabel: 'Roles',
           breadcrumbLink: 'kubernetes.moreResources.roles',
           breadcrumbTab: 'roleBindings',

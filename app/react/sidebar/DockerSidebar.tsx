@@ -104,7 +104,7 @@ export function DockerSidebar({ environmentId, environment }: Props) {
           to="docker.stacks"
           params={{ endpointId: environmentId }}
           icon={Layers}
-          label="Stacks"
+          label="堆栈"
           data-cy="dockerSidebar-stacks"
         />
       )}

@@ -258,8 +258,8 @@ class KubernetesCreateApplicationController {
     return this.$async(async () => {
       try {
         const confirmed = await confirm({
-          title: 'Are you sure?',
-          message: 'Any changes to this application will be overridden and may cause a service interruption. Do you wish to continue?',
+          title: '确定吗？',
+          message: '对此应用所做的任何更改都将被覆盖，并且可能导致服务中断。是否继续？',
           confirmButton: buildConfirmButton('Update', 'warning'),
           modalType: ModalType.Warn,
         });

@@ -103,7 +103,7 @@ angular.module('portainer.app').controller('AccountController', [
 
 function confirmForceChangePassword() {
   return openDialog({
-    message: 'Please update your password to a stronger password to continue using Portainer',
+    message: '请将你的密码更新为更强的密码后再继续使用 Portainer',
     buttons: [buildConfirmButton('OK')],
   });
 }

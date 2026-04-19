@@ -57,8 +57,8 @@ function useGenericCreationMutation<TData = unknown, TVariables = void>(
     },
     meta: {
       error: {
-        title: 'Failure',
-        message: 'Unable to create environment',
+        title: '失败',
+        message: '无法创建环境',
       },
     },
   });

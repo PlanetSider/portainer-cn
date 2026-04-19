@@ -98,7 +98,7 @@ export function BackupS3Form() {
             )}
 
             <FormControl
-              label="Access key ID"
+              label="Access Key ID"
               inputId="access_key_id"
               errors={errors.accessKeyID}
             >
@@ -114,7 +114,7 @@ export function BackupS3Form() {
             </FormControl>
 
             <FormControl
-              label="Secret access key"
+              label="Secret Access Key"
               inputId="secret_access_key"
               errors={errors.secretAccessKey}
             >
@@ -129,7 +129,7 @@ export function BackupS3Form() {
               />
             </FormControl>
 
-            <FormControl label="Region" inputId="region" errors={errors.region}>
+            <FormControl label="区域" inputId="region" errors={errors.region}>
               <Field
                 id="region"
                 name="region"
@@ -143,7 +143,7 @@ export function BackupS3Form() {
             </FormControl>
 
             <FormControl
-              label="Bucket name"
+              label="存储桶名称"
               inputId="bucket_name"
               errors={errors.bucketName}
             >
@@ -159,7 +159,7 @@ export function BackupS3Form() {
             </FormControl>
 
             <FormControl
-              label="S3 compatible host"
+              label="S3 兼容主机"
               inputId="s3_compatible_host"
               tooltip="S3 服务的主机名"
               errors={errors.s3CompatibleHost}

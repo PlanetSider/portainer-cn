@@ -150,8 +150,8 @@ export function DeployForm({
           <FormActions
             isLoading={mutation.isLoading}
             isValid={isValid}
-            loadingText="Deployment in progress..."
-            submitLabel="Deploy the stack"
+            loadingText="部署中..."
+            submitLabel="部署堆栈"
             data-cy="deploy-stack-button"
           >
             <Button
@@ -164,7 +164,7 @@ export function DeployForm({
               color="default"
               data-cy="cancel-stack-creation"
             >
-              Hide
+              隐藏
             </Button>
           </FormActions>
         </Form>
@@ -177,7 +177,7 @@ export function DeployForm({
 
     return mutation.mutate(payload, {
       onSuccess() {
-        notifySuccess('Success', 'Stack created');
+        notifySuccess('成功', '堆栈已创建');
         router.stateService.go('docker.stacks');
       },
     });
@@ -239,8 +239,8 @@ export function DeployForm({
 
 function advancedSettingsLabel(isOpen: boolean, isGit: boolean) {
   if (isGit) {
-    return isOpen ? 'Hide stack' : 'View stack';
+    return isOpen ? '隐藏堆栈' : '查看堆栈';
   }
 
-  return isOpen ? 'Hide custom stack' : 'Customize stack';
+  return isOpen ? '隐藏自定义堆栈' : '自定义堆栈';
 }

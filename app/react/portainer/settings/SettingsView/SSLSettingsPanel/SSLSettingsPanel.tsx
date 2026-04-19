@@ -44,7 +44,7 @@ function SSLSettingsPanel() {
 
   return (
     <Widget>
-      <Widget.Title icon={Key} title="SSL certificate" />
+      <Widget.Title icon={Key} title="SSL 证书" />
       <Widget.Body>
         <Formik
           initialValues={initialValues}
@@ -57,9 +57,7 @@ function SSLSettingsPanel() {
               <div className="form-group">
                 <div className="col-sm-12">
                   <TextTip color="orange">
-                    Forcing HTTPs only will cause Portainer to stop listening on
-                    the HTTP port. Any edge agent environment that is using HTTP
-                    will no longer be available.
+                    强制仅使用 HTTPS 将导致 Portainer 停止监听 HTTP 端口。任何仍在使用 HTTP 的 Edge Agent 环境都将不可用。
                   </TextTip>
                 </div>
               </div>
@@ -69,7 +67,7 @@ function SSLSettingsPanel() {
                   <SwitchField
                     checked={values.forceHTTPS}
                     data-cy="settings-ssl-force-https-switch"
-                    label="Force HTTPS only"
+                    label="仅强制使用 HTTPS"
                     labelClass="col-sm-3 col-lg-2"
                     name="forceHTTPS"
                     onChange={(value) => setFieldValue('forceHTTPS', value)}
@@ -80,15 +78,14 @@ function SSLSettingsPanel() {
               <div className="form-group">
                 <div className="col-sm-12">
                   <TextTip color="blue">
-                    Provide a new SSL Certificate to replace the existing one
-                    that is used for HTTPS connections.
+                    提供新的 SSL 证书以替换当前用于 HTTPS 连接的证书。
                   </TextTip>
                 </div>
               </div>
 
               <FormControl
-                label="SSL/TLS certificate"
-                tooltip="Select an X.509 certificate file, commonly a crt, cer or pem file."
+                label="SSL/TLS 证书"
+                tooltip="选择一个 X.509 证书文件，常见格式为 crt、cer 或 pem。"
                 inputId="ca-cert-field"
                 errors={errors.certFile}
               >
@@ -102,8 +99,8 @@ function SSLSettingsPanel() {
               </FormControl>
 
               <FormControl
-                label="SSL/TLS private key"
-                tooltip="Select a private key file, commonly a key, or pem file."
+                label="SSL/TLS 私钥"
+                tooltip="选择一个私钥文件，常见格式为 key 或 pem。"
                 inputId="ca-cert-field"
                 errors={errors.keyFile}
               >
@@ -122,10 +119,10 @@ function SSLSettingsPanel() {
                     isLoading={mutation.isLoading || reloadingPage}
                     data-cy="save-ssl-settings-button"
                     disabled={!dirty || !isValid}
-                    loadingText={reloadingPage ? 'Reloading' : 'Saving'}
+                    loadingText={reloadingPage ? '正在重新加载' : '正在保存'}
                     className="!ml-0"
                   >
-                    Save SSL settings
+                    保存 SSL 设置
                   </LoadingButton>
                 </div>
               </div>

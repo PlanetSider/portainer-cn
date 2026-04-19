@@ -37,7 +37,7 @@ export function omitPassword<T extends { password?: unknown }>(
 
 export function confirmEnableTLSVerify() {
   return confirm({
-    title: 'Enable TLS Verification?',
+    title: '启用 TLS 验证？',
     message:
       'Enabling the verification of TLS certificates without ensuring the correct configuration of your Certificate Authority (CA) for self-signed certificates can result in deployment failures.',
   });

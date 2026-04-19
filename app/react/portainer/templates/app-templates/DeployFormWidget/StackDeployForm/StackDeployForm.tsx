@@ -108,8 +108,8 @@ export function StackDeployForm({
           <FormActions
             isLoading={mutation.isLoading}
             isValid={isValid}
-            loadingText="Deployment in progress..."
-            submitLabel="Deploy the stack"
+            loadingText="部署中..."
+            submitLabel="部署堆栈"
             data-cy="deploy-stack-button"
           >
             <Button
@@ -118,7 +118,7 @@ export function StackDeployForm({
               color="default"
               data-cy="cancel-deploy-stack-button"
             >
-              Hide
+              隐藏
             </Button>
           </FormActions>
         </Form>
@@ -154,7 +154,7 @@ export function StackDeployForm({
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Stack created');
+          notifySuccess('成功', '堆栈已创建');
           router.stateService.go('docker.stacks');
         },
       }

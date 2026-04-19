@@ -25,7 +25,7 @@ export function useValidation({
       object({
         name: name.test({
           name: 'is-deployable',
-          message: 'This template cannot be deployed on this environment',
+          message: '此模板无法部署到当前环境',
           test: () => isDeployable,
         }),
         accessControl: accessControlFormValidation(isAdmin),

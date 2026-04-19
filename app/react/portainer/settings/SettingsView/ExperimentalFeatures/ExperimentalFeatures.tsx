@@ -17,7 +17,7 @@ export function ExperimentalFeatures() {
 
   return (
     <Widget>
-      <WidgetTitle icon={FlaskConical} title="Experimental features" />
+      <WidgetTitle icon={FlaskConical} title="实验性功能" />
       <WidgetBody>
         <ExperimentalFeaturesSettingsForm
           settings={settings.experimentalFeatures}

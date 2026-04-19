@@ -38,11 +38,11 @@
               >
             </tr>
             <tr>
-              <td>Image</td>
+              <td>镜像</td>
               <td>{{ task.Spec.ContainerSpec.Image | hideshasum }}</td>
             </tr>
             <tr ng-if="service.Mode !== 'global'">
-              <td>Slot</td>
+              <td>槽位</td>
               <td>{{ task.Slot }}</td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
               <td>{{ task.Created | getisodate }}</td>
             </tr>
             <tr ng-if="task.Status.ContainerStatus.ContainerID">
-              <td>Container ID</td>
+              <td>容器 ID</td>
               <td>{{ task.Status.ContainerStatus.ContainerID }}</td>
             </tr>
             <tr ng-if="applicationState.endpoint.apiVersion >= 1.3 && task.Status.State | taskhaslogs">

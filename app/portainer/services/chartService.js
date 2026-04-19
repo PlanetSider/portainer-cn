@@ -77,7 +77,7 @@ angular.module('portainer.app').factory('ChartService', [
           labels: [],
           datasets: [
             {
-              label: 'Memory',
+              label: '内存',
               data: [],
               fill: true,
               backgroundColor: 'rgba(151,187,205,0.4)',
@@ -88,7 +88,7 @@ angular.module('portainer.app').factory('ChartService', [
               borderWidth: 2,
             },
             {
-              label: 'Cache',
+              label: '缓存',
               data: [],
               fill: true,
               backgroundColor: 'rgba(255,180,174,0.4)',
@@ -111,7 +111,7 @@ angular.module('portainer.app').factory('ChartService', [
           labels: [],
           datasets: [
             {
-              label: 'Read (Aggregate)',
+              label: '读取（总计）',
               data: [],
               fill: true,
               backgroundColor: 'rgba(151,187,205,0.4)',
@@ -122,7 +122,7 @@ angular.module('portainer.app').factory('ChartService', [
               borderWidth: 2,
             },
             {
-              label: 'Write (Aggregate)',
+              label: '写入（总计）',
               data: [],
               fill: true,
               backgroundColor: 'rgba(255,180,174,0.4)',
@@ -157,7 +157,7 @@ angular.module('portainer.app').factory('ChartService', [
           labels: [],
           datasets: [
             {
-              label: 'RX on eth0',
+              label: 'eth0 接收',
               data: [],
               fill: false,
               backgroundColor: 'rgba(151,187,205,0.4)',
@@ -168,7 +168,7 @@ angular.module('portainer.app').factory('ChartService', [
               borderWidth: 2,
             },
             {
-              label: 'TX on eth0',
+              label: 'eth0 发送',
               data: [],
               fill: false,
               backgroundColor: 'rgba(255,180,174,0.4)',

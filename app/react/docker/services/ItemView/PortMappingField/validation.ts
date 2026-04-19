@@ -58,7 +58,7 @@ function range(): SchemaOf<Range> {
     start: port().required(),
     end: port().required(),
   }).test({
-    message: 'Start port must be less than end port',
+    message: '起始端口必须小于或等于结束端口',
     test: (value) => !value.start || !value.end || value.start <= value.end,
   });
 }

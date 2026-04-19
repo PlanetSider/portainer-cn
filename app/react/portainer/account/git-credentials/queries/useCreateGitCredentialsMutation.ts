@@ -29,8 +29,8 @@ export function useCreateGitCredentialMutation() {
     },
     meta: {
       error: {
-        title: 'Failure',
-        message: 'Unable to create credential',
+        title: '失败',
+        message: '无法创建凭据',
       },
     },
   });

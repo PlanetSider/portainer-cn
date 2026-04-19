@@ -39,7 +39,7 @@ export function GitlabProjectTable({
       columns={columns}
       dataset={dataset}
       settingsManager={tableState}
-      title="Gitlab projects"
+      title="GitLab 项目"
       titleIcon={ListIcon}
       extendTableOptions={mergeOptions(
         withControlledSelected(
