@@ -134,13 +134,13 @@ function extractErrorDetails(axiosError: AxiosError): {
     }
 
     if (status) {
-      const message = `Server returned error: ${status}`;
+      const message = `服务器返回错误：${status}`;
       return { message, details: message };
     }
 
     return {
-      message: 'Server returned an error response',
-      details: 'Server returned an error response',
+      message: '服务器返回了错误响应',
+      details: '服务器返回了错误响应',
     };
   }
 
@@ -149,7 +149,7 @@ function extractErrorDetails(axiosError: AxiosError): {
     return { message: axiosError.message, details: axiosError.message };
   }
 
-  const fallback = 'An unknown error occurred';
+  const fallback = '发生未知错误';
   return { message: fallback, details: fallback };
 }
 

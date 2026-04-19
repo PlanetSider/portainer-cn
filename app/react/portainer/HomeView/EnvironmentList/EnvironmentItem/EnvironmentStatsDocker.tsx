@@ -23,7 +23,7 @@ interface Props {
 
 export function EnvironmentStatsDocker({ snapshot }: Props) {
   if (!snapshot) {
-    return <>No snapshot available</>;
+    return <>没有可用快照</>;
   }
 
   return (

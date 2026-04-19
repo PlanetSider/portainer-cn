@@ -54,7 +54,7 @@ export function GitFormUrlField({
     <div className="form-group">
       <div className="col-sm-12">
         <FormControl
-          label="Repository URL"
+          label="仓库 URL"
           inputId="stack_repository_url"
           errors={fieldErrorMessage}
           required
@@ -78,7 +78,7 @@ export function GitFormUrlField({
                     <span
                       className="inline-flex items-center"
                       aria-live="polite"
-                      aria-label="Checking repository"
+                        aria-label="正在检查仓库"
                     >
                       <Loader2
                         className="h-4 w-4 animate-spin stroke-gray-6"
@@ -87,10 +87,10 @@ export function GitFormUrlField({
                     </span>
                   )}
                   {!isChecking && isValid === false && query.isFetched && (
-                    <TooltipWithChildren message="Repository does not exist, or is not accessible">
+                    <TooltipWithChildren message="仓库不存在，或无法访问">
                       <span
                         className="inline-flex items-center"
-                        aria-label="Repository does not exist, or is not accessible"
+                        aria-label="仓库不存在，或无法访问"
                       >
                         <X
                           className="h-4 w-4 stroke-error-6"
@@ -100,10 +100,10 @@ export function GitFormUrlField({
                     </TooltipWithChildren>
                   )}
                   {!isChecking && isValid === true && (
-                    <TooltipWithChildren message="Repository detected">
+                    <TooltipWithChildren message="已识别仓库">
                       <span
                         className="inline-flex items-center"
-                        aria-label="Repository detected"
+                        aria-label="已识别仓库"
                       >
                         <Check
                           className="h-4 w-4 stroke-green-6"
@@ -123,8 +123,8 @@ export function GitFormUrlField({
               className="vertical-center"
               color="light"
               icon={RefreshCcw}
-              title="Refresh Git Repository"
-              aria-label="Refresh Git Repository"
+              title="刷新 Git 仓库"
+              aria-label="刷新 Git 仓库"
               disabled={!model.RepositoryURLValid}
             />
           </span>

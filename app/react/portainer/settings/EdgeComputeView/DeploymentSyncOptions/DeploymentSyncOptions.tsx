@@ -18,18 +18,18 @@ import { FormValues } from './types';
 
 const asyncIntervalFieldSettings = {
   ping: {
-    label: 'Edge agent default ping frequency',
+    label: 'Edge Agent 默认 ping 频率',
     tooltip:
-      'Interval used by default by each Edge agent to ping the Portainer instance. Affects Edge environment management and Edge compute features.',
+      '每个 Edge Agent 默认用于 ping Portainer 实例的时间间隔。影响边缘环境管理和边缘计算功能。',
   },
   snapshot: {
-    label: 'Edge agent default snapshot frequency',
+    label: 'Edge Agent 默认快照频率',
     tooltip:
-      'Interval used by default by each Edge agent to snapshot the agent state.',
+      '每个 Edge Agent 默认用于生成代理状态快照的时间间隔。',
   },
   command: {
-    label: 'Edge agent default command frequency',
-    tooltip: 'Interval used by default by each Edge agent to execute commands.',
+    label: 'Edge Agent 默认命令频率',
+    tooltip: '每个 Edge Agent 默认用于执行命令的时间间隔。',
   },
 };
 
@@ -54,7 +54,7 @@ export function DeploymentSyncOptions() {
   return (
     <div className="row">
       <Widget>
-        <WidgetTitle icon={Laptop} title="Deployment sync options" />
+        <WidgetTitle icon={Laptop} title="部署同步选项" />
         <WidgetBody>
           <Formik<FormValues>
             initialValues={initialValues}
@@ -64,24 +64,23 @@ export function DeploymentSyncOptions() {
             {({ setFieldValue, values, isValid, dirty }) => (
               <Form className="form-horizontal">
                 <TextTip color="blue">
-                  Default values set here will be available to choose as an
-                  option for edge environment creation
+                  此处设置的默认值将在创建边缘环境时作为可选项提供。
                 </TextTip>
 
-                <FormSection title="Check-in Intervals">
+                <FormSection title="签入间隔">
                   <EdgeCheckinIntervalField
                     value={values.EdgeAgentCheckinInterval}
                     onChange={(value) =>
                       setFieldValue('EdgeAgentCheckinInterval', value)
                     }
                     isDefaultHidden
-                    label="Edge agent default poll frequency"
-                    tooltip="Interval used by default by each Edge agent to check in with the Portainer instance. Affects Edge environment management and Edge compute features."
+                    label="Edge Agent 默认轮询频率"
+                    tooltip="每个 Edge Agent 默认用于向 Portainer 实例签入的时间间隔。影响边缘环境管理和边缘计算功能。"
                   />
                 </FormSection>
 
                 {isBE && (
-                  <FormSection title="Async Check-in Intervals">
+                  <FormSection title="异步签入间隔">
                     <EdgeAsyncIntervalsForm
                       values={values.Edge}
                       onChange={(value) => setFieldValue('Edge', value)}
@@ -98,9 +97,9 @@ export function DeploymentSyncOptions() {
                       className="!ml-0"
                       data-cy="settings-deploySyncOptionsButton"
                       isLoading={settingsMutation.isLoading}
-                      loadingText="Saving settings..."
+                      loadingText="正在保存设置..."
                     >
-                      Save settings
+                      保存设置
                     </LoadingButton>
                   </div>
                 </div>
@@ -120,7 +119,7 @@ export function DeploymentSyncOptions() {
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Settings updated successfully');
+          notifySuccess('成功', '设置更新成功');
           resetForm();
         },
       }

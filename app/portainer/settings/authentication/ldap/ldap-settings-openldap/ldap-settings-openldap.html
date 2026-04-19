@@ -3,27 +3,26 @@
     <div class="limited-be-link vertical-center"><be-feature-indicator feature="$ctrl.limitedFeatureId"></be-feature-indicator></div>
     <div class="limited-be-content">
       <div>
-        <div class="col-sm-12 form-section-title"> Information </div>
+        <div class="col-sm-12 form-section-title"> 信息 </div>
         <div class="form-group col-sm-12 text-muted small">
-          When using LDAP authentication, Portainer will delegate user authentication to a LDAP server and fallback to internal authentication if LDAP authentication fails.
+          使用 LDAP 认证时，Portainer 会将用户认证委托给 LDAP 服务器；如果 LDAP 认证失败，则回退到内部认证。
         </div>
       </div>
 
-      <div class="col-sm-12 form-section-title"> LDAP configuration </div>
+       <div class="col-sm-12 form-section-title"> LDAP 配置 </div>
 
       <div class="form-group">
         <div class="col-sm-12 small text-muted">
           <p class="vertical-center">
             <pr-icon icon="'info'" mode="'primary'"></pr-icon>
-            You can configure multiple LDAP Servers for authentication fallback. Make sure all servers are using the same configuration (i.e. if TLS is enabled, they should all use
-            the same certificates).
+            你可以配置多个 LDAP 服务器用于认证回退。请确保所有服务器使用相同配置（例如启用 TLS 时，它们应使用相同证书）。
           </p>
         </div>
       </div>
 
       <div class="form-group">
         <label for="ldap_url" class="col-sm-3 col-lg-2 control-label text-left" style="display: flex; flex-wrap: wrap">
-          LDAP Server
+          LDAP 服务器
           <button
             type="button"
             class="label label-default interactive vertical-center"
@@ -33,7 +32,7 @@
             limited-feature-tabindex="-1"
           >
             <pr-icon icon="'plus-circle'"></pr-icon>
-            Add additional server
+            添加附加服务器
           </button>
         </label>
         <div class="col-sm-9 col-lg-10">
@@ -44,7 +43,7 @@
               class="form-control"
               id="ldap_url"
               ng-model="$ctrl.settings.URLs[$index]"
-              placeholder="e.g. 10.0.0.10:389 or myldap.domain.tld:389"
+             placeholder="例如 10.0.0.10:389 或 myldap.domain.tld:389"
               limited-feature-dir="{{::$ctrl.limitedFeatureId}}"
               limited-feature-tabindex="-1"
             />
@@ -66,8 +65,8 @@
       <div class="form-group">
         <div class="col-sm-12">
           <label for="anonymous_mode" class="control-label col-sm-3 col-lg-2 text-left">
-            Anonymous mode
-            <portainer-tooltip message="'Enable this option if the server is configured for Anonymous access.'"></portainer-tooltip>
+            匿名模式
+            <portainer-tooltip message="'如果服务器已配置为允许匿名访问，请启用此选项。'"></portainer-tooltip>
           </label>
 
           <div class="col-sm-9 col-lg-10">
@@ -90,8 +89,8 @@
       <div ng-if="!$ctrl.settings.AnonymousMode">
         <div class="form-group">
           <label for="ldap_username" class="col-sm-3 col-lg-2 control-label text-left">
-            Reader DN
-            <portainer-tooltip message="'Account that will be used to search for users.'"></portainer-tooltip>
+            读取账号 DN
+            <portainer-tooltip message="'用于搜索用户的账号。'"></portainer-tooltip>
           </label>
           <div class="col-sm-9 col-lg-10">
             <input
@@ -110,8 +109,8 @@
 
         <div class="form-group">
           <label for="ldap_password" class="col-sm-3 col-lg-2 control-label text-left">
-            Password
-            <portainer-tooltip message="'If you do not enter a password, Portainer will leave the current password unchanged.'"></portainer-tooltip>
+            密码
+            <portainer-tooltip message="'如果不输入密码，Portainer 将保持当前密码不变。'"></portainer-tooltip>
           </label>
           <div class="col-sm-9">
             <input
@@ -129,7 +128,7 @@
       </div>
 
       <div class="form-group" ng-if="$ctrl.settings.AnonymousMode">
-        <label for="ldap_domain_root" class="col-sm-3 col-lg-2 control-label text-left"> Domain root </label>
+        <label for="ldap_domain_root" class="col-sm-3 col-lg-2 control-label text-left"> 域根 </label>
         <div class="col-sm-9">
           <input
             type="text"
@@ -153,7 +152,7 @@
       ></ldap-connectivity-check>
 
       <ldap-settings-security
-        title="Connectivity Security"
+        title="连接安全"
         settings="$ctrl.settings"
         tlsca-cert="$ctrl.tlscaCert"
         upload-in-progress="$ctrl.state.uploadInProgress"

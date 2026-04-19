@@ -30,7 +30,7 @@ export function TagsDatatable({
 
   return (
     <Datatable
-      title="Tags"
+      title="标签"
       titleIcon={TagIcon}
       columns={columns}
       dataset={dataset || []}
@@ -39,7 +39,7 @@ export function TagsDatatable({
       renderTableActions={(selectedItems) =>
         advancedFeaturesAvailable && (
           <DeleteButton
-            confirmMessage="Are you sure you want to remove the selected tags?"
+            confirmMessage="确定要删除选中的标签吗？"
             onConfirmed={() => onRemove(selectedItems)}
             data-cy="remove-registry-tags-button"
           />

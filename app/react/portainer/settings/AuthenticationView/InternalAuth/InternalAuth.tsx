@@ -23,10 +23,10 @@ export function InternalAuth({
   async function onSubmit() {
     if (value.RequiredPasswordLength < 10) {
       const confirmed = await confirmDestructive({
-        title: 'Allow weak passwords?',
+        title: '允许弱密码吗？',
         message:
-          'You have set an insecure minimum password length. This could leave your system vulnerable to attack, are you sure?',
-        confirmButton: buildConfirmButton('Yes', 'danger'),
+          '你设置了不安全的最小密码长度。这可能会让系统暴露于攻击风险中，确定要继续吗？',
+        confirmButton: buildConfirmButton('是', 'danger'),
       });
 
       if (confirmed) {
@@ -39,15 +39,14 @@ export function InternalAuth({
 
   return (
     <>
-      <FormSectionTitle>Information</FormSectionTitle>
+      <FormSectionTitle>信息</FormSectionTitle>
       <div className="form-group col-sm-12 text-muted small">
-        When using internal authentication, Portainer will encrypt user
-        passwords and store credentials locally.
+        使用内部认证时，Portainer 会加密用户密码并将凭据存储在本地。
       </div>
 
-      <FormSectionTitle>Password rules</FormSectionTitle>
+      <FormSectionTitle>密码规则</FormSectionTitle>
       <div className="form-group col-sm-12 text-muted small">
-        Define minimum length for user-generated passwords.
+        定义用户创建密码的最小长度。
       </div>
 
       <div className="form-group">

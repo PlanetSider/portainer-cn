@@ -99,9 +99,8 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
         <WidgetBody>
           <div className="mb-2">
             <Alert color="warn">
-              OpenAMT support is deprecated and will be removed in a future
-              version of Portainer. <br />
-              Please plan to migrate to alternative device management solutions.
+              OpenAMT 支持已被弃用，并将在未来版本的 Portainer 中移除。<br />
+              请提前规划迁移到其他设备管理方案。
             </Alert>
           </div>
 
@@ -125,7 +124,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
               <Form className="form-horizontal" onSubmit={handleSubmit}>
                 <FormControl
                   inputId="edge_enableOpenAMT"
-                  label="Enable OpenAMT"
+                  label="启用 OpenAMT"
                   errors={errors.enabled}
                   size="small"
                 >
@@ -141,8 +140,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
                 </FormControl>
 
                 <TextTip color="blue" className="mb-2">
-                  When enabled, this will allow Portainer to interact with an
-                  OpenAMT MPS API.
+                  启用后，Portainer 将可以与 OpenAMT MPS API 交互。
                 </TextTip>
 
                 {edgeComputeFeaturesEnabled && values.enabled && (
@@ -151,7 +149,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="mps_server"
-                      label="MPS Server"
+                      label="MPS 服务器"
                       size="medium"
                       errors={errors.mpsServer}
                     >
@@ -159,7 +157,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
                         as={Input}
                         name="mpsServer"
                         id="mps_server"
-                        placeholder="Enter the MPS Server"
+                        placeholder="请输入 MPS 服务器"
                         value={values.mpsServer}
                         data-cy="openAMT-serverInput"
                       />
@@ -167,7 +165,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="mps_username"
-                      label="MPS User"
+                      label="MPS 用户"
                       size="medium"
                       errors={errors.mpsUser}
                     >
@@ -175,7 +173,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
                         as={Input}
                         name="mpsUser"
                         id="mps_username"
-                        placeholder="Enter the MPS User"
+                        placeholder="请输入 MPS 用户"
                         value={values.mpsUser}
                         data-cy="openAMT-usernameInput"
                       />
@@ -183,9 +181,9 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="mps_password"
-                      label="MPS Password"
+                      label="MPS 密码"
                       size="medium"
-                      tooltip="Needs to be 8-32 characters including one uppercase, one lowercase letters, one base-10 digit and one special character."
+                      tooltip="需要为 8-32 个字符，包含一个大写字母、一个小写字母、一个十进制数字和一个特殊字符。"
                       errors={errors.mpsPassword}
                     >
                       <Field
@@ -193,7 +191,7 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
                         type="password"
                         name="mpsPassword"
                         id="mps_password"
-                        placeholder="Enter the MPS Password"
+                        placeholder="请输入 MPS 密码"
                         value={values.mpsPassword}
                         data-cy="openAMT-passwordInput"
                       />
@@ -203,16 +201,16 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="domain_name"
-                      label="Domain Name"
+                      label="域名"
                       size="medium"
-                      tooltip="Enter the FQDN that is associated with the provisioning certificate (i.e amtdomain.com)"
+                      tooltip="请输入与预配证书关联的 FQDN（例如 amtdomain.com）"
                       errors={errors.domainName}
                     >
                       <Field
                         as={Input}
                         name="domainName"
                         id="domain_name"
-                        placeholder="Enter the Domain Name"
+                        placeholder="请输入域名"
                         value={values.domainName}
                         data-cy="openAMT-domainInput"
                       />
@@ -220,16 +218,16 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="certificate_file"
-                      label="Provisioning Certificate File (.pfx)"
+                      label="预配证书文件（.pfx）"
                       size="medium"
-                      tooltip="Supported CAs are Comodo, DigiCert, Entrust and GoDaddy.<br>The certificate must contain the private key.<br>On AMT 15 based devices you need to use SHA2."
+                      tooltip="支持的 CA 包括 Comodo、DigiCert、Entrust 和 GoDaddy。<br>证书必须包含私钥。<br>对于基于 AMT 15 的设备，你需要使用 SHA2。"
                       errors={errors.certFileContent}
                       setTooltipHtmlMessage
                     >
                       <FileUploadField
                         inputId="certificate_file"
                         data-cy="openAMT-certFileInput"
-                        title="Upload file"
+                        title="上传文件"
                         accept=".pfx"
                         value={certFile}
                         onChange={(file) =>
@@ -240,9 +238,9 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
 
                     <FormControl
                       inputId="certificate_password"
-                      label="Provisioning Certificate Password"
+                      label="预配证书密码"
                       size="medium"
-                      tooltip="Needs to be 8-32 characters including one uppercase, one lowercase letters, one base-10 digit and one special character."
+                      tooltip="需要为 8-32 个字符，包含一个大写字母、一个小写字母、一个十进制数字和一个特殊字符。"
                       errors={errors.certFilePassword}
                     >
                       <Field
@@ -264,9 +262,9 @@ export function SettingsOpenAMT({ settings, onSubmit }: Props) {
                       disabled={!isValid || !dirty}
                       data-cy="settings-OpenAMTButton"
                       isLoading={isSubmitting}
-                      loadingText="Saving settings..."
+                      loadingText="正在保存设置..."
                     >
-                      Save settings
+                      保存设置
                     </LoadingButton>
                   </div>
                 </div>

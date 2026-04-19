@@ -9,7 +9,7 @@ export function withI18nSuspense<T>(
 
   function WrapperComponent(props: T & JSX.IntrinsicAttributes) {
     return (
-      <Suspense fallback="Loading translations...">
+      <Suspense fallback="正在加载翻译...">
         <WrappedComponent {...props} />
       </Suspense>
     );

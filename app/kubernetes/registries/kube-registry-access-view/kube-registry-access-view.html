@@ -1,30 +1,30 @@
-<page-header title="'Registry access'" breadcrumbs="[{label:'Registries', link:'kubernetes.registries'}, $ctrl.registry.Name, 'Access management']" reload="true"> </page-header>
+<page-header title="'镜像仓库访问'" breadcrumbs="[{label:'镜像仓库', link:'kubernetes.registries'}, $ctrl.registry.Name, '访问管理']" reload="true"> </page-header>
 
 <registry-details registry="$ctrl.registry" ng-if="$ctrl.registry"></registry-details>
 
 <div class="row">
   <div class="col-sm-12">
     <rd-widget>
-      <rd-widget-header icon="user-x" title-text="Create access"></rd-widget-header>
+      <rd-widget-header icon="user-x" title-text="创建访问"></rd-widget-header>
       <rd-widget-body>
         <form class="form-horizontal">
           <div class="form-group">
-            <label class="col-sm-3 col-lg-2 control-label text-left" style="padding-top: 0"> Select namespaces </label>
+            <label class="col-sm-3 col-lg-2 control-label text-left" style="padding-top: 0"> 选择命名空间 </label>
             <div class="col-sm-9 col-lg-4" style="margin-bottom: 15px">
-              <span class="small text-muted" ng-if="!$ctrl.resourcePools.length"> No namespaces available. </span>
+              <span class="small text-muted" ng-if="!$ctrl.resourcePools.length"> 没有可用命名空间。 </span>
 
               <namespaces-selector
                 ng-if="$ctrl.resourcePools.length"
                 value="$ctrl.selectedResourcePools"
                 namespaces="$ctrl.resourcePools"
-                placeholder="'Select one or more namespaces'"
+                placeholder="'选择一个或多个命名空间'"
                 on-change="($ctrl.onChangeResourcePools)"
                 allow-select-all="true"
               ></namespaces-selector>
             </div>
             <div class="col-sm-12 small text-muted vertical-center">
               <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
-              Adding this registry will expose the registry credentials to all users of this namespace.
+              添加此镜像仓库后，该命名空间中的所有用户都将能访问该镜像仓库凭据。
             </div>
           </div>
 
@@ -38,8 +38,8 @@
                 ng-click="$ctrl.submit()"
                 button-spinner="$ctrl.state.actionInProgress"
               >
-                <span ng-hide="$ctrl.state.actionInProgress" class="vertical-center"><pr-icon icon="'plus'" size="'sm'"></pr-icon> Create access</span>
-                <span ng-show="$ctrl.state.actionInProgress">Creating access...</span>
+                <span ng-hide="$ctrl.state.actionInProgress" class="vertical-center"><pr-icon icon="'plus'" size="'sm'"></pr-icon> 创建访问</span>
+                <span ng-show="$ctrl.state.actionInProgress">创建中...</span>
               </button>
             </div>
           </div>

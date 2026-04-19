@@ -9,7 +9,7 @@
           <div class="form-group">
             <label for="service_name" class="col-sm-2 control-label text-left">名称</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="formValues.Name" id="service_name" placeholder="e.g. myService" data-cy="service-name-input" />
+              <input type="text" class="form-control" ng-model="formValues.Name" id="service_name" placeholder="例如 myService" data-cy="service-name-input" />
             </div>
           </div>
           <!-- !name-input -->
@@ -42,7 +42,7 @@
             <div>
                <label class="control-label col-sm-2 text-left"> 副本数 </label>
               <div class="col-sm-8">
-                <input type="number" class="form-control" ng-model="formValues.Replicas" id="replicas" placeholder="e.g. 3" data-cy="docker-service-create-replica-count-input" />
+                 <input type="number" class="form-control" ng-model="formValues.Replicas" id="replicas" placeholder="例如 3" data-cy="docker-service-create-replica-count-input" />
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@
                 <!-- host-port -->
                 <div class="input-group col-sm-3 input-group-sm">
                   <span class="input-group-addon">主机</span>
-                  <input type="text" class="form-control" ng-model="portBinding.PublishedPort" placeholder="e.g. 80 or 1.2.3.4:80 (optional)" data-cy="host-port-input" />
+                   <input type="text" class="form-control" ng-model="portBinding.PublishedPort" placeholder="例如 80 或 1.2.3.4:80（可选）" data-cy="host-port-input" />
                 </div>
                 <!-- !host-port -->
                 <span style="margin: 0 10px 0 10px">
@@ -68,7 +68,7 @@
                 <!-- container-port -->
                 <div class="input-group col-sm-3 input-group-sm">
                   <span class="input-group-addon">容器</span>
-                  <input type="text" class="form-control" ng-model="portBinding.TargetPort" placeholder="e.g. 80" data-cy="container-port-input" />
+                   <input type="text" class="form-control" ng-model="portBinding.TargetPort" placeholder="例如 80" data-cy="container-port-input" />
                 </div>
                 <!-- !container-port -->
                 <!-- protocol-actions -->
@@ -93,7 +93,7 @@
           <!-- !port-mapping -->
           <!-- create-webhook -->
           <div ng-if="endpoint.Type !== 4 && isAdmin">
-            <div class="col-sm-12 form-section-title"> Webhook </div>
+             <div class="col-sm-12 form-section-title"> Webhook 配置 </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <por-switch-field
@@ -164,7 +164,7 @@
                     class="form-control"
                     ng-model="formValues.Command"
                     id="service_command"
-                    placeholder="e.g. /usr/bin/nginx -t -c /mynginx.conf"
+                     placeholder="例如 /usr/bin/nginx -t -c /mynginx.conf"
                     data-cy="service-command-input"
                   />
                 </div>
@@ -172,14 +172,14 @@
               <!-- !command-input -->
               <!-- entrypoint-input -->
               <div class="form-group">
-                 <label for="service_entrypoint" class="col-sm-2 col-lg-1 control-label text-left">Entrypoint</label>
+                 <label for="service_entrypoint" class="col-sm-2 col-lg-1 control-label text-left">入口点</label>
                 <div class="col-sm-9">
                   <input
                     type="text"
                     class="form-control"
                     ng-model="formValues.EntryPoint"
                     id="service_entrypoint"
-                    placeholder="e.g. /bin/sh -c"
+                     placeholder="例如 /bin/sh -c"
                     data-cy="service-entrypoint-input"
                   />
                 </div>
@@ -189,11 +189,11 @@
               <div class="form-group">
                  <label for="service_workingdir" class="col-sm-2 col-lg-1 control-label text-left">工作目录</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" ng-model="formValues.WorkingDir" id="service_workingdir" placeholder="e.g. /myapp" data-cy="service-workingdir-input" />
+                  <input type="text" class="form-control" ng-model="formValues.WorkingDir" id="service_workingdir" placeholder="例如 /myapp" data-cy="service-workingdir-input" />
                 </div>
                  <label for="service_user" class="col-sm-1 control-label text-left">用户</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" ng-model="formValues.User" id="service_user" placeholder="e.g. nginx" data-cy="service-user-input" />
+                  <input type="text" class="form-control" ng-model="formValues.User" id="service_user" placeholder="例如 nginx" data-cy="service-user-input" />
                 </div>
               </div>
               <!-- !workdir-user-input -->
@@ -205,14 +205,14 @@
                   <select class="form-control" ng-model="formValues.LogDriverName" id="log-driver" data-cy="service-creation-logging-driver">
                     <option selected value="">默认日志驱动</option>
                     <option ng-repeat="driver in availableLoggingDrivers" ng-value="driver">{{ driver }}</option>
-                    <option value="none">none</option>
+                    <option value="none">无</option>
                   </select>
                 </div>
                 <div class="col-sm-5">
                   <p class="small text-muted">
-                    Logging driver for service that will override the default docker daemon driver. Select Default logging driver if you don't want to override it. Supported
-                    logging drivers can be found
-                    <a href="https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers" target="_blank">in the Docker documentation</a>.
+                    服务日志驱动将覆盖默认的 Docker 守护进程日志驱动。如果你不想覆盖，请选择默认日志驱动。支持的
+                    日志驱动可在
+                    <a href="https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers" target="_blank">Docker 文档</a>中查看。
                   </p>
                 </div>
               </div>
@@ -221,10 +221,10 @@
               <div class="form-group">
                 <div class="col-sm-12 mt-1">
                   <label class="control-label text-left">
-                    Options
+                    选项
                     <portainer-tooltip
                       position="'top'"
-                      message="'Add button is disabled unless a driver other than none or default is selected. Options are specific to the selected driver, refer to the driver documentation.'"
+                      message="'只有在选择了非默认且非无的驱动后，才能添加选项。选项内容取决于所选驱动，请参考对应驱动文档。'"
                     ></portainer-tooltip>
                   </label>
                   <span
@@ -232,7 +232,7 @@
                     style="margin-left: 10px"
                     ng-click="!formValues.LogDriverName || formValues.LogDriverName === 'none' || addLogDriverOpt(formValues.LogDriverName)"
                   >
-                    <pr-icon icon="'plus'" mode="'alt'"></pr-icon> add logging driver option
+                    <pr-icon icon="'plus'" mode="'alt'"></pr-icon> 添加日志驱动选项
                   </span>
                 </div>
                 <!-- logging-opts-input-list -->
@@ -240,11 +240,11 @@
                   <div ng-repeat="opt in formValues.LogDriverOpts" class="mt-1">
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">选项</span>
-                      <input type="text" class="form-control" ng-model="opt.name" placeholder="e.g. FOO" data-cy="service-creation-logging-driver-option" />
+                      <input type="text" class="form-control" ng-model="opt.name" placeholder="例如 FOO" data-cy="service-creation-logging-driver-option" />
                     </div>
                     <div class="input-group col-sm-5 input-group-sm">
-                      <span class="input-group-addon">value</span>
-                      <input type="text" class="form-control" ng-model="opt.value" placeholder="e.g. bar" data-cy="service-creation-logging-driver-option-value" />
+                      <span class="input-group-addon">值</span>
+                      <input type="text" class="form-control" ng-model="opt.value" placeholder="例如 bar" data-cy="service-creation-logging-driver-option-value" />
                     </div>
                     <button class="btn btn-dangerlight" type="button" ng-click="removeLogDriverOpt($index)">
                       <pr-icon icon="'trash-2'" size="'md'"></pr-icon>
@@ -282,7 +282,7 @@
                               type="text"
                               class="form-control"
                               ng-model="volume.Target"
-                              placeholder="e.g. /path/in/container"
+                              placeholder="例如 /path/in/container"
                               data-cy="service-creation-volume-container-path"
                             />
                           </div>
@@ -327,7 +327,7 @@
                         <div class="input-group input-group-sm col-sm-6" ng-if="volume.Type === 'bind'">
                           <div class="input-group input-group-sm w-full">
                             <span class="input-group-addon">主机</span>
-                            <input type="text" class="form-control" ng-model="volume.Source" placeholder="e.g. /path/on/host" data-cy="service-creation-volume-host-path" />
+                            <input type="text" class="form-control" ng-model="volume.Source" placeholder="例如 /path/on/host" data-cy="service-creation-volume-host-path" />
                           </div>
                           <div class="small text-warning" ng-show="!volume.Source"> <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon> 来源为必填项。 </div>
                         </div>
@@ -401,8 +401,8 @@
                 <div class="col-sm-12 form-inline" style="margin-top: 10px">
                   <div ng-repeat="variable in formValues.HostsEntries" style="margin-top: 2px">
                     <div class="input-group col-sm-5 input-group-sm">
-                      <span class="input-group-addon">value</span>
-                      <input type="text" class="form-control" ng-model="variable.value" placeholder="e.g. host:IP" data-cy="service-creation-hosts-entry" />
+                      <span class="input-group-addon">值</span>
+                      <input type="text" class="form-control" ng-model="variable.value" placeholder="例如 host:IP" data-cy="service-creation-hosts-entry" />
                     </div>
                     <button class="btn btn-dangerlight" type="button" ng-click="removeHostsEntry($index)">
                       <pr-icon icon="'trash-2'" size="'md'"></pr-icon>
@@ -442,11 +442,11 @@
                   <div ng-repeat="label in formValues.Labels" style="margin-top: 2px">
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">名称</span>
-                      <input type="text" class="form-control" ng-model="label.key" placeholder="e.g. com.example.foo" data-cy="service-creation-label" />
+                      <input type="text" class="form-control" ng-model="label.key" placeholder="例如 com.example.foo" data-cy="service-creation-label" />
                     </div>
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">值</span>
-                      <input type="text" class="form-control" ng-model="label.value" placeholder="e.g. bar" data-cy="service-creation-label-value" />
+                      <input type="text" class="form-control" ng-model="label.value" placeholder="例如 bar" data-cy="service-creation-label-value" />
                     </div>
                     <button class="btn btn-dangerlight" type="button" ng-click="removeLabel($index)">
                       <pr-icon icon="'trash-2'" size="'md'"></pr-icon>
@@ -469,11 +469,11 @@
                   <div ng-repeat="label in formValues.ContainerLabels" style="margin-top: 2px">
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">名称</span>
-                      <input type="text" class="form-control" ng-model="label.key" placeholder="e.g. com.example.foo" data-cy="service-creation-container-label" />
+                      <input type="text" class="form-control" ng-model="label.key" placeholder="例如 com.example.foo" data-cy="service-creation-container-label" />
                     </div>
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">值</span>
-                      <input type="text" class="form-control" ng-model="label.value" placeholder="e.g. bar" data-cy="service-creation-container-label-value" />
+                      <input type="text" class="form-control" ng-model="label.value" placeholder="例如 bar" data-cy="service-creation-container-label-value" />
                     </div>
                     <button class="btn btn-dangerlight" type="button" ng-click="removeContainerLabel($index)">
                       <pr-icon icon="'trash-2'" size="'md'"></pr-icon>

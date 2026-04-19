@@ -19,10 +19,10 @@ export function LoadingDialog() {
             aria-label="loading"
           />
 
-          <h1 className="!text-2xl">Upgrading Portainer...</h1>
+          <h1 className="!text-2xl">正在升级 Portainer...</h1>
 
           <p className="text-center text-xl text-gray-6">
-            Please wait while we upgrade your Portainer to Business Edition.
+            请稍候，我们正在将你的 Portainer 升级到 Business Edition。
           </p>
         </div>
       </Modal.Body>

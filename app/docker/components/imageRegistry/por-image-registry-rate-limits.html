@@ -3,31 +3,30 @@
     <div ng-if="$ctrl.pullRateLimits.remaining > 0" class="text-muted vertical-center">
       <pr-icon icon="'alert-circle'" mode="'primary'"></pr-icon>
       <span ng-if="$ctrl.isAuthenticated">
-        You are currently using a free account to pull images from DockerHub and will be limited to 200 pulls every 6 hours. Remaining pulls:
+        你当前正在使用免费账号从 DockerHub 拉取镜像，每 6 小时最多可拉取 200 次。剩余拉取次数：
         <span style="font-weight: bold">{{ $ctrl.pullRateLimits.remaining }}/{{ $ctrl.pullRateLimits.limit }}</span>
       </span>
       <span ng-if="!$ctrl.isAuthenticated">
         <span ng-if="$ctrl.isAdmin">
-          You are currently using an anonymous account to pull images from DockerHub and will be limited to 100 pulls every 6 hours. You can configure DockerHub authentication in
-          the
-          <a ui-sref="portainer.registries">Registries View</a>. Remaining pulls:
+          你当前正在使用匿名账号从 DockerHub 拉取镜像，每 6 小时最多可拉取 100 次。你可以在
+          <a ui-sref="portainer.registries">镜像仓库视图</a>
+          中配置 DockerHub 身份验证。剩余拉取次数：
           <span style="font-weight: bold">{{ $ctrl.pullRateLimits.remaining }}/{{ $ctrl.pullRateLimits.limit }}</span>
         </span>
         <span ng-if="!$ctrl.isAdmin">
-          You are currently using an anonymous account to pull images from DockerHub and will be limited to 100 pulls every 6 hours. Contact your administrator to configure
-          DockerHub authentication. Remaining pulls: <span style="font-weight: bold">{{ $ctrl.pullRateLimits.remaining }}/{{ $ctrl.pullRateLimits.limit }}</span>
+          你当前正在使用匿名账号从 DockerHub 拉取镜像，每 6 小时最多可拉取 100 次。请联系管理员配置 DockerHub 身份验证。剩余拉取次数：<span style="font-weight: bold">{{ $ctrl.pullRateLimits.remaining }}/{{ $ctrl.pullRateLimits.limit }}</span>
         </span>
       </span>
     </div>
     <div ng-if="$ctrl.pullRateLimits.remaining <= 0" class="text-warning vertical-center">
       <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
       <span ng-if="$ctrl.isAuthenticated">
-        Your authorized pull count quota as a free user is now exceeded.
-        <span ng-transclude="rateLimitExceeded">You will not be able to pull any image from the DockerHub registry.</span>
+        你作为免费用户的授权拉取次数配额已用尽。
+        <span ng-transclude="rateLimitExceeded">你将无法再从 DockerHub 仓库拉取任何镜像。</span>
       </span>
       <span ng-if="!$ctrl.isAuthenticated">
-        Your authorized pull count quota as an anonymous user is now exceeded.
-        <span ng-transclude="rateLimitExceeded">You will not be able to pull any image from the DockerHub registry.</span>
+        你作为匿名用户的授权拉取次数配额已用尽。
+        <span ng-transclude="rateLimitExceeded">你将无法再从 DockerHub 仓库拉取任何镜像。</span>
       </span>
     </div>
   </div>

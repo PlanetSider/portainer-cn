@@ -148,10 +148,10 @@ export function EnvironmentList({ onClickBrowse, onRefresh }: Props) {
           <TableTitle
             className="!px-0"
             icon={HardDrive}
-            label="Environments"
+            label="环境"
             description={
               <div className="w-full text-sm text-gray-7">
-                Click on an environment to manage
+                点击环境进行管理
               </div>
             }
           >
@@ -160,7 +160,7 @@ export function EnvironmentList({ onClickBrowse, onRefresh }: Props) {
                 className="!m-0 !min-w-[350px] !bg-transparent"
                 value={searchBarValue}
                 onChange={setSearchBarValue}
-                placeholder="Search by name, group, tag, status, URL..."
+                placeholder="按名称、组、标签、状态、URL 搜索..."
                 data-cy="home-endpointsSearchInput"
               />
               {isPureAdmin && (
@@ -172,7 +172,7 @@ export function EnvironmentList({ onClickBrowse, onRefresh }: Props) {
                   icon={RefreshCcw}
                   className="!m-0"
                 >
-                  Refresh
+                  刷新
                 </Button>
               )}
               <KubeconfigButton

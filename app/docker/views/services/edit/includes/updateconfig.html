@@ -85,7 +85,7 @@
                     ng-change="updateServiceAttribute(service, 'UpdateOrder')"
                     disable-authorization="DockerServiceUpdate"
                   />
-                  start-first
+                   先启动新任务
                 </label>
                 <label class="radio-inline">
                   <input
@@ -97,7 +97,7 @@
                     ng-change="updateServiceAttribute(service, 'UpdateOrder')"
                     disable-authorization="DockerServiceUpdate"
                   />
-                  stop-first
+                   先停止旧任务
                 </label>
               </div>
             </td>
@@ -123,7 +123,7 @@
           </button>
           <ul class="dropdown-menu">
              <li><a ng-click="cancelChanges(service, ['UpdateFailureAction', 'UpdateDelay', 'UpdateParallelism', 'UpdateOrder'])">重置更改</a></li>
-             <li><a ng-click="cancelChanges(service)">重置所有更改</a></li>
+              <li><a ng-click="cancelChanges(service)">重置全部更改</a></li>
           </ul>
         </div>
       </div>

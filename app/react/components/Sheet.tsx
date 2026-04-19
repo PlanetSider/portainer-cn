@@ -137,7 +137,7 @@ const SheetContent = forwardRef<
               size="medium"
               data-cy="sheet-closeButton"
             >
-              <span className="sr-only">Close</span>
+              <span className="sr-only">关闭</span>
             </Button>
           </SheetPrimitive.Close>
         )}

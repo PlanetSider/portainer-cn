@@ -23,7 +23,7 @@ export function EdgeIndicator({
     return (
       <span role="status" aria-label="edge-status">
         <EnvironmentStatusBadgeItem aria-label="unassociated">
-          <span className="whitespace-nowrap">Not associated</span>
+          <span className="whitespace-nowrap">未关联</span>
         </EnvironmentStatusBadgeItem>
       </span>
     );
@@ -40,14 +40,14 @@ export function EdgeIndicator({
         icon={heartbeat ? heartbeatup : heartbeatdown}
         aria-label="edge-heartbeat"
       >
-        heartbeat
+          心跳
       </EnvironmentStatusBadgeItem>
 
       {showLastCheckInDate && !!environment.LastCheckInDate && (
         <span
           className="small text-muted vertical-center"
           aria-label="edge-last-checkin"
-          title="Last edge check-in"
+          title="最近一次 Edge 签入"
         >
           <Activity className="icon icon-sm space-right" aria-hidden="true" />
           {isoDateFromTimestamp(environment.LastCheckInDate)}

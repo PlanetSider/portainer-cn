@@ -67,12 +67,12 @@ export function PortsMappingField({
         <Table data-cy="service-published-ports-table">
           <thead>
             <tr>
-              <th>Host port</th>
-              <th>Container port</th>
+              <th>主机端口</th>
+              <th>容器端口</th>
               <th>Protocol</th>
-              <th>Publish mode</th>
+              <th>发布模式</th>
               <Authorized authorizations="DockerServiceUpdate">
-                <th>Actions</th>
+                <th>操作</th>
               </Authorized>
             </tr>
           </thead>
@@ -93,7 +93,7 @@ export function PortsMappingField({
           </tbody>
         </Table>
       ) : (
-        <p className="p-5">This service has no ports published.</p>
+         <p className="p-5">此服务未发布任何端口。</p>
       )}
       {typeof errors === 'string' && (
         <div className="form-group col-md-12">

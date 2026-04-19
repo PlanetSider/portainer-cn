@@ -1,5 +1,5 @@
-<section aria-label="User search configurations">
-  <div class="col-sm-12 form-section-title" style="float: initial"> User search configurations </div>
+<section aria-label="用户搜索配置">
+  <div class="col-sm-12 form-section-title" style="float: initial"> 用户搜索配置 </div>
 
   <div style="margin-top: 10px" ng-repeat="config in $ctrl.settings | limitTo: (1 - $ctrl.settings)">
     <ldap-user-search-item
@@ -23,12 +23,12 @@
         limited-feature-tabindex="-1"
       >
         <pr-icon icon="'plus-circle'"></pr-icon>
-        Add user search configuration
+        添加用户搜索配置
       </button>
     </div>
     <div class="col-sm-12" style="margin-top: 10px">
       <button class="btn btm-sm btn-primary" type="button" ng-click="$ctrl.search()" limited-feature-dir="{{::$ctrl.limitedFeatureId}}" limited-feature-tabindex="-1">
-        Display Users
+        显示用户
       </button>
     </div>
   </div>

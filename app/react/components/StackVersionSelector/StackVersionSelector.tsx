@@ -20,7 +20,7 @@ export function StackVersionSelector({ versions, onChange }: Props) {
       {!showSelector && (
         <>
           <label className="text-muted mr-2" htmlFor="version_id">
-            <span>Version:</span>
+            <span>版本：</span>
           </label>
           <span className="text-muted" id="version_id">
             {versions[0]}
@@ -31,7 +31,7 @@ export function StackVersionSelector({ versions, onChange }: Props) {
       {showSelector && (
         <div className="text-muted">
           <label className="mr-2" htmlFor="version_id">
-            <span>Version:</span>
+            <span>版本：</span>
           </label>
           <select
             className="form-select"
