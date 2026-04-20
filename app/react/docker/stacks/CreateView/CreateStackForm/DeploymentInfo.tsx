@@ -11,8 +11,7 @@ export function DeploymentInfo({ isSwarm, composeSyntaxMaxVersion }: Props) {
       <div className="form-group">
         <div className="col-sm-12">
           <span className="text-muted small">
-            This stack will be deployed using the equivalent of the{' '}
-            <code>docker stack deploy</code> command.
+            此堆栈将使用等同于 <code>docker stack deploy</code> 的方式进行部署。
           </span>
         </div>
       </div>
@@ -24,14 +23,10 @@ export function DeploymentInfo({ isSwarm, composeSyntaxMaxVersion }: Props) {
       <div className="form-group">
         <div className="col-sm-12">
           <div className="text-muted small mb-2">
-            This stack will be deployed using the equivalent of{' '}
-            <code>docker compose</code>. Only Compose file format version{' '}
-            <b>2</b> is supported at the moment.
+            此堆栈将使用等同于 <code>docker compose</code> 的方式进行部署。目前仅支持 Compose 文件格式版本 <b>2</b>。
           </div>
           <TextTip color="orange">
-            Note: Due to a limitation of libcompose, the name of the stack will
-            be standardized to remove all special characters and uppercase
-            letters.
+            注意：由于 libcompose 的限制，堆栈名称会被标准化处理，移除所有特殊字符和大写字母。
           </TextTip>
         </div>
       </div>
@@ -42,7 +37,7 @@ export function DeploymentInfo({ isSwarm, composeSyntaxMaxVersion }: Props) {
     <div className="form-group">
       <div className="col-sm-12">
         <span className="text-muted small">
-          This stack will be deployed using <code>docker compose</code>.
+          此堆栈将使用 <code>docker compose</code> 进行部署。
         </span>
       </div>
     </div>

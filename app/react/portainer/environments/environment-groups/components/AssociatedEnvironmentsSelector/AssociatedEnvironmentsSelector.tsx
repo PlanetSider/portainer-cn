@@ -35,7 +35,7 @@ export function AssociatedEnvironmentsSelector({ groupId, readOnly }: Props) {
   return (
     <>
       <AssociatedEnvironmentsTable
-        title="Associated environments"
+        title="关联环境"
         environments={currentEnvironments}
         isLoading={environmentsQuery.isLoading}
         onRemove={handleRemove}
@@ -70,9 +70,9 @@ export function AssociatedEnvironmentsSelector({ groupId, readOnly }: Props) {
 
   async function handleAdd(newEnvs: EnvironmentTableData[]): Promise<boolean> {
     const confirmed = await openConfirm({
-      title: 'Are you sure?',
-      message: `Are you sure you want to add the selected environment(s) to this group?`,
-      confirmButton: buildConfirmButton('Add'),
+      title: '确定吗？',
+      message: `确定要将所选环境添加到该分组吗？`,
+      confirmButton: buildConfirmButton('添加'),
     });
 
     if (!confirmed) return false;

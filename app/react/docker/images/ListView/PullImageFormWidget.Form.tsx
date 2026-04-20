@@ -31,6 +31,12 @@ export function PullImageForm({
         errors={errors.config}
         onRateLimit={onRateLimit}
       >
+        <div className="form-group">
+          <div className="col-sm-12 text-muted small">
+            你当前正在使用匿名账户从 DockerHub 拉取镜像，因此每 6 小时最多只能拉取 100 次。你可以在“镜像仓库”页面中配置 DockerHub 认证。剩余拉取次数：100/100
+          </div>
+        </div>
+
         {isNodeVisible && (
           <FormSection title="部署">
             <NodeSelector
@@ -39,7 +45,7 @@ export function PullImageForm({
               error={errors.node}
             />
           </FormSection>
-        )}
+      )}
 
         <FormActions
           isLoading={isLoading}

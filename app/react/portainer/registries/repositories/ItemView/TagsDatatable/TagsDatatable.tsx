@@ -40,6 +40,7 @@ export function TagsDatatable({
         advancedFeaturesAvailable && (
           <DeleteButton
             confirmMessage="确定要删除选中的标签吗？"
+            confirmButtonText="删除"
             onConfirmed={() => onRemove(selectedItems)}
             data-cy="remove-registry-tags-button"
           />

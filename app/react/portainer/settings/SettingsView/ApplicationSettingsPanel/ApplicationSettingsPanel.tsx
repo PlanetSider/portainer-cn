@@ -111,6 +111,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
             disabled={!isValid}
             data-cy="settings-saveSettingsButton"
             loadingText="保存中..."
+            aria-label="保存应用设置"
           >
             保存应用设置
           </LoadingButton>

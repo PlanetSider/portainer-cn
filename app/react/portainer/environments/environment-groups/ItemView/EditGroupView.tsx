@@ -32,10 +32,10 @@ export function EditGroupView() {
   return (
     <>
       <PageHeader
-        title="Environment group details"
+        title="环境分组详情"
         breadcrumbs={[
-          { label: 'Groups', link: 'portainer.groups' },
-          { label: groupQuery.data?.Name ?? 'Edit group' },
+          { label: '分组', link: 'portainer.groups' },
+          { label: groupQuery.data?.Name ?? '编辑分组' },
         ]}
       />
 
@@ -44,16 +44,16 @@ export function EditGroupView() {
           <Widget>
             <Widget.Body loading={groupQuery.isLoading}>
               {groupQuery.isError && (
-                <Alert color="error" title="Error">
-                  Failed to load group details
+                <Alert color="error" title="错误">
+                  加载分组详情失败
                 </Alert>
               )}
               {!groupQuery.isError && groupQuery.data && (
                 <GroupForm
                   initialValues={initialValues}
                   onSubmit={handleSubmit}
-                  submitLabel="Update"
-                  submitLoadingLabel="Updating..."
+                  submitLabel="更新"
+                  submitLoadingLabel="更新中..."
                   groupId={groupId}
                 />
               )}

@@ -118,9 +118,9 @@ export function AddEnvironmentsDrawer({
     >
       <SheetContent className="flex flex-col !p-0">
         <div className="flex-1 overflow-auto p-4">
-          <SheetHeader title="Add environments" />
+          <SheetHeader title="添加环境" />
           <Datatable<EnvironmentTableData>
-            title="Available environments"
+            title="可用环境"
             columns={columns}
             dataset={environments ?? []}
             settingsManager={tableState}
@@ -161,18 +161,18 @@ export function AddEnvironmentsDrawer({
               data-cy="add-environments-cancel-button"
               size="medium"
             >
-              Cancel
+              取消
             </Button>
           </SheetClose>
           <LoadingButton
             onClick={handleAdd}
             disabled={selectedIds.length === 0 || isLoading}
             isLoading={!!isLoading}
-            loadingText="Adding..."
+            loadingText="添加中..."
             data-cy="add-environments-confirm-button"
             size="medium"
           >
-            Confirm
+            确认
           </LoadingButton>
         </div>
       </SheetContent>

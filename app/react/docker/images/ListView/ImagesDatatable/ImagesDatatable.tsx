@@ -86,6 +86,7 @@ export function ImagesDatatable({
       )}
       dataset={imagesQuery.data || []}
       isLoading={imagesQuery.isLoading}
+      emptyMessage="暂无可用项。"
       settingsManager={tableState}
       columns={columns}
       renderTableSettings={() => (

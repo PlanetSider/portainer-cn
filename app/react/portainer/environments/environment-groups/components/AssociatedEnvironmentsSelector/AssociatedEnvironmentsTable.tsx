@@ -72,7 +72,8 @@ export function AssociatedEnvironmentsTable({
                 <DeleteButton
                   disabled={selectedItems.length === 0}
                   isLoading={isRemoving}
-                  confirmMessage="Are you sure you want to remove the selected environment(s) from this group?"
+                  confirmMessage="确定要将所选环境从该分组中移除吗？"
+                  confirmButtonText="删除"
                   onConfirmed={() => handleRemove(selectedItems)}
                   data-cy="remove-environments-button"
                   type="button"
@@ -91,9 +92,9 @@ export function AssociatedEnvironmentsTable({
                 icon={Plus}
                 onClick={onOpenAddDrawer}
                 data-cy="add-environments-button"
-              >
-                Add
-              </Button>
+                >
+                  添加
+                </Button>
             </>
           )
         }

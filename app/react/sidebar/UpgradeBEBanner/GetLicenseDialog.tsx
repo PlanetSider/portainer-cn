@@ -28,7 +28,7 @@ export function GetLicenseDialog({
             onSubmitted={() => {
               goToUploadLicense(true);
             }}
-            loading={<div className="text-black">Loading...</div>}
+            loading={<div className="text-black">加载中...</div>}
           />
         </div>
       </Modal.Body>

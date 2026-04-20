@@ -58,6 +58,7 @@ export function VolumesDatatable({
       columns={columns}
       dataset={dataset || []}
       isLoading={!dataset}
+      emptyMessage="暂无可用项。"
       settingsManager={tableState}
       renderTableActions={(selectedItems) => (
         <TableActions selectedItems={selectedItems} onRemove={onRemove} />

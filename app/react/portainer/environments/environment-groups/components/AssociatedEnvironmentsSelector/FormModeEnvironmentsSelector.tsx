@@ -25,12 +25,12 @@ export function FormModeEnvironmentsSelector({ selectedIds, onChange }: Props) {
   >([]);
 
   return (
-    <FormSection title="Associate environments">
+    <FormSection title="关联环境">
       <p className="small text-muted">
-        Assocate environments to this group by clicking the add button below.
+        点击下方添加按钮，将环境关联到该分组。
       </p>
       <AssociatedEnvironmentsTable
-        title="Associated environments"
+        title="关联环境"
         environments={selectedEnvironments}
         onRemove={handleRemove}
         onOpenAddDrawer={() => setDrawerOpen(true)}

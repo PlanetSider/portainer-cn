@@ -15,7 +15,7 @@ interface Props {
 
 export function AzureEndpointConfigSection({ values, setValues }: Props) {
   return (
-    <FormSection title="Azure configuration">
+    <FormSection title="Azure 配置">
       <FormControl
         label="Application ID"
         inputId="azure-application-id"
@@ -51,7 +51,7 @@ export function AzureEndpointConfigSection({ values, setValues }: Props) {
       </FormControl>
 
       <FormControl
-        label="Authentication key"
+        label="认证密钥"
         inputId="azure-authentication-key"
         size="small"
       >

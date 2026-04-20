@@ -44,6 +44,7 @@ export function TeamsDatatable({ teams, isAdmin }: Props) {
             onConfirmed={() => handleRemoveClick(selectedRows)}
             disabled={selectedRows.length === 0}
             confirmMessage="确定要删除所选团队吗？"
+            confirmButtonText="删除"
             data-cy="remove-teams-button"
           />
         )

@@ -48,7 +48,7 @@ export function EdgeStackDeploymentTypeSelector({
 
   return (
     <>
-      <div className="col-sm-12 form-section-title"> Deployment type</div>
+      <div className="col-sm-12 form-section-title"> 部署类型</div>
       <BoxSelector
         radioName="deploymentType"
         value={value}

@@ -85,7 +85,7 @@ export function K8sRegistryAccessNotice({
         className="pointer-events-none invisible"
         inline={false}
       >
-        <InlineLoader size="xs">Loading...</InlineLoader>
+        <InlineLoader size="xs">加载中...</InlineLoader>
       </TextTip>
     );
   }

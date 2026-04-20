@@ -17,13 +17,14 @@ export function TableActions({
   return (
     <div className="flex items-center gap-2">
       <DeleteButton
-        confirmMessage="Do you want to remove the selected Edge Job(s)?"
+        confirmMessage="确定要删除所选 Edge 任务吗？"
+        confirmButtonText="删除"
         disabled={selectedItems.length === 0}
         onConfirmed={() => handleRemove(selectedItems)}
         data-cy="remove-edge-jobs-button"
       />
 
-      <AddButton data-cy="add-edge-job-button">Add Edge job</AddButton>
+      <AddButton data-cy="add-edge-job-button">添加 Edge 任务</AddButton>
     </div>
   );
 
@@ -31,7 +32,7 @@ export function TableActions({
     const ids = selectedItems.map((item) => item.Id);
     removeMutation.mutate(ids, {
       onSuccess: () => {
-        notifySuccess('Success', 'Edge Job(s) removed');
+        notifySuccess('成功', 'Edge 任务已删除');
       },
     });
   }

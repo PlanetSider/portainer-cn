@@ -17,7 +17,7 @@ import { helper } from './helper';
 import { useDetails } from './buildCell';
 
 export const actions = helper.display({
-  header: 'Actions',
+  header: '操作',
   cell: ActionsCell,
 });
 
@@ -45,7 +45,7 @@ function ActionsCell({
         onClick={() => state.setName(item.Name, tagDetails)}
         data-cy={`retag-${item.Name}`}
       >
-        Retag
+        重新标记
       </Button>
     );
   }
@@ -90,7 +90,7 @@ function EditTag({
     >
       {({ values, errors, setFieldValue }) => (
         <Form className="vertical-center">
-          <Tooltip message="'Tag can only contain alphanumeric (a-zA-Z0-9) and special _ . - characters. Tag must not start with . - characters.'" />
+          <Tooltip message="标签只能包含字母数字字符（a-zA-Z0-9）以及特殊字符 _ . -，且不能以 . 或 - 开头。" />
 
           <Input
             className="input-sm"

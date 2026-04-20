@@ -27,7 +27,7 @@ export function KubeConfigTeaserForm() {
     <Formik initialValues={initialValues} onSubmit={() => {}} validateOnMount>
       {() => (
         <Form>
-          <FormSectionTitle>Environment details</FormSectionTitle>
+          <FormSectionTitle>环境详情</FormSectionTitle>
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue">

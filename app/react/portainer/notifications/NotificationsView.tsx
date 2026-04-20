@@ -67,6 +67,7 @@ function TableActions({ selectedRows }: { selectedRows: ToastNotification[] }) {
       disabled={selectedRows.length === 0}
       data-cy="remove-notifications-button"
       confirmMessage="确定要删除选中的通知吗？"
+      confirmButtonText="删除"
     />
   );
 

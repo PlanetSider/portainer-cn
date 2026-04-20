@@ -33,9 +33,9 @@ export function EdgeEnvironmentForm({ environment, onSuccess }: Props) {
   async function handleSubmit(values: EdgeEnvironmentFormValues) {
     if (_.difference(environment.TagIds, values.meta.tagIds || []).length > 0) {
       const confirmed = await confirmDestructive({
-        title: 'Confirm action',
+        title: '确认操作',
         message:
-          'Removing tags from this environment will remove the corresponding edge stacks when dynamic grouping is being used',
+          '从该环境移除标签时，如果正在使用动态分组，相应的 Edge 堆栈也会被移除。',
         confirmButton: buildConfirmButton(),
       });
 
@@ -84,12 +84,11 @@ function EdgeEnvironmentFormContent({
 
   return (
     <Form className="form-horizontal">
-      <FormSection title="Configuration">
+      <FormSection title="配置">
         <NameField />
         <PublicUrlField />
         <TextTip color="blue">
-          Use https connection on Edge agent to use private registries with
-          credentials.
+          如需在 Edge Agent 上使用带凭据的私有镜像仓库，请使用 HTTPS 连接。
         </TextTip>
       </FormSection>
 

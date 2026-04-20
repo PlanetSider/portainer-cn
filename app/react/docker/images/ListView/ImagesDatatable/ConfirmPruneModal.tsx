@@ -24,16 +24,16 @@ function ConfirmPruneModal({ onSubmit, images = [] }: Props) {
 
   return (
     <Modal onDismiss={() => onSubmit()} aria-label="confirm prune images modal">
-      <Modal.Header title="Are you sure?" modalType={ModalType.Destructive} />
+      <Modal.Header title="确定吗？" modalType={ModalType.Destructive} />
       <Modal.Body>
         <p>
-          This will delete all untagged (dangling) images in this environment.
+          这将删除当前环境中所有未打标签的悬空镜像。
         </p>
         <SwitchField
           name="pruneAll"
           data-cy="prune-all-unused-switch"
-          label="Delete all unused images"
-          tooltip="Delete all unused images, even if they are tagged."
+          label="删除所有未使用镜像"
+          tooltip="删除所有未使用的镜像，即使它们带有标签。"
           checked={pruneAll}
           onChange={setPruneAll}
         />
@@ -44,7 +44,7 @@ function ConfirmPruneModal({ onSubmit, images = [] }: Props) {
             showValidationMessage ? 'visible' : 'invisible'
           )}
         >
-          No untagged (dangling) images available to delete.
+          当前没有可删除的未打标签悬空镜像。
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -53,14 +53,14 @@ function ConfirmPruneModal({ onSubmit, images = [] }: Props) {
           color="default"
           data-cy="prune-cancel"
         >
-          Cancel
+          取消
         </Button>
         <Button
           onClick={() => onSubmit({ pruneAll })}
           color="danger"
           data-cy="prune-confirm"
         >
-          Continue
+          继续
         </Button>
       </Modal.Footer>
     </Modal>

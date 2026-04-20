@@ -60,7 +60,7 @@ export function ItemView() {
     <>
       <PageHeader
         title="Stack 详情"
-        breadcrumbs={[{ label: 'Stacks', link: '^' }, stackName]}
+        breadcrumbs={[{ label: '堆栈', link: '^' }, stackName]}
       />
       <StackDetails
         isExternal={isExternal}

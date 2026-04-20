@@ -31,10 +31,7 @@ export function EdgeInformationPanel({
     if (confirmed) {
       disassociateMutation.mutate(undefined, {
         onSuccess() {
-          notifySuccess(
-            'Environment disassociated',
-            'Environment successfully disassociated'
-          );
+          notifySuccess('环境已解除关联', '环境已成功解除关联');
           onSuccess?.();
         },
       });
@@ -42,28 +39,27 @@ export function EdgeInformationPanel({
   }
 
   return (
-    <InformationPanel title="Edge information">
+    <InformationPanel title="Edge 信息">
       <div className="text-muted small flex flex-col gap-2">
         <TextTip>
-          This Edge environment is associated to an Edge environment (
-          {platformName}).
+          此 Edge 环境已关联到一个 Edge 环境（{platformName}）。
         </TextTip>
         <p>
-          Edge key: <code>{edgeKey}</code>
+          Edge 密钥：<code>{edgeKey}</code>
         </p>
         <p>
-          Edge identifier: <code>{edgeId}</code>
+          Edge 标识符：<code>{edgeId}</code>
         </p>
         <p>
           <LoadingButton
             size="small"
             color="primary"
             isLoading={disassociateMutation.isLoading}
-            loadingText="Disassociating..."
+            loadingText="解除关联中..."
             onClick={handleDisassociate}
             data-cy="disassociate-environment-button"
           >
-            Disassociate
+            解除关联
           </LoadingButton>
         </p>
       </div>

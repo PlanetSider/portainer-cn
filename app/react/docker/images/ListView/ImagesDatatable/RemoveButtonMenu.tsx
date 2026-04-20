@@ -38,7 +38,7 @@ export function RemoveButtonMenu({
             handleRemove(false);
           }}
         >
-          Remove
+          删除
         </Button>
         <Menu>
           <MenuButton
@@ -49,7 +49,7 @@ export function RemoveButtonMenu({
             icon={ChevronDown}
             data-cy="image-toggleRemoveButtonMenu"
           >
-            <span className="sr-only">Toggle Dropdown</span>
+            <span className="sr-only">切换下拉菜单</span>
           </MenuButton>
           <MenuPopover position={positionRight}>
             <div className="mt-3 bg-white th-highcontrast:bg-black th-dark:bg-black">
@@ -58,7 +58,7 @@ export function RemoveButtonMenu({
                   handleRemove(true);
                 }}
               >
-                Force Remove
+                强制删除
               </MenuItem>
             </div>
           </MenuPopover>
@@ -69,19 +69,19 @@ export function RemoveButtonMenu({
 
   function confirmForceRemove() {
     return confirmDestructive({
-      title: 'Are you sure?',
+      title: '确定吗？',
       message:
-        "Forcing removal of an image will remove it even if it's used by stopped containers, and delete all associated tags. Are you sure you want to remove the selected image(s)?",
-      confirmButton: buildConfirmButton('Remove the image', 'danger'),
+        '强制删除镜像时，即使该镜像正被已停止的容器使用，也会将其移除，并删除所有关联标签。确定要删除所选镜像吗？',
+      confirmButton: buildConfirmButton('删除镜像', 'danger'),
     });
   }
 
   function confirmRegularRemove() {
     return confirmDestructive({
-      title: 'Are you sure?',
+      title: '确定吗？',
       message:
-        'Removing an image will also delete all associated tags. Are you sure you want to remove the selected image(s)?',
-      confirmButton: buildConfirmButton('Remove the image', 'danger'),
+        '删除镜像时也会删除所有关联标签。确定要删除所选镜像吗？',
+      confirmButton: buildConfirmButton('删除镜像', 'danger'),
     });
   }
 
@@ -114,7 +114,7 @@ function useDeleteImageListMutation() {
     } & Omit<Parameters<typeof deleteImage>[0], 'imageId' | 'environmentId'>) =>
       processItemsInBatches(imageIds, (imageId) =>
         deleteImage({ ...args, environmentId, imageId }).then(() =>
-          notifySuccess('Image successfully removed', imageId)
+          notifySuccess('镜像已成功删除', imageId)
         )
       ),
     ...withInvalidate(queryClient, [queryKeys.base(environmentId)]),

@@ -53,10 +53,17 @@ export function UsersDatatable() {
         ...user,
         isTeamLeader: teamMembership?.Role === TeamRole.Leader,
         authMethod:
-          AuthenticationMethod[
+          ({
+            Internal: '内部认证',
+            LDAP: 'LDAP',
+            AD: 'AD',
+            OAuth: 'OAuth',
+          } as Record<string, string>)[
+            AuthenticationMethod[
             user.Id === 1
               ? AuthenticationMethod.Internal
               : settingsQuery.data.AuthenticationMethod
+            ]
           ],
       };
     });
@@ -75,6 +82,7 @@ export function UsersDatatable() {
         <DeleteButton
           disabled={selectedUsers.length === 0}
           confirmMessage="确定要删除所选用户吗？删除后他们将无法再登录 Portainer。"
+          confirmButtonText="删除"
           onConfirmed={() =>
             removeMutation.mutate(
               selectedUsers.map((i) => i.Id),

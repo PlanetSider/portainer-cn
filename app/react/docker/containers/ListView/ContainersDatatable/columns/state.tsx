@@ -38,9 +38,21 @@ function StatusCell({
 
   let transformedStatus: ContainerStatus | string = status;
   if (transformedStatus === ContainerStatus.Exited) {
-    transformedStatus = `${transformedStatus} - code ${extractExitCode(
-      container.StatusText
-    )}`;
+    transformedStatus = `已退出 - 代码 ${extractExitCode(container.StatusText)}`;
+  } else {
+    transformedStatus =
+      {
+        paused: '已暂停',
+        starting: '启动中',
+        unhealthy: '不健康',
+        restarting: '重启中',
+        removing: '移除中',
+        created: '已创建',
+        stopped: '已停止',
+        dead: '已终止',
+        healthy: '健康',
+        running: '运行中',
+      }[transformedStatus] || transformedStatus;
   }
 
   return (
@@ -48,7 +60,7 @@ function StatusCell({
       className={clsx('label', `label-${statusClassName}`, {
         interactive: hasHealthCheck,
       })}
-      title={hasHealthCheck ? 'This container has a health check' : ''}
+      title={hasHealthCheck ? '此容器已启用健康检查' : ''}
     >
       {transformedStatus}
     </span>

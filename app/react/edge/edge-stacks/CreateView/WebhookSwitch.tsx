@@ -10,21 +10,19 @@ export function WebhookSwitch({
 }) {
   return (
     <div>
-      <div className="form-section-title"> Webhooks </div>
+      <div className="form-section-title"> Webhook </div>
       <SwitchField
-        label="Create an Edge stack webhook"
+        label="创建 Edge 堆栈 Webhook"
         checked={value}
         onChange={onChange}
-        tooltip="Create a webhook (or callback URI) to automate the update of this stack. Sending a POST request to this callback URI (without requiring any authentication) will pull the most up-to-date version of the associated image and re-deploy this stack."
+        tooltip="创建一个 Webhook（或回调 URI）以自动更新该堆栈。向此回调 URI 发送 POST 请求（无需认证）后，将拉取关联镜像的最新版本并重新部署该堆栈。"
         labelClass="col-sm-3 col-lg-2"
         data-cy="webhook-switch"
       />
 
       {value && (
         <TextTip>
-          Sending environment variables to the webhook is updating the stack
-          with the new values. New variables names will be added to the stack
-          and existing variables will be updated.
+          向 Webhook 发送环境变量时，会使用新的变量值更新该堆栈。新的变量名会被添加到堆栈中，已有变量则会被更新。
         </TextTip>
       )}
     </div>

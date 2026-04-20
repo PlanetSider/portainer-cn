@@ -49,7 +49,7 @@ export function EnvironmentsDatatable({
       const group = groupsQuery.data?.find((g) => g.Id === groupId);
       return {
         ...env,
-        GroupName: group?.Name,
+        GroupName: group?.Name || '未分组',
       };
     }
   );

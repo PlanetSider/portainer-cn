@@ -33,7 +33,7 @@ export function ResumeButton({
       { environmentId, containerId, nodeName },
       {
         onSuccess() {
-          notifySuccess('Success', 'Container successfully resumed');
+          notifySuccess('成功', '容器已成功恢复');
           onSuccess();
         },
       }
@@ -48,11 +48,11 @@ export function ResumeButton({
         onClick={handleResume}
         disabled={!isPaused || isPortainer}
         isLoading={resumeMutation.isLoading}
-        loadingText="Resuming..."
+        loadingText="恢复中..."
         data-cy="unpause-container-button"
         icon={Play}
       >
-        Resume
+        恢复
       </LoadingButton>
     </Authorized>
   );

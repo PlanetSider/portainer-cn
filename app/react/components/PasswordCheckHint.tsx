@@ -20,9 +20,8 @@ export function PasswordCheckHint({
     <div>
       <p className="text-warning vertical-center">
         <Icon icon={AlertTriangle} className="icon-warning" />
-        {forceChangePassword &&
-          'An administrator has changed your password requirements, '}
-        The password must be at least {minPasswordLength} characters long.
+        {forceChangePassword && '管理员已修改密码要求，'}
+        密码长度至少需要 {minPasswordLength} 个字符。
         {passwordValid && (
           <Icon icon={Check} className="!ml-1" mode="success" />
         )}
