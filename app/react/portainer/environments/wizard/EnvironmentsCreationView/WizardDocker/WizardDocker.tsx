@@ -50,10 +50,7 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
           <Badge type="infoSecondary">支持策略</Badge>
         </span>
         <span className="mt-1 block">
-          The remote environment will initiate connections to the Portainer
-          server, with the ability to open a secure on-demand tunnel for
-          real-time interaction. The Portainer server must be accessible from
-          the Edge Agent environment.
+          远程环境会主动与 Portainer server 建立连接，并可按需打开安全隧道进行实时交互。Portainer server 必须可从 Edge Agent 所在环境访问。
         </span>
       </>
     ),
@@ -63,8 +60,8 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
     id: 'edgeAgentAsync',
     icon: <BadgeIcon icon={EdgeAgentAsyncIcon} size="3xl" />,
     label: 'Edge Agent Async',
-    description:
-      'The remote environment will initiate connections to the Portainer server, without the ability to open a real-time tunnel. The Portainer server must be accessible from the Edge Agent environment.',
+      description:
+        '远程环境会主动与 Portainer server 建立连接，但无法打开实时隧道。Portainer server 必须可从 Edge Agent 所在环境访问。',
     value: 'edgeAgentAsync' as CreationType,
   },
 ]);
@@ -74,22 +71,22 @@ const legacyOptions: BoxSelectorOption<CreationType>[] = [
     id: 'agent',
     icon: <BadgeIcon icon={Zap} size="3xl" />,
     label: 'Agent',
-    description:
-      'The Portainer Server will initiate connections to the remote environment. The agent on the remote environment must be accessible from the Portainer server environment.',
+      description:
+        'Portainer Server 会主动连接远程环境。远程环境中的 agent 必须可从 Portainer server 所在环境访问。',
     value: 'agent',
   },
   {
     id: 'api',
     icon: <BadgeIcon icon={Network} size="3xl" />,
     label: 'API',
-    description: 'Connect to the environment directly via the Docker API.',
+    description: '通过 Docker API 直接连接到该环境。',
     value: 'api',
   },
   {
     id: 'socket',
     icon: <BadgeIcon icon={Plug2} size="3xl" />,
     label: 'Socket',
-    description: 'Connect to the environment directly via the Docker socket.',
+    description: '通过 Docker socket 直接连接到该环境。',
     value: 'socket',
   },
 ];
@@ -111,11 +108,7 @@ export function WizardDocker({ onCreate, isDockerStandalone }: Props) {
       {!isDockerStandalone && (
         <Alert color="warn" className="col-sm-12 mb-2">
           <div>
-            Only do this <b>once</b> for your environment, regardless of how
-            many nodes are in the cluster. You do <b>not</b> need to add each
-            node as an individual environment in Portainer. Adding just one node
-            (we recommend the manager node) will allow Portainer to manage the
-            entire cluster.
+             无论集群中有多少节点，你只需要为该环境执行<b>一次</b>此操作。你<b>不需要</b>在 Portainer 中将每个节点分别添加为独立环境。只需添加一个节点（推荐 manager 节点），Portainer 即可管理整个集群。
           </div>
         </Alert>
       )}
@@ -129,22 +122,21 @@ export function WizardDocker({ onCreate, isDockerStandalone }: Props) {
 
       <FormSection
         key="legacy-options"
-        title="More options"
+         title="更多选项"
         titleSize="sm"
         isFoldable
         defaultFolded={false}
         className="[&>label]:mb-5"
       >
         <p className="text-muted mb-2 text-xs">
-          These are legacy options that don&apos;t support edge features or
-          policy management. For most use cases,{' '}
+           这些是旧版选项，不支持 Edge 功能或策略管理。对于大多数使用场景，{' '}
           <ExternalLink
             to={edgeAgentDocsUrl}
             data-cy="wizard-edge-agent-docs-link"
           >
-            the Edge Agent is recommended
-          </ExternalLink>
-        </p>
+             推荐使用 Edge Agent
+           </ExternalLink>
+         </p>
         <BoxSelector
           onChange={(v) => setCreationType(v)}
           options={legacyOptions}

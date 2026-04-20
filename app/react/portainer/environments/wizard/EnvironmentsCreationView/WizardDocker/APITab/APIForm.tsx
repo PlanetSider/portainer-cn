@@ -67,7 +67,7 @@ export function APIForm({ onCreate }: Props) {
               as={Input}
               id="url-field"
               name="url"
-              placeholder="e.g. 10.0.0.10:2375 or mydocker.mydomain.com:2375"
+               placeholder="例如：10.0.0.10:2375 或 mydocker.mydomain.com:2375"
             />
           </FormControl>
 
@@ -88,12 +88,12 @@ export function APIForm({ onCreate }: Props) {
               <LoadingButton
                 className="wizard-connect-button vertical-center"
                 data-cy="docker-aconnect-button"
-                loadingText="Connecting environment..."
+                loadingText="连接环境中..."
                 isLoading={mutation.isLoading}
                 disabled={!dirty || !isValid}
                 icon={Plug2}
               >
-                Connect
+                连接
               </LoadingButton>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function APIForm({ onCreate }: Props) {
       },
       {
         onSuccess(environment) {
-          notifySuccess('Environment created', environment.Name);
+          notifySuccess('环境已创建', environment.Name);
           clearForm();
           onCreate(environment);
         },
