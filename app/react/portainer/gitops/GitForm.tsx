@@ -56,7 +56,7 @@ export function GitForm({
   const [value, setValue] = useState(initialValue); // TODO: remove this state when form is not inside angularjs
 
   return (
-    <FormSection title="Git repository">
+    <FormSection title="Git 仓库">
       <AuthFieldset
         value={value}
         onChange={handleChange}

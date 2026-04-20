@@ -9,8 +9,8 @@ import { columns } from './columns';
 export function RepositoriesDatatable({ dataset }: { dataset?: Repository[] }) {
   const tableState = useTableStateWithStorage('registryRepositories');
   return (
-    <Datatable
-      title="Repositories"
+      <Datatable
+        title="仓库列表"
       titleIcon={Book}
       columns={columns}
       dataset={dataset || []}

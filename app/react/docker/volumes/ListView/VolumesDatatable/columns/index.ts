@@ -20,19 +20,19 @@ export function useColumns() {
       _.compact([
         name,
         columnHelper.accessor((item) => item.StackName || '-', {
-          header: 'Stack',
+          header: '堆栈',
         }),
         columnHelper.accessor((item) => item.Driver, {
-          header: 'Driver',
+          header: '驱动',
         }),
         columnHelper.accessor((item) => item.Mountpoint, {
-          header: 'Mount point',
+          header: '挂载点',
           cell({ getValue }) {
             return truncateLeftRight(getValue());
           },
         }),
         columnHelper.accessor((item) => item.CreatedAt, {
-          header: 'Created',
+          header: '创建时间',
           cell({ getValue }) {
             return isoDate(getValue());
           },

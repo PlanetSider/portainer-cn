@@ -48,6 +48,6 @@ export class AccessViewerPolicyModel {
       this.TeamId = team.Id;
       this.TeamName = team.Name;
     }
-    this.AccessLocation = group ? 'environment group' : 'environment';
+    this.AccessLocation = group ? '环境分组' : '环境';
   }
 }

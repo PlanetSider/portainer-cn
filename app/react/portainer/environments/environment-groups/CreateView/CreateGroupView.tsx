@@ -23,10 +23,10 @@ export function CreateGroupView() {
   return (
     <>
       <PageHeader
-        title="Create group"
+        title="创建分组"
         breadcrumbs={[
-          { label: 'Groups', link: 'portainer.groups' },
-          { label: 'Create group' },
+          { label: '分组', link: 'portainer.groups' },
+          { label: '创建分组' },
         ]}
       />
 
@@ -37,8 +37,8 @@ export function CreateGroupView() {
               <GroupForm
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
-                submitLabel="Create"
-                submitLoadingLabel="Creating..."
+                submitLabel="创建"
+                submitLoadingLabel="创建中..."
               />
             </Widget.Body>
           </Widget>
@@ -61,7 +61,7 @@ export function CreateGroupView() {
       {
         onSuccess: () => {
           resetForm();
-          notifySuccess('Success', 'Group successfully created');
+          notifySuccess('成功', '分组已成功创建');
           router.stateService.go('portainer.groups');
         },
       }

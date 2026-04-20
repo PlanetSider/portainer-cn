@@ -88,11 +88,11 @@
                   </span>
                 </div>
               </div>
-              <div>{{ node.Role }}</div>
+              <div>{{ node.Role === 'manager' ? '管理节点' : node.Role === 'worker' ? '工作节点' : node.Role }}</div>
               <div>CPU: {{ node.CPUs / 1000000000 }}</div>
               <div>Memory: {{ node.Memory | humansize: 2 }}</div>
               <div
-                ><span class="label label-{{ node.Status | nodestatusbadge }}">{{ node.Status }}</span></div
+                ><span class="label label-{{ node.Status | nodestatusbadge }}">{{ node.Status === 'ready' ? '就绪' : node.Status === 'down' ? '离线' : node.Status }}</span></div
               >
               <div class="node_labels" ng-if="node.Labels.length > 0 && state.DisplayNodeLabels">
                 <div>标签</div>
@@ -110,7 +110,7 @@
               >
                 <div class="service_name">{{ task.ServiceName }}</div>
                 <div>镜像：{{ task.Spec.ContainerSpec.Image | hideshasum }}</div>
-                <div>状态：{{ task.Status.State }}</div>
+                <div>状态：{{ task.Status.State === 'running' ? '运行中' : task.Status.State === 'failed' ? '失败' : task.Status.State === 'shutdown' ? '已关闭' : task.Status.State === 'pending' ? '等待中' : task.Status.State === 'preparing' ? '准备中' : task.Status.State === 'starting' ? '启动中' : task.Status.State === 'complete' ? '已完成' : task.Status.State }}</div>
                 <div>更新时间：{{ task.Updated | getisodate }}</div>
                 <div ng-if="task.Spec.Resources.Limits.MemoryBytes">内存限制：{{ task.Spec.Resources.Limits.MemoryBytes | humansize: 2 : 2 }}</div>
                 <div ng-if="task.Spec.Resources.Limits.NanoCPUs">CPU 限制：{{ task.Spec.Resources.Limits.NanoCPUs / 1000000000 }}</div>

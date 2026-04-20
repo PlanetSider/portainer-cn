@@ -34,10 +34,8 @@ export function AutoUpdateFieldset({
             name="autoUpdate"
             data-cy="gitops-auto-update-switch"
             checked={value.RepositoryAutomaticUpdates}
-            label="GitOps updates"
-            tooltip="When enabled, at each polling interval or webhook invocation, if the
-              git repo differs from what was stored locally on the last git pull,
-              the changes are deployed."
+            label="GitOps 更新"
+            tooltip="启用后，在每次轮询间隔或调用 Webhook 时，如果 Git 仓库与上次拉取后本地保存的内容不同，将会部署这些变更。"
             labelClass="col-sm-3 col-lg-2"
             onChange={(value) =>
               handleChange({ RepositoryAutomaticUpdates: value })
@@ -49,16 +47,10 @@ export function AutoUpdateFieldset({
       <InsightsBox
         content={
           <p>
-            We&#39;ve renamed &quot;Automatic updates&quot; to better align with
-            industry terminology and clarify its purpose for all users.
-            Originally chosen during the early emergence of GitOps, the name has
-            changed, but the functionality remains unchanged. GitOps has rapidly
-            emerged as a revolutionary approach to managing infrastructure and
-            application changes, and we want to ensure our platform reflects the
-            latest advancements in the industry.
+            我们已将“自动更新”更名为“GitOps 更新”，以更贴近行业术语，并让所有用户更清楚其用途。该名称最初是在 GitOps 概念刚兴起时选定的，如今虽然名称已更新，但功能保持不变。GitOps 已迅速成为管理基础设施和应用变更的重要方式，我们希望平台术语也能反映行业的最新发展。
           </p>
         }
-        header="Meet ‘GitOps updates’ : Formerly known as Automatic updates"
+        header="认识“GitOps 更新”：原名为“自动更新”"
         insightCloseId="rename-gitops-updates"
         className="mb-3"
       />

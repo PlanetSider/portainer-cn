@@ -36,7 +36,7 @@ export function AuthFieldset({
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
-            label="Authentication"
+            label="身份认证"
             labelClass="col-sm-3 col-lg-2"
             name="authentication"
             checked={value.RepositoryAuthentication || false}
@@ -52,8 +52,7 @@ export function AuthFieldset({
         <>
           {isAuthExplanationVisible && (
             <TextTip color="orange" className="mb-2">
-              Enabling authentication will store the credentials and it is
-              advisable to use a git service account
+              启用身份认证后将会保存凭据，建议使用 Git 服务账号
             </TextTip>
           )}
 
@@ -111,7 +110,7 @@ export function gitAuthValidation(
     RepositoryUsername: string()
       .when(['RepositoryAuthentication', 'RepositoryGitCredentialID'], {
         is: (auth: boolean, id: number) => auth && !id,
-        then: string().required('Username is required'),
+        then: string().required('必须填写用户名'),
       })
       .default(''),
     RepositoryPassword: string()

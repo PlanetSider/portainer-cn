@@ -58,7 +58,7 @@ export function CustomTemplatesListItem({
                 icon={Edit}
                 data-cy={`custom-templates-edit-button-${template.Id}`}
               >
-                Edit
+                编辑
               </Button>
               <Button
                 data-cy="custom-templates-delete-"
@@ -69,7 +69,7 @@ export function CustomTemplatesListItem({
                 color="dangerlight"
                 icon={Trash2}
               >
-                Delete
+                删除
               </Button>
             </div>
           )}
@@ -82,11 +82,11 @@ export function CustomTemplatesListItem({
 function getTypeLabel(type: StackType) {
   switch (type) {
     case StackType.DockerSwarm:
-      return 'swarm';
+      return 'Swarm';
     case StackType.Kubernetes:
-      return 'manifest';
+      return 'Manifest';
     case StackType.DockerCompose:
     default:
-      return 'standalone';
+      return '独立模式';
   }
 }

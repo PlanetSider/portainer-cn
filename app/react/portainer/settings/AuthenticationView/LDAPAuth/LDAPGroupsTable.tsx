@@ -15,11 +15,11 @@ export function LDAPGroupsTable({ dataset }: { dataset?: Value[] }) {
   const tableState = useTableStateWithoutStorage();
 
   return (
-    <Datatable
-      columns={columns}
-      dataset={dataset || []}
-      isLoading={!dataset}
-      title="Groups"
+      <Datatable
+        columns={columns}
+        dataset={dataset || []}
+        isLoading={!dataset}
+        title="组"
       titleIcon={Users}
       settingsManager={tableState}
       disableSelect
@@ -33,8 +33,8 @@ function getColumns() {
 
   return [
     helper.accessor('Name', {}),
-    helper.accessor((item) => item.Groups.join(','), {
-      header: 'Groups',
+      helper.accessor((item) => item.Groups.join(','), {
+        header: '组',
       cell: ({ row: { original: item } }) => (
         <>
           {item.Groups.map((g) => (

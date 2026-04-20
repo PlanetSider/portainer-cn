@@ -34,16 +34,14 @@ export function AutoUpdateSettings({
   return (
     <>
       <TextTip color="orange" className="mb-2">
-        Any changes to this stack or application that have been made locally via
-        Portainer or directly in the cluster will be overwritten by the git
-        repository content, which may cause service interruption.
+        通过 Portainer 在本地，或直接在集群中对该堆栈/应用所做的任何更改，都将被 Git 仓库中的内容覆盖，这可能会导致服务中断。
       </TextTip>
 
-      <FormControl label="Mechanism">
+      <FormControl label="触发方式">
         <ButtonSelector
           size="small"
           options={[
-            { value: 'Interval', label: 'Polling' },
+            { value: 'Interval', label: '轮询' },
             { value: 'Webhook', label: 'Webhook' },
           ]}
           value={value.RepositoryMechanism || 'Interval'}
@@ -75,9 +73,9 @@ export function AutoUpdateSettings({
               data-cy="gitops-force-pull-image-switch"
               featureId={FeatureId.STACK_PULL_IMAGE}
               checked={value.ForcePullImage || false}
-              label="Re-pull image"
+               label="重新拉取镜像"
               labelClass="col-sm-3 col-lg-2"
-              tooltip="If enabled, then when redeploy is triggered via the webhook or polling, if there's a newer image with the tag that you've specified (e.g. changeable development builds), it's pulled and redeployed. If you haven't specified a tag, or have specified 'latest' as the tag, then the image with the tag 'latest' is pulled and redeployed."
+               tooltip="启用后，当通过 Webhook 或轮询触发重新部署时，如果存在带有所指定标签的更新镜像（例如会变化的开发版本），则会重新拉取并部署该镜像。如果你未指定标签，或指定的标签为“latest”，则会拉取并重新部署带有“latest”标签的镜像。"
               onChange={(value) => onChange({ ForcePullImage: value })}
             />
           </div>
@@ -90,29 +88,21 @@ export function AutoUpdateSettings({
           onChange({ RepositoryAutomaticUpdatesForce: value })
         }
         label={
-          environmentType === 'KUBERNETES' ? 'Always apply manifest' : undefined
+          environmentType === 'KUBERNETES' ? '始终应用 Manifest' : undefined
         }
         tooltip={
           environmentType === 'KUBERNETES' ? (
             <>
               <p>
-                If enabled, then when redeploy is triggered via the webhook or
-                polling, kubectl apply is always performed, even if Portainer
-                detects no difference between the git repo and what was stored
-                locally on last git pull.
+                启用后，当通过 Webhook 或轮询触发重新部署时，将始终执行 kubectl apply，即使 Portainer 检测到 Git 仓库与上次拉取后本地保存的内容没有差异。
               </p>
               <p>
-                This is useful if you want your git repo to be the source of
-                truth and are fine with changes made directly to resources in
-                the cluster being overwritten.
+                如果你希望 Git 仓库作为唯一可信来源，并接受直接在集群资源上所做的更改被覆盖，那么此选项会很有用。
               </p>
             </>
           ) : (
             <p>
-              If enabled, then when redeploy is triggered via the webhook or
-              polling, the stack will be always redeployed, even if Portainer
-              detects no difference between the git repo and what was stored
-              locally on last git pull.
+              启用后，当通过 Webhook 或轮询触发重新部署时，堆栈将始终重新部署，即使 Portainer 检测到 Git 仓库与上次拉取后本地保存的内容没有差异。
             </p>
           )
         }

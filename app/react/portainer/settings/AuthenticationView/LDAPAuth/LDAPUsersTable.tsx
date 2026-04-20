@@ -14,11 +14,11 @@ export function LDAPUsersTable({ dataset }: { dataset?: string[] }) {
   const items = dataset?.map((value) => ({ value }));
 
   return (
-    <Datatable
-      columns={columns}
-      dataset={items || []}
-      isLoading={!items}
-      title="Users"
+      <Datatable
+        columns={columns}
+        dataset={items || []}
+        isLoading={!items}
+        title="用户"
       titleIcon={Users}
       settingsManager={tableState}
       disableSelect
@@ -29,9 +29,9 @@ export function LDAPUsersTable({ dataset }: { dataset?: string[] }) {
 
 function getColumns() {
   return [
-    {
-      header: 'Name',
-      accessorFn: ({ value }: Value) => value,
-    },
+      {
+        header: '名称',
+        accessorFn: ({ value }: Value) => value,
+      },
   ];
 }

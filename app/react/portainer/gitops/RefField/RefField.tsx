@@ -94,7 +94,7 @@ function Wrapper({
       </span>
       <div className="col-sm-12">
         <FormControl
-          label="Repository reference"
+          label="仓库引用"
           inputId={inputId}
           required
           errors={errors}
@@ -110,7 +110,7 @@ export function refFieldValidation(): SchemaOf<string> {
   return string()
     .when({
       is: isBE,
-      then: string().required('Repository reference name is required'),
+        then: string().required('必须填写仓库引用名称'),
     })
     .default('');
 }

@@ -5,7 +5,7 @@ export const authenticationMethodTypesMap = {
 };
 
 export const authenticationMethodTypesLabels = {
-  [authenticationMethodTypesMap.INTERNAL]: 'Internal',
+  [authenticationMethodTypesMap.INTERNAL]: '内部认证',
   [authenticationMethodTypesMap.LDAP]: 'LDAP',
   [authenticationMethodTypesMap.OAUTH]: 'OAuth',
 };

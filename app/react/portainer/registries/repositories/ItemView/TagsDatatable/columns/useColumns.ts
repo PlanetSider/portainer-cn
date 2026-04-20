@@ -21,15 +21,15 @@ const columns = [
     idGetter: (item) => item.Name,
   }),
   helper.display({
-    header: 'OS/Architecture',
+    header: '操作系统/架构',
     cell: buildCell((model) => `${model.Os}/${model.Architecture}`),
   }),
   helper.display({
-    header: 'Image ID',
+    header: '镜像 ID',
     cell: buildCell((model) => trimSHA(model.ImageId)),
   }),
   helper.display({
-    header: 'Compressed Size',
+    header: '压缩后大小',
     cell: buildCell((model) => humanize(model.Size)),
   }),
 ];

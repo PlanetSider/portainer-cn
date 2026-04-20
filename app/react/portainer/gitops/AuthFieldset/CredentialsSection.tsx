@@ -51,8 +51,8 @@ export function CredentialsSection({
         <div className="form-group">
           <div className="col-sm-12">
             <FormControl
-              label="Authorization type"
-              tooltip="GitHub, GitLab, and Bitbucket Cloud expect Basic Auth, even when using an API or access token."
+              label="授权类型"
+              tooltip="GitHub、GitLab 和 Bitbucket Cloud 即使在使用 API 或访问令牌时，也要求使用 Basic Auth。"
             >
               <RadioGroup
                 options={defaultAuthTypeOptions}
@@ -67,12 +67,12 @@ export function CredentialsSection({
 
       <div className="form-group">
         <div className="col-sm-12">
-          <FormControl label="Username" errors={errors?.RepositoryUsername}>
+          <FormControl label="用户名" errors={errors?.RepositoryUsername}>
             <Input
               value={username}
               name="repository_username"
               placeholder={
-                value.RepositoryGitCredentialID ? '' : 'git username'
+                 value.RepositoryGitCredentialID ? '' : 'Git 用户名'
               }
               onChange={(e) => setUsername(e.target.value)}
               data-cy="component-gitUsernameInput"
@@ -84,8 +84,8 @@ export function CredentialsSection({
       <div className="form-group !mb-0">
         <div className="col-sm-12">
           <FormControl
-            label="Personal Access Token"
-            tooltip="Provide a personal access token or password"
+            label="个人访问令牌"
+            tooltip="请提供个人访问令牌或密码"
             errors={errors?.RepositoryPassword}
           >
             <Input

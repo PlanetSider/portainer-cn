@@ -10,11 +10,11 @@ const helper = createColumnHelper<Repository>();
 
 export const columns = [
   helper.accessor('Name', {
-    header: 'Repository',
+    header: '仓库',
     cell: NameCell,
   }),
   helper.display({
-    header: 'Tags count',
+    header: '标签数量',
     cell: TagsCell,
   }),
 ];

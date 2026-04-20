@@ -27,11 +27,17 @@ export function createOwnershipColumn<D extends IResource>(
     getValue,
   }: CellContext<D, ResourceControlOwnership>) {
     const value = getValue();
+    const labelMap: Record<string, string> = {
+      private: '私有',
+      public: '公开',
+      restricted: '受限',
+      administrators: '管理员',
+    };
 
     return (
       <span className="flex items-center gap-2">
         <Icon icon={ownershipIcon(value)} className="space-right" />
-        {value}
+        {labelMap[value] || value}
       </span>
     );
   }
