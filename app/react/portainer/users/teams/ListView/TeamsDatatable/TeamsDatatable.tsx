@@ -17,7 +17,10 @@ import { deleteTeam } from '../../queries/useDeleteTeamMutation';
 const storageKey = 'teams';
 
 const columns: ColumnDef<Team>[] = [
-  buildNameColumn<Team>('Name', 'portainer.teams.team', 'teams-name'),
+  {
+    ...buildNameColumn<Team>('Name', 'portainer.teams.team', 'teams-name'),
+    header: '名称',
+  },
 ];
 
 interface Props {

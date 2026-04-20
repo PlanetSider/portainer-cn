@@ -2,11 +2,11 @@ import { RoleViewModel, RoleTypes } from '../models/role';
 
 export function RoleService() {
   const rolesData = [
-    new RoleViewModel(RoleTypes.ENDPOINT_ADMIN, 'Environment administrator', 'Full control of all resources in an environment', []),
-    new RoleViewModel(RoleTypes.OPERATOR, 'Operator', 'Operational Control of all existing resources in an environment', []),
-    new RoleViewModel(RoleTypes.HELPDESK, 'Helpdesk', 'Read-only access of all resources in an environment', []),
-    new RoleViewModel(RoleTypes.READ_ONLY, 'Read-only user', 'Read-only access of assigned resources in an environment', []),
-    new RoleViewModel(RoleTypes.STANDARD, 'Standard user', 'Full control of assigned resources in an environment', []),
+    new RoleViewModel(RoleTypes.ENDPOINT_ADMIN, '环境管理员', '对环境中的所有资源拥有完全控制权', []),
+    new RoleViewModel(RoleTypes.OPERATOR, '运维人员', '对环境中的所有现有资源拥有操作控制权限', []),
+    new RoleViewModel(RoleTypes.HELPDESK, '支持人员', '对环境中的所有资源拥有只读访问权限', []),
+    new RoleViewModel(RoleTypes.READ_ONLY, '只读用户', '对环境中已分配资源拥有只读访问权限', []),
+    new RoleViewModel(RoleTypes.STANDARD, '标准用户', '对环境中已分配资源拥有完全控制权', []),
   ];
 
   return {

@@ -99,13 +99,14 @@ function TableActions({
         <DeleteButton
           disabled={selectedItems.length === 0}
           onConfirmed={() => onRemove(selectedItems)}
-          confirmMessage="Do you want to remove the selected secret(s)?"
+          confirmMessage="确定要删除所选密钥吗？"
+          confirmButtonText="删除"
           data-cy="secret-removeSecretButton"
         />
       </Authorized>
 
       <Authorized authorizations="DockerSecretCreate">
-        <AddButton data-cy="secret-addSecretButton">Add secret</AddButton>
+        <AddButton data-cy="secret-addSecretButton">添加密钥</AddButton>
       </Authorized>
     </div>
   );

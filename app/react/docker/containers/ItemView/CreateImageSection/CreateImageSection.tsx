@@ -43,6 +43,9 @@ export function CreateImageSection({
     <Widget>
       <Widget.Title icon={ListIcon} title="创建镜像" />
       <Widget.Body>
+        <div className="text-muted small mb-3">
+          你可以基于此容器创建一个镜像，以便备份重要数据或保存有用配置。之后你还可以基于该镜像再次创建其他容器。
+        </div>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}

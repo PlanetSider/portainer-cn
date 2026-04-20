@@ -19,6 +19,7 @@ export function TableActions({
           disabled={selectedItems.length === 0}
           onConfirmed={() => onRemove(selectedItems)}
           confirmMessage="确定要删除所选堆栈吗？关联的服务也将一并删除。"
+          confirmButtonText="删除"
           data-cy="stack-removeStackButton"
         />
       </Authorized>

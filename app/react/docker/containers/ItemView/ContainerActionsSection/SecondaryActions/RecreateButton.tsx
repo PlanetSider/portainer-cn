@@ -47,7 +47,7 @@ export function RecreateButton({
       },
       {
         onSuccess: () => {
-          notifySuccess('Success', 'Container successfully re-created');
+          notifySuccess('成功', '容器已成功重新创建');
           router.stateService.go('docker.containers', {}, { reload: true });
         },
       }
@@ -61,11 +61,11 @@ export function RecreateButton({
       onClick={handleRecreate}
       disabled={isPortainer}
       isLoading={recreateMutation.isLoading}
-      loadingText="Recreation in progress..."
+        loadingText="重新创建中..."
       data-cy="recreate-container-button"
       icon={RefreshCw}
     >
-      Recreate
-    </LoadingButton>
+        重新创建
+      </LoadingButton>
   );
 }

@@ -29,11 +29,11 @@ export function PruneButton({ images }: Props) {
       icon={hasPrunableImages ? BrushCleaning : Check}
       onClick={handlePrune}
       isLoading={pruneImagesMutation.isLoading}
-      loadingText="Pruning..."
+      loadingText="清理中..."
       data-cy="image-pruneButton"
       disabled={!hasPrunableImages}
     >
-      Prune
+      清理
     </LoadingButton>
   );
 
@@ -47,7 +47,7 @@ export function PruneButton({ images }: Props) {
 
   return (
     <Authorized authorizations="DockerImagePrune" adminOnlyCE>
-      <TooltipWithChildren message="No unused images available to prune">
+      <TooltipWithChildren message="当前没有可清理的未使用镜像">
         <span>{button}</span>
       </TooltipWithChildren>
     </Authorized>
@@ -65,10 +65,10 @@ export function PruneButton({ images }: Props) {
       {
         onSuccess: (data) => {
           const space = humanize(data.SpaceReclaimed);
-          notifySuccess('Images pruned', `Reclaimed ${space}`);
+          notifySuccess('镜像已清理', `已回收 ${space}`);
         },
         onError: (error) => {
-          notifyError('Failed to prune images', error);
+          notifyError('清理镜像失败', error);
         },
       }
     );

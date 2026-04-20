@@ -19,6 +19,7 @@ export function TableActions({
       <DeleteButton
         disabled={selectedItems.length === 0}
         confirmMessage="确定要删除选中的环境分组吗？"
+        confirmButtonText="删除"
         onConfirmed={handleRemove}
         data-cy="remove-environment-groups-button"
       />
