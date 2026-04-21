@@ -41,7 +41,7 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
     id: 'edgeAgentStandard',
     icon: EdgeAgentStandardIcon,
     iconType: 'badge',
-    label: 'Edge Agent Standard',
+    label: '边缘代理标准模式',
     description: (
       <>
         <span>
@@ -49,7 +49,7 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
           <Badge type="infoSecondary">支持策略</Badge>
         </span>
         <span className="mt-1 block">
-          远程环境会主动与 Portainer server 建立连接，并可按需打开安全隧道进行实时交互。Portainer server 必须可从 Edge Agent 所在环境访问。
+          远程环境会主动与 Portainer 服务端建立连接，并可按需打开安全隧道进行实时交互。Portainer 服务端必须可从边缘代理所在环境访问。
         </span>
       </>
     ),
@@ -59,9 +59,9 @@ const primaryOptions: BoxSelectorOption<CreationType>[] = _.compact([
     id: 'edgeAgentAsync',
     icon: EdgeAgentAsyncIcon,
     iconType: 'badge',
-    label: 'Edge Agent Async',
+    label: '边缘代理异步模式',
     description:
-      '远程环境会主动与 Portainer server 建立连接，但无法打开实时隧道。Portainer server 必须可从 Edge Agent 所在环境访问。',
+      '远程环境会主动与 Portainer 服务端建立连接，但无法打开实时隧道。Portainer 服务端必须可从边缘代理所在环境访问。',
     value: 'edgeAgentAsync',
   },
 ]);
@@ -74,7 +74,7 @@ const legacyOptions: BoxSelectorOption<CreationType>[] = [
     label: 'Agent',
     value: 'agent',
     description:
-      'Portainer Server 会主动连接远程环境。远程环境中的 agent 必须可从 Portainer server 所在环境访问。',
+      'Portainer 服务端会主动连接远程环境。远程环境中的代理必须可从 Portainer 服务端所在环境访问。',
   },
   {
     id: 'kubeconfig_endpoint',
@@ -121,7 +121,7 @@ export function WizardKubernetes({ onCreate }: Props) {
             to={edgeAgentDocsUrl}
             data-cy="wizard-edge-agent-docs-link"
           >
-            推荐使用 Edge Agent
+            推荐使用边缘代理
           </ExternalLink>
         </p>
         <BoxSelector

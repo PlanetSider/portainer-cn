@@ -32,7 +32,7 @@ export const commandsTabs: Record<string, CommandTab> = {
   },
   standaloneLinux: {
     id: 'standalone',
-    label: 'Docker Standalone',
+    label: 'Docker 独立环境',
     command: buildLinuxStandaloneCommand,
   },
   podmanLinux: {
@@ -47,7 +47,7 @@ export const commandsTabs: Record<string, CommandTab> = {
   },
   standaloneWindow: {
     id: 'standalone',
-    label: 'Docker Standalone',
+    label: 'Docker 独立环境',
     command: buildWindowsStandaloneCommand,
   },
 } as const;
