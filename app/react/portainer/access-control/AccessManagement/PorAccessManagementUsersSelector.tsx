@@ -24,7 +24,7 @@ export function PorAccessManagementUsersSelector({
         className="col-sm-3 col-lg-2 control-label text-left"
         htmlFor="users-selector"
       >
-        Select user(s) and/or team(s)
+        选择用户和/或团队
       </label>
       <div className="col-sm-9 col-lg-4">
         <Select
@@ -38,11 +38,11 @@ export function PorAccessManagementUsersSelector({
           data-cy="component-selectUser"
           id="component-selectUser"
           inputId="users-selector"
-          placeholder="Select one or more users and/or teams"
+          placeholder="选择一个或多个用户和/或团队"
           components={{ MultiValueLabel, Option: OptionComponent }}
           isLoading={isLoading}
-          loadingMessage={() => 'Loading users and teams...'}
-          noOptionsMessage={() => 'No users or teams available.'}
+          loadingMessage={() => '正在加载用户和团队...'}
+          noOptionsMessage={() => '暂无可用的用户或团队。'}
         />
       </div>
     </div>

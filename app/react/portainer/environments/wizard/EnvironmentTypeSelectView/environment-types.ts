@@ -26,7 +26,7 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
   {
     id: 'dockerStandalone',
     value: 'dockerStandalone',
-    label: 'Docker Standalone',
+    label: 'Docker 独立环境',
     icon: Docker,
     iconType: 'logo',
     description: '通过 URL/IP、API 或 Socket 连接到 Docker Standalone 环境',
@@ -34,10 +34,10 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
   {
     id: 'dockerSwarm',
     value: 'dockerSwarm',
-    label: 'Docker Swarm',
+    label: 'Docker Swarm 集群',
     icon: Docker,
     iconType: 'logo',
-    description: '通过 URL/IP、API 或 Socket 连接到 Docker Swarm 环境',
+    description: '通过 URL/IP、API 或 Socket 连接到 Docker Swarm 集群环境',
   },
   {
     id: 'podman',
@@ -94,8 +94,8 @@ export const environmentTypes: EnvironmentOption[] = [
 ];
 
 export const formTitles: Record<EnvironmentOptionValue, string> = {
-  dockerStandalone: '连接到 Docker Standalone 环境',
-  dockerSwarm: '连接到 Docker Swarm 环境',
+  dockerStandalone: '连接到 Docker 独立环境',
+  dockerSwarm: '连接到 Docker Swarm 集群环境',
   podman: '连接到 Podman 环境',
   kubernetes: '连接到 Kubernetes 环境',
   aci: '连接到 ACI 环境',

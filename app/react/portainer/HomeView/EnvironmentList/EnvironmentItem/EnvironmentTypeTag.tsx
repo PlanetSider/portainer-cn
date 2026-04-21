@@ -33,12 +33,12 @@ export function EnvironmentTypeTag({
 function getTypeLabel(environment: Environment) {
   if (isEdgeEnvironment(environment.Type)) {
     return environment.Edge.AsyncMode
-      ? 'Edge Agent Async'
-      : 'Edge Agent Standard';
+      ? '边缘代理异步模式'
+      : '边缘代理标准模式';
   }
 
   if (isLocalEnvironment(environment)) {
-    return 'Local';
+    return '本地';
   }
 
   if (environment.Type === EnvironmentType.Azure) {

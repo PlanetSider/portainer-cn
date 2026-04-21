@@ -46,7 +46,7 @@ export function ValuesDetails({
           }
           readonly
           fileName={`Revision #${selectedRevisionNumber}`}
-          placeholder="No values found"
+          placeholder="未找到值"
           height="60vh"
         />
       ) : (

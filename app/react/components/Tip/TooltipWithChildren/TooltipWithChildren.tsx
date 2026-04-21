@@ -49,7 +49,7 @@ export function TooltipWithChildren({
               rel="noreferrer"
               className={styles.tooltipBeteaser}
             >
-              Business Feature
+              商业版功能
             </a>
           )}
         </div>

@@ -94,7 +94,7 @@ function InnerSelector({
       onChange={(value) => {
         onChange(value.map((item) => item.Id));
       }}
-      placeholder="Select one or multiple group(s)"
+      placeholder="选择一个或多个分组"
       closeMenuOnSelect={false}
       data-cy="edge-stacks-groups-selector"
       id="edge-stacks-groups-selector"
@@ -102,11 +102,11 @@ function InnerSelector({
     />
   ) : (
     <div className="small text-muted">
-      No Edge groups are available. Head over to the{' '}
+      暂无可用的 Edge 分组。请前往{' '}
       <Link to="edge.groups" data-cy="edge-stacks-groups-view-link">
-        Edge groups view
+        Edge 分组页面
       </Link>{' '}
-      to create one.
+      创建分组。
     </div>
   );
 }

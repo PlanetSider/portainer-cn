@@ -34,7 +34,7 @@ export function GroupSelector() {
       options={options}
       value={
         createMutation.isLoading
-          ? { label: 'Creating...', value: 0 }
+          ? { label: '创建中...', value: 0 }
           : selectedValue
       }
       onCreateOption={handleCreate}
@@ -42,7 +42,7 @@ export function GroupSelector() {
       onBlur={onBlur}
       isLoading={createMutation.isLoading}
       isDisabled={createMutation.isLoading}
-      placeholder="Select a group"
+      placeholder="选择分组"
       isClearable
       data-cy="edge-devices-assignment-selector"
       id="edge-devices-assignment-selector"
@@ -55,7 +55,7 @@ export function GroupSelector() {
       {
         onSuccess: (data) => {
           setValue(data.Id);
-          notifySuccess('Group created', `Group ${data.Name} created`);
+          notifySuccess('分组已创建', `分组 ${data.Name} 已创建`);
         },
       }
     );

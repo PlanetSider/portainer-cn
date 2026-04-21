@@ -74,10 +74,10 @@ class PorAccessManagementController {
     }
 
     if (this.isRoleLimitedToBE(role)) {
-      return `${role.Name} (Business Feature)`;
+      return `${role.Name}（商业版功能）`;
     }
 
-    return `${role.Name} (Default)`;
+    return `${role.Name}（默认）`;
   }
 
   async $onInit() {

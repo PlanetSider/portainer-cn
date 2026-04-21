@@ -27,7 +27,7 @@ export const commandsTabs: Record<string, CommandTab> = {
   },
   swarmLinux: {
     id: 'swarm',
-    label: 'Docker Swarm',
+    label: 'Docker Swarm 集群',
     command: buildLinuxSwarmCommand,
   },
   standaloneLinux: {
@@ -42,7 +42,7 @@ export const commandsTabs: Record<string, CommandTab> = {
   },
   swarmWindows: {
     id: 'swarm',
-    label: 'Docker Swarm',
+    label: 'Docker Swarm 集群',
     command: buildWindowsSwarmCommand,
   },
   standaloneWindow: {

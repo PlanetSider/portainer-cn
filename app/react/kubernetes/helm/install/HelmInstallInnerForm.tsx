@@ -90,18 +90,18 @@ export function HelmInstallInnerForm({
   return (
     <Form className="form-horizontal">
       <div className="form-group !m-0">
-        <FormSection title="Configuration" className="mt-4">
+        <FormSection title="配置" className="mt-4">
           <FormControl
-            label="Version"
+            label="版本"
             inputId="version-input"
             isLoading={isVersionsLoading}
-            loadingText="Loading versions..."
+            loadingText="正在加载版本..."
           >
             <PortainerSelect<ChartVersion>
               value={selectedVersion}
               options={versionOptions}
-              noOptionsMessage={() => 'No versions found'}
-              placeholder="Select a version"
+              noOptionsMessage={() => '未找到版本'}
+              placeholder="选择版本"
               onChange={(version) => {
                 if (version) {
                   setFieldValue('version', version.Version);
@@ -121,19 +121,19 @@ export function HelmInstallInnerForm({
         <ManifestPreviewFormSection
           payload={payload}
           onChangePreviewValidation={setPreviewIsValid}
-          title="Manifest preview"
+          title="Manifest 预览"
           environmentId={environmentId}
         />
       </div>
 
       <LoadingButton
         className="!ml-0 mt-5"
-        loadingText="Installing Helm chart"
+        loadingText="正在安装 Helm Chart"
         isLoading={isSubmitting}
         disabled={!namespace || !name || !isRepoAvailable}
         data-cy="helm-install"
       >
-        Install
+        安装
       </LoadingButton>
     </Form>
   );

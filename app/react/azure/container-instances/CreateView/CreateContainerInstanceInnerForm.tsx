@@ -84,23 +84,23 @@ export function CreateContainerInstanceInnerForm({
         />
       </FormControl>
 
-      <FormSectionTitle>Container configuration</FormSectionTitle>
+      <FormSectionTitle>容器配置</FormSectionTitle>
 
-      <FormControl label="Name" inputId="name-input" errors={errors.name}>
+      <FormControl label="名称" inputId="name-input" errors={errors.name}>
         <Field
           name="name"
           as={Input}
           id="name-input"
-          placeholder="e.g. myContainer"
+          placeholder="例如：myContainer"
         />
       </FormControl>
 
-      <FormControl label="Image" inputId="image-input" errors={errors.image}>
+      <FormControl label="镜像" inputId="image-input" errors={errors.image}>
         <Field
           name="image"
           as={Input}
           id="image-input"
-          placeholder="e.g. nginx:alpine"
+          placeholder="例如：nginx:alpine"
         />
       </FormControl>
 
@@ -130,11 +130,11 @@ export function CreateContainerInstanceInnerForm({
 
       <div className="form-group">
         <div className="col-sm-12 small text-muted">
-          This will automatically deploy a container with a public IP address
+          这将自动部署一个带有公网 IP 地址的容器
         </div>
       </div>
 
-      <FormSectionTitle>Container Resources</FormSectionTitle>
+      <FormSectionTitle>容器资源</FormSectionTitle>
 
       <FormControl label="CPU" inputId="cpu-input" errors={errors.cpu}>
         <Field
@@ -169,11 +169,11 @@ export function CreateContainerInstanceInnerForm({
           <LoadingButton
             disabled={!isValid}
             isLoading={isSubmitting}
-            loadingText="Deployment in progress..."
+            loadingText="部署中..."
             icon={Plus}
             data-cy="aci-create-button"
           >
-            Deploy the container
+            部署容器
           </LoadingButton>
         </div>
       </div>

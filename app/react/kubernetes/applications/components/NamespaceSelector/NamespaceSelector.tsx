@@ -38,7 +38,7 @@ export function NamespaceSelector({
 
   return (
     <FormControl
-      label="Namespace"
+      label="命名空间"
       inputId="namespace-selector"
       isLoading={namespacesQuery.isLoading}
       errors={errors}
@@ -49,8 +49,8 @@ export function NamespaceSelector({
           options={namespaceNames}
           onChange={onChange}
           disabled={isEdit}
-          noOptionsMessage={() => 'No namespaces found'}
-          placeholder="No namespaces found" // will only show when there are no options
+          noOptionsMessage={() => '未找到命名空间'}
+          placeholder="未找到命名空间" // will only show when there are no options
           inputId="namespace-selector"
           data-cy="k8sAppCreate-nsSelect"
         />
@@ -77,8 +77,8 @@ export function NamespacePortainerSelect({
       options={options}
       onChange={onChange}
       disabled={isDisabled}
-      noOptionsMessage={() => 'No namespaces found'}
-      placeholder="No namespaces found" // will only show when there are no options
+      noOptionsMessage={() => '未找到命名空间'}
+      placeholder="未找到命名空间" // will only show when there are no options
       inputId="namespace-selector"
       data-cy="namespace-select"
     />

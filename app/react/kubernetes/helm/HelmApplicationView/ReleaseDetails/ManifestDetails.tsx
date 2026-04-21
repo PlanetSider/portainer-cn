@@ -38,7 +38,7 @@ export function ManifestDetails({
           value={manifest}
           readonly
           fileName={`Revision #${selectedRevisionNumber}`}
-          placeholder="No manifest found"
+          placeholder="未找到 Manifest"
           height="60vh"
         />
       ) : (

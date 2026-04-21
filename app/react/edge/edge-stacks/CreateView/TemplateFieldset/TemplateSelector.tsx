@@ -30,11 +30,11 @@ export function TemplateSelector({
   const { options, getTemplate, selectedValue } = useOptions(value);
 
   return (
-    <FormControl label="Template" inputId="template_selector" errors={error}>
+    <FormControl label="模板" inputId="template_selector" errors={error}>
       <ReactSelect
         inputId="template_selector"
         formatGroupLabel={GroupLabel}
-        placeholder="Select an Edge stack template"
+        placeholder="选择一个 Edge 堆栈模板"
         options={options}
         value={selectedValue}
         onChange={(value) => {
@@ -53,7 +53,7 @@ export function TemplateSelector({
         id="edge-stacks-create-template-selector"
       />
       {isLoadingValues && (
-        <InlineLoader>Loading template values...</InlineLoader>
+        <InlineLoader>正在加载模板值...</InlineLoader>
       )}
     </FormControl>
   );
@@ -109,7 +109,7 @@ function useOptions(value: SelectedTemplateValue) {
           )
         : [
             {
-              label: 'No edge custom templates available',
+               label: '暂无可用的 Edge 自定义模板',
 
               templateId: undefined,
               type: 'custom' as 'app' | 'custom',
@@ -122,11 +122,11 @@ function useOptions(value: SelectedTemplateValue) {
     () =>
       [
         {
-          label: 'Edge App Templates',
+          label: 'Edge 应用模板',
           options: appTemplateOptions,
         },
         {
-          label: 'Edge Custom Templates',
+          label: 'Edge 自定义模板',
           options: customTemplateOptions,
         },
       ] as const,

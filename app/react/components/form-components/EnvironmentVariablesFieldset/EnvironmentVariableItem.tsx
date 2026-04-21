@@ -19,14 +19,14 @@ export function EnvironmentVariableItem({
           <InputLabeled
             className="w-full"
             data-cy={`env-name_${index}`}
-            label="name"
+            label="名称"
             required
             value={item.name}
             onChange={(e) => handleChange({ name: e.target.value })}
             disabled={disabled}
             needsDeletion={item.needsDeletion}
             readOnly={readOnly}
-            placeholder="e.g. FOO"
+            placeholder="例如：FOO"
             size="small"
             id={`env-name${index}`}
           />
@@ -41,13 +41,13 @@ export function EnvironmentVariableItem({
         <InputLabeled
           className="w-1/2"
           data-cy={`env-value_${index}`}
-          label="value"
+          label="值"
           value={item.value}
           onChange={(e) => handleChange({ value: e.target.value })}
           disabled={disabled}
           needsDeletion={item.needsDeletion}
           readOnly={readOnly}
-          placeholder="e.g. bar"
+          placeholder="例如：bar"
           size="small"
           id={`env-value${index}`}
         />

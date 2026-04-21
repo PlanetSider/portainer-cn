@@ -68,7 +68,7 @@ export function ColorPicker({
         onBlur={handleBlur}
         className="w-28 uppercase"
         maxLength={7}
-        placeholder="e.g. #ffbbbb"
+        placeholder="例如：#ffbbbb"
         spellCheck={false}
         data-cy={dataCy}
       />

@@ -33,7 +33,7 @@ export function VolumeSelector({
   const selectedValue = volumes.find((vol) => vol.Name === value);
   return (
     <Select
-      placeholder="Select a volume"
+      placeholder="选择卷"
       options={volumes}
       getOptionValue={(vol) => vol.Name}
       isMulti={false}

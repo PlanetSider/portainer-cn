@@ -34,9 +34,7 @@ export function Note({
 
   let error = '';
   if (isRequired && minLength && (!value || value.length < minLength)) {
-    error = `You have entered ${value ? value.length : 0} of the ${minLength} ${
-      minLength === 1 ? 'character' : 'characters'
-    } minimum required.`;
+    error = `你已输入 ${value ? value.length : 0} 个字符，最少需要 ${minLength} 个字符。`;
   }
 
   return (
@@ -52,7 +50,7 @@ export function Note({
             className="!m-0 !p-0"
           >
             {isNoteOpen ? <ChevronUp /> : <ChevronRight />} <Edit />
-            <span className={isRequired ? 'required' : ''}>Note</span>
+            <span className={isRequired ? 'required' : ''}>备注</span>
           </Button>
         )}
         {!isExpandable && (
@@ -62,7 +60,7 @@ export function Note({
               isRequired ? 'required' : ''
             )}
           >
-            Note
+            备注
           </span>
         )}
       </div>
@@ -76,7 +74,7 @@ export function Note({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             rows={5}
-            placeholder="Enter a note about this application..."
+            placeholder="请输入有关此应用的备注..."
             minLength={minLength}
           />
           {error && (
