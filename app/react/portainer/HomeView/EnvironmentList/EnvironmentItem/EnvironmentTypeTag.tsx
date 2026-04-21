@@ -46,7 +46,7 @@ function getTypeLabel(environment: Environment) {
   }
 
   if (isAgentEnvironment(environment.Type)) {
-    return 'Agent';
+    return '代理';
   }
 
   return '';

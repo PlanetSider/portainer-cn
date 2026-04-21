@@ -17,16 +17,6 @@ export function CreateImageForm({
 
   return (
     <Form className="form-horizontal">
-      <div className="form-group">
-        <div className="col-sm-12">
-          <span className="small text-muted">
-            You can create an image from this container, this allows you to
-            backup important data or save helpful configurations. You&apos;ll be
-            able to spin up another container based on this image afterward.
-          </span>
-        </div>
-      </div>
-
       <ImageConfigFieldset
         autoComplete
         values={values.config}
@@ -41,8 +31,8 @@ export function CreateImageForm({
       <div className="form-group">
         <div className="col-sm-12">
           <span className="small text-muted">
-            Note: if you don&apos;t specify the tag in the image name,{' '}
-            <span className="label label-default">latest</span> will be used.
+            注意：如果你未在镜像名称中指定标签，将默认使用{' '}
+            <span className="label label-default">latest</span>。
           </span>
         </div>
       </div>
@@ -50,10 +40,10 @@ export function CreateImageForm({
       <LoadingButton
         isLoading={isLoading}
         disabled={!isValid}
-        loadingText="Creating image..."
+        loadingText="创建镜像中..."
         data-cy="create-image-button"
       >
-        Create
+        创建
       </LoadingButton>
     </Form>
   );
