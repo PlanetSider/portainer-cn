@@ -17,15 +17,15 @@ export function WebhookSettings({
 
   return (
     <FormControl
-      label="Webhook"
+      label="Webhook 地址"
       tooltip={
         !!docsLink && (
           <>
-            See{' '}
+            参见{' '}
             <HelpLink docLink={docsLink}>
               Portainer 关于 Webhook 用法的文档
             </HelpLink>
-            .
+            。
           </>
         )
       }
@@ -33,7 +33,7 @@ export function WebhookSettings({
       <div className="flex items-center gap-2">
         <span
           className="text-muted"
-          aria-label="webhook url"
+          aria-label="Webhook 地址 URL"
           role="textbox"
           aria-readonly
         >

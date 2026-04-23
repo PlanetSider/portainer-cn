@@ -68,7 +68,7 @@ export function KubeConfigTeaserForm() {
           </FormControl>
 
           <FormControl
-            label="kubeconfig 文件"
+            label="Kubeconfig 文件"
             required
             inputId="kubeconfig_file"
           >

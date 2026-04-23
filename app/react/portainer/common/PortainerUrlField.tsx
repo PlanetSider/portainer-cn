@@ -33,7 +33,7 @@ export function PortainerUrlField({
         id={id}
         name={fieldName}
         as={Input}
-        placeholder="https://portainer.mydomain.tld"
+        placeholder="例如 https://portainer.mydomain.tld"
         required={required}
         data-cy="endpointCreate-portainerServerUrlInput"
         readOnly={readonly}

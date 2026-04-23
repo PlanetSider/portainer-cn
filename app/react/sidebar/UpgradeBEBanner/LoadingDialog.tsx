@@ -10,13 +10,13 @@ export function LoadingDialog() {
   useWaitForServerStatus();
 
   return (
-    <Modal aria-label="Upgrade Portainer to Business Edition">
+    <Modal aria-label="升级 Portainer 到 Business Edition">
       <Modal.Body>
         <div className="flex w-full flex-col items-center justify-center">
           <Icon
             icon={Loader2}
             className="animate-spin-slow !text-8xl !text-blue-8"
-            aria-label="loading"
+            aria-label="加载中"
           />
 
           <h1 className="!text-2xl">正在升级 Portainer...</h1>

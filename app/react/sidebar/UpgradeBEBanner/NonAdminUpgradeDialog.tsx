@@ -10,7 +10,7 @@ export function NonAdminUpgradeDialog({
   onDismiss: () => void;
 }) {
   return (
-    <Modal aria-label="Upgrade Portainer to Business Edition">
+    <Modal aria-label="升级 Portainer 到 Business Edition">
       <Modal.Header
         title="请联系管理员"
         modalType={ModalType.Warn}

@@ -15,7 +15,7 @@ export function GetLicenseDialog({
   return (
     <Modal
       onDismiss={onDismiss}
-      aria-label="Upgrade Portainer to Business Edition"
+      aria-label="升级 Portainer 到 Business Edition"
       size="lg"
       className="!bg-white [&>.close-button]:!text-black"
     >

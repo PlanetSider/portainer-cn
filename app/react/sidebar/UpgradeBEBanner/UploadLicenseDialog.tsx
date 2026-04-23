@@ -34,7 +34,7 @@ export function UploadLicenseDialog({
   return (
     <Modal
       onDismiss={onDismiss}
-      aria-label="Upgrade Portainer to Business Edition"
+      aria-label="升级 Portainer 到 Business Edition"
     >
       <Modal.Header
         title={<h4 className="text-xl font-medium">升级 Portainer</h4>}

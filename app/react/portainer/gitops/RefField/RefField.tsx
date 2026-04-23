@@ -40,9 +40,9 @@ export function RefField({
       errors={error}
       tip={
         <>
-          Specify a reference of the repository using the following syntax:
-          branches with <code>refs/heads/branch_name</code> or tags with{' '}
-          <code>refs/tags/tag_name</code>.
+          请使用以下语法指定仓库引用：分支使用{' '}
+          <code>refs/heads/branch_name</code>，标签使用{' '}
+          <code>refs/tags/tag_name</code>。
         </>
       }
     >
@@ -62,11 +62,10 @@ export function RefField({
       errors={error}
       tip={
         <>
-          Specify a reference of the repository using the following syntax:
-          branches with <code>refs/heads/branch_name</code> or tags with{' '}
-          <code>refs/tags/tag_name</code>. If not specified, will use the
-          default <code>HEAD</code> reference normally the <code>main</code>{' '}
-          branch.
+          请使用以下语法指定仓库引用：分支使用{' '}
+          <code>refs/heads/branch_name</code>，标签使用{' '}
+          <code>refs/tags/tag_name</code>。如未指定，将默认使用{' '}
+          <code>HEAD</code> 引用，通常为 <code>main</code> 分支。
         </>
       }
     >
@@ -75,7 +74,7 @@ export function RefField({
         data-cy="repository-reference-input"
         value={inputValue}
         onChange={(e) => updateInputValue(e.target.value)}
-        placeholder="refs/heads/main"
+        placeholder="例如 refs/heads/main"
       />
     </Wrapper>
   );

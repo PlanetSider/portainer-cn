@@ -98,7 +98,7 @@ export function BackupS3Form() {
             )}
 
             <FormControl
-              label="Access Key ID"
+              label="Access Key ID 访问密钥"
               inputId="access_key_id"
               errors={errors.accessKeyID}
             >
@@ -114,7 +114,7 @@ export function BackupS3Form() {
             </FormControl>
 
             <FormControl
-              label="Secret Access Key"
+              label="Secret Access Key 密钥"
               inputId="secret_access_key"
               errors={errors.secretAccessKey}
             >

@@ -190,14 +190,14 @@ export function GitReferenceCard({
         <LineItem
           label="自动更新"
           value={autoUpdate ? '开启' : '关闭'}
-          title="auto-update"
+            title="自动更新"
           data-cy="git-auto-update"
         />
         {!!autoUpdateInterval && (
           <LineItem
             label="间隔"
             value={autoUpdateInterval}
-            title="auto-update-interval"
+            title="自动更新间隔"
             data-cy="git-interval"
           />
         )}
@@ -218,7 +218,7 @@ export function GitReferenceCard({
                 </CopyButton>
               </>
             }
-            title="webhook"
+            title="Webhook 地址"
             data-cy="git-webhook"
           />
         )}

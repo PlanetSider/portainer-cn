@@ -90,7 +90,7 @@ export function RelativePathFieldset({
                   <Input
                     name="FilesystemPath"
                     data-cy="relative-path-filesystem-path-input"
-                    placeholder="/mnt"
+                    placeholder="例如 /mnt"
                     disabled={isEditing}
                     value={value.FilesystemPath}
                     onChange={(e) =>
@@ -140,10 +140,9 @@ export function RelativePathFieldset({
               <InsightsBox
                 content={
                   <p>
-                    Files named <code>$&#123;PORTAINER_EDGE_ID&#125;.env</code>{' '}
-                    and/or <code>$&#123;PORTAINER_EDGE_GROUP&#125;.env</code>{' '}
-                    contained by the config folder will be loaded for compose
-                    file interpolation.
+                     配置目录中名为 <code>$&#123;PORTAINER_EDGE_ID&#125;.env</code>{' '}
+                     和/或 <code>$&#123;PORTAINER_EDGE_GROUP&#125;.env</code>{' '}
+                     的文件将被加载，用于 Compose 文件插值。
                   </p>
                 }
                 header="GitOps Edge 配置"
@@ -167,7 +166,7 @@ export function RelativePathFieldset({
                     <Input
                       name="FilesystemPath"
                       data-cy="per-device-configs-filesystem-path-input"
-                      placeholder="/mnt"
+                      placeholder="例如 /mnt"
                       disabled={isEditing}
                       value={value.FilesystemPath}
                       onChange={(e) =>
@@ -189,7 +188,7 @@ export function RelativePathFieldset({
               <div className="form-group">
                 <div className="col-sm-12">
                   <FormControl
-                    label="目录"
+                      label="目录路径"
                     errors={errors?.PerDeviceConfigsPath}
                     inputId="per_device_configs_path_input"
                     required
@@ -199,7 +198,7 @@ export function RelativePathFieldset({
                       onChange={(value) =>
                         handleChange({ PerDeviceConfigsPath: value })
                       }
-                      placeholder="config"
+                      placeholder="例如 config"
                       model={gitModel || dummyGitForm}
                       readOnly={isEditing}
                       dirOnly

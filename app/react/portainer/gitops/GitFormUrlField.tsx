@@ -123,8 +123,8 @@ export function GitFormUrlField({
               className="vertical-center"
               color="light"
               icon={RefreshCcw}
-              title="刷新 Git 仓库"
-              aria-label="刷新 Git 仓库"
+               title="刷新 Git 仓库地址"
+               aria-label="刷新 Git 仓库地址"
               disabled={!model.RepositoryURLValid}
             />
           </span>

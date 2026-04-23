@@ -81,12 +81,12 @@ export function DeployForm({
     >
       {({ values, errors, setFieldValue, isValid }) => (
         <Form className="form-horizontal">
-          <FormSection title="Configuration">
+          <FormSection title="配置">
             <NameField
               value={values.name}
               onChange={(v) => setFieldValue('name', v)}
               errors={errors.name}
-              placeholder="e.g. mystack"
+                placeholder="例如 mystack"
             />
           </FormSection>
 
@@ -121,20 +121,20 @@ export function DeployForm({
               }}
               type="yaml"
               error={errors.fileContent}
-              textTip="Define or paste the content of your docker compose file here"
+              textTip="请在此定义或粘贴 Docker Compose 文件内容"
               readonly={isGit}
               data-cy="custom-template-creation-editor"
             >
               <p>
-                You can get more information about Compose file format in the{' '}
+                你可以在{' '}
                 <a
                   href="https://docs.docker.com/compose/compose-file/"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  official documentation
+                  官方文档
                 </a>
-                .
+                中了解更多 Compose 文件格式信息。
               </p>
             </WebEditorForm>
           </AdvancedSettings>
@@ -163,8 +163,8 @@ export function DeployForm({
               }}
               color="default"
               data-cy="cancel-stack-creation"
-            >
-              隐藏
+              >
+                取消
             </Button>
           </FormActions>
         </Form>

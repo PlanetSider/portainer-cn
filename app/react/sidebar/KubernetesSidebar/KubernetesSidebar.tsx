@@ -90,7 +90,7 @@ export function KubernetesSidebar({ environmentId }: Props) {
         to="kubernetes.configurations"
         params={{ endpointId: environmentId }}
         icon={Lock}
-        label="ConfigMap 与 Secret"
+        label="ConfigMap 和 Secret"
         data-cy="k8sSidebar-configurations"
       />
 
@@ -119,7 +119,7 @@ export function KubernetesSidebar({ environmentId }: Props) {
         <SidebarItem
           to="kubernetes.moreResources.jobs"
           params={{ endpointId: environmentId }}
-          label="CronJob 与 Job"
+            label="CronJob 和 Job"
           data-cy="k8sSidebar-jobs"
           isSubMenu
         />

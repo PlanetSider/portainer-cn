@@ -16,7 +16,7 @@ export function LogoFieldset() {
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
-            label="使用自定义 Logo"
+            label="使用自定义 Logo 标志"
             data-cy="custom-logo-switch"
             checked={isEnabled}
             name="toggle_logo"

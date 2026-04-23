@@ -66,9 +66,7 @@ export function StackDeployForm({
   if (!isDeployable) {
     return (
       <div className="form-group">
-        <TextTip>
-          This template type cannot be deployed on this environment.
-        </TextTip>
+          <TextTip>此模板类型无法部署到当前环境。</TextTip>
       </div>
     );
   }
@@ -82,7 +80,7 @@ export function StackDeployForm({
     >
       {({ values, errors, setFieldValue, isValid }) => (
         <Form className="form-horizontal">
-          <FormSection title="Configuration">
+          <FormSection title="配置">
             <NameField
               value={values.name}
               onChange={(v) => setFieldValue('name', v)}
@@ -118,7 +116,7 @@ export function StackDeployForm({
               color="default"
               data-cy="cancel-deploy-stack-button"
             >
-              隐藏
+              取消
             </Button>
           </FormActions>
         </Form>
