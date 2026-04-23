@@ -22,7 +22,7 @@ export function AdvancedForm({
       <TextTip color="blue">
         使用高级模式时，镜像和仓库<b>必须</b>是公开可访问的。
       </TextTip>
-      <FormControl label="Image" inputId="image-field" errors={errors?.image}>
+      <FormControl label="镜像" inputId="image-field" errors={errors?.image}>
         <Input
           id="image-field"
           value={values.image}

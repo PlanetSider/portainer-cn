@@ -19,35 +19,35 @@ vi.mock('@uirouter/react', async (importOriginal: () => Promise<object>) => ({
 it('should render SimpleForm when useRegistry is true', () => {
   const { getByText } = renderComponent({ values: { useRegistry: true } });
 
-  expect(getByText('Advanced mode')).toBeInTheDocument();
+  expect(getByText('高级模式')).toBeInTheDocument();
 });
 
 it('should render AdvancedForm when useRegistry is false', () => {
   const { getByText } = renderComponent({ values: { useRegistry: false } });
 
-  expect(getByText('Simple mode')).toBeInTheDocument();
+  expect(getByText('简单模式')).toBeInTheDocument();
 });
 
-it('should call setFieldValue with useRegistry set to false when "Advanced mode" button is clicked', () => {
+it('should call setFieldValue with useRegistry set to false when "高级模式" button is clicked', () => {
   const setFieldValue = vi.fn();
   const { getByText } = renderComponent({
     values: { useRegistry: true },
     setFieldValue,
   });
 
-  fireEvent.click(getByText('Advanced mode'));
+  fireEvent.click(getByText('高级模式'));
 
   expect(setFieldValue).toHaveBeenCalledWith('useRegistry', false);
 });
 
-it('should call setFieldValue with useRegistry set to true when "Simple mode" button is clicked', () => {
+it('should call setFieldValue with useRegistry set to true when "简单模式" button is clicked', () => {
   const setFieldValue = vi.fn();
   const { getByText } = renderComponent({
     values: { useRegistry: false },
     setFieldValue,
   });
 
-  fireEvent.click(getByText('Simple mode'));
+  fireEvent.click(getByText('简单模式'));
 
   expect(setFieldValue).toHaveBeenCalledWith('useRegistry', true);
 });
