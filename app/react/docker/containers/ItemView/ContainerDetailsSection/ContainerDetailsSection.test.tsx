@@ -61,6 +61,6 @@ describe('ContainerDetailsSection', () => {
     expect(screen.queryByText('Labels')).not.toBeInTheDocument();
     expect(screen.queryByText('Sysctls')).not.toBeInTheDocument();
     expect(screen.queryByText('GPUS')).not.toBeInTheDocument();
-    expect(screen.queryByText('Port configuration')).not.toBeInTheDocument();
+    expect(screen.queryByText('端口配置')).not.toBeInTheDocument();
   });
 });
