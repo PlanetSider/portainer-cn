@@ -67,12 +67,12 @@ const regexp = new RegExp(STACK_NAME_VALIDATION_REGEX);
 
 const baseNameValidation = string().test(
   'valid-format-if-provided',
-  "Stack name must consist of lower case alphanumeric characters, '_' or '-'",
+  "堆栈名称只能包含小写字母、数字、'_' 或 '-'",
   (value) => !value || regexp.test(value)
 );
 
 const baseEnvValidation = number().required(
-  'Target environment must be selected'
+  '必须选择目标环境'
 );
 
 export function getBaseValidationSchema() {
@@ -84,7 +84,7 @@ export function getBaseValidationSchema() {
 
 export function getDuplicateValidationSchema() {
   return object({
-    name: baseNameValidation.required('Stack name is required'),
+    name: baseNameValidation.required('堆栈名称为必填项'),
     environmentId: baseEnvValidation,
   });
 }
@@ -97,7 +97,7 @@ export function getMigrateValidationSchema(
     name: baseNameValidation
       .test(
         'required-for-rename',
-        'Stack name is required when renaming',
+        '重命名时必须填写堆栈名称',
         function validate(value) {
           const { environmentId } = this.parent;
           // If renaming (same environment), name is required
@@ -113,7 +113,7 @@ export function getMigrateValidationSchema(
       )
       .test(
         'not-same-name-for-rename',
-        "Can't rename to the same name",
+        '不能重命名为相同名称',
         function validate(value) {
           const { environmentId } = this.parent;
           // If renaming (same environment) and name matches current stack name, reject

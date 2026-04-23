@@ -164,7 +164,7 @@ describe('form submission', () => {
 
     await waitFor(() => {
       expect(mockConfirm).toHaveBeenCalledWith(
-        'Do you want to force an update of the stack?',
+        '是否要强制更新此堆栈？',
         false // stackType is DockerCompose
       );
     });
@@ -274,10 +274,7 @@ describe('form submission', () => {
     await user.click(deployButton);
 
     await waitFor(() => {
-      expect(notifySuccess).toHaveBeenCalledWith(
-        'Success',
-        'Stack successfully deployed'
-      );
+      expect(notifySuccess).toHaveBeenCalledWith('成功', '堆栈部署成功');
       expect(onSubmitSuccess).toHaveBeenCalled();
     });
 

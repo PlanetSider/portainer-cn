@@ -309,7 +309,7 @@ function testEnvironmentIdValidation(schema: AnySchema) {
   it('should require environmentId', async () => {
     await expect(
       schema.validate({ name: 'mystack', environmentId: undefined })
-    ).rejects.toThrow('Target environment must be selected');
+    ).rejects.toThrow('必须选择目标环境');
   });
 
   it('should accept valid environmentId', async () => {
