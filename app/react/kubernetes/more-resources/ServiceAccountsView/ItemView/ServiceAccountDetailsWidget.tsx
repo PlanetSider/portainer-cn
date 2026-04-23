@@ -33,11 +33,11 @@ export function ServiceAccountDetailsWidget({ namespace, name }: Props) {
               dataCy="k8sSADetail-table"
               className="[&_td:first-child]:w-2/5"
             >
-              <DetailsRow label="Name">
+              <DetailsRow label="名称">
                 {serviceAccount?.name}
                 {serviceAccount?.isSystem && <SystemBadge className="ml-1" />}
               </DetailsRow>
-              <DetailsRow label="Namespace">
+              <DetailsRow label="命名空间 Namespace">
                 <Link
                   to="kubernetes.resourcePools.resourcePool"
                   params={{ id: namespace }}
@@ -47,7 +47,7 @@ export function ServiceAccountDetailsWidget({ namespace, name }: Props) {
                 </Link>
                 {serviceAccount?.isSystem && <SystemBadge className="ml-1" />}
               </DetailsRow>
-              <DetailsRow label="Creation date">
+              <DetailsRow label="创建时间">
                 {serviceAccount?.creationDate
                   ? new Date(serviceAccount.creationDate).toLocaleString()
                   : '-'}
@@ -55,15 +55,15 @@ export function ServiceAccountDetailsWidget({ namespace, name }: Props) {
               <DetailsRow
                 label={
                   <>
-                    Automount token
-                    <Tooltip message="Controls whether pods automatically receive an API token for cluster access. Disabling this reduces attack surface for workloads that don't need Kubernetes API access. Individual pods can still override this setting." />
+                    自动挂载令牌 Automount token
+                    <Tooltip message="控制 Pod 是否会自动获取用于访问集群的 API 令牌。禁用后，可减少不需要 Kubernetes API 访问的工作负载暴露面。单个 Pod 仍可覆盖此设置。" />
                   </>
                 }
               >
                 <span className="flex items-center">
                   {serviceAccount?.automountServiceAccountToken === false
-                    ? 'Disabled'
-                    : 'Enabled'}
+                    ? '已禁用'
+                    : '已启用'}
                 </span>
               </DetailsRow>
 
@@ -110,19 +110,16 @@ function ImagePullSecretsRow({
     <DetailsRow
       label={
         <span className="flex items-center">
-          Image pull secrets
+           镜像拉取密钥 Image pull secrets
           <Tooltip
             message={
               name === 'default' ? (
                 <>
-                  <code>imagePullSecrets</code> from this &apos;default&apos;
-                  service account apply to all <strong>pods</strong> without an
-                  explicit service account in this namespace.
+                  此 &apos;default&apos; Service Account 的 <code>imagePullSecrets</code> 会应用于本命名空间内所有未显式指定 Service Account 的 <strong>Pod</strong>。
                 </>
               ) : (
                 <>
-                  These <code>imagePullSecrets</code> are inherited by pods
-                  using this service account.
+                  使用此 Service Account 的 Pod 会继承这些 <code>imagePullSecrets</code>。
                 </>
               )
             }
@@ -223,7 +220,7 @@ function ImagePullSecretBadge({
   );
 
   const registryNotFoundMessage =
-    'The registry associated with this secret could not be found. It may have been deleted.';
+    '找不到与此密钥关联的镜像仓库，它可能已被删除。';
   const showRegistryNotFound = !!registryId && !isRegistryLoading && !registry;
 
   const secretLink = (
@@ -240,7 +237,7 @@ function ImagePullSecretBadge({
   const missingSecretContent = (
     <>
       {secretName}
-      <Tooltip message="This secret doesn't exist in the namespace." />
+      <Tooltip message="该 Secret 在此命名空间中不存在。" />
     </>
   );
 

@@ -41,7 +41,7 @@ export function NamespaceAppsDatatable({ namespace }: { namespace: string }) {
       settingsManager={tableState}
       columns={columns}
       disableSelect
-      title="Applications running in this namespace"
+      title="此命名空间中运行的应用"
       titleIcon={Code}
       isLoading={applicationsQuery.isLoading}
       renderTableSettings={() => (

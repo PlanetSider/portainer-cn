@@ -20,7 +20,7 @@ export function NamespaceYAMLEditor() {
         <div className="col-sm-12">
           <Widget>
             <WidgetBody>
-              <InlineLoader>Loading namespace YAML...</InlineLoader>
+              <InlineLoader>正在加载命名空间 YAML...</InlineLoader>
             </WidgetBody>
           </Widget>
         </div>

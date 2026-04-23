@@ -57,7 +57,7 @@ export function ServiceAccountsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={serviceAccountsQuery.isLoading}
-      emptyContentLabel="No service accounts found"
+      emptyContentLabel="未找到 Service Account"
       title="Service Accounts"
       titleIcon={User}
       getRowId={(row) => row.uid}
@@ -103,7 +103,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
         confirmMessage={
           <>
             <p>
-              Are you sure you want to delete the selected service account(s)?
+              你确定要删除所选 Service Account 吗？
             </p>
             <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
               {selectedItems.map((s, index) => (
@@ -133,14 +133,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Service account(s) successfully removed',
+            'Service Account 已成功删除',
             serviceAccounts.map((sa) => `${sa.namespace}/${sa.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete service account(s)',
+            '无法删除 Service Account',
             error as Error,
             serviceAccounts.map((sa) => `${sa.namespace}/${sa.name}`).join(', ')
           );

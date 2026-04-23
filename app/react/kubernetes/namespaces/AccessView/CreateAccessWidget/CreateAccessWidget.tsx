@@ -65,13 +65,12 @@ export function CreateAccessWidget() {
   return (
     <div className="row">
       <div className="col-sm-12">
-        <Widget aria-label="Create access">
-          <WidgetTitle icon={UserPlusIcon} title="Create access" />
+        <Widget aria-label="创建访问权限">
+          <WidgetTitle icon={UserPlusIcon} title="创建访问权限" />
           <WidgetBody>
             {isRBACEnabledQuery.data === false && <RBACAlert />}
             <TextTip className="mb-2" childrenWrapperClassName="text-warning">
-              Adding user access will require the affected user(s) to logout and
-              login for the changes to be taken into account.
+              添加用户访问权限后，受影响的用户需要重新退出并登录，变更才会生效。
             </TextTip>
             {isRBACEnabledQuery.data !== false && (
               <Formik<CreateAccessValues>
@@ -115,10 +114,10 @@ export function CreateAccessWidget() {
         configMap: configMapPayload,
         configMapName: PortainerNamespaceAccessesConfigMap.configMapName,
       });
-      notifySuccess('Success', 'Namespace access updated');
+        notifySuccess('成功', '命名空间访问权限已更新');
       resetForm();
     } catch (error) {
-      notifyError('Failed to update namespace access', error as Error);
+      notifyError('更新命名空间访问权限失败', error as Error);
     }
   }
 }

@@ -32,10 +32,10 @@ export function ServiceAccountView() {
   return (
     <>
       <PageHeader
-        title="Service account details"
+        title="Service Account 详情"
         breadcrumbs={[
           {
-            label: 'Service accounts',
+              label: 'Service Accounts',
             link: 'kubernetes.moreResources.serviceAccounts',
           },
           {

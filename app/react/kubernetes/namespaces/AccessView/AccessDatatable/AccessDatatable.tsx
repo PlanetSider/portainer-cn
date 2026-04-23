@@ -60,7 +60,7 @@ export function AccessDatatable() {
   return (
     <Datatable
       data-cy="access-datatable"
-      title="Namespace access"
+      title="命名空间访问权限"
       titleIcon={UserX}
       dataset={namespaceAccesses}
       isLoading={accessConfigMapQuery.isLoading}
@@ -71,8 +71,8 @@ export function AccessDatatable() {
       renderTableActions={(selectedItems) => (
         <DeleteButton
           isLoading={updateConfigMapMutation.isLoading}
-          loadingText="Removing..."
-          confirmMessage="Are you sure you want to unauthorized the selected users or teams?"
+          loadingText="移除中..."
+          confirmMessage="你确定要取消所选用户或团队的授权吗？"
           onConfirmed={() => handleUpdate(selectedItems)}
           disabled={
             selectedItems.length === 0 ||
@@ -98,10 +98,10 @@ export function AccessDatatable() {
         configMap: configMapPayload,
         configMapName: PortainerNamespaceAccessesConfigMap.configMapName,
       });
-      notifySuccess('Success', 'Namespace access updated');
+      notifySuccess('成功', '命名空间访问权限已更新');
       router.stateService.reload();
     } catch (error) {
-      notifyError('Failed to update namespace access', error as Error);
+      notifyError('更新命名空间访问权限失败', error as Error);
     }
   }
 }

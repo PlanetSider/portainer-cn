@@ -33,11 +33,11 @@ export function NamespaceSummary({ initialValues, values, isValid }: Props) {
     enabledQuotaInitialValues && !enabledQuotaNewValues;
 
   return (
-    <FormSection title="Summary" isFoldable defaultFolded={false}>
+    <FormSection title="摘要 Summary" isFoldable defaultFolded={false}>
       <div className="form-group">
         <div className="col-sm-12">
           <TextTip color="blue">
-            Portainer will execute the following Kubernetes actions.
+            Portainer 将执行以下 Kubernetes 操作。
           </TextTip>
         </div>
       </div>
@@ -45,25 +45,25 @@ export function NamespaceSummary({ initialValues, values, isValid }: Props) {
         <ul>
           {isCreatingNamespace && (
             <li>
-              Create a <span className="bold">Namespace</span> named{' '}
+              创建名为 <span className="bold">Namespace</span> 的资源{' '}
               <code>{values.name}</code>
             </li>
           )}
           {isCreatingResourceQuota && (
             <li>
-              Create a <span className="bold">ResourceQuota</span> named{' '}
+              创建名为 <span className="bold">ResourceQuota</span> 的资源{' '}
               <code>portainer-rq-{values.name}</code>
             </li>
           )}
           {isUpdatingResourceQuota && (
             <li>
-              Update a <span className="bold">ResourceQuota</span> named{' '}
+              更新名为 <span className="bold">ResourceQuota</span> 的资源{' '}
               <code>portainer-rq-{values.name}</code>
             </li>
           )}
           {isDeletingResourceQuota && (
             <li>
-              Delete a <span className="bold">ResourceQuota</span> named{' '}
+              删除名为 <span className="bold">ResourceQuota</span> 的资源{' '}
               <code>portainer-rq-{values.name}</code>
             </li>
           )}

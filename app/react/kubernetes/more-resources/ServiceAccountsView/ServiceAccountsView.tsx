@@ -12,7 +12,7 @@ export function ServiceAccountsView() {
   return (
     <>
       <PageHeader
-        title="Service Account list"
+        title="Service Account 列表"
         breadcrumbs="Service Accounts"
         reload
       />

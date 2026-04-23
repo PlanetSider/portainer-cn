@@ -28,7 +28,7 @@ export function StorageQuotaItem({ storageClass }: Props) {
             <SwitchField
               data-cy="k8sNamespaceEdit-storageClassQuota"
               disabled
-              label="Enable quota"
+              label="启用配额"
               labelClass="col-sm-3 col-lg-2"
               fieldClass="pt-2"
               checked={false}

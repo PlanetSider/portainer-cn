@@ -95,16 +95,16 @@ export function UpdateNamespaceForm() {
 
   if (isQueryError) {
     return (
-      <Alert color="error" title="Error">
-        Error loading namespace
+      <Alert color="error" title="错误">
+        加载命名空间失败
       </Alert>
     );
   }
 
   if (!initialValues) {
     return (
-      <Alert color="warn" title="Warning">
-        No data found for namespace
+      <Alert color="warn" title="警告">
+        未找到命名空间数据
       </Alert>
     );
   }
@@ -186,8 +186,8 @@ export function UpdateNamespaceForm() {
       {
         onSuccess: () => {
           notifySuccess(
-            'Success',
-            `Namespace '${values.name}' updated successfully`
+            '成功',
+            `命名空间 '${values.name}' 已成功更新`
           );
           router.stateService.reload();
         },
