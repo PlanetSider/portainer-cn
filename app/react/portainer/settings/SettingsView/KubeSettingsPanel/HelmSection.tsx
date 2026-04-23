@@ -18,13 +18,13 @@ export function HelmSection() {
             to="https://helm.sh/docs/topics/chart_repository/"
             data-cy="helm-repository-link"
           >
-            Helm repository
+            Helm 仓库
           </ExternalLink>{' '}
           的 URL。
         </TextTip>
       </div>
 
-      <FormControl label="URL" errors={error} inputId="helm-repo-url">
+      <FormControl label="URL 地址" errors={error} inputId="helm-repo-url">
         <Field
           as={Input}
           id="helm-repo-url"

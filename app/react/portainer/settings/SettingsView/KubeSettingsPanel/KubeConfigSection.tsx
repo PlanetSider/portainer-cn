@@ -32,7 +32,7 @@ export function KubeConfigSection() {
     useField<string>('kubeconfigExpiry');
 
   return (
-    <FormSection title="Kubeconfig">
+    <FormSection title="Kubeconfig 配置">
       <FormControl label="Kubeconfig 过期时间" errors={error}>
         <PortainerSelect
           value={value}

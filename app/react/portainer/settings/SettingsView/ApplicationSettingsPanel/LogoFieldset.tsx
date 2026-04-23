@@ -33,7 +33,7 @@ export function LogoFieldset() {
               你可以在此指定 Logo 的 URL。为了获得最佳显示效果，Logo 尺寸建议为 155px x 55px。
             </span>
           </div>
-          <FormControl label="URL" inputId="logo_url" errors={error} required>
+          <FormControl label="URL 地址" inputId="logo_url" errors={error} required>
             <Field
               as={Input}
               name={name}

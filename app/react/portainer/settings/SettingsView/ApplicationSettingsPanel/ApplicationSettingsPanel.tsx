@@ -93,7 +93,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
 
       <EdgeCheckinIntervalField
         value={values.edgeAgentCheckinInterval}
-        label="Edge Agent 默认轮询频率"
+        label="边缘代理默认轮询频率"
         isDefaultHidden
         onChange={(value) => setFieldValue('edgeAgentCheckinInterval', value)}
       />

@@ -6,24 +6,21 @@ export function confirmDisassociate() {
   const message = (
     <>
       <p>
-        Disassociating this Edge environment will mark it as non associated and
-        will clear the registered Edge ID.
+        解除关联此边缘环境后，会将其标记为未关联状态，并清除已注册的边缘 ID。
       </p>
       <p>
-        Any agent started with the Edge key associated to this environment will
-        be able to re-associate with this environment.
+        任何使用与此环境关联的边缘密钥启动的代理，都可以重新与此环境建立关联。
       </p>
       <p>
-        You can re-use the Edge ID and Edge key that you used to deploy the
-        existing Edge agent to associate a new Edge device to this environment.
+        你可以复用部署现有边缘代理时使用的边缘 ID 和边缘密钥，将新的边缘设备关联到此环境。
       </p>
     </>
   );
 
   return confirm({
-    title: 'About disassociating',
+    title: '关于解除关联',
     modalType: ModalType.Warn,
     message,
-    confirmButton: buildConfirmButton('Disassociate'),
+    confirmButton: buildConfirmButton('解除关联'),
   });
 }

@@ -31,7 +31,7 @@ export function TemplatesUrlSection() {
         </div>
       </div>
 
-      <FormControl label="URL" inputId="templates_url" errors={error}>
+      <FormControl label="URL 地址" inputId="templates_url" errors={error}>
         <Field
           as={Input}
           id="templates_url"

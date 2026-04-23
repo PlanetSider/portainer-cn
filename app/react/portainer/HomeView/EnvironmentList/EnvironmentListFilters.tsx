@@ -188,9 +188,9 @@ function getConnectionTypeOptions(platformTypes: PlatformType[]) {
 
   const connectionTypesDefaultOptions = [
     { value: ConnectionType.API, label: 'API' },
-    { value: ConnectionType.Agent, label: 'Agent' },
-    { value: ConnectionType.EdgeAgentStandard, label: 'Edge Agent Standard' },
-    { value: ConnectionType.EdgeAgentAsync, label: 'Edge Agent Async' },
+    { value: ConnectionType.Agent, label: '代理' },
+    { value: ConnectionType.EdgeAgentStandard, label: '边缘代理 Standard' },
+    { value: ConnectionType.EdgeAgentAsync, label: '边缘代理 Async' },
   ];
 
   if (platformTypes.length === 0) {
