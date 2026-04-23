@@ -49,7 +49,7 @@ export function StackDuplicationForm({
 
   return (
     <Widget>
-      <WidgetTitle title="Stack duplication / migration" icon={Copy} />
+      <WidgetTitle title="堆栈复制 / 迁移" icon={Copy} />
       <WidgetBody>
         <Formik
           initialValues={initialValues}
@@ -88,9 +88,9 @@ export function StackDuplicationForm({
     const errors = await validateForm(() => schema, { environmentId, name });
     if (errors) {
       notifyError(
-        'Validation Error',
+          '校验错误',
         undefined,
-        'Please fix the errors and try again.'
+          '请修正错误后重试。'
       );
       return;
     }
@@ -105,11 +105,11 @@ export function StackDuplicationForm({
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Stack successfully duplicated');
+          notifySuccess('成功', '堆栈已成功复制');
           router.stateService.go('docker.stacks', {}, { reload: true });
         },
         onError(error) {
-          notifyError('Failure', error as Error, 'Unable to duplicate stack');
+          notifyError('失败', error as Error, '无法复制堆栈');
         },
       }
     );
@@ -122,13 +122,13 @@ export function StackDuplicationForm({
     const isRename = environmentId === currentEnvironmentId;
 
     const confirmed = await confirm({
-      title: 'Are you sure?',
+      title: '确定吗？',
       modalType: ModalType.Warn,
       message: isRename
-        ? 'This action will deploy a new instance of this stack with the new name that will replace the current stack. Please note that this does NOT migrate the content of any persistent volumes that may be attached to this stack.'
-        : 'This action will deploy a new instance of this stack on the target environment, please note that this does NOT relocate the content of any persistent volumes that may be attached to this stack.',
+          ? '此操作将以新名称部署此堆栈的新实例，并替换当前堆栈。请注意，这不会迁移任何附加到此堆栈的持久卷内容。'
+          : '此操作将在目标环境中部署此堆栈的新实例。请注意，这不会迁移任何附加到此堆栈的持久卷内容。',
       confirmButton: buildConfirmButton(
-        isRename ? 'Rename' : 'Migrate',
+        isRename ? '重命名' : '迁移',
         'danger'
       ),
     });
@@ -145,9 +145,9 @@ export function StackDuplicationForm({
 
     if (errors) {
       notifyError(
-        'Validation Error',
+          '校验错误',
         undefined,
-        'Please fix the errors and try again.'
+          '请修正错误后重试。'
       );
       return;
     }

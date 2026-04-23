@@ -21,12 +21,12 @@ export function StackRelativePathFieldset({ isDockerStandalone }: Props) {
     <div className="form-group">
       <div className="col-sm-12 mb-3">
         <SwitchField
-          label="Enable relative path volumes"
+          label="启用相对路径卷"
           checked={supportRelativePath}
           onChange={(checked) =>
             setFieldValue('git.SupportRelativePath', checked)
           }
-          tooltip="Enabling this means you can specify relative path volumes in your Compose files, with Portainer pulling the content from your git repository to the environment the stack is deployed to."
+          tooltip="启用后，你可以在 Compose 文件中指定相对路径卷，Portainer 会将 Git 仓库中的内容拉取到堆栈部署所在的环境。"
           labelClass="col-sm-3 col-lg-2"
           data-cy="enable-relative-paths"
         />
@@ -38,8 +38,7 @@ export function StackRelativePathFieldset({ isDockerStandalone }: Props) {
             <div className="col-sm-12">
               <p className="small text-muted flex items-center gap-1">
                 <Icon icon={Info} className="!mr-1 text-blue-8" />
-                For relative path volumes use with Docker Swarm, you must have a
-                network filesystem which all of your nodes can access.
+                 在 Docker Swarm 中使用相对路径卷时，你必须提供一个所有节点都可访问的网络文件系统。
               </p>
             </div>
           )}
@@ -48,8 +47,8 @@ export function StackRelativePathFieldset({ isDockerStandalone }: Props) {
             <FormControl
               label={
                 isDockerStandalone
-                  ? 'Local filesystem path'
-                  : 'Network filesystem path'
+                  ? '本地文件系统路径'
+                  : '网络文件系统路径'
               }
               inputId="filesystem-path"
               size="medium"

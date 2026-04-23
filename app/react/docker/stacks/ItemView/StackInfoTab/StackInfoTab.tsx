@@ -64,7 +64,7 @@ export function StackInfoTab({
         />
       )}
 
-      <FormSection title="Stack 详情">
+      <FormSection title="堆栈详情">
         <div className="form-group">
           {stackName}
 

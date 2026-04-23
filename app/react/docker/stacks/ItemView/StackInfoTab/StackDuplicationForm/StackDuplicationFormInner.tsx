@@ -60,7 +60,7 @@ export function StackDuplicationFormInner({
           as={Input}
           type="text"
           placeholder="堆栈名称（迁移时可选）"
-          aria-label="Stack name"
+          aria-label="堆栈名称"
           name="newName"
           data-cy="stack-duplicate-name-input"
         />
@@ -113,7 +113,7 @@ export function StackDuplicationFormInner({
       </div>
 
       {yamlError && isEnvSelected && (
-        <div className="form-group" role="alert" aria-label="Yaml Error">
+        <div className="form-group" role="alert" aria-label="YAML 错误">
           <div>
             <span className="text-danger small">{yamlError}</span>
           </div>

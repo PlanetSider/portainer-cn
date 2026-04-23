@@ -45,10 +45,9 @@ export function AssociateStackForm({
   };
 
   return (
-    <FormSection title="Associate to this environment">
+    <FormSection title="关联到当前环境">
       <p className="small text-muted">
-        This feature allows you to re-associate this stack to the current
-        environment.
+        此功能允许你将该堆栈重新关联到当前环境。
       </p>
 
       <Formik
@@ -64,7 +63,7 @@ export function AssociateStackForm({
             },
             {
               onSuccess() {
-                notifySuccess('Stack successfully associated', stackName);
+                notifySuccess('堆栈已成功关联', stackName);
                 router.stateService.go('docker.stacks');
               },
             }
@@ -101,12 +100,12 @@ function InnerForm({ environmentId }: { environmentId: EnvironmentId }) {
             color="primary"
             size="small"
             isLoading={isSubmitting}
-            loadingText="Association in progress..."
+            loadingText="关联中..."
             icon={RefreshCw}
             className="-ml-1.25"
             data-cy="stack-associate-btn"
           >
-            Associate
+            关联
           </LoadingButton>
         </div>
       </div>

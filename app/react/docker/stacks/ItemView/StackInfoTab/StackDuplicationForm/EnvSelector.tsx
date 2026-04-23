@@ -42,7 +42,7 @@ export function EnvSelector({
         value={value}
         onChange={onChange}
         options={environmentOptions}
-        placeholder="Select an environment"
+        placeholder="选择环境"
         data-cy="stack-duplicate-environment-select"
       />
       {error && (
@@ -94,7 +94,7 @@ export function getEnvironmentOptions(
     const group = groups.find((g) => g.Id === parsedGroupId);
 
     return {
-      label: group?.Name || 'Others',
+      label: group?.Name || '其他'
       options: sortBy(envOptions, 'label'),
     };
   });

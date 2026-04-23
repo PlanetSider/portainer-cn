@@ -24,7 +24,7 @@ export function NameField({
   return (
     <FormControl
       inputId="name-input"
-      label="Name"
+      label="名称"
       errors={errors}
       required
       size="xsmall"
@@ -57,7 +57,7 @@ export function nameValidation({
     .default('')
     .test(
       'unique',
-      'Name should be unique',
+      '名称必须唯一',
       (value) =>
         !value ||
         excludeStackName === value ||
@@ -66,7 +66,7 @@ export function nameValidation({
     .matches(new RegExp(STACK_NAME_VALIDATION_REGEX), {
       excludeEmptyString: true,
       message:
-        "This field must consist of lower case alphanumeric characters, '_' or '-' (e.g. 'my-name', or 'abc-123').",
+        "此字段必须由小写字母、数字、'_' 或 '-' 组成（例如 'my-name' 或 'abc-123'）。",
     });
 }
 
