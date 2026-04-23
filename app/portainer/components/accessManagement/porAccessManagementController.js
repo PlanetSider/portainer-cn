@@ -108,7 +108,7 @@ class PorAccessManagementController {
       this.$state.go('portainer.home');
       this.availableUsersAndTeams = [];
       this.authorizedUsersAndTeams = [];
-      this.Notifications.error('Failure', err, 'Unable to retrieve accesses');
+      this.Notifications.error('失败', err, '无法获取访问权限');
     }
   }
 }

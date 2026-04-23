@@ -70,7 +70,7 @@ angular.module('portainer.app').controller('InitAdminController', [
         })
         .catch(function error(err) {
           handleError(err);
-          Notifications.error('Failure', err, 'Unable to create administrator user');
+          Notifications.error('失败', err, '无法创建管理员用户');
         })
         .finally(function final() {
           $scope.state.actionInProgress = false;
@@ -93,7 +93,7 @@ angular.module('portainer.app').controller('InitAdminController', [
           $scope.requiredPasswordLength = data.RequiredPasswordLength;
         })
         .catch(function error(err) {
-          Notifications.error('Failure', err, 'Unable to retrieve application settings');
+          Notifications.error('失败', err, '无法检索应用设置');
         });
 
       UserService.administratorExists()
@@ -103,7 +103,7 @@ angular.module('portainer.app').controller('InitAdminController', [
           }
         })
         .catch(function error(err) {
-          Notifications.error('Failure', err, 'Unable to verify administrator account existence');
+          Notifications.error('失败', err, '无法验证管理员账户是否存在');
         });
     }
 
@@ -123,7 +123,7 @@ angular.module('portainer.app').controller('InitAdminController', [
         await restoreAsyncFn();
       } catch (err) {
         handleError(err);
-        Notifications.error('Failure', err, 'Unable to restore the backup');
+        Notifications.error('失败', err, '无法恢复备份');
         $scope.state.backupInProgress = false;
 
         return;
@@ -131,11 +131,11 @@ angular.module('portainer.app').controller('InitAdminController', [
 
       try {
         await waitPortainerRestart();
-        Notifications.success('Success', 'The backup has successfully been restored');
+        Notifications.success('成功', '备份已成功恢复');
         $state.go('portainer.auth');
       } catch (err) {
         handleError(err);
-        Notifications.error('Failure', err, 'Unable to check for status');
+        Notifications.error('失败', err, '无法检查状态');
         await wait(2);
         location.reload();
       }

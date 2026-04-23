@@ -22,12 +22,12 @@ angular.module('portainer.app').controller('AccountController', [
       if (confirmed) {
         try {
           await UserService.updateUserPassword($scope.userID, $scope.formValues.currentPassword, $scope.formValues.newPassword);
-          Notifications.success('Success', 'Password successfully updated');
+          Notifications.success('成功', '密码已成功更新');
           StateManager.resetPasswordChangeSkips($scope.userID.toString());
           $scope.forceChangePassword = false;
           $state.go('portainer.logout');
         } catch (err) {
-          Notifications.error('Failure', err, err.msg);
+          Notifications.error('失败', err, err.msg);
         }
       }
     };
@@ -40,7 +40,7 @@ angular.module('portainer.app').controller('AccountController', [
           $state.go('portainer.home');
         }
       } catch (err) {
-        Notifications.error('Failure', err, err.msg);
+          Notifications.error('失败', err, err.msg);
       }
     };
 
@@ -93,7 +93,7 @@ angular.module('portainer.app').controller('AccountController', [
           StateManager.setRequiredPasswordLength(data.RequiredPasswordLength);
         })
         .catch(function error(err) {
-          Notifications.error('Failure', err, 'Unable to retrieve application settings');
+          Notifications.error('失败', err, '无法检索应用设置');
         });
     }
 

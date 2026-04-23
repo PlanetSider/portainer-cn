@@ -31,7 +31,7 @@ class EndpointKVMController {
       try {
         this.$state.endpoint = await this.EndpointService.endpoint(this.$state.endpointId);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve environment information');
+        this.Notifications.error('失败', err, '无法获取环境信息');
       }
 
       try {
@@ -47,7 +47,7 @@ class EndpointKVMController {
         this.$state.mpsServer = mpsAuthorization.Server;
         this.$state.mpsToken = mpsAuthorization.Token;
       } catch (e) {
-        this.Notifications.error('Failure', e, `Failed to load kvm for device`);
+        this.Notifications.error('失败', e, '无法为设备加载 KVM');
       }
     });
   }

@@ -51,7 +51,7 @@ angular
                 return Promise.reject('Unauthenticated');
               }
             } catch (err) {
-              Notifications.error('Failure', err, 'Unable to retrieve application settings');
+              Notifications.error('失败', err, '无法检索应用设置');
               throw err;
             }
           });
@@ -87,7 +87,7 @@ angular
 
                 return endpoint;
               } catch (e) {
-                Notifications.error('Failed loading environment', e);
+                Notifications.error('加载环境失败', e);
                 $state.go('portainer.home', {}, { reload: true });
                 return;
               }

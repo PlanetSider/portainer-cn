@@ -54,10 +54,10 @@ export default class RegistryController {
         registry.Password = this.Password;
 
         await this.RegistryService.updateRegistry(registry);
-        this.Notifications.success('Success', 'Registry successfully updated');
+        this.Notifications.success('成功', '镜像仓库已成功更新');
         this.$state.go('portainer.registries');
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to update registry');
+        this.Notifications.error('失败', err, '无法更新镜像仓库');
       } finally {
         this.state.actionInProgress = false;
       }
@@ -111,7 +111,7 @@ export default class RegistryController {
       _.pullAllBy(registries, [registry], 'Id');
       this.registriesNames = _.map(registries, 'Name');
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve registry details');
+        this.Notifications.error('失败', err, '无法获取镜像仓库详情');
     } finally {
       this.state.loading = false;
     }

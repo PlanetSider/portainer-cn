@@ -73,7 +73,7 @@
       <portainer-tooltip message="'用于搜索用户的账号。'"></portainer-tooltip>
     </label>
     <div class="col-sm-9 col-lg-10">
-      <input type="text" class="form-control" id="ldap_username" ng-model="$ctrl.settings.ReaderDN" placeholder="cn=user,dc=domain,dc=tld" data-cy="ldap-username-input" />
+      <input type="text" class="form-control" id="ldap_username" ng-model="$ctrl.settings.ReaderDN" placeholder="例如 cn=user,dc=domain,dc=tld" data-cy="ldap-username-input" />
     </div>
   </div>
 
@@ -83,7 +83,7 @@
       <portainer-tooltip message="'如果不输入密码，Portainer 将保持当前密码不变。'"></portainer-tooltip>
     </label>
     <div class="col-sm-9 col-lg-10">
-      <input type="password" class="form-control" id="ldap_password" ng-model="$ctrl.settings.Password" placeholder="password" autocomplete="new-password" />
+      <input type="password" class="form-control" id="ldap_password" ng-model="$ctrl.settings.Password" placeholder="请输入密码" autocomplete="new-password" />
     </div>
   </div>
 </div>

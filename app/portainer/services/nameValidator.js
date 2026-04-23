@@ -13,7 +13,7 @@ function NameValidatorFactory(Notifications) {
       const endpoints = await getEnvironments({ limit: 1, name });
       return endpoints.value.length > 0;
     } catch (err) {
-      Notifications.error('Failure', err, 'Unable to retrieve environment details');
+      Notifications.error('失败', err, '无法获取环境详情');
     }
   }
 }

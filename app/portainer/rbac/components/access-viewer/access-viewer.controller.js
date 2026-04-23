@@ -165,7 +165,7 @@ export default class AccessViewerController {
       const teamUsers = await this.teamMemberUsers(this.allUsers, this.teamMemberships);
       this.users = teamUsers.map((user) => ({ label: user.Username, value: user.Id }));
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve accesses');
+      this.Notifications.error('失败', err, '无法获取访问权限');
     }
   }
 }

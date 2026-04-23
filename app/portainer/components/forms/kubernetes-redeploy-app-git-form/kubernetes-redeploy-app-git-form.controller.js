@@ -132,10 +132,10 @@ class KubernetesRedeployAppGitFormController {
 
         this.state.redeployInProgress = true;
         await this.StackService.updateKubeGit(this.stack.Id, this.stack.EndpointId, this.namespace, this.formValues);
-        this.Notifications.success('Success', 'Pulled and redeployed application successfully');
+        this.Notifications.success('成功', '应用已成功拉取并重新部署');
         this.$state.go('kubernetes.applications.application', { name: this.appName, namespace: this.namespace, endpointId: this.endpointId }, { inherit: false });
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Failed redeploying application');
+        this.Notifications.error('失败', err, '重新部署应用失败');
       } finally {
         this.state.redeployInProgress = false;
       }
@@ -156,9 +156,9 @@ class KubernetesRedeployAppGitFormController {
           this.formValues.RepositoryUsername = '';
           this.formValues.RepositoryPassword = '';
         }
-        this.Notifications.success('Success', 'Save stack settings successfully');
+        this.Notifications.success('成功', '堆栈设置已成功保存');
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to save application settings');
+        this.Notifications.error('失败', err, '无法保存应用设置');
       } finally {
         this.state.saveGitSettingsInProgress = false;
       }

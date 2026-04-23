@@ -92,7 +92,7 @@
   <div ng-if="$ctrl.model.Authentication">
     <!-- aws-access-key -->
     <div class="form-group">
-      <label for="registry_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Access Key</label>
+      <label for="registry_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Access Key 访问密钥</label>
       <div class="col-sm-9 col-lg-10">
         <input type="text" class="form-control" id="registry_access_key" name="registry_access_key" ng-model="$ctrl.model.Username" required data-cy="registry-access-key-input" />
         <div class="help-block" ng-show="$ctrl.registryFormEcr.registry_access_key.$invalid">
@@ -111,7 +111,7 @@
 
     <!-- aws-secret-access-key -->
     <div class="form-group">
-      <label for="registry_secret_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Secret Access Key</label>
+      <label for="registry_secret_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Secret Access Key 密钥</label>
       <div class="col-sm-9 col-lg-10">
         <input type="password" class="form-control" id="registry_secret_access_key" name="registry_secret_access_key" ng-model="$ctrl.model.Password" required />
         <div class="help-block" ng-show="$ctrl.registryFormEcr.registry_secret_access_key.$invalid">
@@ -137,7 +137,7 @@
           class="form-control"
           id="registry_region"
           name="registry_region"
-          placeholder="us-west-1"
+          placeholder="例如 us-west-1"
           ng-model="$ctrl.model.Ecr.Region"
           required
           data-cy="registry-region-input"
