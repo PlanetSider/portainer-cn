@@ -84,7 +84,7 @@ class KubernetesVolumeController {
     try {
       this.volume.PersistentVolumeClaim.Storage = this.state.volumeSize + this.state.volumeSizeUnit.charAt(0);
       await this.KubernetesPersistentVolumeClaimService.patch(this.oldVolume.PersistentVolumeClaim, this.volume.PersistentVolumeClaim);
-      this.Notifications.success('Success', 'Volume successfully updated');
+      this.Notifications.success('成功', '卷已成功更新');
 
       if (redeploy) {
         const promises = _.flatten(
@@ -93,12 +93,12 @@ class KubernetesVolumeController {
           })
         );
         await Promise.all(promises);
-        this.Notifications.success('Success', 'Applications successfully redeployed');
+        this.Notifications.success('成功', '应用已成功重新部署');
       }
 
       this.$state.reload(this.$state.current);
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to update volume.');
+      this.Notifications.error('失败', err, '无法更新卷。');
     }
   }
 
@@ -126,7 +126,7 @@ class KubernetesVolumeController {
       this.state.volumeSizeUnit = volume.PersistentVolumeClaim.Storage.slice(-2);
       this.state.oldVolumeSize = filesizeParser(volume.PersistentVolumeClaim.Storage, { base: 10 });
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve volume');
+      this.Notifications.error('失败', err, '无法获取卷');
     }
   }
 
@@ -148,7 +148,7 @@ class KubernetesVolumeController {
       this.events = _.filter(events, (event) => event.Involved.uid === this.volume.PersistentVolumeClaim.Id);
       this.state.eventWarningCount = KubernetesEventHelper.warningCount(this.events);
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve application related events');
+      this.Notifications.error('失败', err, '无法获取应用相关事件');
     } finally {
       this.state.eventsLoading = false;
     }
@@ -196,7 +196,7 @@ class KubernetesVolumeController {
         });
       }
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load view data');
+      this.Notifications.error('失败', err, '无法加载视图数据');
     } finally {
       this.state.viewReady = true;
     }

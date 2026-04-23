@@ -28,7 +28,7 @@ class KubernetesConfigurationsController {
       this.configurations = await this.KubernetesConfigurationService.get();
       KubernetesConfigurationHelper.setConfigurationsUsed(this.configurations, this.applications);
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve ConfigMaps & Secrets');
+      this.Notifications.error('失败', err, '无法获取 ConfigMap 和 Secret');
     } finally {
       this.state.configurationsLoading = false;
     }
@@ -43,11 +43,11 @@ class KubernetesConfigurationsController {
     for (const configuration of selectedItems) {
       try {
         await this.KubernetesConfigurationService.delete(configuration);
-        this.Notifications.success('ConfigMaps/Secrets successfully removed', configuration.Name);
+        this.Notifications.success('ConfigMap/Secret 已成功删除', configuration.Name);
         const index = this.configurations.indexOf(configuration);
         this.configurations.splice(index, 1);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to remove ConfigMaps/Secrets');
+        this.Notifications.error('失败', err, '无法删除 ConfigMap/Secret');
       } finally {
         --actionCount;
         if (actionCount === 0) {
@@ -58,7 +58,7 @@ class KubernetesConfigurationsController {
   }
 
   removeAction(selectedItems) {
-    confirmDelete('Do you want to remove the selected ConfigMap(s) & Secret(s)?').then((confirmed) => {
+    confirmDelete('你确定要删除选中的 ConfigMap 和 Secret 吗？').then((confirmed) => {
       if (confirmed) {
         return this.$async(this.removeActionAsync, selectedItems);
       }
@@ -70,7 +70,7 @@ class KubernetesConfigurationsController {
       this.state.applicationsLoading = true;
       this.applications = await this.KubernetesApplicationService.get();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve applications');
+      this.Notifications.error('失败', err, '无法获取应用');
     } finally {
       this.state.applicationsLoading = false;
     }

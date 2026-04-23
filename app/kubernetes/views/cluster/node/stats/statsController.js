@@ -58,7 +58,7 @@ class KubernetesNodeStatsController {
         this.updateMemoryChart();
       } catch (error) {
         this.stopRepeater();
-        this.Notifications.error('Failure', error);
+        this.Notifications.error('失败', error);
       }
     }, refreshRate * 1000);
   }
@@ -94,7 +94,7 @@ class KubernetesNodeStatsController {
           };
         }
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve node stats');
+        this.Notifications.error('失败', err, '无法获取节点统计信息');
       }
     });
   }
@@ -127,7 +127,7 @@ class KubernetesNodeStatsController {
       }
     } catch (err) {
       this.state.getMetrics = false;
-      this.Notifications.error('Failure', err, 'Unable to retrieve node stats');
+      this.Notifications.error('失败', err, '无法获取节点统计信息');
     } finally {
       this.state.viewReady = true;
       if (this.state.getMetrics) {

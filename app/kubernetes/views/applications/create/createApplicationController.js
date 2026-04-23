@@ -260,7 +260,7 @@ class KubernetesCreateApplicationController {
         const confirmed = await confirm({
           title: '确定吗？',
           message: '对此应用所做的任何更改都将被覆盖，并且可能导致服务中断。是否继续？',
-          confirmButton: buildConfirmButton('Update', 'warning'),
+          confirmButton: buildConfirmButton('更新', 'warning'),
           modalType: ModalType.Warn,
         });
         if (!confirmed) {
@@ -273,14 +273,14 @@ class KubernetesCreateApplicationController {
           { stackFile: this.stackFileContent, stackName: this.formValues.StackName }
         );
         this.state.isEditorDirty = false;
-        this.Notifications.success('Success', 'Request to update application successfully submitted');
+        this.Notifications.success('成功', '应用更新请求已成功提交');
         this.$state.go(
           'kubernetes.applications.application',
           { name: this.application.Name, namespace: this.application.ResourcePool, endpointId: this.endpoint.Id },
           { inherit: false }
         );
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Failed redeploying application');
+        this.Notifications.error('失败', err, '重新部署应用失败');
       } finally {
         this.state.updateWebEditorInProgress = false;
       }
@@ -748,7 +748,7 @@ class KubernetesCreateApplicationController {
       try {
         this.stacks = await this.KubernetesStackService.get(namespace);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve stacks');
+        this.Notifications.error('失败', err, '无法获取堆栈');
       }
     });
   }
@@ -760,7 +760,7 @@ class KubernetesCreateApplicationController {
         this.configMaps = this.configurations.filter((configuration) => configuration.Kind === KubernetesConfigurationKinds.CONFIGMAP);
         this.secrets = this.configurations.filter((configuration) => configuration.Kind === KubernetesConfigurationKinds.SECRET);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve configurations');
+        this.Notifications.error('失败', err, '无法获取配置');
       }
     });
   }
@@ -771,7 +771,7 @@ class KubernetesCreateApplicationController {
         this.applications = await this.KubernetesApplicationService.get(namespace);
         this.applicationNames = _.map(this.applications, 'Name');
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve applications');
+        this.Notifications.error('失败', err, '无法获取应用');
       }
     });
   }
@@ -792,7 +792,7 @@ class KubernetesCreateApplicationController {
         });
         this.availableVolumes = filteredVolumes;
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve volumes');
+        this.Notifications.error('失败', err, '无法获取卷');
       }
     });
   }
@@ -812,7 +812,7 @@ class KubernetesCreateApplicationController {
         }
         this.formValues.OriginalIngresses = this.ingresses;
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve ingresses');
+        this.Notifications.error('失败', err, '无法获取 Ingress');
       }
     });
   }
@@ -855,10 +855,10 @@ class KubernetesCreateApplicationController {
       // combine the secrets and configmap form values when submitting the form
       _.remove(this.formValues.Configurations, (item) => item.selectedConfiguration === undefined);
       await this.KubernetesApplicationService.create(this.formValues, this.originalServicePorts, this.deploymentOptions.hideStacksFunctionality);
-      this.Notifications.success('Request to deploy application successfully submitted', this.formValues.Name);
+      this.Notifications.success('应用部署请求已成功提交', this.formValues.Name);
       this.$state.go('kubernetes.applications');
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to create application');
+      this.Notifications.error('失败', err, '无法创建应用');
     } finally {
       this.state.actionInProgress = false;
     }
@@ -868,23 +868,23 @@ class KubernetesCreateApplicationController {
     if (ingressesToUpdate.length) {
       try {
         await Promise.all(ingressesToUpdate.map((ing) => updateIngress(this.endpoint.Id, ing)));
-        this.Notifications.success('Success', `Ingress ${ingressesToUpdate.length > 1 ? 'rules' : 'rule'} successfully updated`);
+        this.Notifications.success('成功', `Ingress ${ingressesToUpdate.length > 1 ? '规则' : '规则'}已成功更新`);
       } catch (error) {
-        this.Notifications.error('Failure', error, 'Unable to update ingress');
+        this.Notifications.error('失败', error, '无法更新 Ingress');
       }
     }
 
     try {
       this.state.actionInProgress = true;
       await this.KubernetesApplicationService.patch(this.savedFormValues, this.formValues, false, this.originalServicePorts);
-      this.Notifications.success('Success', 'Request to update application successfully submitted');
+      this.Notifications.success('成功', '应用更新请求已成功提交');
       this.$state.go(
         'kubernetes.applications.application',
         { name: this.application.Name, namespace: this.application.ResourcePool, endpointId: this.endpoint.Id },
         { inherit: false }
       );
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to update application');
+      this.Notifications.error('失败', err, '无法更新应用');
     } finally {
       this.state.actionInProgress = false;
     }
@@ -907,7 +907,7 @@ class KubernetesCreateApplicationController {
         return this.$async(this.updateApplicationAsync, ingressesToUpdate);
       }
     } else {
-      confirmUpdate('Updating the application may cause a service interruption. Do you wish to continue?', (confirmed) => {
+      confirmUpdate('更新应用可能会导致服务中断。是否继续？', (confirmed) => {
         if (confirmed) {
           return this.$async(this.updateApplicationAsync, []);
         }
@@ -993,7 +993,7 @@ class KubernetesCreateApplicationController {
           this.KubernetesPersistentVolumeClaimService.get(namespace, storageClasses),
         ]);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve application details');
+        this.Notifications.error('失败', err, '无法获取应用详情');
       }
     });
   }
@@ -1003,7 +1003,7 @@ class KubernetesCreateApplicationController {
       try {
         return await this.RegistryService.retrievePorRegistryModelFromRepository(imageModel.Image, this.endpoint.Id, imageModel.Registry.Id, this.$state.params.namespace);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve registry');
+        this.Notifications.error('失败', err, '无法获取镜像仓库');
         return imageModel;
       }
     });
@@ -1148,7 +1148,7 @@ class KubernetesCreateApplicationController {
         this.updateNamespaceLimits(this.namespaceWithQuota);
         this.updateSliders(this.namespaceWithQuota);
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to load view data');
+        this.Notifications.error('失败', err, '无法加载视图数据');
       } finally {
         this.state.viewReady = true;
       }

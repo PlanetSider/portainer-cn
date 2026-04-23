@@ -125,7 +125,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
               params = { redirect: true, environmentId: endpoint.Id, environmentName: endpoint.Name, route: 'kubernetes.dashboard' };
             } else {
               EndpointProvider.clean();
-              Notifications.error('Failed loading environment', e);
+              Notifications.error('加载环境失败', e);
             }
             // Prevent redirect to home for shell views when environment is unreachable
             // Show toast error instead (handled above in Notifications.error)

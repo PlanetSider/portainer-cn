@@ -43,7 +43,7 @@ class KubernetesCreateConfigMapController {
       this.availableServiceAccounts = await getServiceAccounts(this.environmentId, this.formValues.ResourcePool.Namespace.Name);
       this.formValues.ServiceAccountName = this.availableServiceAccounts.length > 0 ? this.availableServiceAccounts[0].metadata.name : '';
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load service accounts');
+      this.Notifications.error('失败', err, '无法加载服务账户');
     }
   }
   onResourcePoolSelectionChange() {
@@ -78,11 +78,11 @@ class KubernetesCreateConfigMapController {
       }
 
       await this.KubernetesConfigurationService.create(this.formValues);
-      this.Notifications.success('Success', `ConfigMap successfully created`);
+      this.Notifications.success('成功', `ConfigMap 已成功创建`);
       this.state.isEditorDirty = false;
       this.$state.go('kubernetes.configurations', { tab: 'configmaps' });
     } catch (err) {
-      this.Notifications.error('Failure', err, `Unable to create ConfigMap`);
+      this.Notifications.error('失败', err, `无法创建 ConfigMap`);
     } finally {
       this.state.actionInProgress = false;
     }
@@ -96,7 +96,7 @@ class KubernetesCreateConfigMapController {
     try {
       this.configurations = await this.KubernetesConfigurationService.get();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve ConfigMaps');
+      this.Notifications.error('失败', err, '无法获取 ConfigMaps');
     }
   }
 
@@ -140,7 +140,7 @@ class KubernetesCreateConfigMapController {
       this.availableServiceAccounts = await getServiceAccounts(this.environmentId, this.resourcePools[0].Namespace.Name);
       this.formValues.ServiceAccountName = this.availableServiceAccounts.length > 0 ? this.availableServiceAccounts[0].metadata.name : '';
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load view data');
+      this.Notifications.error('失败', err, '无法加载视图数据');
     } finally {
       this.state.viewReady = true;
     }

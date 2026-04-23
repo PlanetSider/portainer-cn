@@ -93,7 +93,7 @@ class KubernetesConfigMapController {
       if (this.formValues.Kind !== this.configuration.Kind || this.formValues.ResourcePool !== this.configuration.Namespace || this.formValues.Name !== this.configuration.Name) {
         await this.KubernetesConfigurationService.create(this.formValues);
         await this.KubernetesConfigurationService.delete(this.configuration);
-        this.Notifications.success('Success', `ConfigMap successfully updated`);
+        this.Notifications.success('成功', `ConfigMap 已成功更新`);
         this.$state.go(
           'kubernetes.configurations.configmap',
           {
@@ -104,11 +104,11 @@ class KubernetesConfigMapController {
         );
       } else {
         await this.KubernetesConfigurationService.update(this.formValues, this.configuration);
-        this.Notifications.success('Success', `ConfigMap successfully updated`);
+        this.Notifications.success('成功', `ConfigMap 已成功更新`);
         this.$state.reload(this.$state.current);
       }
     } catch (err) {
-      this.Notifications.error('Failure', err, `Unable to update ConfigMap`);
+      this.Notifications.error('失败', err, `无法更新 ConfigMap`);
     } finally {
       this.state.actionInProgress = false;
     }
@@ -117,10 +117,10 @@ class KubernetesConfigMapController {
   updateConfiguration() {
     if (this.configuration.Used) {
       confirmUpdate(
-        `The changes will be propagated to ${this.configuration.Applications.length} running ${pluralize(
+        `更改将传播到 ${this.configuration.Applications.length} 个正在运行的${pluralize(
           this.configuration.Applications.length,
           'application'
-        )}. Are you sure you want to update this ConfigMap?`,
+        )}。你确定要更新这个 ConfigMap 吗？`,
         (confirmed) => {
           if (confirmed) {
             return this.$async(this.updateConfigurationAsync);
@@ -145,7 +145,7 @@ class KubernetesConfigMapController {
       } catch (err) {
         if (err.status === 403) {
           this.$state.go('kubernetes.configurations', { tab: 'configmaps' });
-          throw new Error('Not authorized to edit ConfigMap');
+          throw new Error('无权编辑 ConfigMap');
         }
       }
 
@@ -159,7 +159,7 @@ class KubernetesConfigMapController {
 
       return this.configuration;
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve ConfigMap');
+      this.Notifications.error('失败', err, '无法获取 ConfigMap');
     } finally {
       this.state.configurationLoading = false;
     }
@@ -176,7 +176,7 @@ class KubernetesConfigMapController {
       this.configuration.Applications = KubernetesConfigurationHelper.getUsingApplications(this.configuration, applications);
       KubernetesConfigurationHelper.setConfigurationUsed(this.configuration);
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve applications');
+      this.Notifications.error('失败', err, '无法获取应用');
     } finally {
       this.state.applicationsLoading = false;
     }
@@ -197,7 +197,7 @@ class KubernetesConfigMapController {
       this.events = _.filter(this.events, (event) => event.Involved.uid === this.configuration.Id);
       this.state.eventWarningCount = KubernetesEventHelper.warningCount(this.events);
     } catch (err) {
-      this.Notifications('Failure', err, 'Unable to retrieve events');
+      this.Notifications('失败', err, '无法获取事件');
     } finally {
       this.state.eventsLoading = false;
     }
@@ -211,7 +211,7 @@ class KubernetesConfigMapController {
     try {
       this.configurations = await this.KubernetesConfigurationService.get();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve configurations');
+      this.Notifications.error('失败', err, '无法获取配置');
     }
   }
 
@@ -270,7 +270,7 @@ class KubernetesConfigMapController {
 
       this.tagUsedDataKeys();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load view data');
+      this.Notifications.error('失败', err, '无法加载视图数据');
     } finally {
       this.state.viewReady = true;
     }

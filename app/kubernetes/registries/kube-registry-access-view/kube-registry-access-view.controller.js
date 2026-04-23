@@ -41,9 +41,9 @@ export default class KubernetesRegistryAccessController {
           namespaces,
         });
         this.$state.reload(this.$state.current);
-        this.Notifications.success('Success', 'Registry access updated');
+        this.Notifications.success('成功', '镜像仓库访问权限已更新');
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Failed saving registry access');
+        this.Notifications.error('失败', err, '保存镜像仓库访问权限失败');
       }
     });
   }
@@ -65,7 +65,7 @@ export default class KubernetesRegistryAccessController {
           this.savedResourcePools = this.registry.RegistryAccesses[this.endpoint.Id].Namespaces.map((value) => ({ value }));
         }
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve registry details');
+        this.Notifications.error('失败', err, '无法获取镜像仓库详情');
       }
 
       try {
@@ -75,7 +75,7 @@ export default class KubernetesRegistryAccessController {
           .filter((pool) => !KubernetesNamespaceHelper.isSystemNamespace(pool.Namespace.Name) && !this.savedResourcePools.find(({ value }) => value === pool.Namespace.Name))
           .map((pool) => ({ name: pool.Namespace.Name, id: pool.Namespace.Id }));
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to retrieve namespaces');
+        this.Notifications.error('失败', err, '无法获取命名空间');
       }
     });
   }

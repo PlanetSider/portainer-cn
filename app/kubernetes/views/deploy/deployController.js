@@ -251,7 +251,7 @@ class KubernetesDeployController {
           this.onChangeTemplateVariables(variables);
         }
       } catch (err) {
-        this.Notifications.error('Failure', err, 'Unable to load template file');
+        this.Notifications.error('失败', err, '无法加载模板文件');
       }
     });
   }
@@ -327,7 +327,7 @@ class KubernetesDeployController {
 
       await this.StackService.kubernetesDeploy(this.endpoint.Id, method, payload);
 
-      this.Notifications.success('Success', 'Request to deploy manifest successfully submitted');
+      this.Notifications.success('成功', '清单部署请求已成功提交');
       this.state.isEditorDirty = false;
 
       if (this.$state.params.referrer && this.$state.params.tab) {
@@ -342,7 +342,7 @@ class KubernetesDeployController {
 
       this.$state.go('kubernetes.applications');
     } catch (err) {
-      this.Notifications.error('Unable to deploy manifest', err, 'Unable to deploy resources');
+      this.Notifications.error('无法部署清单', err, '无法部署资源');
       this.displayErrorLog(err.err.data.details);
     } finally {
       this.state.actionInProgress = false;
@@ -376,7 +376,7 @@ class KubernetesDeployController {
         value: namespace.Name,
       }));
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load namespaces data');
+      this.Notifications.error('失败', err, '无法加载命名空间数据');
     }
   }
 

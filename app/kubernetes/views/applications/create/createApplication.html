@@ -61,7 +61,7 @@
         <rd-widget-body>
           <form class="form-horizontal mt-4" name="kubernetesApplicationCreationForm" autocomplete="off" novalidate>
             <div ng-if="ctrl.isExternalApplication()">
-              <div class="col-sm-12 form-section-title" ng-if="ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"> Namespace </div>
+              <div class="col-sm-12 form-section-title" ng-if="ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"> 命名空间 Namespace </div>
               <!-- #region NAMESPACE -->
               <namespace-selector
                 values="ctrl.formValues.ResourcePool.Namespace.Name"

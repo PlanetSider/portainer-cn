@@ -51,7 +51,7 @@ class KubernetesApplicationLogsController {
       this.applicationLogs = formatLogs(rawLogs);
     } catch (err) {
       this.stopRepeater();
-      this.Notifications.error('Failure', err, 'Unable to retrieve application logs');
+      this.Notifications.error('失败', err, '无法获取应用日志');
     }
   }
 
@@ -76,7 +76,7 @@ class KubernetesApplicationLogsController {
       this.application = await this.KubernetesApplicationService.get(namespace, applicationName);
       await this.getApplicationLogsAsync();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve application logs');
+      this.Notifications.error('失败', err, '无法获取应用日志');
       this.stopRepeater();
     } finally {
       this.state.viewReady = true;

@@ -45,7 +45,7 @@ class KubernetesCreateSecretController {
       this.availableServiceAccounts = await getServiceAccounts(this.environmentId, this.formValues.ResourcePool.Name);
       this.formValues.ServiceAccountName = this.availableServiceAccounts.length > 0 ? this.availableServiceAccounts[0].metadata.name : '';
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load service accounts');
+      this.Notifications.error('失败', err, '无法加载服务账户');
     }
   }
   onResourcePoolSelectionChange() {
@@ -128,11 +128,11 @@ class KubernetesCreateSecretController {
 
       await this.KubernetesConfigurationService.create(this.formValues);
 
-      this.Notifications.success('Success', `Secret successfully created`);
+      this.Notifications.success('成功', `Secret 已成功创建`);
       this.state.isEditorDirty = false;
       this.$state.go('kubernetes.configurations', { tab: 'secrets' });
     } catch (err) {
-      this.Notifications.error('Failure', err, `Unable to create secret`);
+      this.Notifications.error('失败', err, `无法创建 Secret`);
     } finally {
       this.state.actionInProgress = false;
     }
@@ -146,7 +146,7 @@ class KubernetesCreateSecretController {
     try {
       this.configurations = await this.KubernetesConfigurationService.get();
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to retrieve Secrets');
+      this.Notifications.error('失败', err, '无法获取 Secrets');
     }
   }
 
@@ -187,7 +187,7 @@ class KubernetesCreateSecretController {
       this.availableServiceAccounts = await getServiceAccounts(this.environmentId, this.resourcePools[0].Namespace.Name);
       this.formValues.ServiceAccountName = this.availableServiceAccounts.length > 0 ? this.availableServiceAccounts[0].metadata.name : '';
     } catch (err) {
-      this.Notifications.error('Failure', err, 'Unable to load view data');
+      this.Notifications.error('失败', err, '无法加载视图数据');
     } finally {
       this.state.viewReady = true;
     }
