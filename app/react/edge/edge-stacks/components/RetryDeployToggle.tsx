@@ -14,8 +14,8 @@ export function RetryDeployToggle({
           checked={value}
           data-cy="edge-stack-retry-deploy-toggle"
           name="retryDeploy"
-          label="Retry deployment"
-          tooltip="When enabled, this will allow the edge agent to retry deployment if failed to deploy initially"
+          label="重试部署"
+          tooltip="启用后，如果首次部署失败，Edge Agent 将允许自动重试部署。"
           labelClass="col-sm-3 col-lg-2"
           onChange={onChange}
         />

@@ -32,19 +32,19 @@ export function PrivateRegistryFieldset({
   method,
 }: Props) {
   const tooltipMessage =
-    'This allows you to provide credentials when using a private registry that requires authentication';
+    '这允许你在使用需要认证的私有镜像仓库时提供凭据';
 
   const isActive = !!value;
 
   return (
-    <FormSection title="Registry">
+    <FormSection title="镜像仓库 Registry">
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
             checked={isActive}
             onChange={handleCheckChange}
             tooltip={tooltipMessage}
-            label="Use Credentials"
+            label="使用凭据"
             labelClass="col-sm-3 col-lg-2"
             disabled={formInvalid}
             data-cy="private-registry-use-credentials-switch"
@@ -56,13 +56,12 @@ export function PrivateRegistryFieldset({
         <>
           {method !== 'repository' && (
             <TextTip color="blue">
-              If you make any changes to the image urls in your yaml, please
-              reload or select registry manually
+                如果你在 YAML 中修改了镜像 URL，请重新加载或手动选择镜像仓库。
             </TextTip>
           )}
 
           {!errorMessage ? (
-            <FormControl label="Registry" inputId="private-registry-selector">
+              <FormControl label="镜像仓库" inputId="private-registry-selector">
               <div className="flex">
                 <Select
                   value={registries.filter((registry) => registry.Id === value)}
@@ -77,11 +76,11 @@ export function PrivateRegistryFieldset({
                 {method !== 'repository' && onReload && (
                   <Button
                     onClick={onReload}
-                    title="Reload"
+                     title="重新加载"
                     icon={RefreshCw}
                     color="light"
                     data-cy="private-registry-reload-button"
-                    aria-label="Reload"
+                     aria-label="重新加载"
                   />
                 )}
               </div>

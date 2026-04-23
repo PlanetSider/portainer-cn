@@ -37,7 +37,7 @@ export function LogsActions({ environmentId, edgeStackId }: Props) {
       <Button
         className="p-0"
         color="link"
-        title="Retrieve logs"
+        title="获取日志"
         onClick={handleCollectLogs}
         data-cy="edge-stack-logs-collect-button"
       >
@@ -51,7 +51,7 @@ export function LogsActions({ environmentId, edgeStackId }: Props) {
       <Button
         className="p-0"
         color="link"
-        title="Download logs"
+        title="下载日志"
         disabled={status !== 'collected'}
         onClick={handleDownloadLogs}
         data-cy="edge-stack-logs-download-button"
@@ -66,7 +66,7 @@ export function LogsActions({ environmentId, edgeStackId }: Props) {
       <Button
         className="p-0"
         color="link"
-        title="Delete logs"
+        title="删除日志"
         disabled={status !== 'collected'}
         onClick={handleDeleteLogs}
         data-cy="edge-stack-logs-delete-button"
@@ -93,7 +93,7 @@ export function LogsActions({ environmentId, edgeStackId }: Props) {
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Logs Collection started');
+          notifySuccess('成功', '日志收集已开始');
         },
       }
     );
@@ -114,7 +114,7 @@ export function LogsActions({ environmentId, edgeStackId }: Props) {
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Logs Deleted');
+          notifySuccess('成功', '日志已删除');
         },
       }
     );

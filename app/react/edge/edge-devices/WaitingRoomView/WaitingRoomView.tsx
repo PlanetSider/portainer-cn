@@ -17,8 +17,8 @@ function WaitingRoomView() {
   return (
     <>
       <PageHeader
-        title="Waiting Room"
-        breadcrumbs={[{ label: 'Waiting Room' }]}
+        title="等待室"
+        breadcrumbs={[{ label: '等待室' }]}
         reload
       />
 
@@ -26,15 +26,14 @@ function WaitingRoomView() {
         <div className="col-sm-12">
           <InformationPanel>
             <TextTip color="blue">
-              Only environments generated from the{' '}
+              只有通过{' '}
               <Link
                 to="portainer.endpoints.edgeAutoCreateScript"
                 data-cy="waitingRoom-edgeAutoCreateScriptLink"
               >
-                auto onboarding
+                自动接入
               </Link>{' '}
-              script will appear here, manually added environments and edge
-              devices will bypass the waiting room.
+              脚本生成的环境才会显示在这里；手动添加的环境和 Edge 设备将跳过等待室。
             </TextTip>
           </InformationPanel>
         </div>
@@ -44,15 +43,14 @@ function WaitingRoomView() {
         <div className="row">
           <div className="col-sm-12">
             <Alert color="warn">
-              Associating all nodes in waiting room will exceed the node limit
-              of your current license. Go to{' '}
+              如果将等待室中的所有节点全部关联，将会超出当前许可证的节点限制。请前往{' '}
               <Link
                 to="portainer.licenses"
                 data-cy="waitingRoom-portainerLicensesLink"
               >
-                Licenses
+                许可证
               </Link>{' '}
-              page to view the current usage.
+              页面查看当前使用情况。
             </Alert>
           </div>
         </div>

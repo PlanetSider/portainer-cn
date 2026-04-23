@@ -6,10 +6,10 @@ export function CreateView() {
   return (
     <>
       <PageHeader
-        title="Create Edge Stack"
+        title="创建 Edge 堆栈"
         breadcrumbs={[
-          { label: 'Edge Stacks', link: 'edge.stacks' },
-          'Create Edge Stack',
+          { label: 'Edge 堆栈', link: 'edge.stacks' },
+          '创建 Edge 堆栈',
         ]}
         reload
       />

@@ -20,7 +20,7 @@ export function ItemView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Stack',
+      name: '堆栈'
       icon: LayersIcon,
       widget: (
         <div className="row">
@@ -28,7 +28,7 @@ export function ItemView() {
             <Widget>
               <Widget.Body loading={edgeStackQuery.isLoading}>
                 {edgeStackQuery.isError && (
-                  <Alert color="error" title="Error loading edge stack" />
+                  <Alert color="error" title="加载 Edge 堆栈失败" />
                 )}
                 {!!stack && <EditEdgeStackForm edgeStack={stack} />}
               </Widget.Body>
@@ -39,7 +39,7 @@ export function ItemView() {
       selectedTabParam: 'stack',
     },
     {
-      name: 'Environments',
+      name: '环境'
       icon: HardDriveIcon,
       widget: <EnvironmentsDatatable />,
       selectedTabParam: 'environments',
@@ -55,9 +55,9 @@ export function ItemView() {
   return (
     <>
       <PageHeader
-        title="Edit Edge stack"
+        title="编辑 Edge 堆栈"
         breadcrumbs={[
-          { label: 'Edge Stacks', link: 'edge.stacks' },
+          { label: 'Edge 堆栈', link: 'edge.stacks' },
           stack?.Name ?? '',
         ]}
         reload

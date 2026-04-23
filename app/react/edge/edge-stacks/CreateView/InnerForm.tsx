@@ -56,7 +56,7 @@ export function InnerForm({
         onChange={(value) => setFieldValue('name', value)}
         value={values.name}
         errors={errors.name}
-        placeholder="e.g. my-stack"
+        placeholder="例如 my-stack"
       />
 
       <EdgeGroupsSelector
@@ -138,8 +138,8 @@ export function InnerForm({
 
       <FormActions
         data-cy="edgeStackCreate-createStackButton"
-        submitLabel="Deploy the stack"
-        loadingText="Deployment in progress..."
+        submitLabel="部署堆栈"
+        loadingText="部署中..."
         isValid={isValid}
         isLoading={isLoading}
       />

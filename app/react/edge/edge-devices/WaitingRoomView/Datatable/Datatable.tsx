@@ -34,7 +34,7 @@ export function Datatable() {
       settingsManager={tableState}
       columns={columns}
       dataset={environments}
-      title="Edge Devices Waiting Room"
+      title="Edge 设备等待室"
       titleIcon={Box}
       renderTableActions={(selectedRows) => (
         <TableActions selectedRows={selectedRows} />

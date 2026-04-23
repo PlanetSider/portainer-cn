@@ -25,7 +25,7 @@ export function NameField({
   placeholder?: string;
 }) {
   return (
-    <FormControl inputId="name-input" label="Name" errors={errors} required>
+    <FormControl inputId="name-input" label="名称" errors={errors} required>
       <Input
         id="name-input"
         onChange={(e) => onChange(e.target.value)}
@@ -43,15 +43,15 @@ export function nameValidation(
   isComposeStack: boolean | undefined
 ): SchemaOf<string> {
   let schema = string()
-    .required('Name is required')
-    .test('unique', 'Name should be unique', (value) =>
+    .required('名称为必填项')
+    .test('unique', '名称必须唯一', (value) =>
       stacks.every((s) => s.Name !== value)
     );
 
   if (isComposeStack) {
     schema = schema.matches(
       new RegExp(STACK_NAME_VALIDATION_REGEX),
-      "This field must consist of lower case alphanumeric characters, '_' or '-' (e.g. 'my-name', or 'abc-123')."
+      "此字段必须由小写字母、数字、'_' 或 '-' 组成（例如 'my-name' 或 'abc-123'）。"
     );
   }
 

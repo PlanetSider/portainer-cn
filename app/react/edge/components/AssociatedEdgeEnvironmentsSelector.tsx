@@ -19,9 +19,7 @@ export function AssociatedEdgeEnvironmentsSelector({
   return (
     <>
       <div className="col-sm-12 small text-muted">
-        You can also select environments individually by moving them to the
-        associated environments table. Simply click on any environment entry to
-        move it from one table to the other.
+        你也可以通过将环境移动到“已关联环境”表中，逐个选择环境。只需点击任一环境条目，即可在两个表之间移动。
       </div>
 
       {error && (
@@ -36,7 +34,7 @@ export function AssociatedEdgeEnvironmentsSelector({
         <div className="flex">
           <div className="w-1/2">
             <EdgeEnvironmentsAssociationTable
-              title="Available environments"
+              title="可用环境"
               query={{
                 types: EdgeTypes,
                 excludeIds: value,
@@ -51,7 +49,7 @@ export function AssociatedEdgeEnvironmentsSelector({
           </div>
           <div className="w-1/2">
             <EdgeEnvironmentsAssociationTable
-              title="Associated environments"
+              title="已关联环境"
               query={{
                 types: EdgeTypes,
                 endpointIds: value,

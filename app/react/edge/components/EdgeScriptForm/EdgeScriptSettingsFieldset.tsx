@@ -47,8 +47,8 @@ export function EdgeScriptSettingsFieldset({
       {!hideIdGetter && (
         <>
           <FormControl
-            label="Edge ID Generator"
-            tooltip="Enter a single-line bash command that generates a unique Edge ID. For example, you can use 'uuidgen' or 'uuid'. The result will be assigned to the 'PORTAINER_EDGE_ID' environment variable."
+            label="Edge ID 生成器"
+            tooltip="输入一条可生成唯一 Edge ID 的单行 bash 命令。例如可以使用 'uuidgen' 或 'uuid'。结果将被赋值给 'PORTAINER_EDGE_ID' 环境变量。"
             inputId="edge-id-generator-input"
             required
             errors={errors.edgeIdGenerator}
@@ -57,7 +57,7 @@ export function EdgeScriptSettingsFieldset({
               type="text"
               value={values.edgeIdGenerator}
               name="edgeIdGenerator"
-              placeholder="e.g. uuidgen"
+              placeholder="例如 uuidgen"
               id="edge-id-generator-input"
               onChange={(e) => setFieldValue(e.target.name, e.target.value)}
               data-cy="edge-id-generator-input"
@@ -66,8 +66,7 @@ export function EdgeScriptSettingsFieldset({
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue">
-                <code>PORTAINER_EDGE_ID</code> environment variable is required
-                to successfully connect the edge agent to Portainer
+                <code>PORTAINER_EDGE_ID</code> 环境变量是 Edge Agent 成功连接到 Portainer 所必需的
               </TextTip>
             </div>
           </div>
@@ -75,21 +74,20 @@ export function EdgeScriptSettingsFieldset({
       )}
 
       <FormControl
-        label="Environment variables"
-        tooltip="Comma separated list of environment variables that will be sourced from the host where the agent is deployed."
+        label="环境变量"
+        tooltip="以逗号分隔的环境变量列表，这些变量将从部署 Agent 的主机中读取。"
         inputId="env-variables-input"
       >
         <Field
           name="envVars"
           as={Input}
-          placeholder="e.g. foo=bar"
+          placeholder="例如 foo=bar"
           id="env-variables-input"
         />
       </FormControl>
 
       <TextTip color="orange" className="icon-orange mb-2">
-        For security purposes, only environment variables prefixed with
-        &apos;PORTAINER_&apos; will be accessible.
+        出于安全考虑，只有以 &apos;PORTAINER_&apos; 为前缀的环境变量才可被访问。
       </TextTip>
 
       <div className="form-group">
@@ -100,9 +98,9 @@ export function EdgeScriptSettingsFieldset({
             onChange={(value) =>
               setFieldValue('allowSelfSignedCertificates', value)
             }
-            label="Allow self-signed certs"
+            label="允许自签名证书"
             labelClass="col-sm-3 col-lg-2"
-            tooltip="When allowing self-signed certificates the edge agent will ignore the domain validation when connecting to Portainer via HTTPS"
+            tooltip="允许自签名证书时，Edge Agent 在通过 HTTPS 连接 Portainer 时会忽略域名校验。"
           />
         </div>
       </div>

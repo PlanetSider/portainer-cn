@@ -63,7 +63,7 @@ export function StaggerParallelFieldset({ values, onChange, errors }: Props) {
             data-cy="edge-stack-device-number-input"
             id="device-number"
             type="number"
-            placeholder="eg. 1 or 10"
+            placeholder="例如 1 或 10"
             min={1}
             value={values.DeviceNumber || ''}
             onChange={(e) => {
@@ -81,7 +81,7 @@ export function StaggerParallelFieldset({ values, onChange, errors }: Props) {
       {values.StaggerParallelOption === StaggerParallelOption.Incremental && (
         <div className="col-sm-9 col-lg-10">
           <div>
-            <span> {' start with '} </span>
+            <span> {' 从 '} </span>
             <div style={{ display: 'inline-block', width: '150px' }}>
               <Input
                 name="DeviceNumberStartFrom"
@@ -89,7 +89,7 @@ export function StaggerParallelFieldset({ values, onChange, errors }: Props) {
                 type="number"
                 id="device-number-start-from"
                 min={1}
-                placeholder="eg. 1"
+                placeholder="例如 1"
                 value={values.DeviceNumberStartFrom}
                 onChange={(e) =>
                   handleChange({
@@ -101,7 +101,7 @@ export function StaggerParallelFieldset({ values, onChange, errors }: Props) {
                 }
               />
             </div>
-            <span> {' device(s) and multiply the group size by '} </span>
+            <span> {' 个设备开始，并将组大小乘以 '} </span>
             <Select
               id="device-number-incremental"
               data-cy="edge-stack-device-number-incremental-select"
@@ -114,7 +114,7 @@ export function StaggerParallelFieldset({ values, onChange, errors }: Props) {
               }
               options={deviceNumberIncrementBy}
             />
-            <span>{' for each rollout '} </span>
+            <span>{' 用于每一轮发布 '} </span>
           </div>
           {errors?.DeviceNumberStartFrom && (
             <FormError>{errors?.DeviceNumberStartFrom}</FormError>

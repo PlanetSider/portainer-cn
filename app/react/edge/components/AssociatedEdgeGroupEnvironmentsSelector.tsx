@@ -78,7 +78,7 @@ export function AssociatedEdgeGroupEnvironmentsSelector({
         <div className="flex">
           <div className="w-1/2">
             <EdgeGroupAssociationTable
-              title="Available environments"
+               title="可用环境"
               query={{
                 excludeEdgeGroupIds: edgeGroupId ? [edgeGroupId] : [],
               }}
@@ -94,7 +94,7 @@ export function AssociatedEdgeGroupEnvironmentsSelector({
           </div>
           <div className="w-1/2">
             <EdgeGroupAssociationTable
-              title="Associated environments"
+               title="已关联环境"
               query={{
                 edgeGroupIds: edgeGroupId ? [edgeGroupId] : [],
                 endpointIds: edgeGroupId ? undefined : [], // workaround to avoid showing all environments for new edge group

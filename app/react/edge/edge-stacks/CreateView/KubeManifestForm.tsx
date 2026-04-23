@@ -45,8 +45,8 @@ export function KubeManifestForm({
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
-            label="Use namespace(s) specified from manifest"
-            tooltip="If you have defined namespaces in your deployment file turning this on will enforce the use of those only in the deployment"
+            label="使用清单中指定的命名空间"
+            tooltip="如果你已在部署文件中定义命名空间，启用后部署时将只使用这些命名空间。"
             checked={values.useManifestNamespaces}
             onChange={(value) =>
               handleChange({
@@ -58,7 +58,7 @@ export function KubeManifestForm({
         </div>
       </div>
 
-      <FormSection title="Build Method">
+      <FormSection title="构建方式">
         <BoxSelector
           options={buildMethods}
           onChange={(value) => handleChange({ method: value })}
@@ -74,7 +74,7 @@ export function KubeManifestForm({
           value={values.fileContent}
           onChange={(value) => handleChange({ fileContent: value })}
           type="yaml"
-          textTip="Define or paste the content of your manifest file here"
+          textTip="请在此定义或粘贴清单文件内容"
           error={errors?.fileContent}
           data-cy="stack-creation-editor"
         >
@@ -87,7 +87,7 @@ export function KubeManifestForm({
           value={values.file}
           onChange={(file) => handleChange({ file })}
           required
-          description="You can upload a Manifest file from your computer."
+          description="你可以从本地电脑上传 Manifest 文件。"
           data-cy="stack-creation-file-upload"
         >
           <KubeDeployDescription />
@@ -128,19 +128,18 @@ function KubeDeployDescription() {
   return (
     <>
       <div>
-        Templates allow deploying any kind of Kubernetes resource (Deployment,
-        Secret, ConfigMap...)
+        模板允许部署任意类型的 Kubernetes 资源（Deployment、Secret、ConfigMap 等）。
       </div>
       <div>
-        You can get more information about Kubernetes file format in the
+        你可以在
         <a
           href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/"
           target="_blank"
           rel="noreferrer"
         >
-          official documentation
+          官方文档
         </a>
-        .
+        中了解更多 Kubernetes 文件格式信息。
       </div>
     </>
   );

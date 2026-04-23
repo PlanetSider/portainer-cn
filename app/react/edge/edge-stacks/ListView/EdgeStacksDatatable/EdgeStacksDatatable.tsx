@@ -25,7 +25,7 @@ export function EdgeStacksDatatable() {
 
   return (
     <Datatable
-      title="Edge Stacks"
+      title="Edge 堆栈"
       titleIcon={Layers}
       columns={columns}
       dataset={edgeStacksQuery.data || []}
