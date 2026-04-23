@@ -51,7 +51,7 @@ export function EnvironmentInfo() {
           </DetailsTable.Row>
 
           {isEnvUrlVisible && (
-            <DetailsTable.Row label="URL">
+            <DetailsTable.Row label="URL 地址">
               {stripProtocol(environment.URL)}
             </DetailsTable.Row>
           )}

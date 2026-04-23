@@ -23,7 +23,7 @@ export function TasksDatatable({
       columns={columns}
       dataset={dataset}
       search={search}
-      aria-label="Tasks table"
+      aria-label="任务表格"
       data-cy="docker-service-tasks-nested-datatable"
       initialSortBy={{ id: 'Updated', desc: true }}
     />

@@ -5,7 +5,7 @@ import { NodeViewModel } from '@/docker/models/node';
 import { columnHelper } from './column-helper';
 
 export const availability = columnHelper.accessor('Availability', {
-  header: 'Availability',
+  header: '可用性',
   cell({ getValue }) {
     const value = getValue();
     return (

@@ -1,6 +1,6 @@
 <div>
   <rd-widget>
-    <rd-widget-header icon="list" title-text="Hosts 文件条目">
+    <rd-widget-header icon="list" title-text="Hosts 条目">
       <div class="nopadding" authorization="DockerServiceUpdate">
         <a class="btn btn-secondary btn-sm pull-right" ng-click="isUpdating ||addHostsEntry(service)" ng-disabled="isUpdating">
           <pr-icon icon="'plus'"></pr-icon> 添加 Hosts 条目
@@ -8,14 +8,14 @@
       </div>
     </rd-widget-header>
     <rd-widget-body ng-if="!service.Hosts || service.Hosts.length === 0">
-      <p>Hosts 文件没有额外条目。</p>
+      <p>Hosts 文件中没有额外条目。</p>
     </rd-widget-body>
     <rd-widget-body ng-if="service.Hosts.length > 0" classes="no-padding">
       <table class="table">
         <thead>
           <tr>
             <th>主机名</th>
-            <th>IP</th>
+            <th>IP 地址</th>
           </tr>
         </thead>
         <tbody>

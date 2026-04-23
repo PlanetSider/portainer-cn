@@ -19,20 +19,20 @@ export function useColumns(isStackColumnVisible?: boolean) {
       _.compact([
         buildExpandColumn<ServiceViewModel>(),
         buildNameColumn<ServiceViewModel>(
-          'Name',
+          '名称',
           'docker.services.service',
           'docker-services-name'
         ),
         isStackColumnVisible &&
           columnHelper.accessor((item) => item.StackName || '-', {
-            header: 'Stack',
+            header: '堆栈',
             enableHiding: false,
           }),
         image,
         schedulingMode,
         ports,
         columnHelper.accessor('UpdatedAt', {
-          header: 'Last Update',
+          header: '最后更新时间',
           cell: ({ getValue }) => isoDate(getValue()),
         }),
         createOwnershipColumn<ServiceViewModel>(),

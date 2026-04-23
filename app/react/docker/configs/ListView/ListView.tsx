@@ -5,7 +5,7 @@ import { ConfigsDatatable } from './ConfigsDatatable/ConfigsDatatable';
 export function ListView() {
   return (
     <>
-      <PageHeader title="Configs list" breadcrumbs="Configs" reload />
+      <PageHeader title="Config 列表" breadcrumbs="Config" reload />
 
       <ConfigsDatatable />
     </>

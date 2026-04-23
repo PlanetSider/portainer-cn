@@ -39,7 +39,7 @@ export function useColumns() {
         }),
         isSwarm &&
           columnHelper.accessor((item) => item.NodeName || '-', {
-            header: 'Host',
+            header: '宿主机',
           }),
         createOwnershipColumn<DecoratedVolume>(),
       ]),

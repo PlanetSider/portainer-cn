@@ -34,7 +34,7 @@ export function NetworkDetailsTable({
       <DetailsTable dataCy="networkDetails-detailsTable">
         {/* networkRowContent */}
         <DetailsTable.Row label="名称">{network.Name}</DetailsTable.Row>
-        <DetailsTable.Row label="ID">
+        <DetailsTable.Row label="标识 ID">
           {network.Id}
           {allowRemoveNetwork && (
             <span className="ml-2">

@@ -32,7 +32,7 @@ export function MacvlanNodesSelector({
 
   return (
     <Datatable<NodeViewModel>
-      title="Select the nodes where you want to deploy the local configuration"
+      title="选择要部署本地配置的节点"
       titleIcon={HardDrive}
       columns={columns}
       dataset={dataset || []}

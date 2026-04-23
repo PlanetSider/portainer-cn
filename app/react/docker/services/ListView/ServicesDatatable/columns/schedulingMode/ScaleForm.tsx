@@ -59,7 +59,7 @@ export function ScaleForm({
               values.replicas < 0 ||
               Number.isNaN(values.replicas)
             }
-            loadingText="Scaling..."
+            loadingText="扩容中..."
             color="none"
             icon={CheckSquare}
             type="submit"
@@ -91,8 +91,8 @@ export function ScaleForm({
         onSuccess() {
           onClose();
           notifySuccess(
-            'Service successfully scaled',
-            `New replica count: ${replicas}`
+            '服务扩容成功',
+            `新的副本数：${replicas}`
           );
           router.stateService.reload();
         },

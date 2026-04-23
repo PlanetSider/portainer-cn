@@ -27,10 +27,10 @@ interface Props {
 }
 
 const restartPolicyOptions: Array<Option<RestartPolicy>> = [
-  { label: 'None', value: RestartPolicy.No },
-  { label: 'On Failure', value: RestartPolicy.OnFailure },
-  { label: 'Always', value: RestartPolicy.Always },
-  { label: 'Unless Stopped', value: RestartPolicy.UnlessStopped },
+  { label: '无', value: RestartPolicy.No },
+  { label: '失败时', value: RestartPolicy.OnFailure },
+  { label: '始终', value: RestartPolicy.Always },
+  { label: '除非手动停止', value: RestartPolicy.UnlessStopped },
 ];
 
 export function RestartPolicySection({
@@ -57,7 +57,7 @@ export function RestartPolicySection({
           >
             <Authorized authorizations="DockerContainerUpdate">
               <DetailsRow
-                label="Name"
+                label="名称"
                 columns={[
                   <LoadingButton
                     key="update-button"
@@ -65,9 +65,9 @@ export function RestartPolicySection({
                     disabled={!isValid || !dirty}
                     isLoading={updateMutation.isLoading}
                     data-cy="container-restart-policy-update-button"
-                    loadingText="Updating..."
+                    loadingText="更新中..."
                   >
-                    Update
+                    更新
                   </LoadingButton>,
                 ]}
               >
@@ -80,7 +80,7 @@ export function RestartPolicySection({
               </DetailsRow>
             </Authorized>
             {values.name === RestartPolicy.OnFailure && (
-              <DetailsRow label="Maximum Retry Count">
+                <DetailsRow label="最大重试次数">
                 <Input
                   type="number"
                   value={values.maximumRetryCount}
@@ -111,7 +111,7 @@ export function RestartPolicySection({
       },
       {
         onSuccess: () => {
-          notifySuccess('Success', 'Restart policy updated');
+          notifySuccess('成功', '重启策略已更新');
 
           onUpdateSuccess?.(values);
         },

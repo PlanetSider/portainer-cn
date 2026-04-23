@@ -13,11 +13,11 @@ export { name, status };
 export const role = columnHelper.accessor('Role', {});
 
 export const engine = columnHelper.accessor('EngineVersion', {
-  header: 'Engine',
+  header: '引擎版本',
 });
 
 export const ip = columnHelper.accessor('Addr', {
-  header: 'IP Address',
+  header: 'IP 地址',
 });
 
 export const cpu = columnHelper.accessor(
@@ -28,7 +28,7 @@ export const cpu = columnHelper.accessor(
 );
 
 export const memory = columnHelper.accessor('Memory', {
-  header: 'Memory',
+  header: '内存',
   cell({ getValue }) {
     const value = getValue();
     return humanize(value);

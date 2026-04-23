@@ -12,7 +12,7 @@ import { matchesServiceConstraints } from './constraint-helper';
 import { ScaleServiceButton } from './ScaleServiceButton';
 
 export const schedulingMode = columnHelper.accessor('Mode', {
-  header: 'Scheduling Mode',
+  header: '调度模式',
   cell: Cell,
   enableHiding: false,
 });
