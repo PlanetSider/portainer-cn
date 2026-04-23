@@ -23,7 +23,7 @@ export function EnvironmentVariablesPanel({
 } & FieldsetProps) {
   return (
     <FormSection
-      title="Environment variables"
+      title="环境变量"
       isFoldable={isFoldable}
       defaultFolded={isFoldable}
       className="flex w-full flex-col"
@@ -48,8 +48,8 @@ export function EnvironmentVariablesPanel({
         {showHelpMessage && (
           <div className="col-sm-12">
             <TextTip color="blue" inline={false}>
-              Environment changes will not take effect until redeployment occurs
-              manually or via webhook.
+              环境变量变更不会立即生效，需手动重新部署或通过 webhook
+              触发重新部署后才会生效。
             </TextTip>
           </div>
         )}
