@@ -18,18 +18,18 @@ import { FormValues } from './types';
 
 const asyncIntervalFieldSettings = {
   ping: {
-    label: 'Edge Agent 默认 ping 频率',
+    label: '边缘代理默认 ping 频率',
     tooltip:
-      '每个 Edge Agent 默认用于 ping Portainer 实例的时间间隔。影响边缘环境管理和边缘计算功能。',
+      '每个边缘代理默认用于 ping Portainer 实例的时间间隔。影响边缘环境管理和边缘计算功能。',
   },
   snapshot: {
-    label: 'Edge Agent 默认快照频率',
+    label: '边缘代理默认快照频率',
     tooltip:
-      '每个 Edge Agent 默认用于生成代理状态快照的时间间隔。',
+      '每个边缘代理默认用于生成代理状态快照的时间间隔。',
   },
   command: {
-    label: 'Edge Agent 默认命令频率',
-    tooltip: '每个 Edge Agent 默认用于执行命令的时间间隔。',
+    label: '边缘代理默认命令频率',
+    tooltip: '每个边缘代理默认用于执行命令的时间间隔。',
   },
 };
 
@@ -74,8 +74,8 @@ export function DeploymentSyncOptions() {
                       setFieldValue('EdgeAgentCheckinInterval', value)
                     }
                     isDefaultHidden
-                    label="Edge Agent 默认轮询频率"
-                    tooltip="每个 Edge Agent 默认用于向 Portainer 实例签入的时间间隔。影响边缘环境管理和边缘计算功能。"
+                     label="边缘代理默认轮询频率"
+                     tooltip="每个边缘代理默认用于向 Portainer 实例签入的时间间隔。影响边缘环境管理和边缘计算功能。"
                   />
                 </FormSection>
 

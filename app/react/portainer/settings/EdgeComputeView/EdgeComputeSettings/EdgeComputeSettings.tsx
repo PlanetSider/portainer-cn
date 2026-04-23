@@ -37,7 +37,7 @@ export function EdgeComputeSettings({ settings, onSubmit }: Props) {
   return (
     <div className="row">
       <Widget>
-        <WidgetTitle icon={Laptop} title="Edge Compute 设置" />
+        <WidgetTitle icon={Laptop} title="边缘计算设置" />
 
         <WidgetBody>
           <Formik
@@ -63,7 +63,7 @@ export function EdgeComputeSettings({ settings, onSubmit }: Props) {
               >
                 <FormControl
                   inputId="edge_enable"
-                  label="启用 Edge Compute 功能"
+                  label="启用边缘计算功能"
                   size="small"
                   errors={errors.EnableEdgeComputeFeatures}
                 >
@@ -80,14 +80,14 @@ export function EdgeComputeSettings({ settings, onSubmit }: Props) {
                 </FormControl>
 
                 <TextTip color="blue" className="mb-2">
-                  启用此设置后，即可使用 Portainer 的 Edge Compute 功能。
+                  启用此设置后，即可使用 Portainer 的边缘计算功能。
                 </TextTip>
 
                 {isBE && values.EnableEdgeComputeFeatures && (
                   <>
                     <PortainerUrlField
                       fieldName="EdgePortainerUrl"
-                      tooltip="此 Portainer 实例的 URL，将由 Edge Agent 用于发起通信。"
+                      tooltip="此 Portainer 实例的 URL，将由边缘代理用于发起通信。"
                     />
 
                     <PortainerTunnelAddrField fieldName="Edge.TunnelServerAddress" />
@@ -96,7 +96,7 @@ export function EdgeComputeSettings({ settings, onSubmit }: Props) {
 
                 <FormControl
                   inputId="edge_enforce_id"
-                  label="强制使用 Portainer 生成的 Edge ID"
+                  label="强制使用 Portainer 生成的边缘 ID"
                   size="small"
                   tooltip="此设置仅适用于手动创建的环境。"
                   errors={errors.EnforceEdgeID}

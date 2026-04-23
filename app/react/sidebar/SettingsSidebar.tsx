@@ -204,7 +204,7 @@ export function SettingsSidebar({
 
           <SidebarItem
             to="portainer.settings.edgeCompute"
-             label="Edge Compute 边缘计算设置"
+             label="边缘计算设置"
             isSubMenu
             data-cy="portainerSidebar-edgeCompute"
           />
