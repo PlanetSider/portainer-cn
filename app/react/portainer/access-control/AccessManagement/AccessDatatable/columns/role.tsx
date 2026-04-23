@@ -73,7 +73,7 @@ function RollEdit({
   return (
     <div className="flex max-w-xs items-center gap-3">
       <Select
-        aria-label="Role"
+        aria-label="角色"
         data-cy="role-select"
         value={value}
         options={rolesQuery.data}

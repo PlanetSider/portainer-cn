@@ -73,9 +73,9 @@ function ItemView() {
   return (
     <>
       <PageHeader
-        title="Update & Rollback"
+        title="更新与回滚"
         breadcrumbs={[
-          { label: 'Edge agent update and rollback', link: '^' },
+          { label: 'Edge Agent 更新与回滚', link: '^' },
           item.name,
         ]}
         reload
@@ -83,27 +83,26 @@ function ItemView() {
 
       <BetaAlert
         className="mb-2 ml-[15px]"
-        message="Beta feature - currently limited to standalone Linux edge devices."
+        message="Beta 功能 - 当前仅限独立 Linux Edge 设备使用。"
       />
 
       <div className="row">
         <div className="col-sm-12">
           <Widget>
-            <Widget.Title title="Update & Rollback Scheduler" icon={Settings} />
+            <Widget.Title title="更新与回滚计划器" icon={Settings} />
             <Widget.Body>
               <TextTip color="blue" className="mb-2">
-                Devices need to be allocated to an Edge group, visit the{' '}
+                设备需要先分配到某个 Edge 分组，请前往{' '}
                 <Link
                   to="edge.groups"
                   data-cy="update-schedules-edge-groups-link"
                 >
-                  Edge Groups
+                  Edge 分组
                 </Link>{' '}
-                page to assign environments and create groups.
+                页面分配环境并创建分组。
                 <br />
-                You can upgrade from any agent version to 2.17 or later only.
-                You can not upgrade to an agent version prior to 2.17 . The
-                ability to rollback to originating version is for 2.15.0+ only.
+                仅支持从任意 Agent 版本升级到 2.17 或更高版本。
+                不支持升级到 2.17 之前的 Agent 版本。回滚到原始版本的能力仅适用于 2.15.0+。
               </TextTip>
 
               <Formik
@@ -154,9 +153,8 @@ function ItemView() {
                       {isScheduleActive ? (
                         <InformationPanel>
                           <TextTip color="blue">
-                            {environmentsCount} environment(s) will be updated
-                            to version {item.version} on {item.scheduledTime}{' '}
-                            (local time)
+                            将有 {environmentsCount} 个环境在 {item.scheduledTime}{' '}
+                            （本地时间）更新到版本 {item.version}
                           </TextTip>
                         </InformationPanel>
                       ) : (
@@ -170,9 +168,9 @@ function ItemView() {
                           disabled={!isValid}
                           data-cy="update-schedule-button"
                           isLoading={updateMutation.isLoading}
-                          loadingText="Updating..."
+                          loadingText="更新中..."
                         >
-                          Update Schedule
+                          更新计划
                         </LoadingButton>
                       </div>
                     </div>

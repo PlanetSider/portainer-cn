@@ -25,7 +25,7 @@ export function CommonFields({
   return (
     <>
       <FormControl
-        label="Title"
+        label="标题"
         required
         inputId="template-title"
         errors={errors?.Title}
@@ -33,7 +33,7 @@ export function CommonFields({
         <Input
           name="title"
           data-cy="custom-templates-title-input"
-          placeholder="e.g. mytemplate"
+          placeholder="例如 mytemplate"
           id="template-title"
           required
           value={values.Title}
@@ -44,7 +44,7 @@ export function CommonFields({
       </FormControl>
 
       <FormControl
-        label="Description"
+        label="说明"
         required
         inputId="template-description"
         errors={errors?.Description}
@@ -61,7 +61,7 @@ export function CommonFields({
         />
       </FormControl>
 
-      <FormControl label="Note" inputId="template-note" errors={errors?.Note}>
+      <FormControl label="备注" inputId="template-note" errors={errors?.Note}>
         <Input
           name="note"
           data-cy="custom-templates-note-input"
@@ -73,7 +73,7 @@ export function CommonFields({
         />
       </FormControl>
 
-      <FormControl label="Logo" inputId="template-logo" errors={errors?.Logo}>
+      <FormControl label="Logo 标志" inputId="template-logo" errors={errors?.Logo}>
         <Input
           name="logo"
           data-cy="custom-templates-logo-input"
@@ -100,11 +100,11 @@ export function validation({
   templates?: Array<CustomTemplate>;
 } = {}): SchemaOf<Values> {
   return object({
-    Title: string()
-      .required('Title is required.')
+      Title: string()
+      .required('标题为必填项。')
       .test(
         'is-unique',
-        'Title must be unique',
+        '标题必须唯一',
         (value) =>
           !value ||
           !templates.some(
@@ -114,9 +114,9 @@ export function validation({
       )
       .max(
         200,
-        'Custom template title must be less than or equal to 200 characters'
+        '自定义模板标题长度必须小于或等于 200 个字符'
       ),
-    Description: string().required('Description is required.'),
+    Description: string().required('说明为必填项。'),
     Note: string().default(''),
     Logo: string().default(''),
   });

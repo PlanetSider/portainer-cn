@@ -78,9 +78,9 @@ export function AccessControlPanelDetails({
             <i
               className={clsx(ownershipIcon(ownership), 'space-right')}
               aria-hidden="true"
-              aria-label="ownership-icon"
+               aria-label="所有权图标"
             />
-            <span aria-label="ownership">{ownership}</span>
+             <span aria-label="所有权">{ownership}</span>
             <Tooltip message={getOwnershipTooltip(ownership)} />
           </td>
         </tr>
@@ -88,13 +88,13 @@ export function AccessControlPanelDetails({
         {restrictedToUsers.length > 0 && (
           <tr data-cy="access-authorisedUsers">
             <td>授权用户</td>
-            <td aria-label="authorized-users">{userMessage}</td>
+             <td aria-label="授权用户">{userMessage}</td>
           </tr>
         )}
         {restrictedToTeams.length > 0 && (
           <tr data-cy="access-authorisedTeams">
             <td>授权团队</td>
-            <td aria-label="authorized-teams">{teamsMessage}</td>
+             <td aria-label="授权团队">{teamsMessage}</td>
           </tr>
         )}
       </tbody>
@@ -201,7 +201,7 @@ function InheritanceMessage({
 }: PropsWithChildren<InheritanceMessageProps>) {
   return (
     <tr>
-      <td colSpan={2} aria-label="inheritance-message">
+       <td colSpan={2} aria-label="继承信息">
         <div className="inline-flex items-center gap-1">
           <Icon icon={Info} mode="primary" />
           {children}
