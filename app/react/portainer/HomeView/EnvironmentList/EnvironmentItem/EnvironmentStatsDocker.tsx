@@ -28,16 +28,10 @@ export function EnvironmentStatsDocker({ snapshot }: Props) {
 
   return (
     <>
-      <StatsItem
-        value={addPlural(snapshot.StackCount, 'stack')}
-        icon={Layers}
-      />
+      <StatsItem value={`${snapshot.StackCount} 堆栈`} icon={Layers} />
 
       {!!snapshot.Swarm && (
-        <StatsItem
-          value={addPlural(snapshot.ServiceCount, 'service')}
-          icon={Shuffle}
-        />
+        <StatsItem value={`${snapshot.ServiceCount} 服务`} icon={Shuffle} />
       )}
 
       <ContainerStats
@@ -47,11 +41,8 @@ export function EnvironmentStatsDocker({ snapshot }: Props) {
         healthy={snapshot.HealthyContainerCount}
         unhealthy={snapshot.UnhealthyContainerCount}
       />
-      <StatsItem
-        value={addPlural(snapshot.VolumeCount, 'volume')}
-        icon={Database}
-      />
-      <StatsItem value={addPlural(snapshot.ImageCount, 'image')} icon={List} />
+      <StatsItem value={`${snapshot.VolumeCount} 卷`} icon={Database} />
+      <StatsItem value={`${snapshot.ImageCount} 镜像`} icon={List} />
 
       <StatsItem icon={Cpu} value={`${snapshot.TotalCPU} CPU`} />
 
@@ -61,10 +52,7 @@ export function EnvironmentStatsDocker({ snapshot }: Props) {
       />
 
       {snapshot.Swarm && (
-        <StatsItem
-          value={addPlural(snapshot.NodeCount, 'node')}
-          icon={HardDrive}
-        />
+        <StatsItem value={`${snapshot.NodeCount} 节点`} icon={HardDrive} />
       )}
     </>
   );
@@ -87,7 +75,7 @@ function ContainerStats({
 }: ContainerStatsProps) {
   const actualTotal = total || running + stopped;
   return (
-    <StatsItem value={addPlural(actualTotal, 'container')} icon={Box}>
+    <StatsItem value={`${actualTotal} 容器`} icon={Box}>
       {actualTotal > 0 && (
         <>
           <StatsItem value={running} icon={Power} iconClass="icon-success" />

@@ -55,6 +55,7 @@ export function DashboardView() {
               to="docker.stacks"
               icon={LayersIcon}
               type="堆栈"
+              pluralType="堆栈"
               value={dashboardStats.stacks}
               data-cy="stacks"
             />
@@ -65,6 +66,7 @@ export function DashboardView() {
               to="docker.services"
               icon={ShuffleIcon}
               type="服务"
+              pluralType="服务"
               value={dashboardStats.services}
               data-cy="services"
             />
@@ -74,8 +76,9 @@ export function DashboardView() {
             to="docker.containers"
             icon={BoxIcon}
              type="容器"
-            value={dashboardStats.containers.total}
-            data-cy="containers"
+             pluralType="容器"
+             value={dashboardStats.containers.total}
+             data-cy="containers"
           >
             <ContainerStatus stats={dashboardStats.containers} />
           </DashboardItem>
@@ -84,8 +87,9 @@ export function DashboardView() {
             to="docker.images"
             icon={ListIcon}
              type="镜像"
-            value={dashboardStats.images.total}
-            data-cy="images"
+             pluralType="镜像"
+             value={dashboardStats.images.total}
+             data-cy="images"
           >
             <ImagesTotalSize imagesTotalSize={dashboardStats.images.size} />
           </DashboardItem>
@@ -94,16 +98,18 @@ export function DashboardView() {
             to="docker.volumes"
             icon={DatabaseIcon}
              type="卷"
-            value={dashboardStats.volumes}
-            data-cy="volumes"
+             pluralType="卷"
+             value={dashboardStats.volumes}
+             data-cy="volumes"
           />
 
           <DashboardItem
             to="docker.networks"
             icon={NetworkIcon}
              type="网络"
-            value={dashboardStats.networks}
-            data-cy="networks"
+             pluralType="网络"
+             value={dashboardStats.networks}
+             data-cy="networks"
           />
 
           {env.EnableGPUManagement && isStandalone && (
