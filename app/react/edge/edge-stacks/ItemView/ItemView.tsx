@@ -20,7 +20,7 @@ export function ItemView() {
 
   const tabs: Tab[] = [
     {
-      name: '堆栈'
+      name: '堆栈',
       icon: LayersIcon,
       widget: (
         <div className="row">
@@ -39,7 +39,7 @@ export function ItemView() {
       selectedTabParam: 'stack',
     },
     {
-      name: '环境'
+      name: '环境',
       icon: HardDriveIcon,
       widget: <EnvironmentsDatatable />,
       selectedTabParam: 'environments',

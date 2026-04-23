@@ -89,7 +89,7 @@ export function useColumns() {
           },
         }),
         helper.accessor('ResourceQuota', {
-          header: '配额'
+          header: '配额',
           cell({ getValue }) {
             const quota = getValue();
 
@@ -101,7 +101,7 @@ export function useColumns() {
           },
         }),
         helper.accessor('CreationDate', {
-          header: '创建时间'
+          header: '创建时间',
           cell({ row: { original: item } }) {
             return (
               <>
