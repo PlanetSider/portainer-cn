@@ -94,7 +94,7 @@ export function getEnvironmentOptions(
     const group = groups.find((g) => g.Id === parsedGroupId);
 
     return {
-      label: group?.Name || '其他'
+      label: group?.Name || '其他',
       options: sortBy(envOptions, 'label'),
     };
   });
