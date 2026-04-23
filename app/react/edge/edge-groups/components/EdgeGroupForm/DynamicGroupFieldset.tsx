@@ -14,7 +14,7 @@ export function DynamicGroupFieldset() {
   const { values, setFieldValue, errors } = useFormikContext<FormValues>();
   return (
     <>
-      <FormSection title="Tags">
+      <FormSection title="标签">
         <BoxSelector
           slim
           value={values.partialMatch}
@@ -33,7 +33,7 @@ export function DynamicGroupFieldset() {
 
       <EdgeGroupAssociationTable
         data-cy="edgeGroupCreate-associatedEnvironmentsTable"
-        title="Associated environments by tags"
+        title="按标签关联的环境"
         query={{
           types: EdgeTypes,
           tagIds: values.tagIds,

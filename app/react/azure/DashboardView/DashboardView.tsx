@@ -27,7 +27,7 @@ export function DashboardView() {
 
   return (
     <>
-      <PageHeader title="Home" breadcrumbs={[{ label: 'Dashboard' }]} reload />
+      <PageHeader title="首页" breadcrumbs={[{ label: '仪表板' }]} reload />
 
       <div className="mx-4">
         {subscriptionsQuery.data && (
@@ -38,7 +38,7 @@ export function DashboardView() {
               isLoading={subscriptionsQuery.isLoading}
               isRefetching={subscriptionsQuery.isRefetching}
               icon={Subscription}
-              type="Subscription"
+                type="订阅"
             />
             {!resourceGroupsQuery.isError && !resourceGroupsQuery.isLoading && (
               <DashboardItem
@@ -46,7 +46,7 @@ export function DashboardView() {
                 data-cy="resource-groups-count"
                 isLoading={resourceGroupsQuery.isLoading}
                 icon={Package}
-                type="Resource group"
+                  type="资源组"
               />
             )}
           </DashboardGrid>

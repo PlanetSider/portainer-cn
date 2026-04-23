@@ -182,18 +182,13 @@ function InnerForm({
 
       {hasKubeEndpoint && hasDockerEndpoint && (
         <TextTip>
-          There are no available deployment types when there is more than one
-          type of environment in your edge group selection (e.g. Kubernetes and
-          Docker environments). Please select edge groups that have environments
-          of the same type.
+          当你选择的边缘分组中包含多种环境类型（例如 Kubernetes 与 Docker 环境）时，将没有可用的部署类型。请选择只包含同一种环境类型的边缘分组。
         </TextTip>
       )}
 
       {values.deploymentType === DeploymentType.Compose && hasKubeEndpoint && (
         <FormError>
-          Edge groups with kubernetes environments no longer support compose
-          deployment types in Portainer. Please select edge groups that only
-          have docker environments when using compose deployment types.
+          在 Portainer 中，包含 Kubernetes 环境的边缘分组已不再支持 Compose 部署类型。使用 Compose 部署类型时，请选择仅包含 Docker 环境的边缘分组。
         </FormError>
       )}
       <EdgeStackDeploymentTypeSelector
@@ -205,7 +200,7 @@ function InnerForm({
         }}
       />
 
-      <FormSection title="Update from git repository">
+      <FormSection title="从 Git 仓库更新">
         <AutoUpdateFieldset
           webhookId={webhookId}
           value={values.autoUpdate}
@@ -220,7 +215,7 @@ function InnerForm({
         />
       </FormSection>
 
-      <FormSection title="Advanced configuration" isFoldable>
+      <FormSection title="高级配置" isFoldable>
         <RefField
           value={values.refName}
           onChange={(value) => setFieldValue('refName', value)}
@@ -264,25 +259,25 @@ function InnerForm({
         errorMessage={errors.privateRegistryId}
       />
 
-      <FormSection title="Actions">
+      <FormSection title="操作">
         <LoadingButton
           disabled={dirty || !isValid || isLoading}
           data-cy="pull-and-update-stack-button"
           isLoading={isUpdateVersion && isLoading}
-          loadingText="updating stack..."
+          loadingText="正在更新堆栈..."
         >
-          Pull and update stack
+          拉取并更新堆栈
         </LoadingButton>
 
         <LoadingButton
           type="button"
           disabled={!dirty || !isValid || isLoading}
           isLoading={!isUpdateVersion && isLoading}
-          loadingText="updating settings..."
+          loadingText="正在更新设置..."
           onClick={onUpdateSettingsClick}
           data-cy="edge-stack-update-settings-button"
         >
-          Update settings
+          更新设置
         </LoadingButton>
       </FormSection>
     </Form>

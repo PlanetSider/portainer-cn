@@ -30,9 +30,9 @@ export function ItemView() {
   return (
     <>
       <PageHeader
-        title="Edit edge group"
+        title="编辑边缘分组"
         breadcrumbs={[
-          { label: 'Edge groups', link: 'edge.groups' },
+          { label: '边缘分组', link: 'edge.groups' },
           group.Name,
         ]}
       />
@@ -53,8 +53,8 @@ export function ItemView() {
                     {
                       onSuccess: () => {
                         notifySuccess(
-                          'Success',
-                          'Edge group successfully updated'
+                          '成功',
+                          '边缘分组更新成功'
                         );
                         router.stateService.go('^');
                       },

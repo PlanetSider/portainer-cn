@@ -8,11 +8,11 @@ import { PortainerSelect } from '@@/form-components/PortainerSelect';
 import { useFilterStore } from './filter-store';
 
 const checkInOptions = [
-  { value: 0, label: 'Show all time' },
-  { value: 60 * 60, label: 'Show past hour' },
-  { value: 60 * 60 * 24, label: 'Show past day' },
-  { value: 60 * 60 * 24 * 7, label: 'Show past week' },
-  { value: 60 * 60 * 24 * 14, label: 'Show past 14 days' },
+  { value: 0, label: '显示全部时间' },
+  { value: 60 * 60, label: '显示过去 1 小时' },
+  { value: 60 * 60 * 24, label: '显示过去 1 天' },
+  { value: 60 * 60 * 24 * 7, label: '显示过去 1 周' },
+  { value: 60 * 60 * 24 * 14, label: '显示过去 14 天' },
 ];
 
 export function Filter() {
@@ -30,7 +30,7 @@ export function Filter() {
     <div className="flex w-full gap-5 [&>*]:w-1/5">
       <HomepageFilter
         onChange={(f) => filterStore.setEdgeGroups(f)}
-        placeHolder="Edge groups"
+        placeHolder="边缘组"
         value={filterStore.edgeGroups}
         filterOptions={edgeGroupsQuery.data.map((g) => ({
           label: g.Name,
@@ -39,7 +39,7 @@ export function Filter() {
       />
       <HomepageFilter
         onChange={(f) => filterStore.setGroups(f)}
-        placeHolder="Group"
+        placeHolder="分组"
         value={filterStore.groups}
         filterOptions={groupsQuery.data.map((g) => ({
           label: g.Name,
@@ -48,7 +48,7 @@ export function Filter() {
       />
       <HomepageFilter
         onChange={(f) => filterStore.setTags(f)}
-        placeHolder="Tags"
+        placeHolder="标签"
         value={filterStore.tags}
         filterOptions={tagsQuery.data.map((g) => ({
           label: g.Name,

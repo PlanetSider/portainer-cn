@@ -15,16 +15,16 @@ export const cronMethodOptions: ReadonlyArray<BoxSelectorOption<string>> = [
     value: 'basic',
     icon: Calendar,
     iconType: 'badge',
-    label: 'Basic configuration',
-    description: 'Select date from calendar',
+      label: '基础配置',
+      description: '从日历中选择时间',
   },
   {
     id: 'config_advanced',
     value: 'advanced',
     icon: Edit,
     iconType: 'badge',
-    label: 'Advanced configuration',
-    description: 'Write your own cron rule',
+      label: '高级配置',
+      description: '自定义 Cron 规则',
   },
 ] as const;
 
@@ -33,7 +33,7 @@ export function JobConfigurationFieldset() {
 
   return (
     <>
-      <FormSection title="Edge job configuration">
+      <FormSection title="边缘任务配置">
         <BoxSelector
           slim
           radioName="configuration"

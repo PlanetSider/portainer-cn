@@ -12,8 +12,8 @@ export function ListView() {
   return (
     <>
       <PageHeader
-        title="Edge 堆栈列表"
-        breadcrumbs="Edge 堆栈"
+        title="边缘堆栈列表"
+        breadcrumbs="边缘堆栈"
         reload
         onReload={() => queryClient.invalidateQueries(queryKeys.base())}
       />

@@ -44,14 +44,14 @@ export function EdgeGroupsSelector({
   return horizontal ? (
     <FormControl
       errors={error}
-      label="Edge Groups"
+      label="边缘分组"
       required={required}
       inputId={inputId}
     >
       {selector}
     </FormControl>
   ) : (
-    <FormSection title={`Edge Groups${required ? ' *' : ''}`} htmlFor={inputId}>
+    <FormSection title={`边缘分组${required ? ' *' : ''}`} htmlFor={inputId}>
       <div className="form-group">
         <div className="col-sm-12">{selector} </div>
         {error && (
@@ -85,7 +85,7 @@ function InnerSelector({
 
   return items.length ? (
     <Select
-      aria-label="Edge groups"
+      aria-label="边缘分组"
       options={items}
       isMulti
       getOptionLabel={(item) => item.Name}
@@ -102,9 +102,9 @@ function InnerSelector({
     />
   ) : (
     <div className="small text-muted">
-      暂无可用的 Edge 分组。请前往{' '}
+      暂无可用的边缘分组。请前往{' '}
       <Link to="edge.groups" data-cy="edge-stacks-groups-view-link">
-        Edge 分组页面
+        边缘分组页面
       </Link>{' '}
       创建分组。
     </div>

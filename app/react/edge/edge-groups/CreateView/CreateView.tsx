@@ -15,10 +15,10 @@ export function CreateView() {
   return (
     <>
       <PageHeader
-        title="Create edge group"
+        title="创建边缘分组"
         breadcrumbs={[
-          { label: 'Edge groups', link: 'edge.groups' },
-          'Add edge group',
+          { label: '边缘分组', link: 'edge.groups' },
+          '添加边缘分组',
         ]}
       />
 
@@ -36,8 +36,8 @@ export function CreateView() {
                     {
                       onSuccess: () => {
                         notifySuccess(
-                          'Success',
-                          'Edge group successfully created'
+                          '成功',
+                          '边缘分组创建成功'
                         );
                         router.stateService.go('^');
                       },

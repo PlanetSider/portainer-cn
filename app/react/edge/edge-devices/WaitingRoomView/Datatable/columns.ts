@@ -7,32 +7,32 @@ const columnHelper = createColumnHelper<WaitingRoomEnvironment>();
 
 export const columns = [
   columnHelper.accessor('Name', {
-    header: 'Name',
+    header: '名称',
     id: 'Name',
   }),
   columnHelper.accessor('EdgeID', {
-    header: 'Edge ID',
+    header: '边缘 ID',
     id: 'EdgeID',
   }),
   columnHelper.accessor((row) => row.EdgeGroups.join(', '), {
-    header: 'Edge Groups',
+    header: '边缘组',
     id: 'edge-groups',
     enableSorting: false,
     cell: ({ getValue }) => getValue() || '-',
   }),
   columnHelper.accessor((row) => row.Group, {
-    header: 'Group',
+    header: '分组',
     id: 'Group',
     cell: ({ getValue }) => getValue() || '-',
   }),
   columnHelper.accessor((row) => row.Tags.join(', '), {
-    header: 'Tags',
+    header: '标签',
     id: 'tags',
     enableSorting: false,
     cell: ({ getValue }) => getValue() || '-',
   }),
   columnHelper.accessor((row) => row.LastCheckInDate, {
-    header: 'Last Check-in',
+    header: '上次签入',
     id: 'LastCheckIn',
     cell: ({ getValue }) => {
       const value = getValue();

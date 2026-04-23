@@ -38,7 +38,7 @@ export function ResultsDatatable({ jobId }: { jobId: EdgeJob['Id'] }) {
 
   return (
     <Datatable
-      title="Results"
+      title="结果"
       titleIcon={List}
       columns={columns}
       disableSelect

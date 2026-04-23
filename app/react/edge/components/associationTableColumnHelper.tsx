@@ -12,21 +12,21 @@ const columHelper = createColumnHelper<DecoratedEnvironment>();
 
 export const columns = [
   columHelper.accessor('Name', {
-    header: 'Name',
+    header: '名称',
     id: 'Name',
     cell: ({ getValue }) => (
       <span title={getValue()}>{truncate(getValue(), { length: 64 })}</span>
     ),
   }),
   columHelper.accessor('Group', {
-    header: 'Group',
+    header: '分组',
     id: 'Group',
     cell: ({ getValue }) => (
       <span title={getValue()}>{truncate(getValue(), { length: 64 })}</span>
     ),
   }),
   columHelper.accessor((row) => row.Tags.join(','), {
-    header: 'Tags',
+    header: '标签',
     id: 'tags',
     enableSorting: false,
     cell: ({ getValue }) => (

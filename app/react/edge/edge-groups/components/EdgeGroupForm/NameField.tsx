@@ -10,11 +10,11 @@ import { EdgeGroup } from '../../types';
 
 export function NameField({ errors }: { errors?: FormikErrors<string> }) {
   return (
-    <FormControl label="Name" required errors={errors} inputId="group_name">
+    <FormControl label="名称" required errors={errors} inputId="group_name">
       <Field
         as={Input}
         name="name"
-        placeholder="e.g. mygroup"
+        placeholder="例如：mygroup"
         data-cy="edgeGroupCreate-groupNameInput"
         id="group_name"
       />
@@ -28,14 +28,14 @@ export function useNameValidation(id?: EdgeGroup['Id']) {
   return useMemo(
     () =>
       string()
-        .required('Name is required')
+        .required('名称为必填项')
         .test({
           name: 'is-unique',
           test: (value) =>
             !edgeGroupsQuery.data?.find(
               (group) => group.Name === value && group.Id !== id
             ),
-          message: 'Name must be unique',
+          message: '名称必须唯一',
         }),
     [edgeGroupsQuery.data, id]
   );

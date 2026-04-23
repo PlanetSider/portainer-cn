@@ -41,9 +41,9 @@ export function CreateContainerInstanceInnerForm({
 }: Props) {
   return (
     <Form className="form-horizontal" onSubmit={handleSubmit} noValidate>
-      <FormSectionTitle>Azure settings</FormSectionTitle>
+      <FormSectionTitle>Azure 设置</FormSectionTitle>
       <FormControl
-        label="Subscription"
+        label="订阅"
         inputId="subscription-input"
         errors={errors.subscription}
       >
@@ -56,7 +56,7 @@ export function CreateContainerInstanceInnerForm({
       </FormControl>
 
       <FormControl
-        label="Resource group"
+        label="资源组"
         inputId="resourceGroup-input"
         errors={errors.resourceGroup}
       >
@@ -72,7 +72,7 @@ export function CreateContainerInstanceInnerForm({
       </FormControl>
 
       <FormControl
-        label="Location"
+        label="位置"
         inputId="location-input"
         errors={errors.location}
       >
@@ -104,7 +104,7 @@ export function CreateContainerInstanceInnerForm({
         />
       </FormControl>
 
-      <FormControl label="OS" inputId="os-input" errors={errors.os}>
+      <FormControl label="操作系统" inputId="os-input" errors={errors.os}>
         <Field
           name="os"
           as={Select}
@@ -146,7 +146,7 @@ export function CreateContainerInstanceInnerForm({
         />
       </FormControl>
 
-      <FormControl label="Memory" inputId="cpu-input" errors={errors.memory}>
+      <FormControl label="内存" inputId="cpu-input" errors={errors.memory}>
         <Field
           name="memory"
           as={Input}

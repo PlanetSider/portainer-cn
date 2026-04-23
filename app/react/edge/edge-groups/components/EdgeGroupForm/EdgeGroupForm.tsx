@@ -67,7 +67,7 @@ function InnerForm({
     <Form className="form-horizontal">
       <NameField errors={errors.name} />
 
-      <FormSection title="Group type">
+      <FormSection title="分组类型">
         <BoxSelector
           slim
           value={values.dynamic}
@@ -80,11 +80,11 @@ function InnerForm({
       {values.dynamic ? <DynamicGroupFieldset /> : <StaticGroupFieldset />}
 
       <FormActions
-        submitLabel={isCreate ? 'Add edge group' : 'Save edge group'}
+        submitLabel={isCreate ? '添加边缘分组' : '保存边缘分组'}
         isLoading={isLoading}
         isValid={isValid}
         data-cy="edgeGroupCreate-addGroupButton"
-        loadingText="In progress..."
+        loadingText="进行中..."
         errors={errors}
       />
     </Form>

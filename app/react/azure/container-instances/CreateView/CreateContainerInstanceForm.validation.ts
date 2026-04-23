@@ -8,11 +8,11 @@ import { validationSchema as portsSchema } from './PortsMappingField.validation'
 
 export function validationSchema(isAdmin: boolean) {
   return object().shape({
-    name: string().required('Name is required.'),
-    image: string().required('Image is required.'),
-    subscription: string().required('Subscription is required.'),
-    resourceGroup: string().required('Resource group is required.'),
-    location: string().required('Location is required.'),
+    name: string().required('名称为必填项。'),
+    image: string().required('镜像为必填项。'),
+    subscription: string().required('订阅为必填项。'),
+    resourceGroup: string().required('资源组为必填项。'),
+    location: string().required('位置为必填项。'),
     os: string().oneOf(['Linux', 'Windows']),
     cpu: number().positive(),
     memory: number().positive(),
@@ -22,15 +22,15 @@ export function validationSchema(isAdmin: boolean) {
     env: array()
       .of(
         object().shape({
-          name: string().required('Environment variable name is required.'),
-          value: string().required('Environment variable value is required.'),
+          name: string().required('环境变量名称为必填项。'),
+          value: string().required('环境变量值为必填项。'),
         })
       )
       .test(
         'unique',
-        'This environment variable is already defined',
+        '该环境变量已定义',
         buildUniquenessTest(
-          () => 'This environment variable is already defined',
+          () => '该环境变量已定义',
           'name'
         )
       ),

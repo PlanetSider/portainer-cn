@@ -18,29 +18,29 @@ export function EdgeComputeSidebar() {
   const settings = settingsQuery.data;
 
   return (
-    <SidebarSection title="Edge 计算">
+    <SidebarSection title="边缘计算">
       <SidebarItem
         to="edge.groups"
-        label="Edge 分组"
+        label="边缘分组"
         icon={LayoutGrid}
         data-cy="portainerSidebar-edgeGroups"
       />
       <SidebarItem
         to="edge.stacks"
-        label="Edge 堆栈"
+        label="边缘堆栈"
         icon={Layers}
         data-cy="portainerSidebar-edgeStacks"
       />
       <SidebarItem
         to="edge.jobs"
-        label="Edge 任务"
+        label="边缘任务"
         icon={Clock}
         data-cy="portainerSidebar-edgeJobs"
       />
       {isBE && (
         <SidebarItem
           to="edge.configurations"
-          label="Edge 配置"
+          label="边缘配置"
           icon={Puzzle}
           data-cy="portainerSidebar-edgeConfigurations"
         />
@@ -55,7 +55,7 @@ export function EdgeComputeSidebar() {
       )}
       <SidebarParent
         icon={Edit}
-        label="Edge 模板"
+        label="边缘模板"
         to="edge.templates"
         data-cy="edgeSidebar-templates"
         listId="edgeSidebar-templates"

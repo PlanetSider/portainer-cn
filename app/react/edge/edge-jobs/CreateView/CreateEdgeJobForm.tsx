@@ -48,7 +48,7 @@ export function CreateEdgeJobForm() {
       onSubmit={(values) => {
         mutation.mutate(getPayload(values.method, values), {
           onSuccess: () => {
-            notifySuccess('Success', 'Edge job successfully created');
+            notifySuccess('成功', '边缘任务创建成功');
             router.stateService.go('^');
           },
         });
@@ -71,7 +71,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
 
       <JobConfigurationFieldset />
 
-      <FormSection title="Job content">
+      <FormSection title="任务内容">
         <BoxSelector
           value={values.method}
           options={buildMethods}
@@ -86,7 +86,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
           id="edge-job-editor"
           onChange={(value) => setFieldValue('fileContent', value)}
           value={values.fileContent}
-          textTip="Define or paste the content of your script file here"
+          textTip="在此定义或粘贴脚本文件内容"
           type="shell"
           error={errors.fileContent}
         />
@@ -95,7 +95,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
       {values.method === 'upload' && (
         <FileUploadForm
           data-cy="edge-job-upload"
-          description="You can upload a script file from your computer."
+          description="你可以从本地电脑上传脚本文件。"
           onChange={(value) => setFieldValue('file', value)}
           value={values.file}
           required
@@ -108,7 +108,7 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
         error={errors.edgeGroupIds}
       />
 
-      <FormSection title="Target environments">
+      <FormSection title="目标环境">
         <AssociatedEdgeEnvironmentsSelector
           onChange={(value) => setFieldValue('environmentIds', value)}
           value={values.environmentIds}
@@ -116,11 +116,11 @@ function InnerForm({ isLoading }: { isLoading: boolean }) {
       </FormSection>
 
       <FormActions
-        submitLabel="Add edge job"
+        submitLabel="添加边缘任务"
         isLoading={isLoading}
         isValid={isValid}
         data-cy="edgeJobCreate-addJobButton"
-        loadingText="In progress..."
+        loadingText="进行中..."
         errors={errors}
       />
     </Form>
@@ -134,7 +134,7 @@ function getPayload(
   switch (method) {
     case 'upload':
       if (!values.file) {
-        throw new Error('File is required');
+        throw new Error('文件为必填项');
       }
 
       return {

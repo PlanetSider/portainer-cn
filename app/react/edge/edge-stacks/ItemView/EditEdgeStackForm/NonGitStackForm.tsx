@@ -265,16 +265,16 @@ function InnerForm({
 
       {isBE && (
         <>
-          <FormSection title="Webhooks">
+          <FormSection title="Webhook">
             <div className="form-group">
               <div className="col-sm-12">
                 <SwitchField
-                  label="Create an Edge stack webhook"
+                  label="创建边缘堆栈 Webhook"
                   data-cy="edge-stack-enable-webhook-switch"
                   checked={values.webhookEnabled}
                   labelClass="col-sm-3 col-lg-2"
                   onChange={(value) => setFieldValue('webhookEnabled', value)}
-                  tooltip="Create a webhook (or callback URI) to automate the update of this stack. Sending a POST request to this callback URI (without requiring any authentication) will pull the most up-to-date version of the associated image and re-deploy this stack."
+                  tooltip="创建一个 Webhook（或回调 URI），以自动更新此堆栈。向该回调 URI 发送 POST 请求时，无需任何认证，即可拉取关联镜像的最新版本并重新部署此堆栈。"
                 />
               </div>
             </div>
@@ -288,9 +288,7 @@ function InnerForm({
                 />
 
                 <TextTip color="orange">
-                  Sending environment variables to the webhook is updating the
-                  stack with the new values. New variables names will be added
-                  to the stack and existing variables will be updated.
+                  将环境变量发送到 webhook 时，会使用新值更新堆栈。新的变量名会被添加到堆栈中，已有变量也会被更新。
                 </TextTip>
               </>
             )}
@@ -342,7 +340,7 @@ function InnerForm({
         </>
       )}
 
-      <FormSection title="Actions">
+      <FormSection title="操作">
         <div className="form-group">
           <div className="col-sm-12">
             <LoadingButton
@@ -352,16 +350,15 @@ function InnerForm({
               disabled={!isValid || staggerUpdating}
               isLoading={isLoading}
               button-spinner="$ctrl.actionInProgress"
-              loadingText="Update in progress..."
+              loadingText="更新进行中..."
             >
-              Update the stack
+              更新堆栈
             </LoadingButton>
           </div>
           {staggerUpdating && (
             <div className="col-sm-12">
               <FormError>
-                Concurrent updates in progress, stack update temporarily
-                unavailable
+                当前有并发更新正在进行，暂时无法更新堆栈
               </FormError>
             </div>
           )}
@@ -414,10 +411,10 @@ function useCachedContent() {
 
 function formValidation(): SchemaOf<FormValues> {
   return object({
-    content: string().required('Content is required'),
+    content: string().required('内容为必填项'),
     deploymentType: number()
       .oneOf([0, 1, 2])
-      .required('Deployment type is required'),
+      .required('部署类型为必填项'),
     privateRegistryId: number().optional(),
     prePullImage: boolean().default(false),
     retryDeploy: boolean().default(false),
@@ -425,7 +422,7 @@ function formValidation(): SchemaOf<FormValues> {
     edgeGroups: array()
       .of(number().required())
       .required()
-      .min(1, 'At least one edge group is required'),
+      .min(1, '至少需要选择一个边缘分组'),
     webhookEnabled: boolean().default(false),
     versions: array().of(number().optional()).optional(),
     envVars: envVarValidation(),

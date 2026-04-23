@@ -13,13 +13,13 @@ import { ResultsDatatable } from './ResultsDatatable/ResultsDatatable';
 
 const TABS_FOR_INDEX: Tab[] = [
   {
-    name: 'Configuration',
+    name: '配置',
     icon: WrenchIcon,
     widget: null,
     selectedTabParam: 'configuration',
   },
   {
-    name: 'Results',
+    name: '结果',
     icon: ListIcon,
     widget: null,
     selectedTabParam: 'results',
@@ -39,7 +39,7 @@ export function ItemView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Configuration',
+      name: '配置',
       icon: WrenchIcon,
       widget: (
         <div className="row">
@@ -55,7 +55,7 @@ export function ItemView() {
       selectedTabParam: 'configuration',
     },
     {
-      name: 'Results',
+      name: '结果',
       icon: ListIcon,
       widget: <ResultsDatatable jobId={edgeJob.Id} />,
       selectedTabParam: 'results',
@@ -65,8 +65,8 @@ export function ItemView() {
   return (
     <>
       <PageHeader
-        title="Edge job details"
-        breadcrumbs={[{ label: 'Edge jobs', link: 'edge.jobs' }, edgeJob.Name]}
+        title="边缘任务详情"
+        breadcrumbs={[{ label: '边缘任务', link: 'edge.jobs' }, edgeJob.Name]}
       />
 
       {tabs.length === 1 ? (

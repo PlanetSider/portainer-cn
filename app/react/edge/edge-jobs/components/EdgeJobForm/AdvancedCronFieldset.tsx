@@ -12,11 +12,11 @@ export function AdvancedCronFieldset() {
 
   return (
     <>
-      <FormControl label="Cron rule" inputId="edge_job_cron" errors={error}>
+      <FormControl label="Cron 规则" inputId="edge_job_cron" errors={error}>
         <Input
           data-cy="edge-job-cron-input"
           id="edge_job_cron"
-          placeholder="e.g. 0 2 * * *"
+          placeholder="例如：0 2 * * *"
           required
           value={value}
           onChange={onChange}
@@ -36,5 +36,5 @@ const cronRegex =
 export function cronValidation() {
   return string()
     .default('')
-    .matches(cronRegex, 'This field format is invalid.');
+    .matches(cronRegex, '此字段格式无效。');
 }
