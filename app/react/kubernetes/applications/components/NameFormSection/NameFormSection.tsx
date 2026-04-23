@@ -18,7 +18,7 @@ export function NameFormSection({
 }: Props) {
   return (
     <FormControl
-      label="Name"
+      label="名称"
       inputId="application_name"
       errors={errors}
       required
@@ -28,7 +28,7 @@ export function NameFormSection({
         value={appName ?? ''}
         onChange={(e) => onChange(e.target.value)}
         autoFocus
-        placeholder="e.g. my-app"
+        placeholder="例如：my-app"
         disabled={isEdit}
         id="application_name"
         data-cy="k8sAppCreate-applicationName"

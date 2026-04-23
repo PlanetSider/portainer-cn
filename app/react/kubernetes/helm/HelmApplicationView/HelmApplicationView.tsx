@@ -45,9 +45,9 @@ export function HelmApplicationView() {
   return (
     <>
       <PageHeader
-        title="Helm details"
+        title="Helm 详情"
         breadcrumbs={[
-          { label: 'Applications', link: 'kubernetes.applications' },
+          { label: '应用', link: 'kubernetes.applications' },
           name,
         ]}
         reload
@@ -138,12 +138,12 @@ function HelmDetails({
 
   if (isError) {
     return (
-      <Alert color="error" title="Failed to load Helm application details" />
+        <Alert color="error" title="加载 Helm 应用详情失败" />
     );
   }
 
   if (!release || !selectedRevision) {
-    return <Alert color="error" title="No Helm application details found" />;
+      return <Alert color="error" title="未找到 Helm 应用详情" />;
   }
 
   return (

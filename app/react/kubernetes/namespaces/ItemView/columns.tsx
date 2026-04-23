@@ -24,7 +24,7 @@ export function useColumns() {
     () =>
       _.compact([
         columnHelper.accessor('Name', {
-          header: 'Name',
+    header: '名称',
           cell: ({ row: { original: item } }) => (
             <div className="flex-0 flex">
               <Link

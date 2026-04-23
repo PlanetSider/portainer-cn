@@ -12,7 +12,7 @@ const columnHelper = createColumnHelper<Item>();
 
 const columns = [
   columnHelper.accessor('value', {
-    header: 'Namespace',
+    header: '命名空间',
   }),
 ];
 
@@ -31,7 +31,7 @@ export function AccessTable({
 
   return (
     <Datatable
-      title="Access"
+      title="访问控制"
       titleIcon={UserX}
       dataset={dataset}
       columns={columns}
@@ -43,11 +43,9 @@ export function AccessTable({
           confirmMessage={
             <>
               <p>
-                This registry might be used by one or more applications inside
-                this environment. Removing the registry access could lead to a
-                service interruption for these applications.
+                该镜像仓库可能正被此环境中的一个或多个应用使用。移除仓库访问权限可能会导致这些应用发生服务中断。
               </p>
-              <p>Are you sure you wish to continue?</p>
+              <p>确定要继续吗？</p>
             </>
           }
           onConfirmed={() => onRemove(selectedItems)}

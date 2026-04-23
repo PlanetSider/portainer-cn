@@ -9,7 +9,7 @@ import { SecretRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const namespace = columnHelper.accessor((row) => row.Namespace, {
-  header: 'Namespace',
+  header: '命名空间',
   id: 'namespace',
   cell: ({ getValue }) => {
     const namespace = getValue();
@@ -28,7 +28,7 @@ export const namespace = columnHelper.accessor((row) => row.Namespace, {
     );
   },
   meta: {
-    filter: filterHOC('Filter by namespace'),
+    filter: filterHOC('按命名空间筛选'),
   },
   enableColumnFilter: true,
   filterFn: (

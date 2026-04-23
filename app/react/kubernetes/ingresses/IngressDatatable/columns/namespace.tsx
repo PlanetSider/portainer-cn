@@ -8,7 +8,7 @@ import { Ingress } from '../../types';
 import { columnHelper } from './helper';
 
 export const namespace = columnHelper.accessor('Namespace', {
-  header: 'Namespace',
+  header: '命名空间',
   id: 'namespace',
   cell: Cell,
   filterFn: (row: Row<Ingress>, columnId: string, filterValue: string[]) => {
@@ -19,7 +19,7 @@ export const namespace = columnHelper.accessor('Namespace', {
   },
 
   meta: {
-    filter: filterHOC('Filter by namespace'),
+    filter: filterHOC('按命名空间筛选'),
   },
   enableColumnFilter: true,
 });

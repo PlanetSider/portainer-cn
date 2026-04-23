@@ -11,7 +11,7 @@ import { DescribeModal } from '../DescribeModal';
 import { columnHelper } from './helper';
 
 export const actions = columnHelper.accessor((row) => row.status.label, {
-  header: 'Actions',
+  header: '操作',
   id: 'actions',
   cell: Cell,
   enableSorting: false,
@@ -30,7 +30,7 @@ function Cell({ row }: CellContext<ResourceRow, string>) {
         className="!ml-0 pl-0"
       >
         <Icon icon={FileText} />
-        Describe
+        描述
       </Button>
 
       {modalOpen && (

@@ -19,13 +19,13 @@ export function ClusterRolesView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Cluster Roles',
+      name: '集群角色',
       icon: UserCheck,
       widget: <ClusterRolesDatatable />,
       selectedTabParam: 'clusterRoles',
     },
     {
-      name: 'Cluster Role Bindings',
+      name: '集群角色绑定',
       icon: Link,
       widget: <ClusterRoleBindingsDatatable />,
       selectedTabParam: 'clusterRoleBindings',
@@ -37,8 +37,8 @@ export function ClusterRolesView() {
   return (
     <>
       <PageHeader
-        title="Cluster Role list"
-        breadcrumbs="Cluster Roles"
+        title="集群角色列表"
+        breadcrumbs="集群角色"
         reload
       />
       <>

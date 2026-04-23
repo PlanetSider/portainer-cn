@@ -5,7 +5,7 @@ import { columnHelper } from './helper';
 export const created = columnHelper.accessor(
   (row) => formatDate(row.creationDate),
   {
-    header: 'Created',
+  header: '创建时间',
     id: 'created',
     cell: ({ getValue }) => getValue(),
   }

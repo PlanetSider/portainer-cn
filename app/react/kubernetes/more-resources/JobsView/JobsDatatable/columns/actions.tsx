@@ -6,7 +6,7 @@ import { Icon } from '@@/Icon';
 import { columnHelper } from './helper';
 
 export const actions = columnHelper.accessor(() => '', {
-  header: 'Actions',
+  header: '操作',
   id: 'actions',
   enableSorting: false,
   cell: ({ row: { original: job } }) => (

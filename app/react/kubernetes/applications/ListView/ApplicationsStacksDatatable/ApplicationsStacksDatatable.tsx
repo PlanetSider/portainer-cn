@@ -90,7 +90,7 @@ export function ApplicationsStacksDatatable({
       renderTableActions={(selectedItems) => (
         <Authorized authorizations="K8sApplicationsW">
           <DeleteButton
-            confirmMessage="Are you sure that you want to remove the selected stack(s) ? This will remove all the applications associated to the stack(s)."
+            confirmMessage="确定要移除所选堆栈吗？这将移除与这些堆栈关联的所有应用。"
             disabled={selectedItems.length === 0}
             onConfirmed={() => handleRemoveStacks(selectedItems)}
             data-cy="k8sApp-removeStackButton"

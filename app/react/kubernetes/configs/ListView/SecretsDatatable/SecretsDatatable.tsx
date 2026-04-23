@@ -63,8 +63,8 @@ export function SecretsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={secretsQuery.isLoading || namespacesQuery.isLoading}
-      emptyContentLabel="未找到 Secrets"
-      title="Secrets"
+      emptyContentLabel="未找到密钥"
+      title="密钥"
       titleIcon={Lock}
       getRowId={(row) => row.UID ?? ''}
       isRowSelectable={({ original: secret }) =>

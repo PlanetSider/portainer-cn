@@ -10,7 +10,7 @@ import { columnHelper } from './helper';
 
 export function getActions(metricsEnabled: boolean) {
   return columnHelper.accessor(() => '', {
-    header: 'Actions',
+    header: '操作',
     enableSorting: false,
     cell: (props) => (
       <ActionsCell
@@ -34,7 +34,7 @@ function ActionsCell({
     <div className="flex gap-1.5">
       {metricsEnabled && (
         <Link
-          title="Stats"
+          title="统计"
           to="kubernetes.cluster.node.stats"
           params={{ nodeName }}
           className="flex items-center p-1"

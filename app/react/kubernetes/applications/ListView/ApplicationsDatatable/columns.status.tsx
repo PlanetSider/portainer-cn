@@ -13,10 +13,10 @@ import { helper } from './columns.helper';
 import { ApplicationRowData } from './types';
 
 export const status = helper.accessor(getStatusSummary, {
-  header: 'Status',
+  header: '状态',
   cell: Cell,
   meta: {
-    filter: filterHOC('Filter by status'),
+    filter: filterHOC('按状态筛选'),
   },
   enableColumnFilter: true,
   filterFn: (row: Row<ApplicationRowData>, _: string, filterValue: string[]) =>
@@ -52,11 +52,11 @@ function Cell({
         <>
           {item.DeploymentType ===
             KubernetesApplicationDeploymentTypes.Replicated && (
-            <span className="mr-1">Replicated</span>
+            <span className="mr-1">副本模式</span>
           )}
           {item.DeploymentType ===
             KubernetesApplicationDeploymentTypes.Global && (
-            <span className="mr-1">Global</span>
+            <span className="mr-1">全局模式</span>
           )}
           {item.RunningPodsCount >= 0 && item.TotalPodsCount >= 0 && (
             <span>

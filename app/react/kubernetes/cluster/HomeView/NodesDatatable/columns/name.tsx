@@ -10,7 +10,7 @@ import { NodeRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const name = columnHelper.accessor('Name', {
-  header: 'Name',
+  header: '名称',
   cell: NameCell,
   id: 'name',
 });
@@ -37,7 +37,7 @@ function NameCell({
 
       <div className="ml-auto flex gap-2">
         {node.isApi && <Badge type="info">api</Badge>}
-        {node.isPublishedNode && <Badge type="success">environment IP</Badge>}
+        {node.isPublishedNode && <Badge type="success">环境 IP</Badge>}
       </div>
     </div>
   );

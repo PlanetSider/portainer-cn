@@ -8,12 +8,12 @@ import { ResourceRow } from '../types';
 import { columnHelper } from './helper';
 
 export const status = columnHelper.accessor((row) => row.status.label, {
-  header: 'Status',
+  header: '状态',
   id: 'status',
   cell: Cell,
   meta: {
     filter: filterHOC(
-      'Filter by status',
+      '按状态筛选',
       // don't include empty values in the filter options
       (rows: Row<ResourceRow>[]) =>
         Array.from(

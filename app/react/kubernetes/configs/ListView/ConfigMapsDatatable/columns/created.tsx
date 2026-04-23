@@ -5,7 +5,7 @@ import { ConfigMapRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const created = columnHelper.accessor((row) => getCreatedAtText(row), {
-  header: 'Created',
+  header: '创建时间',
   id: 'created',
   cell: ({ row }) => getCreatedAtText(row.original),
 });

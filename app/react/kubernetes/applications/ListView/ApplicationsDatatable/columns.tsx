@@ -98,19 +98,19 @@ export const appType = helper.accessor('ApplicationType', {
 });
 
 export const published = helper.accessor('Services', {
-  header: 'Published',
+  header: '已发布',
   cell: ({ row: { original: item } }) =>
-    item.Services?.length === 0 ? 'No' : 'Yes',
+    item.Services?.length === 0 ? '否' : '是',
   enableSorting: false,
 });
 
 export const created = helper.accessor('CreationDate', {
-  header: 'Created',
+  header: '创建时间',
   cell({ row: { original: item } }) {
     return (
       <>
         {isoDate(item.CreationDate)}{' '}
-        {item.ApplicationOwner ? ` by ${item.ApplicationOwner}` : ''}
+        {item.ApplicationOwner ? `，由 ${item.ApplicationOwner} 创建` : ''}
       </>
     );
   },

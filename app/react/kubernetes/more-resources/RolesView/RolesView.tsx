@@ -16,13 +16,13 @@ export function RolesView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Roles',
+      name: '角色',
       icon: UserCheck,
       widget: <RolesDatatable />,
       selectedTabParam: 'roles',
     },
     {
-      name: 'Role Bindings',
+      name: '角色绑定',
       icon: Link,
       widget: <RoleBindingsDatatable />,
       selectedTabParam: 'roleBindings',
@@ -33,7 +33,7 @@ export function RolesView() {
 
   return (
     <>
-      <PageHeader title="Role list" breadcrumbs="Roles" reload />
+      <PageHeader title="角色列表" breadcrumbs="角色" reload />
       <>
         <WidgetTabs tabs={tabs} currentTabIndex={currentTabIndex} />
         <div className="content">{tabs[currentTabIndex].widget}</div>

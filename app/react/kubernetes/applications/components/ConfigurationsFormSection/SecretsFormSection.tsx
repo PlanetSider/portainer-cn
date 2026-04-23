@@ -28,11 +28,11 @@ export function SecretsFormSection({
   const secrets = secretsQuery.data || [];
 
   if (secretsQuery.isLoading) {
-    return <InlineLoader>正在加载 Secrets...</InlineLoader>;
+    return <InlineLoader>正在加载密钥...</InlineLoader>;
   }
 
   return (
-    <FormSection title="Secrets" titleSize="sm">
+    <FormSection title="密钥" titleSize="sm">
       {!!values.length && (
         <TextTip color="blue">
           Portainer 会自动将 Secret 的所有键暴露为环境变量。你也可以通过 override 选项将每个键改为文件系统挂载方式。
@@ -48,7 +48,7 @@ export function SecretsFormSection({
         disabled={secrets.length === 0}
         addButtonError={
           secrets.length === 0
-            ? '此命名空间中没有可用的 Secrets。'
+            ? '此命名空间中没有可用的密钥。'
             : undefined
         }
         renderItem={(item, onChange, index, error) => (
@@ -68,7 +68,7 @@ export function SecretsFormSection({
           overridenKeys: [],
           selectedConfiguration: secrets[0],
         })}
-        addLabel="添加 Secret"
+        addLabel="添加密钥"
       />
     </FormSection>
   );

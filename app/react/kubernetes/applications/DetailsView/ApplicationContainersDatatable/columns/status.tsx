@@ -10,7 +10,7 @@ import { ContainerRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const status = columnHelper.accessor('status', {
-  header: 'Status',
+  header: '状态',
   cell: StatusCell,
 });
 
@@ -25,10 +25,10 @@ function StatusCell({
         <span>
           {statusData.status}
           {statusData.restartCount &&
-            ` (Restarted ${statusData.restartCount} ${pluralize(
-              statusData.restartCount,
-              'time'
-            )})`}
+              `（已重启 ${statusData.restartCount} ${pluralize(
+                statusData.restartCount,
+                'time'
+             )}）`}
         </span>
       </div>
       {statusData.message && <Tooltip message={statusData.message} />}

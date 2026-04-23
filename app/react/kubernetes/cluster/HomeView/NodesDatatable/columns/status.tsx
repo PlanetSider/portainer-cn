@@ -7,7 +7,7 @@ import { NodeRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const status = columnHelper.accessor((row) => getStatus(row), {
-  header: 'Status',
+  header: '状态',
   cell: StatusCell,
 });
 
@@ -19,7 +19,7 @@ function StatusCell({
   const isDeleting =
     node.metadata?.annotations?.['portainer.io/removing-node'] === 'true';
   if (isDeleting) {
-    return <StatusBadge color="warning">Removing</StatusBadge>;
+    return <StatusBadge color="warning">移除中</StatusBadge>;
   }
 
   return (
@@ -28,7 +28,7 @@ function StatusCell({
         {status}
       </StatusBadge>
       {node.spec?.unschedulable && (
-        <StatusBadge color="warning">SchedulingDisabled</StatusBadge>
+        <StatusBadge color="warning">已禁用调度</StatusBadge>
       )}
     </div>
   );
@@ -39,6 +39,6 @@ function getStatus(node: NodeRowData) {
     // only look for the ready type to identify if the node is either ready or not ready
     node.status?.conditions?.find(
       (condition) => condition.status === 'True' && condition.type === 'Ready'
-    )?.type ?? 'Not Ready'
+    )?.type ?? '未就绪'
   );
 }

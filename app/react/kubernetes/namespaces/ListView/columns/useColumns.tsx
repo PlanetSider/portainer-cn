@@ -25,7 +25,7 @@ export function useColumns() {
     () =>
       _.compact([
         helper.accessor('Name', {
-          header: 'Name',
+          header: '名称',
           id: 'Name',
           cell: ({ getValue, row: { original: item } }) => {
             const name = getValue();
@@ -47,7 +47,7 @@ export function useColumns() {
           },
         }),
         helper.accessor('Status', {
-          header: 'Status',
+          header: '状态',
           cell({ getValue, row: { original: item } }) {
             const status = getValue();
             return (

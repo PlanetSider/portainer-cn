@@ -7,7 +7,7 @@ import { ContainerRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const name = columnHelper.accessor('name', {
-  header: 'Name',
+  header: '名称',
   id: 'name',
   cell: ({ row: { original: container } }) => (
     <div className="flex justify-between gap-2">
@@ -29,10 +29,9 @@ function ContainerTypeBadge({ container }: { container: ContainerRowData }) {
                 to="https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/"
                 data-cy="sidecar-link"
               >
-                Sidecar containers
+               Sidecar containers
               </ExternalLink>{' '}
-              run continuously alongside the main application, starting before
-              other containers.
+               会与主应用持续并行运行，并在其他容器之前启动。
             </>
           }
         />
@@ -51,9 +50,9 @@ function ContainerTypeBadge({ container }: { container: ContainerRowData }) {
                 to="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/"
                 data-cy="init-link"
               >
-                Init containers
+               Init containers
               </ExternalLink>{' '}
-              run and complete before the main application containers start.
+               会在主应用容器启动前先运行并完成。
             </>
           }
         />

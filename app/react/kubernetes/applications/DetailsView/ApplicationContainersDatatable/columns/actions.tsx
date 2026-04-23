@@ -9,7 +9,7 @@ import { columnHelper } from './helper';
 
 export function getActions(isServerMetricsEnabled: boolean) {
   return columnHelper.accessor(() => '', {
-    header: 'Actions',
+    header: '操作',
     enableSorting: false,
     cell: ({ row: { original: container } }) => (
       <div className="flex gap-x-2">
@@ -22,7 +22,7 @@ export function getActions(isServerMetricsEnabled: boolean) {
               data-cy={`application-container-stats-${container.name}`}
             >
               <Icon icon={BarChart} />
-              Stats
+              统计
             </Link>
           )}
         {container.status.hasLogs !== false && (
@@ -33,7 +33,7 @@ export function getActions(isServerMetricsEnabled: boolean) {
             data-cy={`application-container-logs-${container.name}`}
           >
             <Icon icon={FileText} />
-            Logs
+            日志
           </Link>
         )}
         {container.status.status.includes('Running') && (
@@ -45,7 +45,7 @@ export function getActions(isServerMetricsEnabled: boolean) {
               data-cy={`application-container-console-${container.name}`}
             >
               <Icon icon={Terminal} />
-              Console
+              控制台
             </Link>
           </Authorized>
         )}

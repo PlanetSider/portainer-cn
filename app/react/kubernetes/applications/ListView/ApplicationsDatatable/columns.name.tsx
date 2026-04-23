@@ -11,7 +11,7 @@ import { helper } from './columns.helper';
 import { ApplicationRowData } from './types';
 
 export const name = helper.accessor('Name', {
-  header: 'Name',
+  header: '名称',
   cell: Cell,
 });
 

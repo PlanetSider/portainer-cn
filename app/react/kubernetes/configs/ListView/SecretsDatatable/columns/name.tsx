@@ -29,7 +29,7 @@ export const name = columnHelper.accessor(
     } ${!row.inUse && !isSystemConfigMap ? 'unused' : ''}`;
   },
   {
-    header: 'Name',
+    header: '名称',
     cell: Cell,
     id: 'name',
   }
@@ -68,7 +68,7 @@ function Cell({ row }: CellContext<SecretRowData, string>) {
           {!row.original.inUse && !isSystemSecret && <UnusedBadge />}
           {row.original.registryId && (
             <RegistryBadge registryId={row.original.registryId}>
-              <Tooltip message="This registry secret was created by Portainer to allow pulling images." />
+                <Tooltip message="此镜像仓库密钥由 Portainer 创建，用于允许拉取镜像。" />
             </RegistryBadge>
           )}
         </div>

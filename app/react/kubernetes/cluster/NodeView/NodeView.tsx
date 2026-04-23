@@ -59,7 +59,7 @@ export function NodeView() {
   return (
     <>
       <PageHeader
-        title="Node details"
+        title="节点详情"
         breadcrumbs={[
           { label: 'Cluster', link: 'kubernetes.cluster' },
           nodeName,
@@ -84,7 +84,7 @@ function buildTabs(
 ): Tab[] {
   return [
     {
-      name: 'Node',
+      name: '节点',
       icon: HardDrive,
       widget: (
         <div className="row">
@@ -105,7 +105,7 @@ function buildTabs(
     {
       name: (
         <div className="flex items-center gap-x-2">
-          Events
+          事件
           {eventWarningCount >= 1 && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />
