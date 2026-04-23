@@ -78,7 +78,7 @@ export function StackDetails({
 
   const tabs: Tab[] = useMemo(() => {
     const infoTab: Tab = {
-      name: 'Stack',
+      name: '堆栈',
       icon: List,
       widget: (
         <Widget>

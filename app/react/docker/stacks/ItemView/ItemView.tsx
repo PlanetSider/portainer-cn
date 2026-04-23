@@ -59,7 +59,7 @@ export function ItemView() {
   return (
     <>
       <PageHeader
-        title="Stack 详情"
+        title="堆栈详情"
         breadcrumbs={[{ label: '堆栈', link: '^' }, stackName]}
       />
       <StackDetails

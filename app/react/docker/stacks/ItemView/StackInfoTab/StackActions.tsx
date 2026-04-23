@@ -69,7 +69,7 @@ export function StackActions({
               disabled={isMutating}
               data-cy="stack-stop-btn"
             >
-              停止此 Stack
+              停止此堆栈
             </Button>
           )}
           {status === StackStatus.Inactive && (
@@ -81,7 +81,7 @@ export function StackActions({
               disabled={isMutating}
               onClick={() => handleStart()}
             >
-              启动此 Stack
+              启动此堆栈
             </Button>
           )}
         </Authorized>
@@ -96,7 +96,7 @@ export function StackActions({
           disabled={isMutating || isDeploying}
           data-cy="stack-delete-btn"
         >
-          删除此 Stack
+          删除此堆栈
         </Button>
       </Authorized>
 
@@ -115,7 +115,7 @@ export function StackActions({
             },
           }}
         >
-          从 Stack 创建模板
+          从堆栈创建模板
         </Button>
       )}
 
@@ -150,11 +150,11 @@ export function StackActions({
       { id: stackId, environmentId },
       {
         onError(err) {
-          notifyError('失败', err as Error, '无法启动 Stack');
+          notifyError('失败', err as Error, '无法启动堆栈');
           router.stateService.reload();
         },
         onSuccess() {
-          notifySuccess('成功', `Stack ${stack.Name} 启动成功`);
+          notifySuccess('成功', `堆栈 ${stack.Name} 启动成功`);
           router.stateService.reload();
         },
       }
@@ -165,7 +165,7 @@ export function StackActions({
     const confirmed = await confirm({
       title: '确定吗？',
       modalType: ModalType.Warn,
-      message: '确定要停止此 Stack 吗？',
+       message: '确定要停止此堆栈吗？',
       confirmButton: buildConfirmButton('停止', 'danger'),
     });
 
@@ -177,10 +177,10 @@ export function StackActions({
       { id: stackId, environmentId },
       {
         onError(err) {
-          notifyError('失败', err as Error, '无法停止 Stack');
+          notifyError('失败', err as Error, '无法停止堆栈');
         },
         onSuccess() {
-          notifySuccess('成功', `Stack ${stack.Name} 停止成功`);
+          notifySuccess('成功', `堆栈 ${stack.Name} 停止成功`);
           router.stateService.reload();
         },
       }
@@ -189,7 +189,7 @@ export function StackActions({
 
   async function handleDelete() {
     const confirmed = await confirmDelete(
-      '确定要删除此 Stack 吗？关联的服务也会一并删除。'
+      '确定要删除此堆栈吗？关联的服务也会一并删除。'
     );
     if (!confirmed) {
       return;
@@ -206,11 +206,11 @@ export function StackActions({
           notifyError(
             '失败',
             err as Error,
-            `无法删除 Stack ${stack.Name}`
+            `无法删除堆栈 ${stack.Name}`
           );
         },
         onSuccess() {
-          notifySuccess('Stack 删除成功', stack.Name);
+          notifySuccess('堆栈删除成功', stack.Name);
           router.stateService.go('^');
         },
       }
@@ -221,7 +221,7 @@ export function StackActions({
     const confirmed = await confirm({
       modalType: ModalType.Warn,
       title: '确定吗？',
-      message: '确定要将此 Stack 与 Git 分离吗？',
+      message: '确定要将此堆栈与 Git 分离吗？',
       confirmButton: buildConfirmButton('分离', 'danger'),
     });
 
