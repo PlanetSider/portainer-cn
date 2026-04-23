@@ -31,8 +31,8 @@
                     <option value="bash" ng-if="imageOS == 'linux'">/bin/bash</option>
                     <option value="dash" ng-if="imageOS == 'linux'">/bin/dash</option>
                     <option value="sh" ng-if="imageOS == 'linux'">/bin/sh</option>
-                    <option value="powershell" ng-if="imageOS == 'windows'">powershell</option>
-                    <option value="cmd.exe" ng-if="imageOS == 'windows'">cmd.exe</option>
+                    <option value="powershell" ng-if="imageOS == 'windows'">PowerShell</option>
+                    <option value="cmd.exe" ng-if="imageOS == 'windows'">CMD</option>
                     <option ng-repeat="command in containerCommands" value="{{ command.command }}">{{ command.title }}: {{ command.command }}</option>
                   </select>
                 </div>
@@ -63,7 +63,7 @@
                 ></portainer-tooltip>
               </label>
               <div class="col-lg-11 col-sm-10">
-                <input class="form-control" type="text" ng-model="formValues.user" placeholder="root" data-cy="container-exec-user" />
+                <input class="form-control" type="text" ng-model="formValues.user" placeholder="例如 root" data-cy="container-exec-user" />
               </div>
             </div>
             <div class="form-group">

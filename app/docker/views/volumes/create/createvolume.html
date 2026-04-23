@@ -9,7 +9,7 @@
           <div class="form-group">
             <label for="volume_name" class="col-sm-2 col-md-1 control-label text-left">名称</label>
             <div class="col-sm-10 col-md-11">
-              <input type="text" class="form-control" ng-model="formValues.Name" id="volume_name" placeholder="例如：myVolume" data-cy="volume-name-input" />
+              <input type="text" class="form-control" ng-model="formValues.Name" id="volume_name" placeholder="例如：my-volume" data-cy="volume-name-input" />
             </div>
           </div>
           <!-- !name-input -->
@@ -32,7 +32,7 @@
                 class="form-control"
                 ng-model="formValues.Driver"
                 id="volume_driver"
-                placeholder="例如：driverName"
+                placeholder="例如：local-driver"
                 ng-if="availableVolumeDrivers.length === 0"
                 data-cy="volume-driver-input"
               />

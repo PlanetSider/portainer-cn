@@ -44,7 +44,7 @@
                             class="form-control"
                             ng-model="item.Name"
                             ng-change="checkName($index)"
-                            placeholder="例如 my-image:my-tag"
+                            placeholder="例如 my-image:latest"
                             auto-focus
                             data-cy="image-name-input"
                           />
@@ -136,7 +136,7 @@
                   <div class="form-group">
                      <label for="image_path" class="col-sm-2 control-label text-left">Dockerfile 路径</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" ng-model="formValues.Path" id="image_path" placeholder="Dockerfile" data-cy="image-path-input" />
+                       <input type="text" class="form-control" ng-model="formValues.Path" id="image_path" placeholder="例如 Dockerfile" data-cy="image-path-input" />
                     </div>
                   </div>
                 </div>
@@ -144,7 +144,7 @@
               <!-- !upload -->
               <!-- url -->
               <div ng-show="state.BuildType === 'url'">
-                 <div class="col-sm-12 form-section-title"> URL </div>
+                 <div class="col-sm-12 form-section-title"> URL 地址 </div>
                 <div class="form-group">
                   <span class="col-sm-12 small vertical-center">
                     <pr-icon icon="'info'" mode="'primary'"></pr-icon>
@@ -173,9 +173,9 @@
                   </span>
                 </div>
                 <div class="form-group">
-                   <label for="image_path" class="col-sm-2 control-label text-left">Dockerfile 路径</label>
+                      <label for="image_path" class="col-sm-2 control-label text-left">Dockerfile 路径</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" ng-model="formValues.Path" id="image_path" placeholder="Dockerfile" data-cy="image-path-input" />
+                     <input type="text" class="form-control" ng-model="formValues.Path" id="image_path" placeholder="例如 Dockerfile" data-cy="image-path-input" />
                   </div>
                 </div>
               </div>

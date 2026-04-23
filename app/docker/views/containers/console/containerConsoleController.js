@@ -58,7 +58,7 @@ angular.module('portainer.docker').controller('ContainerConsoleController', [
       ContainerService.container(endpoint.Id, attachId)
         .then((details) => {
           if (!details.State.Running) {
-            Notifications.error('Failure', details, 'Container ' + attachId + ' is not running!');
+            Notifications.error('失败', details, '容器 ' + attachId + ' 未在运行！');
             $scope.disconnect();
             return;
           }
@@ -70,7 +70,7 @@ angular.module('portainer.docker').controller('ContainerConsoleController', [
           $scope.shellConnect = true;
         })
         .catch(function (err) {
-          Notifications.error('Error', err, 'Unable to retrieve container details');
+          Notifications.error('错误', err, '无法获取容器详情');
           $scope.disconnect();
         });
     };
@@ -104,7 +104,7 @@ angular.module('portainer.docker').controller('ContainerConsoleController', [
           $scope.shellConnect = true;
         })
         .catch(function (err) {
-          Notifications.error('Failure', err, 'Unable to exec into container');
+          Notifications.error('失败', err, '无法进入容器执行命令');
           $scope.disconnect();
         });
     };
@@ -148,7 +148,7 @@ angular.module('portainer.docker').controller('ContainerConsoleController', [
           $scope.loaded = true;
         })
         .catch(function (err) {
-          Notifications.error('Error', err, 'Unable to retrieve container details');
+          Notifications.error('错误', err, '无法获取容器详情');
         });
     };
 

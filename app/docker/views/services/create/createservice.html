@@ -9,7 +9,7 @@
           <div class="form-group">
             <label for="service_name" class="col-sm-2 control-label text-left">名称</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" ng-model="formValues.Name" id="service_name" placeholder="例如 myService" data-cy="service-name-input" />
+               <input type="text" class="form-control" ng-model="formValues.Name" id="service_name" placeholder="例如 my-service" data-cy="service-name-input" />
             </div>
           </div>
           <!-- !name-input -->
@@ -78,7 +78,7 @@
                     <label class="btn btn-light" ng-model="portBinding.Protocol" uib-btn-radio="'udp'">UDP</label>
                   </div>
                   <div class="btn-group btn-group-sm">
-                     <label class="btn btn-light" ng-model="portBinding.PublishMode" uib-btn-radio="'ingress'">Ingress</label>
+                     <label class="btn btn-light" ng-model="portBinding.PublishMode" uib-btn-radio="'ingress'">Ingress 入口</label>
                      <label class="btn btn-light" ng-model="portBinding.PublishMode" uib-btn-radio="'host'">主机</label>
                   </div>
                   <button class="btn btn-dangerlight" type="button" ng-click="removePortBinding($index)">
@@ -240,11 +240,11 @@
                   <div ng-repeat="opt in formValues.LogDriverOpts" class="mt-1">
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">选项</span>
-                      <input type="text" class="form-control" ng-model="opt.name" placeholder="例如 FOO" data-cy="service-creation-logging-driver-option" />
+                       <input type="text" class="form-control" ng-model="opt.name" placeholder="例如 max-size" data-cy="service-creation-logging-driver-option" />
                     </div>
                     <div class="input-group col-sm-5 input-group-sm">
                       <span class="input-group-addon">值</span>
-                      <input type="text" class="form-control" ng-model="opt.value" placeholder="例如 bar" data-cy="service-creation-logging-driver-option-value" />
+                       <input type="text" class="form-control" ng-model="opt.value" placeholder="例如 10m" data-cy="service-creation-logging-driver-option-value" />
                     </div>
                     <button class="btn btn-dangerlight" type="button" ng-click="removeLogDriverOpt($index)">
                       <pr-icon icon="'trash-2'" size="'md'"></pr-icon>

@@ -13,11 +13,11 @@ function SecretController($scope, $transition$, $state, SecretService, Notificat
   $scope.removeSecret = function removeSecret(secretId) {
     SecretService.remove(secretId)
       .then(function success() {
-        Notifications.success('Success', 'Secret successfully removed');
+        Notifications.success('成功', 'Secret 已成功删除');
         $state.go('docker.secrets', {});
       })
       .catch(function error(err) {
-        Notifications.error('Failure', err, 'Unable to remove secret');
+        Notifications.error('失败', err, '无法删除 Secret');
       });
   };
 
@@ -27,7 +27,7 @@ function SecretController($scope, $transition$, $state, SecretService, Notificat
         $scope.secret = data;
       })
       .catch(function error(err) {
-        Notifications.error('Failure', err, 'Unable to retrieve secret details');
+        Notifications.error('失败', err, '无法获取 Secret 详情');
       });
   }
 

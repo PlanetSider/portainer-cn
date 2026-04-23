@@ -10,12 +10,12 @@ angular.module('portainer.docker').controller('SecretsController', [
       async function doRemove(secret) {
         return SecretService.remove(secret.Id)
           .then(function success() {
-            Notifications.success('Secret successfully removed', secret.Name);
+            Notifications.success('Secret 已成功删除', secret.Name);
             var index = $scope.secrets.indexOf(secret);
             $scope.secrets.splice(index, 1);
           })
           .catch(function error(err) {
-            Notifications.error('Failure', err, 'Unable to remove secret');
+            Notifications.error('失败', err, '无法删除 Secret');
           });
       }
 
@@ -32,7 +32,7 @@ angular.module('portainer.docker').controller('SecretsController', [
         })
         .catch(function error(err) {
           $scope.secrets = [];
-          Notifications.error('Failure', err, 'Unable to retrieve secrets');
+          Notifications.error('失败', err, '无法获取 Secrets');
         });
     }
 

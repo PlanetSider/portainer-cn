@@ -37,7 +37,7 @@
                   class="form-control"
                   ng-model="option.key"
                   ng-disabled="option.added || isUpdating"
-                   placeholder="例如 FOO"
+                    placeholder="例如 max-size"
                 />
               </div>
             </td>
@@ -50,7 +50,7 @@
                   class="form-control"
                   ng-model="option.value"
                   ng-change="updateLogDriverOpt(service, option)"
-                   placeholder="例如 bar"
+                    placeholder="例如 10m"
                   ng-disabled="isUpdating"
                   disable-authorization="DockerServiceUpdate"
                 />
