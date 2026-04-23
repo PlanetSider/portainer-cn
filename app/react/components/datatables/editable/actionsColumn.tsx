@@ -32,7 +32,7 @@ export function actionsColumn<T>(
   const columnHelper = createColumnHelper<T>();
 
   return columnHelper.accessor(() => '', {
-    header: 'Actions',
+    header: '操作',
     id: 'actions',
     enableSorting: false,
     cell: ({ row: { original, index }, table }) => {
@@ -107,7 +107,7 @@ function ActionsCell<T>({
         disabled={editableRow !== -1}
         data-cy="edit-access-button"
       >
-        Edit
+        编辑
       </Button>
       <Button
         color="dangerlight"
@@ -116,7 +116,7 @@ function ActionsCell<T>({
         onClick={() => onRemove(row)}
         data-cy="remove-access-button"
       >
-        Remove
+        移除
       </Button>
     </div>
   );
@@ -137,7 +137,7 @@ function EditActionsCell({
         onClick={() => acceptRow()}
         data-cy="edit-access-button"
       >
-        Accept
+        确认
       </Button>
       <Button
         color="dangerlight"
@@ -145,7 +145,7 @@ function EditActionsCell({
         onClick={() => revertRow()}
         data-cy="remove-access-button"
       >
-        Revert
+        还原
       </Button>
     </div>
   );

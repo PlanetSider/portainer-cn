@@ -24,7 +24,7 @@ export function StatusSummaryBar({
   value,
   onChange,
   radioGroupName = 'status-summary-filter',
-  ariaLabel = 'Filter by status',
+  ariaLabel = '按状态筛选',
   'data-cy': dataCy = 'status-summary-bar',
 }: Props) {
   const isAllSelected = !value;
@@ -43,7 +43,7 @@ export function StatusSummaryBar({
     >
       <FilterBarButton
         count={total}
-        label="Total"
+        label="总计"
         isSelected={isAllSelected}
         onClick={() => onChange(null)}
         name={radioGroupName}

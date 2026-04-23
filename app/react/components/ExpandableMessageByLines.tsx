@@ -68,7 +68,7 @@ export function ExpandableMessageByLines({
           className="!ml-0 mt-1 !p-0"
           data-cy="expandable-message-lines-button"
         >
-          {isExpanded ? 'Show less' : 'Show more'}
+          {isExpanded ? '收起' : '展开更多'}
         </Button>
       )}
     </div>

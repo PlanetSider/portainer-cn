@@ -21,7 +21,7 @@ export function ContextHelp() {
           'text-gray-8',
           'th-dark:text-gray-warm-7'
         )}
-        title="Documentation"
+        title="文档"
         rel="noreferrer"
         data-cy="context-help-button"
       >

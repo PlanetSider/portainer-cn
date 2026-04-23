@@ -34,7 +34,7 @@ export function TLSFieldset({ values, onChange, errors }: Props) {
           <div className="form-group">
             <div className="col-sm-12">
               <SwitchField
-                label="Skip Certification Verification"
+                label="跳过证书校验"
                 data-cy="skip-verify-switch"
                 checked={!!values.skipVerify}
                 onChange={(checked) => handleChange({ skipVerify: checked })}
@@ -46,7 +46,7 @@ export function TLSFieldset({ values, onChange, errors }: Props) {
           {!values.skipVerify && (
             <>
               <FormControl
-                label="TLS CA certificate"
+                label="TLS CA 证书"
                 inputId="ca-cert-field"
                 errors={errors?.caCertFile}
               >
@@ -58,7 +58,7 @@ export function TLSFieldset({ values, onChange, errors }: Props) {
                 />
               </FormControl>
               <FormControl
-                label="TLS certificate"
+                label="TLS 证书"
                 inputId="cert-field"
                 errors={errors?.certFile}
               >
@@ -70,7 +70,7 @@ export function TLSFieldset({ values, onChange, errors }: Props) {
                 />
               </FormControl>
               <FormControl
-                label="TLS key"
+                label="TLS 密钥"
                 inputId="tls-key-field"
                 errors={errors?.keyFile}
               >
@@ -98,7 +98,7 @@ const MAX_FILE_SIZE = 5_242_880; // 5MB
 function certValidation(optional?: boolean) {
   return withFileSize(file(), MAX_FILE_SIZE).when(['tls', 'skipVerify'], {
     is: (tls: boolean, skipVerify: boolean) => tls && !skipVerify && !optional,
-    then: (schema) => schema.required('File is required'),
+    then: (schema) => schema.required('文件为必填项'),
   });
 }
 

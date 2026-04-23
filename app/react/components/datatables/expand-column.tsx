@@ -18,8 +18,8 @@ export function buildExpandColumn<T extends DefaultType>(): ColumnDef<T> {
             data-cy="expand-all-rows-button"
             aria-label={
               table.getIsAllRowsExpanded()
-                ? 'Collapse all rows'
-                : 'Expand all rows'
+                ? '收起所有行'
+                : '展开所有行'
             }
           />
         )

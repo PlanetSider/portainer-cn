@@ -38,8 +38,8 @@ export function createSelectColumn<T>(dataCy: string): ColumnDef<T> {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        aria-label="Select all rows"
-        title="Select all rows. Hold shift key to select across all pages."
+        aria-label="选择所有行"
+        title="选择所有行。按住 Shift 键可跨所有页面选择。"
       />
     ),
     cell: ({ row, table }) => (
@@ -62,7 +62,7 @@ export function createSelectColumn<T>(dataCy: string): ColumnDef<T> {
 
           lastSelectedId = row.id;
         }}
-        aria-label="Select row"
+        aria-label="选择行"
       />
     ),
     enableHiding: false,

@@ -22,7 +22,7 @@ export function StackEnvironmentVariablesPanel({
     <EnvironmentVariablesPanel
       explanation={
         <div>
-          You may use{' '}
+          你可以在{' '}
           <a
             href={`${useDocsUrl(
               '/user/docker/stacks/add#environment-variables'
@@ -31,12 +31,9 @@ export function StackEnvironmentVariablesPanel({
             data-cy="stack-env-vars-help-link"
             rel="noreferrer noopener"
           >
-            environment variables in your compose file
+            Compose 文件中使用环境变量
           </a>
-          . The environment variable values set below will be used as
-          substitutions in the compose file. Note that you may also reference a
-          stack.env file in your compose file. A stack.env file contains the
-          environment variables and their values (e.g. TAG=v1.5).
+          。下方设置的环境变量值将作为 Compose 文件中的变量替换项。注意，你也可以在 Compose 文件中引用 stack.env 文件。stack.env 文件中保存环境变量及其对应值（例如：TAG=v1.5）。
         </div>
       }
       onChange={onChange}
@@ -49,17 +46,13 @@ export function StackEnvironmentVariablesPanel({
           <Alert color="info" className="col-sm-12">
             <div>
               <p>
-                <strong>stack.env file operation</strong>
+                <strong>stack.env 文件说明</strong>
               </p>
               <div>
-                When deploying via <strong>Repository</strong>, the stack.env
-                file must already reside in the Git repo.
+                通过 <strong>Repository</strong> 部署时，stack.env 文件必须已存在于 Git 仓库中。
               </div>
               <div>
-                When deploying via <strong>Web editor</strong>,{' '}
-                <strong>Upload</strong> or{' '}
-                <strong>Custom template deployment</strong>, the stack.env file
-                is auto created from what you set below.
+                通过 <strong>Web editor</strong>、<strong>Upload</strong> 或 <strong>自定义模板部署</strong> 时，stack.env 文件会根据你在下方设置的内容自动生成。
               </div>
             </div>
           </Alert>
