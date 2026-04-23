@@ -58,7 +58,7 @@ export function InnerForm({
             <div className="inline-flex items-center gap-1 px-5">
               <WidgetIcon icon={Settings} />
               <h2 className="m-0 ml-1 text-base">
-                Edit Git settings — {stackName}
+                编辑 Git 设置 — {stackName}
               </h2>
             </div>
           }
@@ -77,8 +77,7 @@ export function InnerForm({
                     error={errors.kube?.name}
                   />
                   <TextTip color="blue" className="mb-4">
-                    Changing the stack name requires a redeploy to update the
-                    deployed resources.
+                    更改堆栈名称需要重新部署，才能更新已部署的资源。
                   </TextTip>
                 </>
               )}
@@ -133,13 +132,13 @@ export function InnerForm({
                 size="medium"
                 data-cy="cancel-button"
               >
-                Cancel
+                 取消
               </Button>
               <div className="flex items-center gap-4">
                 <span className="flex items-center">
                   <Checkbox
                     id="redeploy-checkbox"
-                    label="Redeploy"
+                    label="重新部署"
                     checked={values.redeployNow}
                     onChange={(e) =>
                       setFieldValue('redeployNow', e.target.checked)
@@ -153,10 +152,10 @@ export function InnerForm({
                   size="medium"
                   onClick={submitForm}
                   isLoading={isSubmitting}
-                  loadingText="Saving..."
+                   loadingText="保存中..."
                   data-cy="save-git-settings-button"
                 >
-                  Save settings
+                   保存设置
                 </LoadingButton>
               </div>
             </div>
