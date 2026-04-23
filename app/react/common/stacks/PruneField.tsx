@@ -24,15 +24,15 @@ export function PruneField({ stackType, checked, onChange }: Props) {
   }
 
   return (
-    <FormSection title="Options">
+    <FormSection title="选项">
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
             name="prune"
             checked={checked}
-            tooltip="Prune services that are no longer referenced."
+            tooltip="清理不再被引用的服务。"
             labelClass="col-sm-3 col-lg-2"
-            label="Prune services"
+            label="清理服务"
             onChange={onChange}
             data-cy="stack-prune-services-switch"
           />
