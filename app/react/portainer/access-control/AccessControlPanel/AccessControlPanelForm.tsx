@@ -108,7 +108,7 @@ export function AccessControlPanelForm({
                 onClick={onCancelClick}
                 data-cy="cancel-access-control-update-button"
               >
-                Cancel
+                取消
               </Button>
               <LoadingButton
                 size="small"

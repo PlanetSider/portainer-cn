@@ -90,7 +90,7 @@ export function TimeWindowPicker({
                 onChangeTimeZone(initialTimeZone || moment.tz.guess());
               }}
             >
-              Cancel
+              取消
             </Button>
           )}
         </div>
