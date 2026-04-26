@@ -110,7 +110,7 @@
             class="form-control"
             id="oauth_token_claim_name"
             ng-model="$ctrl.settings.TeamMemberships.OAuthClaimName"
-            placeholder="groups"
+            placeholder="例如：groups"
             data-cy="oauth-token-claim-name"
           />
         </div>
@@ -177,11 +177,11 @@
   <oauth-providers-selector on-change="($ctrl.onSelectProvider)" value="$ctrl.state.provider"></oauth-providers-selector>
 
   <div ng-if="$ctrl.state.provider == 'custom' || $ctrl.state.overrideConfiguration">
-    <div class="col-sm-12 form-section-title">OAuth 配置</div>
+    <div class="col-sm-12 form-section-title">OAuth 登录配置</div>
 
     <div class="form-group">
       <label for="oauth_client_id" class="col-sm-3 col-lg-2 control-label text-left">
-        {{ $ctrl.state.provider == 'microsoft' ? '应用 ID（Application ID）' : '客户端 ID（Client ID）' }}
+        {{ $ctrl.state.provider == 'microsoft' ? '应用标识（Application ID）' : '客户端标识（Client ID）' }}
         <portainer-tooltip message="'OAuth 应用的公开标识符。'"></portainer-tooltip>
       </label>
       <div class="col-sm-9 col-lg-10">
@@ -198,7 +198,7 @@
     </div>
 
     <div class="form-group">
-      <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端密钥（Client secret）' }} </label>
+      <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端机密（Client secret）' }} </label>
       <div class="col-sm-9 col-lg-10">
         <input
           type="password"
@@ -226,7 +226,7 @@
           class="form-control"
           id="oauth_authorization_uri"
           ng-model="$ctrl.settings.AuthorizationURI"
-          placeholder="https://example.com/oauth/authorize"
+            placeholder="例如：https://example.com/oauth/authorize"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -235,7 +235,7 @@
 
     <div class="form-group">
       <label for="oauth_access_token_uri" class="col-sm-3 col-lg-2 control-label text-left">
-        Access Token URL
+        访问令牌 URL
         <portainer-tooltip message="'Portainer 用于将有效的 OAuth 认证码换取访问令牌（Access Token）的 URL。'"></portainer-tooltip>
       </label>
       <div class="col-sm-9 col-lg-10">
@@ -245,7 +245,7 @@
           class="form-control"
           id="oauth_access_token_uri"
           ng-model="$ctrl.settings.AccessTokenURI"
-          placeholder="https://example.com/oauth/token"
+            placeholder="例如：https://example.com/oauth/token"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -264,7 +264,7 @@
           class="form-control"
           id="oauth_resource_uri"
           ng-model="$ctrl.settings.ResourceURI"
-          placeholder="https://example.com/user"
+            placeholder="例如：https://example.com/user"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -285,7 +285,7 @@
           class="form-control"
           id="oauth_redirect_uri"
           ng-model="$ctrl.settings.RedirectURI"
-          placeholder="http://yourportainer.com/"
+            placeholder="例如：http://yourportainer.com/"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -326,7 +326,7 @@
           class="form-control"
           id="oauth_user_identifier"
           ng-model="$ctrl.settings.UserIdentifier"
-          placeholder="id"
+            placeholder="例如：id"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -347,7 +347,7 @@
           class="form-control"
           id="oauth_scopes"
           ng-model="$ctrl.settings.Scopes"
-          placeholder="id,email,name"
+            placeholder="例如：id,email,name"
           ng-class="['form-control', { 'limited-be': $ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom' }]"
           ng-disabled="$ctrl.isLimitedToBE && $ctrl.state.provider !== 'custom'"
         />
@@ -368,7 +368,7 @@
   <div ng-if="$ctrl.state.provider != 'custom'" class="limited-be be-indicator-container">
     <div class="limited-be-link vertical-center"><be-feature-indicator feature="$ctrl.limitedFeature"></be-feature-indicator></div>
     <div class="limited-be-content">
-      <div class="col-sm-12 form-section-title">OAuth 配置</div>
+      <div class="col-sm-12 form-section-title">OAuth 登录配置</div>
 
       <div class="form-group" ng-if="$ctrl.state.provider == 'microsoft'">
         <label for="oauth_microsoft_tenant_id" class="col-sm-3 col-lg-2 control-label text-left">
@@ -395,7 +395,7 @@
 
       <div class="form-group">
         <label for="oauth_client_id" class="col-sm-3 col-lg-2 control-label text-left">
-          {{ $ctrl.state.provider == 'microsoft' ? '应用 ID（Application ID）' : '客户端 ID（Client ID）' }}
+          {{ $ctrl.state.provider == 'microsoft' ? '应用标识（Application ID）' : '客户端标识（Client ID）' }}
           <portainer-tooltip message="'OAuth 应用的公开标识符。'"></portainer-tooltip>
         </label>
         <div class="col-sm-9 col-lg-10">
@@ -413,7 +413,7 @@
       </div>
 
       <div class="form-group">
-        <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端密钥（Client secret）' }} </label>
+        <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端机密（Client secret）' }} </label>
         <div class="col-sm-9 col-lg-10">
           <input
             type="password"
