@@ -71,7 +71,10 @@ export function EnvironmentItem({
         </div>
         <div className="ml-3 mr-auto flex flex-col items-start justify-center gap-3">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="font-bold">{environment.Name}</span>
+              <span className="font-bold">
+                {getDisplayEnvironmentName(environment.Name)}
+              </span>
+              
             {isEdge ? (
               <EdgeIndicator environment={environment} showLastCheckInDate />
             ) : (
@@ -129,6 +132,14 @@ export function EnvironmentItem({
       </div>
     </div>
   );
+}
+
+function getDisplayEnvironmentName(name: string) {
+  if (name === 'local') {
+    return '本地';
+  }
+
+  return name;
 }
 
 function useEnvironmentTagNames(tagIds?: TagId[]) {

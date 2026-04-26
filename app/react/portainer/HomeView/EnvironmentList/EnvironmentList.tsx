@@ -373,7 +373,7 @@ function renderItems(
   if (isLoading) {
     return (
       <div className="text-muted text-center" data-cy="home-loadingEndpoints">
-        Loading...
+        正在加载...
       </div>
     );
   }
@@ -381,7 +381,7 @@ function renderItems(
   if (!totalCount) {
     return (
       <div className="text-muted text-center" data-cy="home-noEndpoints">
-        No environments available.
+        暂无可用环境。
       </div>
     );
   }
