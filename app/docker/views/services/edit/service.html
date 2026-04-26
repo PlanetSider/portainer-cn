@@ -72,9 +72,9 @@
               <tr ng-if="isAdmin && applicationState.endpoint.type !== 4">
                 <td>
                   <div class="inline-flex items-center">
-                     <div>服务 Webhook</div>
+                     <div>服务自动回调（Webhook）</div>
                     <portainer-tooltip
-                       message="'Webhook（或回调 URI）用于自动更新该服务。向该回调 URI 发送 POST 请求（无需认证）将拉取关联镜像的最新版本并重新部署该服务。'"
+                        message="'自动回调（Webhook 或回调 URI）用于自动更新该服务。向该回调 URI 发送 POST 请求（无需认证）将拉取关联镜像的最新版本并重新部署该服务。'"
                     >
                     </portainer-tooltip>
                   </div>

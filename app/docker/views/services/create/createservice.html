@@ -93,15 +93,15 @@
           <!-- !port-mapping -->
           <!-- create-webhook -->
           <div ng-if="endpoint.Type !== 4 && isAdmin">
-             <div class="col-sm-12 form-section-title"> Webhook 配置 </div>
+             <div class="col-sm-12 form-section-title"> 自动回调（Webhook）配置 </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <por-switch-field
                   label-class="'col-sm-2'"
                   checked="$ctrl.formValues.Webhook"
-                  label="'创建服务 Webhook'"
+                  label="'创建服务自动回调（Webhook）'"
                   on-change="(handleWebHookChange)"
-                  tooltip="'创建一个 Webhook（或回调 URI）以自动更新此服务。向该回调 URI 发送 POST 请求（无需认证）将拉取关联镜像的最新版本并重新部署该服务。'"
+                  tooltip="'创建一个自动回调（Webhook 或回调 URI）以自动更新此服务。向该回调 URI 发送 POST 请求（无需认证）将拉取关联镜像的最新版本并重新部署该服务。'"
                 ></por-switch-field>
               </div>
             </div>
@@ -392,7 +392,7 @@
               <!-- extra-hosts-variables -->
               <div class="form-group" ng-if="applicationState.endpoint.apiVersion >= 1.25">
                 <div class="col-sm-12" style="margin-top: 5px">
-                  <label class="control-label text-left">Hosts 条目</label>
+            <label class="control-label text-left">主机映射条目（Hosts）</label>
                   <span class="label label-default interactive" style="margin-left: 10px" ng-click="addHostsEntry()">
                     <pr-icon icon="'plus'" mode="'alt'"></pr-icon> 添加条目
                   </span>
