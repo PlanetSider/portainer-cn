@@ -131,7 +131,7 @@
               <portainer-tooltip message="'如果你需要提供凭据连接此镜像仓库，请启用此选项。'"> </portainer-tooltip>
             </label>
             <div class="col-sm-9 col-lg-10">
-              <por-switch-field checked="$ctrl.registry.Authentication" on-change="($ctrl.toggleAuthentication)" switch-values="{on:'Yes',off:'No'}"></por-switch-field>
+              <por-switch-field checked="$ctrl.registry.Authentication" on-change="($ctrl.toggleAuthentication)" switch-values="{on:'是',off:'否'}"></por-switch-field>
             </div>
           </div>
           <!-- !authentication-checkbox -->
@@ -141,7 +141,7 @@
             <!-- credentials-user -->
             <div class="form-group">
               <label for="credentials_username" class="col-sm-3 col-lg-2 control-label required text-left">
-                {{ $ctrl.registry.Type === $ctrl.RegistryTypes.ECR ? 'AWS Access Key' : 'Username' }}
+                {{ $ctrl.registry.Type === $ctrl.RegistryTypes.ECR ? 'AWS 访问密钥' : '用户名' }}
               </label>
               <div class="col-sm-9 col-lg-10">
                 <input
@@ -186,7 +186,7 @@
                 <div ng-messages="editRegistry.credentials_password.$error">
                   <p ng-message="required" class="vertical-center">
                     <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
-                    This field is required.
+                    此字段为必填项。
                   </p>
                 </div>
               </div>
@@ -232,7 +232,7 @@
                 <por-switch-field
                   checked="$ctrl.registry.Quay.UseOrganisation"
                   on-change="($ctrl.toggleQuayUseOrganisation)"
-                  switch-values="{on:'Yes',off:'No'}"
+                  switch-values="{on:'是',off:'否'}"
                 ></por-switch-field>
               </div>
             </div>
