@@ -39,17 +39,16 @@ export function EdgeAgentDeploymentWidget({
   return (
     <Widget>
       <WidgetBody>
-        <FormSection title="Deploy an agent">
+        <FormSection title="部署 Agent">
           <TextTip color="blue">
-            Refer to the platform related command below to deploy the Edge agent
-            in your remote cluster. <br />
-            The agent will communicate with Portainer via{' '}
-            <u>{edgeKeyDetails.instanceURL}</u> and{' '}
-            <u>tcp://{edgeKeyDetails.tunnelServerAddr}</u>
+            请参考下方与平台对应的命令，在你的远程集群中部署 Edge Agent。
+            <br />
+            Agent 将通过 <u>{edgeKeyDetails.instanceURL}</u> 和{' '}
+            <u>tcp://{edgeKeyDetails.tunnelServerAddr}</u> 与 Portainer 通信。
           </TextTip>
         </FormSection>
 
-        <FormSection title="Edge agent deployment script">
+        <FormSection title="Edge Agent 部署脚本">
           <EdgeScriptForm
             edgeInfo={{ key: edgeKey, id: edgeId }}
             commands={edgeScriptCommands}
