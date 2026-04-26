@@ -143,7 +143,7 @@ function Item({
             options={[{ value: 'tcp' }, { value: 'udp' }]}
             disabled={disabled}
             readOnly={readOnly}
-            aria-label="protocol selector"
+            aria-label="协议选择器"
           />
         </td>
         <td>
@@ -155,7 +155,7 @@ function Item({
               { value: 'host', label: 'host' },
             ]}
             disabled={disabled}
-            aria-label="publish mode"
+            aria-label="发布模式"
             data-cy={`publishMode-${index}`}
           />
         </td>
