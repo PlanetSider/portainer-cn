@@ -32,7 +32,7 @@
   <auto-user-provision-toggle
     value="$ctrl.settings.OAuthAutoCreateUsers"
     on-change="($ctrl.onAutoUserProvisionChange)"
-    description="'With automatic user provisioning enabled, Portainer will create user(s) automatically with the standard user role. If disabled, users must be created beforehand in Portainer in order to login.'"
+    description="'启用自动用户预配后，Portainer 会自动创建标准用户。若禁用此功能，则必须先在 Portainer 中创建用户后才能登录。'"
   ></auto-user-provision-toggle>
 
   <div ng-if="$ctrl.settings.OAuthAutoCreateUsers">
@@ -181,8 +181,8 @@
 
     <div class="form-group">
       <label for="oauth_client_id" class="col-sm-3 col-lg-2 control-label text-left">
-        {{ $ctrl.state.provider == 'microsoft' ? 'Application ID' : 'Client ID' }}
-        <portainer-tooltip message="'Public identifier of the OAuth application'"></portainer-tooltip>
+        {{ $ctrl.state.provider == 'microsoft' ? '应用 ID（Application ID）' : '客户端 ID（Client ID）' }}
+        <portainer-tooltip message="'OAuth 应用的公开标识符。'"></portainer-tooltip>
       </label>
       <div class="col-sm-9 col-lg-10">
         <input
@@ -198,7 +198,7 @@
     </div>
 
     <div class="form-group">
-      <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? 'Application key' : 'Client secret' }} </label>
+      <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端密钥（Client secret）' }} </label>
       <div class="col-sm-9 col-lg-10">
         <input
           type="password"
@@ -236,7 +236,7 @@
     <div class="form-group">
       <label for="oauth_access_token_uri" class="col-sm-3 col-lg-2 control-label text-left">
         Access Token URL
-        <portainer-tooltip message="'Portainer 用于将有效的 OAuth 认证码换取 Access Token 的 URL。'"></portainer-tooltip>
+        <portainer-tooltip message="'Portainer 用于将有效的 OAuth 认证码换取访问令牌（Access Token）的 URL。'"></portainer-tooltip>
       </label>
       <div class="col-sm-9 col-lg-10">
         <input
@@ -296,7 +296,7 @@
       <label for="oauth_logout_url" class="col-sm-3 col-lg-2 control-label text-left">
         登出 URL
         <portainer-tooltip
-          message="'Portainer 用于将用户重定向到 OAuth 提供商以退出身份提供者会话的 URL。'"
+          message="'Portainer 用于将用户重定向到 OAuth 提供商，以退出身份提供者会话的 URL。'"
         ></portainer-tooltip>
       </label>
       <div class="col-sm-9 col-lg-10">
@@ -395,7 +395,7 @@
 
       <div class="form-group">
         <label for="oauth_client_id" class="col-sm-3 col-lg-2 control-label text-left">
-          {{ $ctrl.state.provider == 'microsoft' ? 'Application ID' : 'Client ID' }}
+          {{ $ctrl.state.provider == 'microsoft' ? '应用 ID（Application ID）' : '客户端 ID（Client ID）' }}
           <portainer-tooltip message="'OAuth 应用的公开标识符。'"></portainer-tooltip>
         </label>
         <div class="col-sm-9 col-lg-10">
@@ -413,7 +413,7 @@
       </div>
 
       <div class="form-group">
-        <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? 'Application key' : 'Client secret' }} </label>
+        <label for="oauth_client_secret" class="col-sm-3 col-lg-2 control-label text-left"> {{ $ctrl.state.provider == 'microsoft' ? '应用密钥（Application key）' : '客户端密钥（Client secret）' }} </label>
         <div class="col-sm-9 col-lg-10">
           <input
             type="password"
