@@ -30,7 +30,7 @@ export function AutoScalingFormSection({
       <SwitchField
         disabled={!isMetricsEnabled}
         data-cy="k8sAppCreate-autoScaleSwitch"
-        label="Enable auto scaling for this application"
+        label="为此应用启用自动扩缩容"
         labelClass="col-sm-3 col-lg-2"
         checked={values.isUsed}
         onChange={(value: boolean) => {
@@ -54,7 +54,7 @@ export function AutoScalingFormSection({
         <div className="my-3 grid w-full grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-3">
           <div className="flex min-w-fit flex-col">
             <label htmlFor="min-instances" className="text-xs font-normal">
-              Minimum instances
+              最小实例数
             </label>
             <Input
               id="min-instances"
@@ -74,7 +74,7 @@ export function AutoScalingFormSection({
           </div>
           <div className="flex min-w-fit flex-col">
             <label htmlFor="max-instances" className="text-xs font-normal">
-              Maximum instances
+              最大实例数
             </label>
             <Input
               id="max-instances"
@@ -96,8 +96,8 @@ export function AutoScalingFormSection({
               htmlFor="cpu-threshold"
               className="flex items-center text-xs font-normal"
             >
-              Target CPU usage (<b>%</b>)
-              <Tooltip message="The autoscaler will ensure enough instances are running to maintain an average CPU usage across all instances." />
+              目标 CPU 使用率 (<b>%</b>)
+              <Tooltip message="自动扩缩容器会确保运行足够数量的实例，以维持所有实例的平均 CPU 使用率。" />
             </label>
             <Input
               id="cpu-threshold"
@@ -132,21 +132,21 @@ function NoMetricsServerWarning() {
   const { isAdmin } = isAdminQuery;
 
   return (
-    <TextTip color="orange">
-      {isAdmin && (
-        <>
-          Server metrics features must be enabled in the{' '}
-          <Link
-            to="kubernetes.cluster.setup"
-            data-cy="environment-configuration-view"
-          >
-            environment configuration view
-          </Link>
-          .
-        </>
-      )}
-      {!isAdmin &&
-        'This feature is currently disabled and must be enabled by an administrator user.'}
-    </TextTip>
+      <TextTip color="orange">
+        {isAdmin && (
+          <>
+            必须先在{' '}
+            <Link
+              to="kubernetes.cluster.setup"
+              data-cy="environment-configuration-view"
+            >
+              环境配置页面
+            </Link>
+            启用服务器指标功能。
+          </>
+        )}
+        {!isAdmin &&
+          '此功能当前已禁用，必须由管理员用户启用。'}
+      </TextTip>
   );
 }

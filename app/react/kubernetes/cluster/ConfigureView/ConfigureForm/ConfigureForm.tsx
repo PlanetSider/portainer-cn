@@ -137,21 +137,20 @@ function InnerForm({
   return (
     <Form className="form-horizontal">
       <div className="flex flex-col">
-        <FormSection title="Networking - Services">
+        <FormSection title="网络 - Services">
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue" inline={false}>
-                Enabling the load balancer feature will allow users to expose
-                applications they deploy over an external IP address assigned by
-                the cloud provider.
+                启用负载均衡功能后，用户可以通过云服务提供商分配的外部 IP
+                地址来公开其部署的应用。
               </TextTip>
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="orange" inline={false}>
-                If you want to use this feature, ensure your cloud provider
-                allows you to create load balancers. This may incur costs.
+                如果你想使用此功能，请确认云服务提供商允许创建负载均衡器。
+                这可能会产生额外费用。
               </TextTip>
             </div>
           </div>
@@ -160,7 +159,7 @@ function InnerForm({
               <SwitchField
                 name="useLoadBalancer"
                 data-cy="kubeSetup-loadBalancerToggle"
-                label="Allow users to use external load balancers"
+                label="允许用户使用外部负载均衡器"
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.useLoadBalancer}
                 onChange={(checked) =>
@@ -170,23 +169,23 @@ function InnerForm({
             </div>
           </div>
         </FormSection>
-        <FormSection title="Networking - Ingresses">
+        <FormSection title="网络 - Ingresses">
           <IngressClassDatatable
             onChange={onChangeControllers}
-            description="Enabling ingress controllers in your cluster allows them to be available in the Portainer UI for users to publish applications over HTTP/HTTPS. A controller must have a class name for it to be included here."
+            description="启用集群中的 ingress controller 后，它们将出现在 Portainer 界面中，供用户通过 HTTP/HTTPS 发布应用。控制器必须具备 class 名称，才会显示在这里。"
             values={values.ingressClasses}
             initialValues={initialValues.ingressClasses}
             isLoading={isIngressClassesLoading}
             view="cluster"
-            noIngressControllerLabel="No supported ingress controllers found."
+            noIngressControllerLabel="未找到受支持的 ingress controller。"
           />
           <div className="form-group">
             <div className="col-sm-12">
               <SwitchField
                 name="allowNoneIngressClass"
                 data-cy="kubeSetup-allowNoneIngressClass"
-                label='Allow ingress class to be set to "none"'
-                tooltip='This allows users setting up ingresses to select "none" as the ingress class.'
+                label='允许将 ingress class 设置为 "none"'
+                tooltip='启用后，用户在配置 ingress 时可以选择 "none" 作为 ingress class。'
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.allowNoneIngressClass}
                 onChange={(checked) => {
@@ -210,8 +209,8 @@ function InnerForm({
               <SwitchField
                 name="ingressAvailabilityPerNamespace"
                 data-cy="kubeSetup-ingressAvailabilityPerNamespace"
-                label="Configure ingress controller availability per namespace"
-                tooltip="This allows an administrator to configure, in each namespace, which ingress controllers will be available for users to select when setting up ingresses for applications."
+                label="按命名空间配置 ingress controller 可用性"
+                tooltip="允许管理员为每个命名空间配置可供用户在为应用设置 ingress 时选择的 ingress controller。"
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.ingressAvailabilityPerNamespace}
                 onChange={(checked) =>
@@ -225,9 +224,9 @@ function InnerForm({
               <SwitchField
                 name="restrictStandardUserIngressW"
                 data-cy="kubeSetup-restrictStandardUserIngressWToggle"
-                label="Only allow admins to deploy ingresses"
+                label="仅允许管理员部署 ingress"
                 featureId={FeatureId.K8S_ADM_ONLY_USR_INGRESS_DEPLY}
-                tooltip="Enforces only allowing admins to deploy ingresses (and disallows standard users from doing so)."
+                tooltip="启用后仅允许管理员部署 ingress，标准用户将无法执行该操作。"
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.restrictStandardUserIngressW}
                 onChange={(checked) =>
@@ -239,21 +238,20 @@ function InnerForm({
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue" inline={false}>
-                You may set up ingress defaults (hostnames and annotations) via
-                Create/Edit ingress. Users may then select them via the hostname
-                dropdown in Create/Edit application.
+                你可以在创建/编辑 ingress 时设置默认值（主机名和注解）。
+                之后用户可在创建/编辑应用时通过主机名下拉框选择这些默认值。
               </TextTip>
             </div>
           </div>
         </FormSection>
-        <FormSection title="Change Window Settings">
+        <FormSection title="变更窗口设置">
           <div className="form-group">
             <div className="col-sm-12">
               <SwitchField
                 name="changeWindow.Enabled"
                 data-cy="kubeSetup-changeWindowEnabledToggle"
-                label="Enable Change Window"
-                tooltip="GitOps updates to stacks or applications outside the defined change window will not occur."
+                label="启用变更窗口"
+                tooltip="在定义的变更窗口之外，GitOps 不会更新堆栈或应用。"
                 labelClass="col-sm-5 col-lg-4"
                 checked={false}
                 featureId={FeatureId.HIDE_AUTO_UPDATE_WINDOW}

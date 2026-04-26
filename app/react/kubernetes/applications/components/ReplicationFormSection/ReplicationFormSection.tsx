@@ -31,7 +31,7 @@ export function ReplicationFormSection({
   return (
     <>
       <FormControl
-        label="Instance count"
+        label="实例数量"
         required
         errors={errors?.replicaCount}
       >
@@ -50,9 +50,9 @@ export function ReplicationFormSection({
         values.replicaCount > 1 &&
         hasResourceLimit && (
           <TextTip color="blue">
-            This application will reserve the following resources:{' '}
-            <b>{round(cpuLimit * values.replicaCount, 2)} CPU</b> and{' '}
-            <b>{memoryLimit * values.replicaCount} MB</b> of memory.
+            此应用将预留以下资源：{' '}
+            <b>{round(cpuLimit * values.replicaCount, 2)} CPU</b> 和{' '}
+            <b>{memoryLimit * values.replicaCount} MB</b> 内存。
           </TextTip>
         )}
     </>

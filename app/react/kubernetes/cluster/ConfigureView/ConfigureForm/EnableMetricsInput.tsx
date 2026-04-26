@@ -25,9 +25,8 @@ export function EnableMetricsInput({ value, error, environmentId }: Props) {
     <div className="mb-4">
       <TextTip color="blue">
         <p>
-          Enabling the metrics feature allows users to use horizontal pod
-          autoscaling and to see container and node resource usage. This
-          requires{' '}
+          启用指标功能后，用户可以使用 Pod 水平自动扩缩容，并查看容器和节点的资源使用情况。
+          这需要在集群中运行{' '}
           <a
             href="https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/#metrics-server"
             target="_blank"
@@ -35,7 +34,7 @@ export function EnableMetricsInput({ value, error, environmentId }: Props) {
           >
             metrics server
           </a>{' '}
-          or{' '}
+          或{' '}
           <a
             href="https://github.com/kubernetes-sigs/prometheus-adapter"
             target="_blank"
@@ -43,16 +42,15 @@ export function EnableMetricsInput({ value, error, environmentId }: Props) {
           >
             prometheus
           </a>{' '}
-          to be running in your cluster.
+          。
         </p>
         <p>
-          On any subsequent disabling of the feature, existing deployed
-          applications with autoscaling will still autoscale (you would have to
-          remove their autoscaler definitions to stop this).
+          之后如果关闭该功能，已部署且启用自动扩缩容的应用仍会继续自动扩缩容
+          （你需要移除它们的 autoscaler 定义后才会停止）。
         </p>
       </TextTip>
       <FormControl
-        label="Enable features using the metrics API"
+        label="启用基于 Metrics API 的功能"
         className="mb-0"
         size="large"
         errors={error}
@@ -84,19 +82,18 @@ export function EnableMetricsInput({ value, error, environmentId }: Props) {
         />
       </FormControl>
       {getMetricsMutation.isLoading && (
-        <InlineLoader size="sm">Checking metrics API...</InlineLoader>
+        <InlineLoader size="sm">正在检查 Metrics API...</InlineLoader>
       )}
       {!getMetricsMutation.isLoading && (
         <>
           {metricsFound === false && (
             <TextTip color="red" icon={XCircle}>
-              Unable to reach metrics API, make sure metrics server is properly
-              deployed inside that cluster.
+              无法访问 Metrics API，请确认 metrics server 已正确部署到该集群中。
             </TextTip>
           )}
           {metricsFound === true && (
             <TextTip color="green" icon={CheckCircle}>
-              Successfully reached metrics API
+              已成功连接到 Metrics API
             </TextTip>
           )}
         </>

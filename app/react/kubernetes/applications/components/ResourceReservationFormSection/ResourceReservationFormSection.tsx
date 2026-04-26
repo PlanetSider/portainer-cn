@@ -33,23 +33,21 @@ export function ResourceReservationFormSection({
   maxCpuLimit,
 }: Props) {
   return (
-    <FormSection title="Resource reservations" titleSize="md">
+    <FormSection title="资源预留" titleSize="md">
       {!namespaceHasQuota && (
         <TextTip color="blue">
-          Resource reservations are applied per instance of the application.
+          资源预留按应用的每个实例分别生效。
         </TextTip>
       )}
       {namespaceHasQuota && !resourceQuotaCapacityExceeded && (
         <TextTip color="blue">
-          A resource quota is set on this namespace, you must specify resource
-          reservations. Resource reservations are applied per instance of the
-          application. Maximums are inherited from the namespace quota.
+          此命名空间已设置资源配额，你必须指定资源预留。资源预留按应用的每个实例分别生效，最大值继承自命名空间配额。
         </TextTip>
       )}
       <FormControl
         className="flex flex-row"
-        label="Memory limit (MB)"
-        tooltip="An instance of this application will reserve this amount of memory. If the instance memory usage exceeds the reservation, it might be subject to OOM."
+        label="内存限制 (MB)"
+        tooltip="应用的每个实例都会预留这部分内存。如果实例内存使用超过预留值，可能会触发 OOM。"
       >
         <div className="col-xs-10">
           {maxMemoryLimit > 0 && (
@@ -70,8 +68,8 @@ export function ResourceReservationFormSection({
       </FormControl>
       <FormControl
         className="flex flex-row"
-        label="CPU limit"
-        tooltip="An instance of this application will reserve this amount of CPU. If the instance CPU usage exceeds the reservation, it might be subject to CPU throttling."
+        label="CPU 限制"
+        tooltip="应用的每个实例都会预留这部分 CPU。如果实例 CPU 使用超过预留值，可能会被限速。"
       >
         <div className="col-xs-10">
           {maxCpuLimit > 0 && (
