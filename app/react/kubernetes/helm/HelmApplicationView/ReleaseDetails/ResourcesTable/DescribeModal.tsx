@@ -20,7 +20,7 @@ export function DescribeModal({
   namespace,
   onDismiss,
 }: Props) {
-  const title = `Describe ${resourceType}`;
+  const title = `查看 ${resourceType} 详情`;
 
   const { data, isLoading, isError } = useDescribeResource(
     name,
@@ -33,12 +33,12 @@ export function DescribeModal({
       <ModalHeader title={title} />
       <ModalBody>
         {isLoading ? (
-          <InlineLoader>Loading...</InlineLoader>
+          <InlineLoader>正在加载...</InlineLoader>
         ) : (
           <>
             {isError ? (
-              <Alert color="error" title="Error">
-                Error loading resource details
+              <Alert color="error" title="错误">
+                加载资源详情时出错
               </Alert>
             ) : (
               <CodeEditor

@@ -171,10 +171,10 @@ function DescribeTabContent({
       <div className="col-sm-12">
         <Widget>
           <WidgetBody>
-            {isLoading && <InlineLoader>Loading...</InlineLoader>}
+            {isLoading && <InlineLoader>正在加载...</InlineLoader>}
             {isError && (
-              <Alert color="error" title="Error">
-                Error loading resource details
+              <Alert color="error" title="错误">
+                加载资源详情时出错
               </Alert>
             )}
             {!isLoading && !isError && (
