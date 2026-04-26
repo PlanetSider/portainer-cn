@@ -89,8 +89,8 @@
                 </div>
               </div>
               <div>{{ node.Role === 'manager' ? '管理节点' : node.Role === 'worker' ? '工作节点' : node.Role }}</div>
-              <div>CPU: {{ node.CPUs / 1000000000 }}</div>
-              <div>Memory: {{ node.Memory | humansize: 2 }}</div>
+              <div>CPU：{{ node.CPUs / 1000000000 }}</div>
+              <div>内存：{{ node.Memory | humansize: 2 }}</div>
               <div
                 ><span class="label label-{{ node.Status | nodestatusbadge }}">{{ node.Status === 'ready' ? '就绪' : node.Status === 'down' ? '离线' : node.Status }}</span></div
               >
