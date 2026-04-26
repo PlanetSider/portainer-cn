@@ -12,7 +12,7 @@
     </div>
   </div>
   <!-- !tls-checkbox -->
-  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS"> TLS 模式 </div>
+  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS"> TLS 连接模式 </div>
   <!-- note -->
   <div class="form-group" ng-if="$ctrl.formData.TLS">
     <div class="col-sm-12">
@@ -33,7 +33,7 @@
     on-change="($ctrl.onChangeTLSMode)"
   ></box-selector>
 
-  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS && $ctrl.formData.TLSMode !== 'tls_only'"> 必需的 TLS 文件 </div>
+  <div class="col-sm-12 form-section-title" ng-if="$ctrl.formData.TLS && $ctrl.formData.TLSMode !== 'tls_only'"> 必需的 TLS 证书文件 </div>
   <!-- tls-file-upload -->
   <div ng-if="$ctrl.formData.TLS">
     <!-- tls-file-ca -->
