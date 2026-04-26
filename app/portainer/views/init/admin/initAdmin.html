@@ -172,7 +172,7 @@
             <div class="limited-be-content" ng-if="formValues.restoreFormType === RESTORE_FORM_TYPES.S3">
               <!-- Access key id  -->
               <div class="form-group">
-                <label for="access_key_id" class="col-sm-3 control-label text-left">Access Key ID 访问密钥</label>
+                <label for="access_key_id" class="col-sm-3 control-label text-left">访问密钥 ID（Access Key ID）</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="access_key_id" name="access_key_id" ng-model="formValues.AccessKeyId" required data-cy="init-accessKeyIdInput" />
                 </div>
@@ -180,7 +180,7 @@
               <!-- !Access key id  -->
               <!-- Secret access key -->
               <div class="form-group">
-                <label for="secret_access_key" class="col-sm-3 control-label text-left">Secret Access Key 密钥</label>
+                <label for="secret_access_key" class="col-sm-3 control-label text-left">密钥（Secret Access Key）</label>
                 <div class="col-sm-9">
                   <input
                     type="password"
@@ -212,7 +212,7 @@
               <!-- !Region -->
               <!-- Bucket name -->
               <div class="form-group">
-                <label for="bucket_name" class="col-sm-3 control-label text-left">Bucket 名称</label>
+                <label for="bucket_name" class="col-sm-3 control-label text-left">存储桶名称（Bucket）</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="bucket_name" name="bucket_name" ng-model="formValues.BucketName" required data-cy="init-bucketNameInput" />
                 </div>
@@ -239,7 +239,7 @@
               <!-- !S3 Compatible Host -->
               <!-- Filename -->
               <div class="form-group">
-                <label for="backup-s3-filename" class="col-sm-3 control-label text-left">文件名</label>
+                <label for="backup-s3-filename" class="col-sm-3 control-label text-left">备份文件名</label>
                 <div class="col-sm-9">
                   <input
                     type="text"
