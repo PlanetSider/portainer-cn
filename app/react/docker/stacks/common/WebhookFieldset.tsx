@@ -53,7 +53,7 @@ export function AuthorizedWebhook({
   webhookId: string;
 }) {
   return (
-    <FormSection title="Webhook">
+    <FormSection title="Webhook 回调">
       <SwitchField
         name="enableWebhook"
         checked={value}

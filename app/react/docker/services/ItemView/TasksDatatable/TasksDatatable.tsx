@@ -40,7 +40,7 @@ export function TasksDatatable({
 
   return (
     <Datatable
-      title="Tasks"
+      title="任务"
       titleIcon={List}
       settingsManager={tableState}
       columns={columns}
