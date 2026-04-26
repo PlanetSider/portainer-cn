@@ -2,12 +2,12 @@
   <div class="col-sm-12 form-section-title"> 重要提示 </div>
   <div class="form-group">
     <span class="col-sm-12 text-muted small">
-      关于如何生成 Access Key，请参考
+      关于如何生成访问密钥（Access Key），请参考
       <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console" target="_blank">AWS 指南</a>。
     </span>
   </div>
 
-  <div class="col-sm-12 form-section-title"> ECR 连接信息 </div>
+  <div class="col-sm-12 form-section-title"> ECR 连接信息配置 </div>
 
   <!-- name-input -->
   <div class="form-group">
@@ -92,7 +92,7 @@
   <div ng-if="$ctrl.model.Authentication">
     <!-- aws-access-key -->
     <div class="form-group">
-      <label for="registry_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Access Key 访问密钥</label>
+      <label for="registry_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS 访问密钥（Access Key）</label>
       <div class="col-sm-9 col-lg-10">
         <input type="text" class="form-control" id="registry_access_key" name="registry_access_key" ng-model="$ctrl.model.Username" required data-cy="registry-access-key-input" />
         <div class="help-block" ng-show="$ctrl.registryFormEcr.registry_access_key.$invalid">
@@ -111,7 +111,7 @@
 
     <!-- aws-secret-access-key -->
     <div class="form-group">
-      <label for="registry_secret_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS Secret Access Key 密钥</label>
+      <label for="registry_secret_access_key" class="col-sm-3 col-lg-2 control-label required text-left">AWS 密钥（Secret Access Key）</label>
       <div class="col-sm-9 col-lg-10">
         <input type="password" class="form-control" id="registry_secret_access_key" name="registry_secret_access_key" ng-model="$ctrl.model.Password" required />
         <div class="help-block" ng-show="$ctrl.registryFormEcr.registry_secret_access_key.$invalid">

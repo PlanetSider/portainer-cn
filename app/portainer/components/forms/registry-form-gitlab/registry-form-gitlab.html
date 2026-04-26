@@ -3,12 +3,12 @@
   <div class="form-group">
     <span class="col-sm-12 text-muted small">
       <p>
-        关于如何生成 GitLab Personal Access Token，请参考
+        关于如何生成 GitLab 个人访问令牌（Personal Access Token），请参考
         <a href="https://gitlab.com/help/user/profile/personal_access_tokens.md" target="_blank">GitLab 指南</a>。
       </p>
     </span>
   </div>
-  <div class="col-sm-12 form-section-title"> GitLab 镜像仓库连接信息 </div>
+  <div class="col-sm-12 form-section-title"> GitLab 镜像仓库连接信息配置 </div>
   <!-- credentials-user -->
   <div class="form-group">
     <label for="registry_username" class="col-sm-3 col-lg-2 control-label required text-left">用户名</label>
@@ -29,7 +29,7 @@
   <!-- !credentials-user -->
   <!-- credentials-pat -->
   <div class="form-group">
-    <label for="registry_perso_acc_token" class="col-sm-3 col-lg-2 control-label required text-left">Personal Access Token 个人访问令牌</label>
+    <label for="registry_perso_acc_token" class="col-sm-3 col-lg-2 control-label required text-left">个人访问令牌（Personal Access Token）</label>
     <div class="col-sm-9 col-lg-10">
       <input type="password" class="form-control" id="registry_perso_acc_token" name="registry_perso_acc_token" ng-model="$ctrl.model.Token" required />
       <div class="help-block" ng-show="registryFormGitlab.registry_perso_acc_token.$invalid">
@@ -140,7 +140,7 @@
   </div>
 </form>
 <div class="form-horizontal" ng-if="$ctrl.projects">
-  <div class="col-sm-12 form-section-title"> GitLab 项目 </div>
+  <div class="col-sm-12 form-section-title"> GitLab 项目列表 </div>
   <div class="form-group">
     <span class="col-sm-12 text-muted small"> 选择你想管理的项目镜像仓库。Portainer 会为每个选中的项目创建一个镜像仓库。 </span>
     <span class="col-sm-12 text-muted small vertical-center">
