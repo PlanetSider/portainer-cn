@@ -17,7 +17,7 @@ function ConfirmRecreationModal({ onSubmit, cannotPullImage }: Props) {
   return (
     <Modal
       onDismiss={() => onSubmit()}
-      aria-label="confirm recreate container modal"
+      aria-label="确认重新创建容器对话框"
     >
       <Modal.Header title="确定吗？" modalType={ModalType.Destructive} />
 
