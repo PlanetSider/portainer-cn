@@ -1,6 +1,6 @@
 <page-header
   ng-if="ctrl.state.viewReady"
-  title="'ConfigMap 详情'"
+  title="'配置映射（ConfigMap）详情'"
   breadcrumbs="[
     { label:'命名空间', link:'kubernetes.resourcePools' },
     {
@@ -8,7 +8,7 @@
       link: 'kubernetes.resourcePools.resourcePool',
       linkParams:{ id: ctrl.configuration.Namespace }
     },
-    { label:'ConfigMaps 和 Secrets', link:'kubernetes.configurations', linkParams:{ tab: 'configmaps' } },
+    { label:'配置映射与密钥', link:'kubernetes.configurations', linkParams:{ tab: 'configmaps' } },
     ctrl.configuration.Name,
      ]"
   reload="true"
@@ -26,7 +26,7 @@
             <uib-tab index="0" classes="btn-sm" select="ctrl.selectTab(0)" data-cy="k8sConfigDetail-configTab">
               <uib-tab-heading>
                 <pr-icon icon="'file-code'"></pr-icon>
-                ConfigMap
+                配置映射（ConfigMap）
               </uib-tab-heading>
               <div class="widget-body">
                 <table class="table" data-cy="k8sConfigDetail-configTable">
@@ -156,7 +156,7 @@
     is-loading="ctrl.state.applicationsLoading"
     table-key="'kubernetes.configurations.applications'"
     on-refresh="(ctrl.getApplications)"
-     table-title="'使用此 ConfigMap 的应用'"
+     table-title="'使用此配置映射（ConfigMap）的应用'"
   >
   </kubernetes-integrated-applications-datatable>
 </div>
