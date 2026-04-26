@@ -10,7 +10,7 @@ export function WebhookSwitch({
 }) {
   return (
     <div>
-      <div className="form-section-title"> Webhook </div>
+      <div className="form-section-title"> Webhook 回调 </div>
       <SwitchField
         label="创建 Edge 堆栈 Webhook"
         checked={value}

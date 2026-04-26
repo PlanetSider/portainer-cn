@@ -265,7 +265,7 @@ function InnerForm({
 
       {isBE && (
         <>
-          <FormSection title="Webhook">
+          <FormSection title="Webhook 回调">
             <div className="form-group">
               <div className="col-sm-12">
                 <SwitchField
