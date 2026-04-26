@@ -23,7 +23,7 @@ function ConfirmPruneModal({ onSubmit, images = [] }: Props) {
     !pruneAll && !hasUntaggedImages && hasUnusedImages;
 
   return (
-    <Modal onDismiss={() => onSubmit()} aria-label="confirm prune images modal">
+    <Modal onDismiss={() => onSubmit()} aria-label="确认清理镜像对话框">
       <Modal.Header title="确定吗？" modalType={ModalType.Destructive} />
       <Modal.Body>
         <p>
