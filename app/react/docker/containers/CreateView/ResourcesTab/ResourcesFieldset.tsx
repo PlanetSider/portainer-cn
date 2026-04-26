@@ -33,8 +33,8 @@ export function ResourceFieldset({
   const { maxCpu, maxMemory } = useSystemLimits(environmentId);
 
   return (
-    <FormSection title="Resources">
-      <FormControl label="Memory reservation (MB)" errors={errors?.reservation}>
+    <FormSection title="资源">
+      <FormControl label="内存预留 (MB)" errors={errors?.reservation}>
         <SliderWithInput
           visibleTooltip
           value={values.reservation}
@@ -45,7 +45,7 @@ export function ResourceFieldset({
         />
       </FormControl>
 
-      <FormControl label="Memory limit (MB)" errors={errors?.limit}>
+      <FormControl label="内存限制 (MB)" errors={errors?.limit}>
         <SliderWithInput
           visibleTooltip
           value={values.limit}
@@ -56,7 +56,7 @@ export function ResourceFieldset({
         />
       </FormControl>
 
-      <FormControl label="Maximum CPU usage" errors={errors?.cpu}>
+      <FormControl label="最大 CPU 使用量" errors={errors?.cpu}>
         <Slider
           visibleTooltip
           value={values.cpu}
