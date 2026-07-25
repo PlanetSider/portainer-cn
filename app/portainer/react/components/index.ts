@@ -7,7 +7,6 @@ import { withUIRouter } from '@/react-tools/withUIRouter';
 import { AnnotationsBeTeaser } from '@/react/kubernetes/annotations/AnnotationsBeTeaser';
 import { withFormValidation } from '@/react-tools/withFormValidation';
 import { withControlledInput } from '@/react-tools/withControlledInput';
-import { NamespacePortainerSelect } from '@/react/kubernetes/applications/components/NamespaceSelector/NamespaceSelector';
 
 import {
   EnvironmentVariablesFieldset,
@@ -22,7 +21,6 @@ import { TagSelector } from '@@/TagSelector';
 import { Loading } from '@@/Widget/Loading';
 import { PasswordCheckHint } from '@@/PasswordCheckHint';
 import { Tooltip } from '@@/Tip/Tooltip';
-import { Badge } from '@@/Badge';
 import { TableColumnHeaderAngular } from '@@/datatables/TableHeaderCell';
 import { DashboardItem } from '@@/DashboardItem';
 import { SearchBar } from '@@/datatables/SearchBar';
@@ -53,9 +51,11 @@ import { usersModule } from './users';
 import { activityLogsModule } from './activity-logs';
 import { rbacModule } from './rbac';
 import { stacksModule } from './stacks';
+import { authModule } from './auth';
 
 export const ngModule = angular
   .module('portainer.app.react.components', [
+    authModule,
     accessControlModule,
     customTemplatesModule,
     environmentsModule,
@@ -99,7 +99,6 @@ export const ngModule = angular
     r2a(Tooltip, ['message', 'position', 'className', 'setHtmlMessage', 'size'])
   )
   .component('terminalTooltip', r2a(TerminalTooltip, []))
-  .component('badge', r2a(Badge, ['type', 'className', 'data-cy']))
   .component('fileUploadField', fileUploadField)
   .component('porSwitchField', switchField)
   .component(
@@ -128,6 +127,7 @@ export const ngModule = angular
       'onReload',
       'reload',
       'id',
+      'showTitle',
     ])
   )
   .component(
@@ -211,15 +211,6 @@ export const ngModule = angular
       'loadingMessage',
       'getOptionValue',
       'onBlur',
-    ])
-  )
-  .component(
-    'namespacePortainerSelect',
-    r2a(NamespacePortainerSelect, [
-      'value',
-      'onChange',
-      'isDisabled',
-      'options',
     ])
   )
   .component(

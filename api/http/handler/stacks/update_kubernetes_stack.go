@@ -7,6 +7,8 @@ import (
 	"strconv"
 
 	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api/dataservices"
+	"github.com/portainer/portainer/api/dataservices/source"
 	"github.com/portainer/portainer/api/filesystem"
 	gittypes "github.com/portainer/portainer/api/git/types"
 	"github.com/portainer/portainer/api/git/update"
@@ -52,8 +54,23 @@ func (payload *kubernetesGitStackUpdatePayload) Validate(r *http.Request) error 
 	return nil
 }
 
-func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.Stack, endpoint *portainer.Endpoint) *httperror.HandlerError {
-	if stack.GitConfig != nil {
+func (handler *Handler) updateKubernetesStack(tx dataservices.DataStoreTx, r *http.Request, stack *portainer.Stack, endpoint *portainer.Endpoint, gate *deployGate) *httperror.HandlerError {
+
+	securityContext, err := security.RetrieveRestrictedRequestContext(r)
+	if err != nil {
+		return httperror.InternalServerError("Unable to retrieve info from request context", err)
+	}
+
+	userContext := source.NewUserContext(securityContext.User, securityContext.UserMemberships)
+	if stack.WorkflowID != 0 {
+		gitConfig, sourceID, err := loadGitConfigForStack(tx, userContext, stack.WorkflowID, stack.ID)
+		if err != nil {
+			return httperror.InternalServerError("Unable to load git config for stack", err)
+		}
+		if gitConfig == nil {
+			return httperror.InternalServerError("Stack has no git config in source", errors.New("source has no git config"))
+		}
+
 		// Stop the autoupdate job if there is any
 		if stack.AutoUpdate != nil {
 			deployments.StopAutoupdate(stack.ID, stack.AutoUpdate.JobID, handler.Scheduler)
@@ -65,32 +82,33 @@ func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.
 			return httperror.BadRequest("Invalid request payload", err)
 		}
 
-		stack.GitConfig.ReferenceName = payload.RepositoryReferenceName
-		stack.GitConfig.TLSSkipVerify = payload.TLSSkipVerify
-		stack.GitConfig.Authentication = nil
+		gitConfig.ReferenceName = payload.RepositoryReferenceName
+		gitConfig.TLSSkipVerify = payload.TLSSkipVerify
 		stack.AutoUpdate = payload.AutoUpdate
 
 		if payload.RepositoryAuthentication {
 			password := payload.RepositoryPassword
-			if password == "" && stack.GitConfig != nil && stack.GitConfig.Authentication != nil {
-				password = stack.GitConfig.Authentication.Password
+			if password == "" && gitConfig.Authentication != nil {
+				password = gitConfig.Authentication.Password
 			}
 
-			stack.GitConfig.Authentication = &gittypes.GitAuthentication{
+			gitConfig.Authentication = &gittypes.GitAuthentication{
 				Username: payload.RepositoryUsername,
 				Password: password,
 			}
 
 			if _, err := handler.GitService.LatestCommitID(
 				context.TODO(),
-				stack.GitConfig.URL,
-				stack.GitConfig.ReferenceName,
-				stack.GitConfig.Authentication.Username,
-				stack.GitConfig.Authentication.Password,
-				stack.GitConfig.TLSSkipVerify,
+				gitConfig.URL,
+				gitConfig.ReferenceName,
+				gitConfig.Authentication.Username,
+				gitConfig.Authentication.Password,
+				gitConfig.TLSSkipVerify,
 			); err != nil {
 				return httperror.InternalServerError("Unable to fetch git repository", err)
 			}
+		} else {
+			gitConfig.Authentication = nil
 		}
 
 		if payload.AutoUpdate != nil && payload.AutoUpdate.Interval != "" {
@@ -99,6 +117,10 @@ func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.
 				return e
 			}
 			stack.AutoUpdate.JobID = jobID
+		}
+
+		if err := saveStackGitConfig(tx, userContext, stack.WorkflowID, stack.ID, sourceID, 0, gitConfig); err != nil {
+			return httperror.InternalServerError("Unable to update source git config", err)
 		}
 
 		return nil
@@ -116,11 +138,6 @@ func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.
 	}
 
 	tempFileDir, _ := os.MkdirTemp("", "kub_file_content")
-	defer func() {
-		if err := os.RemoveAll(tempFileDir); err != nil {
-			log.Warn().Err(err).Msg("failed to remove temporary stack deployment directory")
-		}
-	}()
 
 	if err := filesystem.WriteToFile(filesystem.JoinPaths(tempFileDir, stack.EntryPoint), []byte(payload.StackFileContent)); err != nil {
 		return httperror.InternalServerError("Failed to persist deployment file in a temp directory", err)
@@ -147,14 +164,16 @@ func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.
 	// so if the deployment failed, the original file won't be over-written
 	stack.ProjectPath = tempFileDir
 
-	if _, err := handler.deployKubernetesStack(context.TODO(), tokenData.ID, endpoint, stack, k.KubeAppLabels{
+	appLabels := k.KubeAppLabels{
 		StackID:   int(stack.ID),
 		StackName: stack.Name,
 		Owner:     stack.CreatedBy,
 		Kind:      "content",
-	}); err != nil {
-		return httperror.InternalServerError("Unable to deploy Kubernetes stack via file content", err)
 	}
+
+	copyStack := *stack
+	user := &portainer.User{ID: tokenData.ID}
+	k8sDeploymentConfig := deployments.CreateKubernetesStackDeploymentConfig(&copyStack, handler.KubernetesDeployer, appLabels, user, endpoint)
 
 	stackFolder := strconv.Itoa(int(stack.ID))
 	projectPath, err := handler.FileService.UpdateStoreStackFileFromBytes(stackFolder, stack.EntryPoint, []byte(payload.StackFileContent))
@@ -167,9 +186,21 @@ func (handler *Handler) updateKubernetesStack(r *http.Request, stack *portainer.
 	}
 	stack.ProjectPath = projectPath
 
-	if err := handler.FileService.RemoveStackFileBackup(stackFolder, stack.EntryPoint); err != nil {
-		log.Warn().Err(err).Msg("remove stack file backup error")
+	postDeploy := func(ctx context.Context, deployErr error) {
+		defer func() {
+			if err := os.RemoveAll(tempFileDir); err != nil {
+				log.Warn().Err(err).Msg("failed to remove temporary stack deployment directory")
+			}
+		}()
+
+		if deployErr == nil {
+			if err := handler.FileService.RemoveStackFileBackup(stackFolder, stack.EntryPoint); err != nil {
+				log.Warn().Err(err).Msg("remove stack file backup error")
+			}
+		}
 	}
+
+	go stackDeploy(handler.DataStore, copyStack.ID, k8sDeploymentConfig, gate, postDeploy)
 
 	return nil
 }

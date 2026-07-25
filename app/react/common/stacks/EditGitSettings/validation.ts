@@ -3,8 +3,6 @@ import { boolean, object, SchemaOf, string } from 'yup';
 
 import { StackType } from '@/react/common/stacks/types';
 import { buildGitValidationSchema } from '@/react/portainer/gitops/GitForm';
-import { useGitCredentials } from '@/react/portainer/account/git-credentials/git-credentials.service';
-import { useCurrentUser } from '@/react/hooks/useUser';
 
 import { envVarValidation } from '@@/form-components/EnvironmentVariablesFieldset';
 
@@ -13,8 +11,6 @@ import { FormValues } from './types';
 export function useValidationSchema(
   stackType: StackType
 ): SchemaOf<FormValues> {
-  const { user } = useCurrentUser();
-  const gitCredentialsQuery = useGitCredentials(user.Id);
   const isKubernetes = stackType === StackType.Kubernetes;
 
   return useMemo(
@@ -22,19 +18,15 @@ export function useValidationSchema(
       object({
         kube: isKubernetes
           ? object({
-              name: string().required('Stack name is required'),
+              name: string().default(''),
             }).required()
           : object({ name: string().default('') }).optional(),
-        git: buildGitValidationSchema(
-          gitCredentialsQuery.data || [],
-          false,
-          isKubernetes ? 'manifest' : 'compose'
-        ),
+        git: buildGitValidationSchema(isKubernetes ? 'manifest' : 'compose'),
 
         env: envVarValidation(),
         prune: boolean().default(false),
         redeployNow: boolean().default(false),
       }),
-    [gitCredentialsQuery.data, isKubernetes]
+    [isKubernetes]
   );
 }

@@ -7,6 +7,7 @@ import (
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
 	"github.com/portainer/portainer/api/http/security"
+	"github.com/portainer/portainer/api/internal/registryutils"
 	"github.com/portainer/portainer/api/stacks/stackutils"
 
 	"github.com/pkg/errors"
@@ -39,6 +40,8 @@ func CreateComposeStackDeploymentConfigTx(tx dataservices.DataStoreTx, securityC
 
 	filteredRegistries := security.FilterRegistries(registries, user, securityContext.UserMemberships, endpoint.ID)
 
+	registryutils.RefreshAndPersistECRTokens(tx, filteredRegistries)
+
 	config := &ComposeStackDeploymentConfig{
 		stack:          stack,
 		endpoint:       endpoint,
@@ -55,13 +58,6 @@ func CreateComposeStackDeploymentConfigTx(tx dataservices.DataStoreTx, securityC
 	return config, nil
 }
 
-func (config *ComposeStackDeploymentConfig) GetUsername() string {
-	if config.user != nil {
-		return config.user.Username
-	}
-	return ""
-}
-
 func (config *ComposeStackDeploymentConfig) Deploy(ctx context.Context) error {
 	if config.FileService == nil || config.StackDeployer == nil {
 		log.Debug().Msg("file service or stack deployer is not initialized")
@@ -69,20 +65,33 @@ func (config *ComposeStackDeploymentConfig) Deploy(ctx context.Context) error {
 	}
 
 	isAdminOrEndpointAdmin := stackutils.UserIsAdminOrEndpointAdmin(config.user)
-
-	securitySettings := &config.endpoint.SecuritySettings
-
-	if !isAdminOrEndpointAdmin {
-		if err := stackutils.ValidateStackFiles(config.stack, securitySettings, config.FileService); err != nil {
+	if !isAdminOrEndpointAdmin && config.endpoint != nil {
+		if err := stackutils.ValidateStackFiles(config.stack, &config.endpoint.SecuritySettings, config.FileService); err != nil {
 			return err
 		}
 	}
 
+	if err := stackutils.ValidateComposeURLs(ctx, config.stack, config.FileService); err != nil {
+		return err
+	}
+
 	if stackutils.IsRelativePathStack(config.stack) {
-		return config.StackDeployer.DeployRemoteComposeStack(ctx, config.stack, config.endpoint, config.registries, config.prune, config.forcePullImage, config.ForceCreate)
+		return config.StackDeployer.DeployRemoteComposeStack(ctx, config.user.ID, config.stack, config.endpoint, config.registries, config.prune, config.forcePullImage, config.ForceCreate)
 	}
 
 	return config.StackDeployer.DeployComposeStack(ctx, config.stack, config.endpoint, config.registries, config.prune, config.forcePullImage, config.ForceCreate)
+}
+
+func (config *ComposeStackDeploymentConfig) Undeploy(ctx context.Context) error {
+	if config.StackDeployer == nil {
+		log.Debug().Msg("stack deployer is not initialized")
+		return errors.New("stack deployer cannot be nil")
+	}
+
+	if stackutils.IsRelativePathStack(config.stack) {
+		return config.StackDeployer.UndeployRemoteComposeStack(ctx, config.user.ID, config.stack, config.endpoint)
+	}
+	return config.StackDeployer.UndeployComposeStack(ctx, config.stack, config.endpoint)
 }
 
 func (config *ComposeStackDeploymentConfig) GetResponse() string {

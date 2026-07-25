@@ -14,6 +14,7 @@ import { Footer } from './Footer';
 import { Header } from './Header';
 import { SidebarProvider, useSidebarState } from './useSidebarState';
 import { UpgradeBEBannerWrapper } from './UpgradeBEBanner';
+import { AppDeliverySidebar } from './AppDeliverySidebar';
 
 export function Sidebar() {
   return (
@@ -67,8 +68,13 @@ function InnerSidebar() {
                label="首页"
               data-cy="portainerSidebar-home"
             />
+
             <EnvironmentSidebar />
+
+            <AppDeliverySidebar />
+
             {isAdmin && <EdgeComputeSidebar />}
+
             <SettingsSidebar
               isPureAdmin={isPureAdmin}
               isAdmin={isAdmin}

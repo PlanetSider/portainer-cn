@@ -9,7 +9,7 @@ import {
 import { applyResourceControl } from '@/react/portainer/access-control/access-control.service';
 import { AccessControlFormData } from '@/react/portainer/access-control/types';
 import PortainerError from '@/portainer/error';
-import { withGlobalError, withInvalidate } from '@/react-tools/react-query';
+import { withError, withInvalidate } from '@/react-tools/react-query';
 import { transformAutoUpdateViewModel } from '@/react/portainer/gitops/AutoUpdateFieldset/utils';
 import { RegistryId } from '@/react/portainer/registries/types/registry';
 
@@ -28,7 +28,7 @@ import { createKubernetesStackFromFileContent } from './createKubernetesStackFro
 export function useCreateStack() {
   const queryClient = useQueryClient();
   return useMutation(createStack, {
-    ...withGlobalError('Failed to create stack'),
+    ...withError('Failed to create stack'),
     ...withInvalidate(queryClient, [queryKeys.base()]),
   });
 }
@@ -196,13 +196,9 @@ function createSwarmStack({ method, payload }: SwarmCreatePayload) {
         repositoryUrl: payload.git.RepositoryURL,
         repositoryReferenceName: payload.git.RepositoryReferenceName,
         composeFile: payload.git.ComposeFilePathInRepository,
-        repositoryAuthentication: payload.git.RepositoryAuthentication,
-        repositoryUsername: payload.git.RepositoryUsername,
-        repositoryPassword: payload.git.RepositoryPassword,
-        repositoryGitCredentialId: payload.git.RepositoryGitCredentialID,
         filesystemPath: payload.relativePathSettings?.FilesystemPath,
         supportRelativePath: payload.relativePathSettings?.SupportRelativePath,
-        tlsSkipVerify: payload.git.TLSSkipVerify,
+        sourceId: payload.git.SourceId,
         autoUpdate: transformAutoUpdateViewModel(
           payload.git.AutoUpdate,
           payload.webhook
@@ -247,13 +243,9 @@ function createStandaloneStack({ method, payload }: StandaloneCreatePayload) {
         repositoryUrl: payload.git.RepositoryURL,
         repositoryReferenceName: payload.git.RepositoryReferenceName,
         composeFile: payload.git.ComposeFilePathInRepository,
-        repositoryAuthentication: payload.git.RepositoryAuthentication,
-        repositoryUsername: payload.git.RepositoryUsername,
-        repositoryPassword: payload.git.RepositoryPassword,
-        repositoryGitCredentialId: payload.git.RepositoryGitCredentialID,
         filesystemPath: payload.relativePathSettings?.FilesystemPath,
         supportRelativePath: payload.relativePathSettings?.SupportRelativePath,
-        tlsSkipVerify: payload.git.TLSSkipVerify,
+        sourceId: payload.git.SourceId,
         autoUpdate: transformAutoUpdateViewModel(
           payload.git.AutoUpdate,
           payload.webhook
@@ -293,15 +285,10 @@ function createKubernetesStack({ method, payload }: KubernetesCreatePayload) {
       return createKubernetesStackFromGit({
         stackName: payload.name,
 
-        repositoryUrl: payload.git.RepositoryURL,
+        sourceId: payload.git.SourceId,
         repositoryReferenceName: payload.git.RepositoryReferenceName,
         manifestFile: payload.git.ComposeFilePathInRepository,
-        repositoryAuthentication: payload.git.RepositoryAuthentication,
-        repositoryUsername: payload.git.RepositoryUsername,
-        repositoryPassword: payload.git.RepositoryPassword,
-        repositoryGitCredentialId: payload.git.RepositoryGitCredentialID,
 
-        tlsSkipVerify: payload.git.TLSSkipVerify,
         autoUpdate: transformAutoUpdateViewModel(
           payload.git.AutoUpdate,
           payload.webhook

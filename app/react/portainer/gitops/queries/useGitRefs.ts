@@ -2,22 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import axios from '@/portainer/services/axios/axios';
 import { isBE } from '@/react/portainer/feature-flags/feature-flags.service';
-import { withGlobalError } from '@/react-tools/react-query';
-
-import { AuthTypeOption } from '../../account/git-credentials/types';
-import { omitPassword } from '../utils';
+import { withError } from '@/react-tools/react-query';
 
 interface RefsPayload {
-  repository: string;
-  username?: string;
-  password?: string;
-  authorizationType?: AuthTypeOption;
-  gitCredentialId?: number;
-  stackId?: number;
-  fromEdgeStack?: boolean;
-  createdFromCustomTemplateID?: number;
-  tlsSkipVerify?: boolean;
   force?: boolean;
+  sourceId: number;
 }
 
 export function useGitRefs<T = string[]>(
@@ -28,24 +17,26 @@ export function useGitRefs<T = string[]>(
     onSuccess,
     onSettled,
     suppressError,
+    cacheTime = 0,
   }: {
     enabled?: boolean;
     select?: (data: string[]) => T;
     onSuccess?(data: T): void;
     onSettled?(data: T | undefined, error: unknown): void;
     suppressError?: boolean;
+    cacheTime?: number;
   } = {}
 ) {
   return useQuery({
-    queryKey: ['gitops', 'refs', omitPassword(payload)],
+    queryKey: ['gitops', 'refs', payload],
     queryFn: () => listRefs(payload),
     enabled: isBE && enabled,
     retry: false,
-    cacheTime: 0,
+    cacheTime,
     select,
     onSuccess,
     onSettled,
-    ...(suppressError ? {} : withGlobalError('Failed loading refs')),
+    ...(suppressError ? {} : withError('加载 Git 引用失败')),
   });
 }
 

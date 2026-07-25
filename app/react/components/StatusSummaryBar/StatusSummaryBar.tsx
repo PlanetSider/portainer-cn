@@ -1,42 +1,52 @@
+import clsx from 'clsx';
+
 import { FilterBarButton, Color } from './FilterBarButton';
 import { FilterBarActiveIndicator } from './FilterBarActiveIndicator';
 
-export interface StatusSegment {
-  key: string;
+export interface StatusSegment<TValue = string> {
+  key: TValue;
   label: string;
   count: number;
   color: Color;
 }
 
-interface Props {
+interface Props<TValue> {
   total: number;
-  segments: StatusSegment[];
-  value: string | null;
-  onChange: (filter: string | null) => void;
+  segments: Array<StatusSegment<TValue>>;
+  value: TValue | null;
+  onChange: (filter: TValue | null) => void;
   radioGroupName?: string;
   ariaLabel?: string;
+  isLoading?: boolean;
   'data-cy'?: string;
 }
 
-export function StatusSummaryBar({
+export function StatusSummaryBar<TValue extends string = string>({
   total,
   segments,
   value,
   onChange,
   radioGroupName = 'status-summary-filter',
-  ariaLabel = '按状态筛选',
+  ariaLabel = 'Filter by status',
+  isLoading = false,
   'data-cy': dataCy = 'status-summary-bar',
-}: Props) {
-  const isAllSelected = !value;
+}: Props<TValue>) {
+  const isAllSelected = !value || value === 'all' || value === 'custom';
   const activeLabel = segments.find((s) => s.key === value)?.label;
 
-  function handleSegmentClick(key: string) {
+  function handleSegmentClick(key: TValue) {
     onChange(value === key ? null : key);
   }
 
   return (
     <div
-      className="relative flex items-stretch overflow-x-auto overflow-y-hidden rounded-lg border border-solid border-[var(--border-widget)] bg-[var(--bg-widget-color)]"
+      className={clsx(
+        'relative flex flex-wrap items-stretch',
+        'border border-solid',
+        'border-gray-5 th-highcontrast:border-white th-dark:border-gray-8',
+        'overflow-y-hidden rounded-lg',
+        'bg-white th-highcontrast:bg-transparent th-dark:bg-graphite-800'
+      )}
       data-cy={dataCy}
       role="radiogroup"
       aria-label={ariaLabel}
@@ -47,6 +57,7 @@ export function StatusSummaryBar({
         isSelected={isAllSelected}
         onClick={() => onChange(null)}
         name={radioGroupName}
+        isLoading={isLoading}
         data-cy={`${dataCy}-total`}
       />
 

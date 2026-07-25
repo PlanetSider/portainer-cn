@@ -3,7 +3,7 @@ ENV=development
 WEBPACK_CONFIG=webpack/webpack.$(ENV).js
 TAG=local
 
-SWAG=go run github.com/swaggo/swag/cmd/swag@v1.16.2
+SWAG=go run github.com/swaggo/swag/cmd/swag@v1.16.6
 GOTESTSUM_VERSION?=v1.13.0
 GOTESTSUM=go run gotest.tools/gotestsum@$(GOTESTSUM_VERSION)
 
@@ -36,8 +36,8 @@ build-storybook: ## Build and serve the storybook files
 .PHONY: deps server-deps client-deps tidy
 deps: server-deps client-deps ## Download all client and server build dependancies
 
+## This is empty because the pipeline requires it but ce has no server deps
 server-deps: init-dist ## Download dependant server binaries
-	@./build/download_binaries.sh $(PLATFORM) $(ARCH)
 
 client-deps: ## Install client dependencies
 	pnpm install
@@ -108,8 +108,8 @@ dev-extension: build-server build-client ## Run the extension in development mod
 ##@ Docs
 .PHONY: docs-build docs-validate docs-clean docs-validate-clean
 docs-build: init-dist ## Build docs
-	go mod download -x
-	cd api && $(SWAG) init -o "../dist/docs" -ot "yaml" -g ./http/handler/handler.go --parseDependency --parseInternal --parseDepth 2 -p pascalcase --markdownFiles ./
+	go mod download
+	cd api && $(SWAG) init -o "../dist/docs" -ot "yaml" -g ./http/handler/handler.go --parseDependency --parseInternal --parseDepth 2 -p pascalcase --markdownFiles ./ --overridesFile .swaggo
 
 docs-validate: docs-build ## Validate docs
 	pnpm swagger2openapi --warnOnly dist/docs/swagger.yaml -o dist/docs/openapi.yaml
@@ -121,6 +121,10 @@ docs-serve: docs-build ## Serve docs locally with Swagger UI on port 8080
 		-e SWAGGER_JSON=/foo/swagger.yaml \
 		-v $(PWD)/dist/docs:/foo \
 		swaggerapi/swagger-ui
+
+.PHONY: generate-api
+generate-api: docs-validate ## Generate API client and types from OpenAPI spec
+	pnpm generate-api
 
 ##@ Helpers
 .PHONY: help

@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { environmentStore } from '@/react/hooks/current-environment-store';
 import { Environment } from '@/react/portainer/environments/types';
-import { snapshotEndpoints } from '@/react/portainer/environments/environment.service';
 import { isEdgeEnvironment } from '@/react/portainer/environments/utils';
-import * as notifications from '@/portainer/services/notifications';
 
 import { confirm } from '@@/modals/confirm';
 import { PageHeader } from '@@/PageHeader';
@@ -18,6 +16,7 @@ import { EdgeLoadingSpinner } from './EdgeLoadingSpinner';
 import { MotdPanel } from './MotdPanel';
 import { LicenseNodePanel } from './LicenseNodePanel';
 import { BackupFailedPanel } from './BackupFailedPanel';
+import { EnvironmentHeader } from './EnvironmentHeader/EnvironmentHeader';
 
 export function HomeView() {
   const { clear: clearStore } = useStore(environmentStore);
@@ -33,7 +32,7 @@ export function HomeView() {
     async function redirect() {
       const options = {
         title: `连接 ${params.environmentName} 失败`,
-        message: `通过隧道连接 edge agent 时出现问题。点击下方“重试”可立即重试，或等待 10 秒后自动重试。`,
+        message: `通过隧道连接 Edge Agent 时出现问题。点击下方“重试”立即重试，或等待 10 秒后自动重试。`,
         confirmButton: buildConfirmButton('重试', 'primary', 10),
         modalType: ModalType.Destructive,
       };
@@ -59,7 +58,7 @@ export function HomeView() {
   }, [params, setConnectingToEdgeEndpoint, router, clearStore]);
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <PageHeader
         reload
         title="首页"
@@ -73,46 +72,21 @@ export function HomeView() {
       {process.env.PORTAINER_EDITION !== 'CE' && <BackupFailedPanel />}
 
       {connectingToEdgeEndpoint ? (
-        <EdgeLoadingSpinner />
+        <div className="mb-5 flex flex-1 flex-col items-center justify-center">
+          <EdgeLoadingSpinner />
+        </div>
       ) : (
-        <EnvironmentList
-          onClickBrowse={handleBrowseClick}
-          onRefresh={confirmTriggerSnapshot}
-        />
+        <div className="mx-5 mb-5 flex flex-col gap-6">
+          <EnvironmentHeader />
+          <EnvironmentList onClickBrowse={handleBrowseClick} />
+        </div>
       )}
-    </>
+    </div>
   );
-
-  async function confirmTriggerSnapshot() {
-    const result = await confirmEndpointSnapshot();
-    if (!result) {
-      return;
-    }
-    try {
-      await snapshotEndpoints();
-      notifications.success('成功', '环境已更新');
-      router.stateService.reload();
-    } catch (err) {
-      notifications.error(
-        '失败',
-        err as Error,
-        '环境快照过程中发生错误'
-      );
-    }
-  }
 
   function handleBrowseClick(environment: Environment) {
     if (isEdgeEnvironment(environment.Type)) {
       setConnectingToEdgeEndpoint(true);
     }
   }
-}
-
-async function confirmEndpointSnapshot() {
-  return confirm({
-    title: '确定吗？',
-    modalType: ModalType.Warn,
-    message:
-      '手动刷新将轮询每个环境以获取其信息，这可能需要一些时间。',
-  });
 }

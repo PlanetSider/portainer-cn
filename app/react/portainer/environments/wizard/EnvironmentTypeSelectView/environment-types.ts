@@ -2,8 +2,8 @@ import { FeatureId } from '@/react/portainer/feature-flags/enums';
 import Docker from '@/assets/ico/vendor/docker.svg?c';
 import Podman from '@/assets/ico/vendor/podman.svg?c';
 import Kubernetes from '@/assets/ico/vendor/kubernetes.svg?c';
+import Kubesolo from '@/assets/ico/vendor/kubesolo.svg?c';
 import Azure from '@/assets/ico/vendor/azure.svg?c';
-import KaaS from '@/assets/ico/vendor/kaas-icon.svg?c';
 import InstallK8s from '@/assets/ico/vendor/install-kubernetes.svg?c';
 
 import { BoxSelectorOption } from '@@/BoxSelector';
@@ -14,11 +14,10 @@ export type EnvironmentOptionValue =
   | 'podman'
   | 'kubernetes'
   | 'aci'
-  | 'kaas'
+  | 'kubesolo'
   | 'k8sInstall';
 
-export interface EnvironmentOption
-  extends BoxSelectorOption<EnvironmentOptionValue> {
+export interface EnvironmentOption extends BoxSelectorOption<EnvironmentOptionValue> {
   id: EnvironmentOptionValue;
   value: EnvironmentOptionValue;
 }
@@ -26,18 +25,18 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
   {
     id: 'dockerStandalone',
     value: 'dockerStandalone',
-    label: 'Docker 独立环境',
+    label: 'Docker Standalone',
     icon: Docker,
     iconType: 'logo',
-    description: '通过 URL/IP、API 或 Socket 连接到 Docker Standalone 环境',
+    description: 'Connect to Docker Standalone via URL/IP, API or Socket',
   },
   {
     id: 'dockerSwarm',
     value: 'dockerSwarm',
-    label: 'Docker Swarm 集群',
+    label: 'Docker Swarm',
     icon: Docker,
     iconType: 'logo',
-    description: '通过 URL/IP、API 或 Socket 连接到 Docker Swarm 集群环境',
+    description: 'Connect to Docker Swarm via URL/IP, API or Socket',
   },
   {
     id: 'podman',
@@ -45,7 +44,7 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
     label: 'Podman',
     icon: Podman,
     iconType: 'logo',
-    description: '通过 URL/IP 或 Socket 连接到 Podman 环境',
+    description: 'Connect to Podman via URL/IP or Socket',
   },
   {
     id: 'kubernetes',
@@ -53,13 +52,13 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
     label: 'Kubernetes',
     icon: Kubernetes,
     iconType: 'logo',
-    description: '通过 URL/IP 连接到 Kubernetes 环境',
+    description: 'Connect to a Kubernetes environment via URL/IP',
   },
   {
     id: 'aci',
     value: 'aci',
     label: 'ACI',
-    description: '通过 API 连接到 ACI 环境',
+    description: 'Connect to ACI environment via API',
     iconType: 'logo',
     icon: Azure,
   },
@@ -67,20 +66,21 @@ export const existingEnvironmentTypes: EnvironmentOption[] = [
 
 export const newEnvironmentTypes: EnvironmentOption[] = [
   {
-    id: 'kaas',
-    value: 'kaas',
-    label: '创建 KaaS 集群（已弃用）',
-    description: '通过云服务商的 Kubernetes as a Service 创建 Kubernetes 集群',
-    icon: KaaS,
+    id: 'kubesolo',
+    value: 'kubesolo',
+    label: 'KubeSolo (Edge)',
+    description:
+      'Deploy a single-node Kubernetes edge environment with KubeSolo',
+    icon: Kubesolo,
     iconType: 'logo',
-    feature: FeatureId.KAAS_PROVISIONING,
+    feature: FeatureId.KUBESOLO,
     disabledWhenLimited: true,
   },
   {
     id: 'k8sInstall',
     value: 'k8sInstall',
-    label: '创建 Kubernetes 集群',
-    description: '在现有基础设施上创建 Kubernetes 集群',
+    label: 'Create Kubernetes cluster',
+    description: 'Create a Kubernetes cluster on existing infrastructure',
     icon: InstallK8s,
     iconType: 'logo',
     feature: FeatureId.K8SINSTALL,
@@ -94,11 +94,11 @@ export const environmentTypes: EnvironmentOption[] = [
 ];
 
 export const formTitles: Record<EnvironmentOptionValue, string> = {
-  dockerStandalone: '连接到 Docker 独立环境',
-  dockerSwarm: '连接到 Docker Swarm 集群环境',
-  podman: '连接到 Podman 环境',
-  kubernetes: '连接到 Kubernetes 环境',
-  aci: '连接到 ACI 环境',
-  kaas: '创建 KaaS 环境',
-  k8sInstall: '创建 Kubernetes 集群',
+  dockerStandalone: 'Connect to your Docker Standalone environment',
+  dockerSwarm: 'Connect to your Docker Swarm environment',
+  podman: 'Connect to your Podman environment',
+  kubernetes: 'Connect to your Kubernetes environment',
+  aci: 'Connect to your ACI environment',
+  kubesolo: 'Deploy a KubeSolo edge environment',
+  k8sInstall: 'Create a Kubernetes cluster',
 };

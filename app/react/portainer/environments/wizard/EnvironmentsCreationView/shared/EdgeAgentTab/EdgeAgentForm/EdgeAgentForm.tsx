@@ -60,7 +60,11 @@ export function EdgeAgentForm({
     >
       {({ isValid, setFieldValue, values }) => (
         <Form>
-          <EdgeAgentFieldset readonly={readonly} asyncMode={asyncMode} />
+          <EdgeAgentFieldset
+            readonly={readonly}
+            asyncMode={asyncMode}
+            containerEngine={containerEngine}
+          />
 
           <MoreSettingsSection>
             <FormSection title="回连间隔">

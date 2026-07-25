@@ -18,7 +18,11 @@ interface Props {
   loading?: boolean;
   onReload?(): Promise<void> | void;
   breadcrumbs?: (Crumb | string)[] | string;
-  title: string;
+  title?: string;
+  /** Render the visible page title row. Defaults to true when title is provided.
+   * Set to false on screens that display the title via another component (e.g.
+   * `ResourceDetailHeader`) to avoid showing it twice. */
+  showTitle?: boolean;
 }
 
 export function PageHeader({
@@ -28,6 +32,7 @@ export function PageHeader({
   reload,
   loading,
   onReload,
+  showTitle = !!title,
   children,
 }: PropsWithChildren<Props>) {
   const router = useRouter();
@@ -39,22 +44,28 @@ export function PageHeader({
         <HeaderTitle />
       </HeaderContainer>
 
-      <PageTitle title={title}>
-        {reload && (
-          <Button
-            color="none"
-            size="large"
-            onClick={onClickedRefresh}
-            className="m-0 p-0 focus:text-inherit"
-            disabled={loading}
-            title="刷新页面"
-            data-cy="refresh-page-button"
-          >
-            <RefreshCw className="icon" />
-          </Button>
-        )}
-        {children}
-      </PageTitle>
+      {showTitle && title && (
+        <PageTitle title={title}>
+          {(reload || children) && (
+            <div className="ml-auto flex items-center gap-2">
+              {reload && (
+                <Button
+                  color="none"
+                  size="large"
+                  onClick={onClickedRefresh}
+                  className="m-0 p-0 focus:text-inherit"
+                  disabled={loading}
+                  title="刷新页面"
+                  data-cy="refresh-page-button"
+                >
+                  <RefreshCw className="icon" />
+                </Button>
+              )}
+              {children}
+            </div>
+          )}
+        </PageTitle>
+      )}
     </>
   );
 

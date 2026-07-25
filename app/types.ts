@@ -9,9 +9,7 @@ export interface AutomationTestingProps {
 
 declare module 'react' {
   interface HTMLAttributes<T>
-    extends AriaAttributes,
-      DOMAttributes<T>,
-      Partial<AutomationTestingProps> {
+    extends AriaAttributes, DOMAttributes<T>, Partial<AutomationTestingProps> {
     // keep AutomationTestingProps 'data-cy' optional because HTMLAttributes covers non interactive elements
   }
 }
@@ -21,6 +19,11 @@ export type WithRequiredProperties<T, K extends keyof T> = Omit<T, K> &
 
 export type ValueOf<T extends Record<string, unknown>> = T[keyof T];
 
+export function stringEnumValues<T extends Record<string, string>>(
+  e: T
+): T[keyof T][] {
+  return Object.values(e) as T[keyof T][];
+}
 /**
  * Recursively makes all properties of a type optional, including nested objects.
  * Unlike TypeScript's built-in Partial<T> which only affects top-level properties,

@@ -2,18 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import axios, { parseAxiosError } from '@/portainer/services/axios/axios';
 
-import { AuthTypeOption } from '../../account/git-credentials/types';
-import { omitPassword } from '../utils';
-
 export interface GitFilePreviewParams {
-  repository: string;
   targetFile: string;
   reference?: string;
-  username?: string;
-  password?: string;
-  authorizationType?: AuthTypeOption;
-  gitCredentialId?: number;
-  tlsSkipVerify?: boolean;
+  /** When set, resolves URL and auth from the stored Source record */
+  sourceId?: number;
 }
 
 async function getFilePreview(params: GitFilePreviewParams): Promise<string> {
@@ -24,7 +17,7 @@ async function getFilePreview(params: GitFilePreviewParams): Promise<string> {
     );
     return data.FileContent;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to fetch file from git');
+    throw parseAxiosError(e, '无法从 Git 获取文件');
   }
 }
 
@@ -34,9 +27,9 @@ export function useGitFilePreview<TData = string>(
 ) {
   const { enabled = true, select } = options;
   return useQuery({
-    queryKey: ['gitops', 'file-preview', omitPassword(params)],
+    queryKey: ['gitops', 'file-preview', params],
     queryFn: () => getFilePreview(params),
-    enabled: enabled && !!params.repository && !!params.targetFile,
+    enabled: enabled && !!params.sourceId && !!params.targetFile,
     select,
     retry: false,
   });

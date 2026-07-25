@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	jsonobject = `{"LogoURL":"","BlackListedLabels":[],"AuthenticationMethod":1,"InternalAuthSettings": {"RequiredPasswordLength": 12}"LDAPSettings":{"AnonymousMode":true,"ReaderDN":"","URL":"","TLSConfig":{"TLS":false,"TLSSkipVerify":false},"StartTLS":false,"SearchSettings":[{"BaseDN":"","Filter":"","UserNameAttribute":""}],"GroupSearchSettings":[{"GroupBaseDN":"","GroupFilter":"","GroupAttribute":""}],"AutoCreateUsers":true},"OAuthSettings":{"ClientID":"","AccessTokenURI":"","AuthorizationURI":"","ResourceURI":"","RedirectURI":"","UserIdentifier":"","Scopes":"","OAuthAutoCreateUsers":false,"DefaultTeamID":0,"SSO":true,"LogoutURI":"","KubeSecretKey":"j0zLVtY/lAWBk62ByyF0uP80SOXaitsABP0TTJX8MhI="},"OpenAMTConfiguration":{"Enabled":false,"MPSServer":"","MPSUser":"","MPSPassword":"","MPSToken":"","CertFileContent":"","CertFileName":"","CertFilePassword":"","DomainName":""},"FeatureFlagSettings":{},"SnapshotInterval":"5m","TemplatesURL":"https://raw.githubusercontent.com/portainer/templates/master/templates-2.0.json","EdgeAgentCheckinInterval":5,"EnableEdgeComputeFeatures":false,"UserSessionTimeout":"8h","KubeconfigExpiry":"0","HelmRepositoryURL":"https://charts.bitnami.com/bitnami","KubectlShellImage":"portainer/kubectl-shell","DisplayDonationHeader":false,"DisplayExternalContributors":false,"EnableHostManagementFeatures":false,"AllowVolumeBrowserForRegularUsers":false,"AllowBindMountsForRegularUsers":false,"AllowPrivilegedModeForRegularUsers":false,"AllowHostNamespaceForRegularUsers":false,"AllowStackManagementForRegularUsers":false,"AllowDeviceMappingForRegularUsers":false,"AllowContainerCapabilitiesForRegularUsers":false}`
+	jsonobject = `{"LogoURL":"","BlackListedLabels":[],"AuthenticationMethod":1,"InternalAuthSettings": {"RequiredPasswordLength": 12}"LDAPSettings":{"AnonymousMode":true,"ReaderDN":"","URL":"","TLSConfig":{"TLS":false,"TLSSkipVerify":false},"StartTLS":false,"SearchSettings":[{"BaseDN":"","Filter":"","UserNameAttribute":""}],"GroupSearchSettings":[{"GroupBaseDN":"","GroupFilter":"","GroupAttribute":""}],"AutoCreateUsers":true},"OAuthSettings":{"ClientID":"","AccessTokenURI":"","AuthorizationURI":"","ResourceURI":"","RedirectURI":"","UserIdentifier":"","Scopes":"","OAuthAutoCreateUsers":false,"DefaultTeamID":0,"SSO":true,"LogoutURI":"","KubeSecretKey":"j0zLVtY/lAWBk62ByyF0uP80SOXaitsABP0TTJX8MhI="},"FeatureFlagSettings":{},"SnapshotInterval":"5m","TemplatesURL":"https://raw.githubusercontent.com/portainer/templates/master/templates-2.0.json","EdgeAgentCheckinInterval":5,"EnableEdgeComputeFeatures":false,"UserSessionTimeout":"8h","KubeconfigExpiry":"0","HelmRepositoryURL":"https://charts.bitnami.com/bitnami","KubectlShellImage":"portainer/kubectl-shell","DisplayDonationHeader":false,"DisplayExternalContributors":false,"EnableHostManagementFeatures":false,"AllowVolumeBrowserForRegularUsers":false,"AllowBindMountsForRegularUsers":false,"AllowPrivilegedModeForRegularUsers":false,"AllowHostNamespaceForRegularUsers":false,"AllowStackManagementForRegularUsers":false,"AllowDeviceMappingForRegularUsers":false,"AllowContainerCapabilitiesForRegularUsers":false}`
 	passphrase = "my secret key"
 )
 
@@ -170,7 +170,10 @@ func Test_ObjectMarshallingEncrypted(t *testing.T) {
 	}
 
 	key := secretToEncryptionKey(passphrase)
-	conn := DbConnection{EncryptionKey: key, isEncrypted: true}
+	conn := DbConnection{EncryptionKey: key}
+	err := conn.SetEncrypted(true)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("%s -> %s", test.object, test.expected), func(t *testing.T) {
 
@@ -232,11 +235,14 @@ func Test_NonceSources(t *testing.T) {
 		return plaintext, err
 	}
 
-	encryptNewFn := encrypt
-	decryptNewFn := decrypt
-
 	passphrase := make([]byte, 32)
 	_, err := io.ReadFull(rand.Reader, passphrase)
+	require.NoError(t, err)
+
+	block, err := aes.NewCipher(passphrase)
+	require.NoError(t, err)
+
+	gcm, err := cipher.NewGCMWithRandomNonce(block)
 	require.NoError(t, err)
 
 	junk := make([]byte, 1024)
@@ -263,17 +269,123 @@ func Test_NonceSources(t *testing.T) {
 		enc, err = encryptOldFn(plain, passphrase)
 		require.NoError(t, err)
 
-		dec, err = decryptNewFn(enc, passphrase)
+		dec, err = decrypt(enc, gcm)
 		require.NoError(t, err)
 
 		require.Equal(t, plain, dec)
 
-		enc, err = encryptNewFn(plain, passphrase)
-		require.NoError(t, err)
+		enc = encrypt(plain, gcm)
 
 		dec, err = decryptOldFn(enc, passphrase)
 		require.NoError(t, err)
 
 		require.Equal(t, plain, dec)
 	}
+}
+
+func TestDecrypt_FalseStringBypassesDecryption(t *testing.T) {
+	t.Parallel()
+
+	key := secretToEncryptionKey(passphrase)
+	block, err := aes.NewCipher(key)
+	require.NoError(t, err)
+
+	gcm, err := cipher.NewGCMWithRandomNonce(block)
+	require.NoError(t, err)
+
+	result, err := decrypt([]byte("false"), gcm)
+	require.NoError(t, err)
+	require.Equal(t, []byte("false"), result)
+}
+
+func TestDecrypt_ShortDataReturnsError(t *testing.T) {
+	t.Parallel()
+
+	key := secretToEncryptionKey(passphrase)
+	block, err := aes.NewCipher(key)
+	require.NoError(t, err)
+
+	gcm, err := cipher.NewGCMWithRandomNonce(block)
+	require.NoError(t, err)
+
+	short := []byte("short")
+	result, err := decrypt(short, gcm)
+	require.ErrorIs(t, err, errEncryptedStringTooShort)
+	require.Equal(t, short, result)
+}
+
+func TestDecrypt_CorruptDataReturnsError(t *testing.T) {
+	t.Parallel()
+
+	key := secretToEncryptionKey(passphrase)
+	block, err := aes.NewCipher(key)
+	require.NoError(t, err)
+
+	gcm, err := cipher.NewGCMWithRandomNonce(block)
+	require.NoError(t, err)
+
+	// 30 bytes passes the length check but fails authentication
+	corrupted := make([]byte, 30)
+	_, err = io.ReadFull(rand.Reader, corrupted)
+	require.NoError(t, err)
+
+	result, err := decrypt(corrupted, gcm)
+	require.Error(t, err)
+	require.Equal(t, corrupted, result)
+}
+
+// BenchmarkEncryptCachedCipher measures the new approach: cipher created once and reused.
+func BenchmarkEncryptCachedCipher(b *testing.B) {
+	key := secretToEncryptionKey(passphrase)
+	conn := DbConnection{EncryptionKey: key}
+	err := conn.SetEncrypted(true)
+	require.NoError(b, err)
+
+	data := []byte(jsonobject)
+
+	b.ResetTimer()
+
+	for b.Loop() {
+		_ = encrypt(data, conn.gcm)
+	}
+}
+
+// BenchmarkEncryptPerCallCipher measures the old approach: cipher created on every call.
+func BenchmarkEncryptPerCallCipher(b *testing.B) {
+	key := secretToEncryptionKey(passphrase)
+	data := []byte(jsonobject)
+
+	b.ResetTimer()
+
+	for b.Loop() {
+		block, err := aes.NewCipher(key)
+		if err != nil {
+			b.Fatal(err)
+		}
+
+		gcm, err := cipher.NewGCMWithRandomNonce(block)
+		if err != nil {
+			b.Fatal(err)
+		}
+
+		_ = gcm.Seal(nil, nil, data, nil)
+	}
+}
+
+// BenchmarkEncryptCachedCipherParallel verifies the cached cipher is safe for concurrent use.
+func BenchmarkEncryptCachedCipherParallel(b *testing.B) {
+	key := secretToEncryptionKey(passphrase)
+	conn := DbConnection{EncryptionKey: key}
+	err := conn.SetEncrypted(true)
+	require.NoError(b, err)
+
+	data := []byte(jsonobject)
+
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			_ = encrypt(data, conn.gcm)
+		}
+	})
 }

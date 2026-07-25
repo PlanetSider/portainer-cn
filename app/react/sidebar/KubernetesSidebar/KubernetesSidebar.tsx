@@ -1,5 +1,6 @@
 import {
   Box,
+  Database,
   Edit,
   Layers,
   LayoutList,
@@ -14,7 +15,6 @@ import { isBE } from '@/react/portainer/feature-flags/feature-flags.service';
 
 import { DashboardLink } from '../items/DashboardLink';
 import { SidebarItem } from '../SidebarItem';
-import { VolumesLink } from '../items/VolumesLink';
 import { SidebarParent } from '../SidebarItem/SidebarParent';
 
 import { KubectlShellButton } from './KubectlShellButton';
@@ -55,6 +55,7 @@ export function KubernetesSidebar({ environmentId }: Props) {
       <SidebarItem
         to="kubernetes.applications"
         params={{ endpointId: environmentId }}
+        includePaths={['kubernetes.helm', 'kubernetes.helminstall']}
         icon={Box}
         label="应用"
         data-cy="k8sSidebar-applications"
@@ -94,9 +95,11 @@ export function KubernetesSidebar({ environmentId }: Props) {
         data-cy="k8sSidebar-configurations"
       />
 
-      <VolumesLink
-        environmentId={environmentId}
-        platformPath="kubernetes"
+      <SidebarItem
+        to="kubernetes.volumes.index"
+        params={{ endpointId: environmentId }}
+        icon={Database}
+        label="Volumes"
         data-cy="k8sSidebar-volumes"
       />
 

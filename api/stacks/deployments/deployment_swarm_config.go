@@ -9,6 +9,7 @@ import (
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
 	"github.com/portainer/portainer/api/http/security"
+	"github.com/portainer/portainer/api/internal/registryutils"
 	"github.com/portainer/portainer/api/stacks/stackutils"
 )
 
@@ -37,6 +38,8 @@ func CreateSwarmStackDeploymentConfigTx(tx dataservices.DataStoreTx, securityCon
 
 	filteredRegistries := security.FilterRegistries(registries, user, securityContext.UserMemberships, endpoint.ID)
 
+	registryutils.RefreshAndPersistECRTokens(tx, filteredRegistries)
+
 	config := &SwarmStackDeploymentConfig{
 		stack:         stack,
 		endpoint:      endpoint,
@@ -50,13 +53,6 @@ func CreateSwarmStackDeploymentConfigTx(tx dataservices.DataStoreTx, securityCon
 	}
 
 	return config, nil
-}
-
-func (config *SwarmStackDeploymentConfig) GetUsername() string {
-	if config.user != nil {
-		return config.user.Username
-	}
-	return ""
 }
 
 func (config *SwarmStackDeploymentConfig) Deploy(ctx context.Context) error {
@@ -75,11 +71,22 @@ func (config *SwarmStackDeploymentConfig) Deploy(ctx context.Context) error {
 		}
 	}
 
+	if err := stackutils.ValidateComposeURLs(ctx, config.stack, config.FileService); err != nil {
+		return err
+	}
+
 	if stackutils.IsRelativePathStack(config.stack) {
-		return config.StackDeployer.DeployRemoteSwarmStack(ctx, config.stack, config.endpoint, config.registries, config.prune, config.pullImage)
+		return config.StackDeployer.DeployRemoteSwarmStack(ctx, config.user.ID, config.stack, config.endpoint, config.registries, config.prune, config.pullImage)
 	}
 
 	return config.StackDeployer.DeploySwarmStack(ctx, config.stack, config.endpoint, config.registries, config.prune, config.pullImage)
+}
+
+func (config *SwarmStackDeploymentConfig) Undeploy(ctx context.Context) error {
+	// Swarm is an orchestrator that handles partial failures internally,
+	// so there is no need to remove failed resources before redeploying.
+	// This method exists only to satisfy the deployment interface.
+	return nil
 }
 
 func (config *SwarmStackDeploymentConfig) GetResponse() string {

@@ -36,7 +36,7 @@ export async function createGroup({
     });
     return group;
   } catch (e) {
-    throw parseAxiosError(e as Error, '创建分组失败');
+    throw parseAxiosError(e as Error, 'Failed to create group');
   }
 }
 
@@ -46,8 +46,8 @@ export function useCreateGroupMutation() {
   return useMutation(
     createGroup,
     mutationOptions(
-      withError('创建分组失败'),
-      withInvalidate(queryClient, [queryKeys.base()])
+      withError('Failed to create group'),
+      withInvalidate(queryClient, [queryKeys.base(), queryKeys.list(true)])
     )
   );
 }

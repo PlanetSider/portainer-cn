@@ -26,6 +26,28 @@ func (kcl *KubeClient) GetPods(namespace string) ([]corev1.Pod, error) {
 	return pods.Items, nil
 }
 
+// DeletePod deletes a single pod. The owning controller (Deployment,
+// StatefulSet, DaemonSet, ...) is responsible for recreating it. For naked
+// pods the pod is removed permanently.
+func (kcl *KubeClient) DeletePod(namespace, name string) error {
+	return kcl.cli.CoreV1().Pods(namespace).Delete(context.TODO(), name, metav1.DeleteOptions{})
+}
+
+// RestartPod restarts all containers inside a pod in place using the
+// Kubernetes 1.35 alpha pod-restart subresource. The pod itself is preserved.
+// Requires the cluster to expose the corresponding subresource (and feature
+// gate). On clusters that don't, the API server typically returns 404 or 405
+// which is surfaced to the caller.
+func (kcl *KubeClient) RestartPod(namespace, name string) error {
+	return kcl.cli.CoreV1().RESTClient().Post().
+		Namespace(namespace).
+		Resource("pods").
+		Name(name).
+		SubResource("restart").
+		Do(context.TODO()).
+		Error()
+}
+
 // isReplicaSetOwner checks if the pod's owner reference is a ReplicaSet
 func isReplicaSetOwner(pod corev1.Pod) bool {
 	return len(pod.OwnerReferences) > 0 && pod.OwnerReferences[0].Kind == "ReplicaSet"

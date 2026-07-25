@@ -168,6 +168,22 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
     };
 
+    const helmInstall = {
+      name: 'kubernetes.helminstall',
+      url: '/helm?referrer',
+      views: {
+        'content@': {
+          component: 'helmInstallView',
+        },
+      },
+      params: {
+        yaml: '',
+      },
+      data: {
+        docs: '/user/kubernetes/applications/manifest/helm',
+      },
+    };
+
     const services = {
       name: 'kubernetes.services',
       url: '/services',
@@ -268,6 +284,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
     const application = {
       name: 'kubernetes.applications.application',
       url: '/:namespace/:name?resource-type',
+      params: {
+        openGitSettings: { value: null, dynamic: true },
+      },
       views: {
         'content@': {
           component: 'applicationDetailsView',
@@ -495,22 +514,6 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
     };
 
-    const helmInstall = {
-      name: 'kubernetes.helminstall',
-      url: '/helm?referrer',
-      views: {
-        'content@': {
-          component: 'helmInstallView',
-        },
-      },
-      params: {
-        yaml: '',
-      },
-      data: {
-        docs: '/user/kubernetes/applications/manifest/helm',
-      },
-    };
-
     const namespaces = {
       name: 'kubernetes.resourcePools',
       url: '/namespaces',
@@ -563,9 +566,15 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
     };
 
-    const volumes = {
+    const volumesBase = {
       name: 'kubernetes.volumes',
-      url: '/volumes?tab',
+      url: '/volumes',
+      abstract: true,
+    };
+
+    const volumes = {
+      name: 'kubernetes.volumes.index',
+      url: '?tab',
       views: {
         'content@': {
           component: 'kubernetesVolumesView',
@@ -573,6 +582,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         docs: '/user/kubernetes/volumes',
+      },
+      params: {
+        tab: null,
       },
     };
 
@@ -582,6 +594,54 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       views: {
         'content@': {
           component: 'kubernetesVolumeView',
+        },
+      },
+    };
+
+    const persistentVolume = {
+      name: 'kubernetes.volumes.persistentVolume',
+      url: '/persistent-volumes/:name?tab',
+      views: {
+        'content@': {
+          component: 'kubernetesResourceDetailsYAMLView',
+        },
+      },
+      data: {
+        resourceConfig: {
+          title: 'Persistent Volume details',
+          breadcrumbLabel: 'Volumes',
+          breadcrumbLink: 'kubernetes.volumes.index',
+          breadcrumbTab: 'volumes',
+          resourceType: 'persistentvolume',
+          apiVersion: 'v1',
+          resourcePlural: 'persistentvolumes',
+          namespaced: false,
+          yamlIdentifier: 'persistent-volume-yaml',
+          dataCy: 'persistent-volume-yaml',
+        },
+      },
+    };
+
+    const storageClass = {
+      name: 'kubernetes.volumes.storageClass',
+      url: '/storage-classes/:name?tab',
+      views: {
+        'content@': {
+          component: 'kubernetesResourceDetailsYAMLView',
+        },
+      },
+      data: {
+        resourceConfig: {
+          title: 'Storage Class details',
+          breadcrumbLabel: 'Volumes',
+          breadcrumbLink: 'kubernetes.volumes.index',
+          breadcrumbTab: 'storage',
+          resourceType: 'storageclass',
+          apiVersion: 'storage.k8s.io/v1',
+          resourcePlural: 'storageclasses',
+          namespaced: false,
+          yamlIdentifier: 'storage-class-yaml',
+          dataCy: 'storage-class-yaml',
         },
       },
     };
@@ -875,8 +935,11 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
     $stateRegistryProvider.register(namespaceCreation);
     $stateRegistryProvider.register(namespace);
     $stateRegistryProvider.register(namespaceAccess);
+    $stateRegistryProvider.register(volumesBase);
     $stateRegistryProvider.register(volumes);
     $stateRegistryProvider.register(volume);
+    $stateRegistryProvider.register(persistentVolume);
+    $stateRegistryProvider.register(storageClass);
     $stateRegistryProvider.register(registries);
     $stateRegistryProvider.register(registriesAccess);
     $stateRegistryProvider.register(endpointKubernetesConfiguration);

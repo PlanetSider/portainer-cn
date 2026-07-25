@@ -105,7 +105,7 @@ export function WizardPodman({ onCreate }: Props) {
         titleSize="sm"
         isFoldable
         defaultFolded={false}
-        className="[&>label]:mb-5"
+        className="mb-8"
       >
         <p className="text-muted mb-2 text-xs">
           这些是旧版选项，不支持 Edge 功能或策略管理。对于大多数使用场景，{' '}

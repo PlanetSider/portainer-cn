@@ -9,6 +9,7 @@ import (
 	"time"
 
 	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api/dataservices"
 	"github.com/portainer/portainer/api/internal/edge"
 	"github.com/portainer/portainer/api/internal/edge/cache"
 	"github.com/portainer/portainer/api/internal/endpointutils"
@@ -81,17 +82,24 @@ func (s *Service) Open(endpoint *portainer.Endpoint) error {
 	return nil
 }
 
-// close removes the tunnel from the map so the agent will close it
+// close removes the tunnel from the map so the agent will close it.
+// The lock is released before cleaning up the chisel user and proxy to avoid
+// blocking Config/Open callers while DeleteUser interacts with chisel internals.
 func (s *Service) close(endpointID portainer.EndpointID) {
 	s.mu.Lock()
-	defer s.mu.Unlock()
 
 	tun, ok := s.activeTunnels[endpointID]
 	if !ok {
+		s.mu.Unlock()
 		return
 	}
 
-	if len(tun.Credentials) > 0 && s.chiselServer != nil {
+	delete(s.activeTunnels, endpointID)
+	cache.Del(endpointID)
+
+	s.mu.Unlock()
+
+	if s.chiselServer != nil {
 		user, _, _ := strings.Cut(tun.Credentials, ":")
 		s.chiselServer.DeleteUser(user)
 	}
@@ -99,10 +107,6 @@ func (s *Service) close(endpointID portainer.EndpointID) {
 	if s.ProxyManager != nil {
 		s.ProxyManager.DeleteEndpointProxy(endpointID)
 	}
-
-	delete(s.activeTunnels, endpointID)
-
-	cache.Del(endpointID)
 }
 
 // Config returns the tunnel details needed for the agent to connect
@@ -236,4 +240,19 @@ func encryptCredentials(username, password, key string) (string, error) {
 	}
 
 	return base64.RawStdEncoding.EncodeToString(encryptedCredentials), nil
+}
+
+func endpointHasSnapshot(dataStore dataservices.DataStore, endpointID portainer.EndpointID) bool {
+	var hasSnapshot bool
+	_ = dataStore.ViewTx(func(tx dataservices.DataStoreTx) error {
+		s, err := tx.Snapshot().Read(endpointID)
+		if err != nil {
+			return err
+		}
+
+		hasSnapshot = s.Docker != nil || s.Kubernetes != nil
+		return nil
+	})
+
+	return hasSnapshot
 }

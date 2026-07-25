@@ -72,7 +72,9 @@ export function InnerForm({
                     stackName={values.kube?.name ?? ''}
                     setStackName={(value) => {
                       setFieldValue('kube.name', value);
-                      setFieldValue('redeployNow', true);
+                      if (value && value !== stackName) {
+                        setFieldValue('redeployNow', true);
+                      }
                     }}
                     error={errors.kube?.name}
                   />
@@ -94,7 +96,6 @@ export function InnerForm({
                 baseWebhookUrl={baseStackWebhookUrl()}
                 webhookId={webhookId}
                 webhooksDocs="/user/docker/stacks/webhooks"
-                isAuthExplanationVisible
                 isAdditionalFilesFieldVisible
                 isAutoUpdateVisible
                 errors={errors.git}

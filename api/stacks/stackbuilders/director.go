@@ -6,6 +6,7 @@ import (
 
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
+	"github.com/portainer/portainer/api/stacks/stackutils"
 	httperror "github.com/portainer/portainer/pkg/libhttp/error"
 
 	"github.com/rs/zerolog/log"
@@ -16,7 +17,7 @@ type stackBuildProcess interface {
 	setGeneralInfo(payload *StackPayload, endpoint *portainer.Endpoint)
 	// prepare handles all pre-save steps: sets type-specific metadata, stores
 	// files on disk, or clones the git repository.
-	prepare(ctx context.Context, payload *StackPayload) error
+	prepare(ctx context.Context, payload *StackPayload, userID portainer.UserID) error
 	saveStack() (*portainer.Stack, error)
 	deploy(ctx context.Context, endpoint *portainer.Endpoint) error
 	// postDeploy runs after a successful deployment: for git builders it enables
@@ -32,10 +33,10 @@ type stackBuildProcess interface {
 // The stack is saved to DB with Status=Deploying and returned immediately.
 // Deployment runs in a background goroutine. The caller must poll
 // GET /stacks/{id} to track completion.
-func Build(ctx context.Context, dataStore dataservices.DataStore, builder stackBuildProcess, payload *StackPayload, endpoint *portainer.Endpoint) (*portainer.Stack, *httperror.HandlerError) {
+func Build(ctx context.Context, dataStore dataservices.DataStore, builder stackBuildProcess, payload *StackPayload, endpoint *portainer.Endpoint, userID portainer.UserID) (*portainer.Stack, *httperror.HandlerError) {
 	builder.setGeneralInfo(payload, endpoint)
 
-	if err := builder.prepare(ctx, payload); err != nil {
+	if err := builder.prepare(ctx, payload, userID); err != nil {
 		return nil, httperror.InternalServerError("Failed to prepare stack", err)
 	}
 
@@ -44,12 +45,16 @@ func Build(ctx context.Context, dataStore dataservices.DataStore, builder stackB
 		return nil, httperror.InternalServerError("Failed to save stack", err)
 	}
 
-	go deploy(ctx, dataStore, builder, stack.ID, endpoint)
+	go deploy(dataStore, builder, stack.ID, endpoint)
 
 	return stack, nil
 }
 
-func deploy(ctx context.Context, dataStore dataservices.DataStore, builder stackBuildProcess, stackID portainer.StackID, endpoint *portainer.Endpoint) {
+func deploy(dataStore dataservices.DataStore, builder stackBuildProcess, stackID portainer.StackID, endpoint *portainer.Endpoint) {
+	backgroundCtx := context.Background()
+	ctx, cancel := context.WithTimeout(backgroundCtx, 15*time.Minute)
+	defer cancel()
+
 	deployErr := builder.deploy(ctx, endpoint)
 
 	var stack *portainer.Stack
@@ -62,11 +67,12 @@ func deploy(ctx context.Context, dataStore dataservices.DataStore, builder stack
 			return err
 		}
 
-		updateStackStatus(stack, deployErr)
+		stackutils.UpdateStackStatusFromDeploymentResult(stack, deployErr)
 
 		return tx.Stack().Update(stack.ID, stack)
 	}); err != nil {
 		log.Error().Err(err).
+			AnErr("deploy_error", deployErr).
 			Int("stack_id", int(stackID)).
 			Str("context", "deploy").
 			Msg("Failed to update stack status after async deployment")
@@ -78,29 +84,10 @@ func deploy(ctx context.Context, dataStore dataservices.DataStore, builder stack
 		return
 	}
 
-	if err := builder.postDeploy(ctx, stack); err != nil {
+	if err := builder.postDeploy(backgroundCtx, stack); err != nil {
 		log.Error().Err(err).
 			Int("stack_id", int(stackID)).
 			Str("context", "deploy").
 			Msg("Failed to run post-deployment hook")
 	}
-}
-
-func updateStackStatus(stack *portainer.Stack, deployErr error) {
-	if deployErr != nil {
-		stack.Status = portainer.StackStatusError
-		stack.DeploymentStatus = append(stack.DeploymentStatus, portainer.StackDeploymentStatus{
-			Status:  portainer.StackStatusError,
-			Time:    time.Now().Unix(),
-			Message: deployErr.Error(),
-		})
-
-		return
-	}
-
-	stack.Status = portainer.StackStatusActive
-	stack.DeploymentStatus = append(stack.DeploymentStatus, portainer.StackDeploymentStatus{
-		Status: portainer.StackStatusActive,
-		Time:   time.Now().Unix(),
-	})
 }

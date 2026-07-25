@@ -30,19 +30,17 @@ export function CreateGroupView() {
         ]}
       />
 
-      <div className="row pb-20">
-        <div className="col-sm-12">
-          <Widget>
-            <Widget.Body>
-              <GroupForm
-                initialValues={initialValues}
-                onSubmit={handleSubmit}
-                submitLabel="创建"
-                submitLoadingLabel="创建中..."
-              />
-            </Widget.Body>
-          </Widget>
-        </div>
+      <div className="mx-4 pb-20">
+        <Widget>
+          <Widget.Body>
+            <GroupForm
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+              submitLabel="创建"
+              submitLoadingLabel="正在创建..."
+            />
+          </Widget.Body>
+        </Widget>
       </div>
     </>
   );
@@ -61,7 +59,7 @@ export function CreateGroupView() {
       {
         onSuccess: () => {
           resetForm();
-          notifySuccess('成功', '分组已成功创建');
+          notifySuccess('成功', '分组已创建');
           router.stateService.go('portainer.groups');
         },
       }

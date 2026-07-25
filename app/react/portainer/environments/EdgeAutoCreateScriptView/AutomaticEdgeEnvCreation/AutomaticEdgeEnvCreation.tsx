@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Laptop } from 'lucide-react';
+import { Laptop, Network } from 'lucide-react';
 
 import { generateKey } from '@/react/portainer/environments/environment.service/edge';
 import { EdgeScriptForm } from '@/react/edge/components/EdgeScriptForm';
@@ -8,12 +8,14 @@ import { commandsTabs } from '@/react/edge/components/EdgeScriptForm/scripts';
 import { useSettings } from '@/react/portainer/settings/queries';
 import EdgeAgentStandardIcon from '@/react/edge/components/edge-agent-standard.svg?c';
 import EdgeAgentAsyncIcon from '@/react/edge/components/edge-agent-async.svg?c';
+import { ConnectivityTestModal } from '@/react/edge/components/ConnectivityTestModal/ConnectivityTestModal';
 
 import { Widget, WidgetBody, WidgetTitle } from '@@/Widget';
 import { TextTip } from '@@/Tip/TextTip';
 import { BoxSelector } from '@@/BoxSelector';
 import { FormSection } from '@@/form-components/FormSection';
 import { CopyButton } from '@@/buttons';
+import { Button } from '@@/buttons';
 import { Link } from '@@/Link';
 import { FormControl } from '@@/form-components/FormControl';
 import { Input } from '@@/form-components/Input';
@@ -75,14 +77,15 @@ export function AutomaticEdgeEnvCreation() {
       <WidgetBody className="form-horizontal">
         {!edgeComputeConfigurationOK ? (
           <TextTip color="orange">
-            要使用此功能，请先启用 Edge Compute 功能{' '}
+            要使用此功能，请先在
             <Link
               to="portainer.settings.edgeCompute"
               data-cy="edge-disabled-portainer-edge-settings-link"
             >
-              这里
+              Edge Compute 设置
             </Link>{' '}
-            ，并正确配置 Portainer API 服务器 URL 和隧道服务器地址。
+            中启用 Edge Compute 功能，并正确配置 Portainer API Server URL
+            和隧道服务器地址。
           </TextTip>
         ) : (
           <>
@@ -139,6 +142,8 @@ function EdgeKeyInfo({
   tunnelUrl?: string;
   asyncMode: boolean;
 }) {
+  const [isConnectivityModalOpen, setIsConnectivityModalOpen] = useState(false);
+
   if (isLoading || !edgeKey) {
     return <div>正在为 {url} 生成密钥...</div>;
   }
@@ -168,7 +173,16 @@ function EdgeKeyInfo({
         asyncMode={asyncMode}
         showMetaFields
       >
-        <FormControl label="Portainer API 服务器 URL">
+        <TextTip color="blue">
+          Portainer Server URL{!asyncMode ? ' 和隧道服务器地址已在' : ' 已在'}
+          <Link
+            to="portainer.settings.edgeCompute"
+            data-cy="server-url-portainer-edge-settings-link"
+          >
+            此处
+          </Link>
+        </TextTip>
+        <FormControl label="Portainer API Server URL">
           <Input value={url} readOnly data-cy="edge-auto-create-url-input" />
         </FormControl>
 
@@ -182,16 +196,24 @@ function EdgeKeyInfo({
           </FormControl>
         )}
 
-        <TextTip color="blue">
-          Portainer 服务器 URL{!asyncMode ? ' 和隧道服务器地址已' : ' 已'}设置在{' '}
-          <Link
-            to="portainer.settings.edgeCompute"
-            data-cy="server-url-portainer-edge-settings-link"
-          >
-            这里
-          </Link>
-        </TextTip>
+        <Button
+          color="default"
+          className="!ml-0 mb-8"
+          icon={Network}
+          onClick={() => setIsConnectivityModalOpen(true)}
+          data-cy="edge-auto-create-test-connectivity-button"
+        >
+          测试连接
+        </Button>
       </EdgeScriptForm>
+
+      {isConnectivityModalOpen && url && (
+        <ConnectivityTestModal
+          portainerUrl={url}
+          tunnelServerAddr={!asyncMode ? tunnelUrl : undefined}
+          onDismiss={() => setIsConnectivityModalOpen(false)}
+        />
+      )}
     </>
   );
 }

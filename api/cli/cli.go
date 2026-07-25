@@ -56,6 +56,8 @@ func CLIFlags() *portainer.CLIFlags {
 		TrustedOrigins:            kingpin.Flag("trusted-origins", "List of trusted origins for CSRF protection. Separate multiple origins with a comma.").Envar(portainer.TrustedOriginsEnvVar).String(),
 		CSP:                       kingpin.Flag("csp", "Content Security Policy (CSP) header").Envar(portainer.CSPEnvVar).Default("true").Bool(),
 		CompactDB:                 kingpin.Flag("compact-db", "Enable database compaction on startup").Envar(portainer.CompactDBEnvVar).Default("false").Bool(),
+		NoSetupToken:              kingpin.Flag("no-setup-token", "Disable the setup token requirement for admin initialization and restore on an uninitialized instance").Envar(portainer.NoSetupTokenEnvVar).Bool(),
+		SetupToken:                kingpin.Flag("setup-token", "Set a custom setup token for admin initialization and restore on an uninitialized instance (overrides auto-generation)").Envar(portainer.SetupTokenEnvVar).String(),
 	}
 }
 
@@ -94,12 +96,19 @@ func (Service) ParseFlags(version string) (*portainer.CLIFlags, error) {
 	flags.TLSKey = tlsKeyFlag.String()
 	flags.TLSCacert = kingpin.Flag("tlscacert", "Path to the CA").Default(defaultTLSCACertPath).String()
 
-	flags.KubectlShellImage = kingpin.Flag(
+	var hasKubectlShellImageFlag bool
+	kubectlShellImageFlag := kingpin.Flag(
 		"kubectl-shell-image",
 		"Kubectl shell image",
-	).Envar(portainer.KubectlShellImageEnvVar).Default(portainer.DefaultKubectlShellImage).String()
+	).Envar(portainer.KubectlShellImageEnvVar).
+		Default(portainer.DefaultKubectlShellImage).
+		IsSetByUser(&hasKubectlShellImageFlag)
+	flags.KubectlShellImage = kubectlShellImageFlag.String()
 
 	kingpin.Parse()
+
+	_, kubectlShellImageEnvVarSet := os.LookupEnv(portainer.KubectlShellImageEnvVar)
+	flags.KubectlShellImageSet = hasKubectlShellImageFlag || kubectlShellImageEnvVarSet
 
 	if !filepath.IsAbs(*flags.Assets) {
 		ex, err := os.Executable()

@@ -30,7 +30,7 @@ type ResourceConfig = {
 const fallbackTabs: Tab[] = [
   { name: 'YAML', icon: Code, widget: null, selectedTabParam: 'yaml' },
   {
-    name: 'Describe',
+    name: '详情',
     icon: FileText,
     widget: null,
     selectedTabParam: 'describe',
@@ -102,7 +102,7 @@ function buildTabs(
       selectedTabParam: 'yaml',
     },
     {
-      name: 'Describe',
+      name: '详情',
       icon: FileText,
       widget: (
         <DescribeTabContent

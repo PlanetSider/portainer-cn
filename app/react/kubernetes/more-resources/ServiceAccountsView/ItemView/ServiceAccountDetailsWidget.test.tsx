@@ -16,6 +16,7 @@ vi.mock('@/react/hooks/useEnvironmentId', () => ({
 }));
 
 vi.mock('@/react/hooks/useUser', () => ({
+  useAuthorizations: () => ({ authorized: false }),
   useCurrentUser: () => ({ isPureAdmin: true }),
 }));
 
@@ -23,9 +24,18 @@ vi.mock('@/react/kubernetes/configs/queries/useSecrets', () => ({
   useSecrets: vi.fn(() => ({ data: [] })),
 }));
 
-vi.mock('@/react/portainer/registries/queries/useRegistry', () => ({
-  useRegistry: vi.fn(() => ({ data: undefined })),
-}));
+vi.mock(
+  '@/react/portainer/environments/queries/useEnvironmentRegistries',
+  () => ({
+    useEnvironmentRegistries: vi.fn(() => ({
+      data: {
+        linkedDefaultSecretNames: [],
+        registryBySecretName: {},
+      },
+      isLoading: false,
+    })),
+  })
+);
 
 vi.mock('@@/Link', () => ({
   Link: ({ children }: { children: ReactNode }) => <span>{children}</span>,
@@ -75,7 +85,7 @@ describe('ServiceAccountDetailsWidget', () => {
     expect(screen.getByText('registry-creds')).toBeInTheDocument();
   });
 
-  it('shows "None" when there are no image pull secrets', () => {
+  it('shows the empty state when there are no image pull secrets', () => {
     vi.mocked(useServiceAccount).mockReturnValue({
       data: {
         name: 'my-sa',
@@ -89,7 +99,9 @@ describe('ServiceAccountDetailsWidget', () => {
     } as unknown as ReturnType<typeof useServiceAccount>);
 
     renderWidget();
-    expect(screen.getByText('None')).toBeInTheDocument();
+    expect(
+      screen.getByText(/尚未配置镜像拉取 Secret/)
+    ).toBeInTheDocument();
   });
 
   it('truncates image pull secrets beyond the visible limit and shows overflow badge', () => {
@@ -109,7 +121,7 @@ describe('ServiceAccountDetailsWidget', () => {
     } as unknown as ReturnType<typeof useServiceAccount>);
 
     renderWidget();
-    expect(screen.getByText('+ 2 more')).toBeInTheDocument();
+    expect(screen.getByText('另有 2 个')).toBeInTheDocument();
     expect(screen.queryByText('secret-5')).not.toBeInTheDocument();
   });
 
@@ -127,7 +139,7 @@ describe('ServiceAccountDetailsWidget', () => {
     } as unknown as ReturnType<typeof useServiceAccount>);
 
     renderWidget();
-    expect(screen.getByText('Disabled')).toBeInTheDocument();
+    expect(screen.getByText('已禁用')).toBeInTheDocument();
   });
 
   it('shows automount token as Enabled when not set', () => {
@@ -143,7 +155,7 @@ describe('ServiceAccountDetailsWidget', () => {
     } as unknown as ReturnType<typeof useServiceAccount>);
 
     renderWidget();
-    expect(screen.getByText('Enabled')).toBeInTheDocument();
+    expect(screen.getByText('已启用')).toBeInTheDocument();
   });
 
   it('shows SystemBadge for system service accounts', () => {

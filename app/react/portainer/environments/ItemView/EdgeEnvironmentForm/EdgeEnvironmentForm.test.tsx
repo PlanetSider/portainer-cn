@@ -7,7 +7,10 @@ import { server, http } from '@/setup-tests/server';
 import { withTestQueryProvider } from '@/react/test-utils/withTestQuery';
 import { withUserProvider } from '@/react/test-utils/withUserProvider';
 import { withTestRouter } from '@/react/test-utils/withRouter';
-import { createMockEnvironment } from '@/react-tools/test-mocks';
+import {
+  createMockEnvironment,
+  createMockEnvironmentGroup,
+} from '@/react-tools/test-mocks';
 import { EnvironmentType } from '@/react/portainer/environments/types';
 
 import { EdgeEnvironmentForm } from './EdgeEnvironmentForm';
@@ -31,7 +34,7 @@ function createWrappedForm() {
 // Default mock handlers
 function setupDefaultMocks() {
   server.use(
-    // Settings endpoint (for AMT check and intervals)
+    // Settings endpoint
     http.get('/api/settings', () =>
       HttpResponse.json({
         Edge: {
@@ -40,16 +43,13 @@ function setupDefaultMocks() {
           CommandInterval: 60,
         },
         EdgeAgentCheckinInterval: 5,
-        openAMTConfiguration: {
-          enabled: false,
-        },
       })
     ),
     // Groups endpoint
     http.get('/api/endpoint_groups', () =>
       HttpResponse.json([
-        { Id: 1, Name: 'Default' },
-        { Id: 2, Name: 'Production' },
+        createMockEnvironmentGroup({ Id: 1, Name: 'Default' }),
+        createMockEnvironmentGroup({ Id: 2, Name: 'Production' }),
       ])
     ),
     // Tags endpoint

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import type { AriaAttributes } from 'react';
 import {
+  FilterOptionOption,
   GroupBase,
   OptionsOrGroups,
   SelectComponentsConfig,
 } from 'react-select';
 import _ from 'lodash';
-import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 
 import { AutomationTestingProps } from '@/types';
 
@@ -27,20 +27,20 @@ export interface GroupOption<TValue> {
   options: Option<TValue>[];
 }
 
-type Options<TValue> = OptionsOrGroups<
+export type Options<TValue> = OptionsOrGroups<
   Option<TValue>,
   GroupBase<Option<TValue>>
 >;
 
 interface SharedProps<TValue>
-  extends AutomationTestingProps,
-    Pick<AriaAttributes, 'aria-label'> {
+  extends AutomationTestingProps, Pick<AriaAttributes, 'aria-label'> {
   name?: string;
   inputId?: string;
   size?: 'sm' | 'md';
   placeholder?: string;
   disabled?: boolean;
   isClearable?: boolean;
+  /** Portals the dropdown to document.body, ensuring it renders above sticky footers and overlays. */
   bindToBody?: boolean;
   isLoading?: boolean;
   noOptionsMessage?: () => string;

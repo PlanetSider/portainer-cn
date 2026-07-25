@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { withGlobalError } from '@/react-tools/react-query';
+import { withError } from '@/react-tools/react-query';
 import axios, { parseAxiosError } from '@/portainer/services/axios/axios';
 import { EnvironmentId } from '@/react/portainer/environments/types';
 
@@ -28,7 +28,7 @@ export function useServiceAccount(
     async () => getServiceAccount(environmentId, namespace, name),
     {
       enabled: !!environmentId && !!namespace && !!name,
-      ...withGlobalError('Unable to get service account'),
+      ...withError('无法获取 ServiceAccount'),
     }
   );
 }
@@ -44,6 +44,6 @@ async function getServiceAccount(
     );
     return data;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to get service account');
+    throw parseAxiosError(e, '无法获取 ServiceAccount');
   }
 }

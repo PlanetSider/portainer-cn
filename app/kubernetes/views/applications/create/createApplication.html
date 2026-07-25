@@ -1,9 +1,9 @@
 <page-header
   ng-if="!ctrl.state.isEdit && !ctrl.stack.IsComposeFormat && ctrl.state.viewReady"
-  title="'创建应用'"
+  title="'Create application'"
   breadcrumbs="[
-    { label:'应用', link:'kubernetes.applications' },
-     '创建应用'
+    { label:'Applications', link:'kubernetes.applications' },
+     'Create an application'
      ]"
   reload="true"
 >
@@ -11,21 +11,21 @@
 
 <page-header
   ng-if="ctrl.state.isEdit && !ctrl.stack.IsComposeFormat && ctrl.state.viewReady"
-  title="'编辑应用'"
+  title="'Edit application'"
   breadcrumbs="[
-    { label:'命名空间', link:'kubernetes.resourcePools' },
+    { label:'Namespaces', link:'kubernetes.resourcePools' },
     {
       label:ctrl.application.ResourcePool,
       link: 'kubernetes.resourcePools.resourcePool',
       linkParams:{ id: ctrl.application.ResourcePool }
     },
-    { label:'应用', link:'kubernetes.applications' },
+    { label:'Applications', link:'kubernetes.applications' },
     {
       label:ctrl.application.Name,
       link: 'kubernetes.applications.application',
       linkParams:{ name: ctrl.application.Name, namespace: ctrl.application.ResourcePool }
     },
-     '编辑',
+     'Edit',
      ]"
   reload="true"
 >
@@ -33,21 +33,21 @@
 
 <page-header
   ng-if="ctrl.stack.IsComposeFormat"
-  title="'查看应用'"
+  title="'View application'"
   breadcrumbs="[
-    { label:'命名空间', link:'kubernetes.resourcePools' },
+    { label:'Namespaces', link:'kubernetes.resourcePools' },
     {
       label:ctrl.application.ResourcePool,
       link: 'kubernetes.resourcePools.resourcePool',
       linkParams:{ id: ctrl.application.ResourcePool }
     },
-    { label:'应用', link:'kubernetes.applications' },
+    { label:'Applications', link:'kubernetes.applications' },
     {
       label:ctrl.application.Name,
       link: 'kubernetes.applications.application',
       linkParams:{ name: ctrl.application.Name, namespace: ctrl.application.ResourcePool }
     },
-     '查看',
+     'View',
      ]"
   reload="true"
 >
@@ -61,7 +61,7 @@
         <rd-widget-body>
           <form class="form-horizontal mt-4" name="kubernetesApplicationCreationForm" autocomplete="off" novalidate>
             <div ng-if="ctrl.isExternalApplication()">
-              <div class="col-sm-12 form-section-title" ng-if="ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"> 命名空间 Namespace </div>
+              <div class="col-sm-12 form-section-title" ng-if="ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"> Namespace </div>
               <!-- #region NAMESPACE -->
               <namespace-selector
                 values="ctrl.formValues.ResourcePool.Namespace.Name"
@@ -103,7 +103,7 @@
                 ></application-summary-section>
               </div>
               <!-- kubernetes summary for external application -->
-              <div class="col-sm-12 form-section-title !mt-6" ng-if="ctrl.state.appType !== ctrl.KubernetesDeploymentTypes.GIT" ng-hide="ctrl.stack.IsComposeFormat"> 操作 </div>
+              <div class="col-sm-12 form-section-title !mt-6" ng-hide="ctrl.stack.IsComposeFormat"> Actions </div>
               <!-- #region ACTIONS -->
               <div class="form-group" ng-hide="ctrl.stack.IsComposeFormat">
                 <div class="col-sm-12">
@@ -116,10 +116,10 @@
                     button-spinner="ctrl.state.actionInProgress"
                     data-cy="k8sAppCreate-deployButton"
                   >
-                    <span ng-show="!ctrl.state.isEdit && !ctrl.state.actionInProgress">部署应用</span>
-                    <span ng-show="!ctrl.state.isEdit && ctrl.state.actionInProgress">部署中...</span>
-                    <span ng-show="ctrl.state.isEdit && !ctrl.state.actionInProgress">更新应用</span>
-                    <span ng-show="ctrl.state.isEdit && ctrl.state.actionInProgress">更新中...</span>
+                    <span ng-show="!ctrl.state.isEdit && !ctrl.state.actionInProgress">Deploy application</span>
+                    <span ng-show="!ctrl.state.isEdit && ctrl.state.actionInProgress">Deployment in progress...</span>
+                    <span ng-show="ctrl.state.isEdit && !ctrl.state.actionInProgress">Update application</span>
+                    <span ng-show="ctrl.state.isEdit && ctrl.state.actionInProgress">Update in progress...</span>
                   </button>
                   <button
                     ng-if="ctrl.state.isEdit && !ctrl.state.actionInProgress && ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"
@@ -128,7 +128,7 @@
                     ui-sref="kubernetes.applications.application({ name: ctrl.application.Name, namespace: ctrl.application.ResourcePool })"
                     data-cy="k8sAppCreate-appCancelButton"
                   >
-                    取消
+                    Cancel
                   </button>
                   <!-- #Web editor buttons -->
                   <button
@@ -139,22 +139,14 @@
                     style="margin-top: 7px; margin-left: 0"
                     button-spinner="ctrl.state.updateWebEditorInProgress"
                   >
-                    <span ng-show="!ctrl.state.updateWebEditorInProgress">更新应用</span>
-                    <span ng-show="ctrl.state.updateWebEditorInProgress">更新中...</span>
+                    <span ng-show="!ctrl.state.updateWebEditorInProgress">Update application</span>
+                    <span ng-show="ctrl.state.updateWebEditorInProgress">Update in progress...</span>
                   </button>
                 </div>
               </div>
               <!-- #endregion -->
             </div>
             <div ng-if="!ctrl.isExternalApplication()">
-              <git-form-git-reference-card
-                ng-if="ctrl.state.appType == ctrl.KubernetesDeploymentTypes.GIT && ctrl.stack.GitConfig"
-                stack-id="ctrl.stack.Id"
-                stack-type="'kubernetes'"
-                git-config="ctrl.stack.GitConfig"
-                auto-update="ctrl.stack.AutoUpdate"
-                class="mb-4"
-              ></git-form-git-reference-card>
               <!-- #region NAMESPACE -->
               <namespace-selector
                 values="ctrl.formValues.ResourcePool.Namespace.Name"
@@ -174,15 +166,6 @@
                 input-class-name="'col-lg-10 col-sm-9'"
                 error="ctrl.state.stackNameError"
               ></kube-stack-name>
-              <!-- #endregion -->
-
-              <!-- #region Git repository -->
-              <kubernetes-redeploy-app-git-form
-                ng-if="ctrl.state.appType === ctrl.KubernetesDeploymentTypes.GIT"
-                stack="ctrl.stack"
-                namespace="ctrl.formValues.ResourcePool.Namespace.Name"
-                stack-name="ctrl.formValues.StackName"
-              ></kubernetes-redeploy-app-git-form>
               <!-- #endregion -->
 
               <!-- #region web editor -->
@@ -377,7 +360,7 @@
                 <!-- application summary end -->
               </div>
               <!-- #region ACTIONS -->
-              <div class="col-sm-12 form-section-title !mt-6" ng-if="ctrl.state.appType !== ctrl.KubernetesDeploymentTypes.GIT" ng-hide="ctrl.stack.IsComposeFormat"> 操作 </div>
+              <div class="col-sm-12 form-section-title !mt-6" ng-hide="ctrl.stack.IsComposeFormat"> Actions </div>
               <div class="form-group" ng-hide="ctrl.stack.IsComposeFormat">
                 <div class="col-sm-12">
                   <button
@@ -389,10 +372,10 @@
                     button-spinner="ctrl.state.actionInProgress"
                     data-cy="k8sAppCreate-deployButton"
                   >
-                    <span ng-show="!ctrl.state.isEdit && !ctrl.state.actionInProgress">部署应用</span>
-                    <span ng-show="!ctrl.state.isEdit && ctrl.state.actionInProgress">正在部署...</span>
-                    <span ng-show="ctrl.state.isEdit && !ctrl.state.actionInProgress">更新应用</span>
-                    <span ng-show="ctrl.state.isEdit && ctrl.state.actionInProgress">正在更新...</span>
+                    <span ng-show="!ctrl.state.isEdit && !ctrl.state.actionInProgress">Deploy application</span>
+                    <span ng-show="!ctrl.state.isEdit && ctrl.state.actionInProgress">Deployment in progress...</span>
+                    <span ng-show="ctrl.state.isEdit && !ctrl.state.actionInProgress">Update application</span>
+                    <span ng-show="ctrl.state.isEdit && ctrl.state.actionInProgress">Update in progress...</span>
                   </button>
                   <button
                     ng-if="ctrl.state.isEdit && !ctrl.state.actionInProgress && ctrl.state.appType === ctrl.KubernetesDeploymentTypes.APPLICATION_FORM"
@@ -401,7 +384,7 @@
                     ui-sref="kubernetes.applications.application({ name: ctrl.application.Name, namespace: ctrl.application.ResourcePool })"
                     data-cy="k8sAppCreate-appCancelButton"
                   >
-                    取消
+                    Cancel
                   </button>
                   <!-- #Web editor buttons -->
                   <button
@@ -412,8 +395,8 @@
                     style="margin-top: 7px; margin-left: 0"
                     button-spinner="ctrl.state.updateWebEditorInProgress"
                   >
-                    <span ng-show="!ctrl.state.updateWebEditorInProgress">更新应用</span>
-                    <span ng-show="ctrl.state.updateWebEditorInProgress">正在更新...</span>
+                    <span ng-show="!ctrl.state.updateWebEditorInProgress">Update application</span>
+                    <span ng-show="ctrl.state.updateWebEditorInProgress">Update in progress...</span>
                   </button>
                 </div>
               </div>

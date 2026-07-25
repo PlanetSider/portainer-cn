@@ -6,6 +6,7 @@ import (
 
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/filesystem"
+	"github.com/portainer/portainer/pkg/libhttp/ssrf"
 	"github.com/stretchr/testify/require"
 )
 
@@ -138,7 +139,6 @@ services:
 `)
 
 	stack := &portainer.Stack{
-
 		ProjectPath: "/tmp/stack/1",
 		EntryPoint:  "docker-compose.yml",
 		Env:         []portainer.Pair{{Name: "API_PORT", Value: "3000"}},
@@ -185,7 +185,7 @@ func TestValidateStackFiles_DotEnvFile(t *testing.T) {
 	t.Parallel()
 	tmpDir := t.TempDir()
 
-	err := os.WriteFile(filesystem.JoinPaths(tmpDir, ".env"), []byte("HOST_PORT=3000\n"), 0600)
+	err := os.WriteFile(filesystem.JoinPaths(tmpDir, ".env"), []byte("HOST_PORT=3000\n"), 0o600)
 	require.NoError(t, err)
 
 	fileContent := []byte(`
@@ -216,7 +216,7 @@ func TestValidateStackFiles_EnvFileAttribute(t *testing.T) {
 	t.Parallel()
 	tmpDir := t.TempDir()
 
-	err := os.WriteFile(filesystem.JoinPaths(tmpDir, "web.env"), []byte("HOST_PORT=3000\n"), 0600)
+	err := os.WriteFile(filesystem.JoinPaths(tmpDir, "web.env"), []byte("HOST_PORT=3000\n"), 0o600)
 	require.NoError(t, err)
 
 	fileContent := []byte(`
@@ -270,4 +270,187 @@ services:
 	}
 	err := ValidateStackFiles(stack, securitySettings, fileService)
 	require.ErrorContains(t, err, "bind-mount disabled for non administrator users")
+}
+
+func TestExtractImageRegistry(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		image    string
+		expected string
+	}{
+		{"nginx", ""},
+		{"nginx:latest", ""},
+		{"library/nginx", ""},
+		{"ghcr.io/owner/image:tag", "ghcr.io"},
+		{"myregistry.com/image:tag", "myregistry.com"},
+		{"myregistry.com:5000/image:tag", "myregistry.com:5000"},
+		{"localhost/image:tag", "localhost"},
+		{"localhost:5000/image:tag", "localhost:5000"},
+		{"myregistry.com/image@sha256:abc", "myregistry.com"},
+		{"169.254.169.254/image:tag", "169.254.169.254"},
+	}
+
+	for _, tc := range cases {
+		got := extractImageRegistry(tc.image)
+		require.Equal(t, tc.expected, got, "image: %s", tc.image)
+	}
+}
+
+type staticAllowListService struct {
+	parsed portainer.ParsedAllowList
+}
+
+func (s *staticAllowListService) ReadParsed(id portainer.AllowListKey) (*portainer.ParsedAllowList, error) {
+	return &s.parsed, nil
+}
+
+func configureSSRF(t *testing.T, mode portainer.SSRFMode, entries []string) {
+	t.Helper()
+
+	parsed := ssrf.ParseAllowedHosts(entries)
+	parsed.Mode = mode
+	err := ssrf.Configure(&staticAllowListService{parsed: parsed})
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		err := ssrf.Configure(&staticAllowListService{})
+		require.NoError(t, err)
+	})
+}
+
+func TestValidateComposeURLs_DisabledSSRF(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeOff, nil)
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    build:
+      context: http://169.254.169.254/repo.tar.gz
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.NoError(t, err)
+}
+
+func TestValidateComposeURLs_BuildContextBlocked(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeEnforce, []string{"example.com"})
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    build:
+      context: http://169.254.169.254/repo.tar.gz
+    image: nginx
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.ErrorContains(t, err, "SSRF policy")
+}
+
+func TestValidateComposeURLs_BuildContextPath(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeEnforce, []string{"example.com"})
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    build:
+      context: ./app
+    image: nginx
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.NoError(t, err)
+}
+
+func TestValidateComposeURLs_ImageRegistryBlocked(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeEnforce, []string{"example.com"})
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    image: 169.254.169.254/myimage:latest
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.ErrorContains(t, err, "SSRF policy")
+}
+
+func TestValidateComposeURLs_ImageRegistryAllowed(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeEnforce, []string{"myregistry.com"})
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    image: myregistry.com/myimage:latest
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.NoError(t, err)
+}
+
+func TestValidateComposeURLs_DockerHubImageAllowed(t *testing.T) {
+	configureSSRF(t, portainer.SSRFModeEnforce, []string{"example.com"})
+
+	stack := &portainer.Stack{
+		ProjectPath: "/tmp/stack/1",
+		EntryPoint:  "docker-compose.yml",
+	}
+
+	fileService := mockFileService{
+		fileContent: []byte(`
+version: "3"
+services:
+  web:
+    image: nginx:latest
+`),
+		projectVersionPath: "/tmp/stack/1",
+	}
+
+	err := ValidateComposeURLs(t.Context(), stack, fileService)
+	require.NoError(t, err)
 }

@@ -70,7 +70,7 @@ describe('StatusSummaryBar', () => {
     const onChange = vi.fn();
     renderComponent({ value: 'down', onChange });
 
-    await user.click(screen.getByRole('radio', { name: /filter by total/i }));
+    await user.click(screen.getByRole('radio', { name: /filter by 总计/i }));
     expect(onChange).toHaveBeenCalledWith(null);
   });
 
@@ -79,7 +79,7 @@ describe('StatusSummaryBar', () => {
     const onChange = vi.fn();
     renderComponent({ value: 'down', onChange });
 
-    expect(screen.getByTestId('active-filter-indicator')).toBeVisible();
+    expect(screen.getByRole('status')).toBeVisible();
     expect(
       screen.getByRole('button', { name: /clear filter/i })
     ).toBeInTheDocument();

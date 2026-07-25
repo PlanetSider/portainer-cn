@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api/dataservices/source"
 	"github.com/portainer/portainer/api/datastore"
 	"github.com/portainer/portainer/api/filesystem"
 	gittypes "github.com/portainer/portainer/api/git/types"
@@ -36,16 +37,30 @@ func TestStackFile_GitPendingRedeploy_Returns409(t *testing.T) {
 	handler.FileService = fileService
 	handler.DataStore = store
 
-	stack := &portainer.Stack{
-		ID:         1,
-		EndpointID: endpoint.ID,
-		Type:       portainer.DockerComposeStack,
-		CurrentDeploymentInfo: &portainer.StackDeploymentInfo{
-			RepositoryURL:  "https://github.com/portainer/old-repo.git",
+	const stackID = portainer.StackID(1)
+
+	src := &portainer.Source{
+		Type: portainer.SourceTypeGit,
+		Git: &gittypes.RepoConfig{
+			URL:            "https://github.com/portainer/portainer.git",
 			ConfigFilePath: "docker-compose.yml",
 		},
-		GitConfig: &gittypes.RepoConfig{
-			URL:            "https://github.com/portainer/portainer.git",
+	}
+	require.NoError(t, store.Source().Create(source.InsecureNewAdminContext(), src))
+
+	wf := &portainer.Workflow{Artifacts: []portainer.Artifact{{
+		StackID: stackID,
+		Files:   []portainer.ArtifactFile{{SourceID: src.ID}},
+	}}}
+	require.NoError(t, store.Workflow().Create(wf))
+
+	stack := &portainer.Stack{
+		ID:         stackID,
+		EndpointID: endpoint.ID,
+		Type:       portainer.DockerComposeStack,
+		WorkflowID: wf.ID,
+		CurrentDeploymentInfo: &portainer.StackDeploymentInfo{
+			RepositoryURL:  "https://github.com/portainer/old-repo.git",
 			ConfigFilePath: "docker-compose.yml",
 		},
 	}

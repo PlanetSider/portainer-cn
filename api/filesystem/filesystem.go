@@ -46,8 +46,6 @@ const (
 	BinaryStorePath = "bin"
 	// EdgeJobStorePath represents the subfolder where schedule files are stored.
 	EdgeJobStorePath = "edge_jobs"
-	// DockerConfigPath represents the subfolder where docker configuration is stored.
-	DockerConfigPath = "docker_config"
 	// ExtensionRegistryManagementStorePath represents the subfolder where files related to the
 	// registry management extension are stored.
 	ExtensionRegistryManagementStorePath = "extensions"
@@ -91,7 +89,7 @@ func JoinPaths(trustedRoot string, untrustedPaths ...string) string {
 		trustedRoot = "."
 	}
 
-	p := filepath.Join(trustedRoot, filepath.Join(append([]string{"/"}, untrustedPaths...)...)) //nolint:forbidigo
+	p := filepath.Join(trustedRoot, filepath.Join(append([]string{"/"}, untrustedPaths...)...))
 
 	// avoid setting a volume name from the untrusted paths
 	vnp := filepath.VolumeName(p)
@@ -135,22 +133,12 @@ func NewService(dataStorePath, fileStorePath string) (*Service, error) {
 		return nil, err
 	}
 
-	err = service.createDirectoryInStore(DockerConfigPath)
-	if err != nil {
-		return nil, err
-	}
-
 	return service, nil
 }
 
 // GetBinaryFolder returns the full path to the binary store on the filesystem
 func (service *Service) GetBinaryFolder() string {
 	return JoinPaths(service.fileStorePath, BinaryStorePath)
-}
-
-// GetDockerConfigPath returns the full path to the docker config store on the filesystem
-func (service *Service) GetDockerConfigPath() string {
-	return JoinPaths(service.fileStorePath, DockerConfigPath)
 }
 
 // RemoveDirectory removes a directory on the filesystem.

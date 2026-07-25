@@ -10,60 +10,68 @@ import { BadgeIcon } from '@@/BadgeIcon';
 
 import { ResourceControlOwnership } from '../types';
 
-const publicOption: BoxSelectorOption<ResourceControlOwnership> = {
-  value: ResourceControlOwnership.PUBLIC,
-  label: '公开',
-  id: 'access_public',
-  description:
-    '我希望任何有权访问此环境的用户都可以管理此资源',
-  icon: <BadgeIcon icon={ownershipIcon(ResourceControlOwnership.PUBLIC)} />,
-};
+function publicOption(
+  resourceName: string
+): BoxSelectorOption<ResourceControlOwnership> {
+  return {
+    value: ResourceControlOwnership.PUBLIC,
+    label: 'Public',
+    id: 'access_public',
+    description: `I want any user with access to this ${resourceName} to be able to manage this ${resourceName}`,
+    icon: <BadgeIcon icon={ownershipIcon(ResourceControlOwnership.PUBLIC)} />,
+  };
+}
 
 export function useOptions(
   isAdmin: boolean,
   teams?: Team[],
-  isPublicVisible = false
+  isPublicVisible = false,
+  resourceName = 'resource'
 ) {
   const [options, setOptions] = useState<
     Array<BoxSelectorOption<ResourceControlOwnership>>
   >([]);
 
   useEffect(() => {
-    const options = isAdmin ? adminOptions() : nonAdminOptions(teams);
+    const options = isAdmin
+      ? adminOptions(resourceName)
+      : nonAdminOptions(teams, resourceName);
 
-    setOptions(isPublicVisible ? [...options, publicOption] : options);
-  }, [isAdmin, teams, isPublicVisible]);
+    setOptions(
+      isPublicVisible ? [...options, publicOption(resourceName)] : options
+    );
+  }, [isAdmin, teams, isPublicVisible, resourceName]);
 
   return options;
 }
 
-function adminOptions() {
+function adminOptions(resourceName: string) {
   return [
     buildOption(
       'access_administrators',
       <BadgeIcon
         icon={ownershipIcon(ResourceControlOwnership.ADMINISTRATORS)}
       />,
-      '管理员',
-      '我希望仅限管理员管理此资源',
+      'Administrators',
+      `I want to restrict the management of this ${resourceName} to administrators only`,
       ResourceControlOwnership.ADMINISTRATORS
     ),
     buildOption(
       'access_restricted',
       <BadgeIcon icon={ownershipIcon(ResourceControlOwnership.RESTRICTED)} />,
-      '受限',
-      '我希望仅允许指定用户和/或团队管理此资源',
+      'Restricted',
+      `I want to restrict the management of this ${resourceName} to a set of users and/or teams`,
       ResourceControlOwnership.RESTRICTED
     ),
   ];
 }
-function nonAdminOptions(teams?: Team[]) {
+function nonAdminOptions(teams?: Team[], resourceName = 'resource') {
   return _.compact([
     buildOption(
       'access_private',
       <BadgeIcon icon={ownershipIcon(ResourceControlOwnership.PRIVATE)} />,
-      '私有',
-      '我希望此资源仅由我自己管理',
+      'Private',
+      `I want to restrict this ${resourceName} to be manageable by myself only`,
       ResourceControlOwnership.PRIVATE
     ),
     teams &&
@@ -71,14 +79,16 @@ function nonAdminOptions(teams?: Team[]) {
       buildOption(
         'access_restricted',
         <BadgeIcon icon={ownershipIcon(ResourceControlOwnership.RESTRICTED)} />,
-        '受限',
+        'Restricted',
         teams.length === 1 ? (
           <>
-            我希望我的团队（<b>{teams[0].Name}</b>）中的任意成员都可以管理此资源
+            I want any member of my team (<b>{teams[0].Name}</b>) to be able to
+            manage this {resourceName}
           </>
         ) : (
           <>
-            我希望仅允许我的一个或多个团队管理此资源
+            I want to restrict the management of this {resourceName} to one or
+            more of my teams
           </>
         ),
         ResourceControlOwnership.RESTRICTED

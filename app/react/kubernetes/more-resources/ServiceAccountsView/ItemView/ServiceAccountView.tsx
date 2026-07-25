@@ -14,7 +14,7 @@ export function ServiceAccountView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Service account',
+      name: 'ServiceAccount',
       icon: User,
       widget: <ServiceAccountDetailsWidget namespace={namespace} name={name} />,
       selectedTabParam: 'service-account',
@@ -35,7 +35,7 @@ export function ServiceAccountView() {
         title="Service Account 详情"
         breadcrumbs={[
           {
-              label: 'Service Accounts',
+            label: 'ServiceAccount',
             link: 'kubernetes.moreResources.serviceAccounts',
           },
           {

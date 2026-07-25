@@ -3,6 +3,7 @@ import { HttpResponse } from 'msw';
 
 import { withTestQueryProvider } from '@/react/test-utils/withTestQuery';
 import { server, http } from '@/setup-tests/server';
+import { withTestRouter } from '@/react/test-utils/withRouter';
 
 import { RepoConfigResponse } from './types';
 import { GitReferenceCard } from './GitReferenceCard';
@@ -22,14 +23,16 @@ const defaultGitConfig: RepoConfigResponse = {
 function renderCard(
   overrides: Partial<Parameters<typeof GitReferenceCard>[0]> = {}
 ) {
-  const Component = withTestQueryProvider(() => (
-    <GitReferenceCard
-      stackId={1}
-      gitConfig={defaultGitConfig}
-      stackType="docker"
-      {...overrides}
-    />
-  ));
+  const Component = withTestQueryProvider(
+    withTestRouter(() => (
+      <GitReferenceCard
+        gitConfig={defaultGitConfig}
+        stackType="docker"
+        sourceId={1}
+        {...overrides}
+      />
+    ))
+  );
   return render(<Component />);
 }
 
@@ -50,14 +53,14 @@ describe('GitReferenceCard', () => {
       renderCard();
 
       await waitFor(() =>
-        expect(screen.getByRole('group', { name: 'Repo' })).toHaveTextContent(
+        expect(screen.getByRole('group', { name: '仓库' })).toHaveTextContent(
           defaultGitConfig.URL
         )
       );
-      expect(screen.getByRole('group', { name: 'Ref' })).toHaveTextContent(
+      expect(screen.getByRole('group', { name: '引用' })).toHaveTextContent(
         defaultGitConfig.ReferenceName
       );
-      expect(screen.getByRole('group', { name: 'File' })).toHaveTextContent(
+      expect(screen.getByRole('group', { name: '文件' })).toHaveTextContent(
         defaultGitConfig.ConfigFilePath
       );
     });
@@ -74,20 +77,20 @@ describe('GitReferenceCard', () => {
       });
 
       await waitFor(() =>
-        expect(screen.getByRole('group', { name: 'Repo' })).toHaveTextContent(
+        expect(screen.getByRole('group', { name: '仓库' })).toHaveTextContent(
           defaultGitConfig.URL
         )
       );
       expect(
-        screen.queryByText('Settings changed since last deploy')
+        screen.queryByText('自上次部署以来设置已发生变化')
       ).not.toBeInTheDocument();
     });
 
     it('shows auto-update as Off when not set', () => {
       renderCard();
       expect(
-        screen.getByRole('group', { name: 'Auto-update' })
-      ).toHaveTextContent('Off');
+        screen.getByRole('group', { name: '自动更新' })
+      ).toHaveTextContent('关闭');
     });
 
     it('shows auto-update as On when autoUpdate is provided', async () => {
@@ -101,9 +104,9 @@ describe('GitReferenceCard', () => {
       });
 
       expect(
-        screen.getByRole('group', { name: 'Auto-update' })
-      ).toHaveTextContent('On');
-      expect(screen.getByRole('group', { name: 'Interval' })).toHaveTextContent(
+        screen.getByRole('group', { name: '自动更新' })
+      ).toHaveTextContent('开启');
+      expect(screen.getByRole('group', { name: '间隔' })).toHaveTextContent(
         '5m'
       );
     });
@@ -123,7 +126,7 @@ describe('GitReferenceCard', () => {
 
       await waitFor(() =>
         expect(screen.getByRole('status')).toHaveTextContent(
-          'Settings changed since last deploy'
+          '自上次部署以来设置已发生变化'
         )
       );
       expect(screen.getByRole('status')).toHaveTextContent(
@@ -144,7 +147,7 @@ describe('GitReferenceCard', () => {
 
       await waitFor(() =>
         expect(screen.getByRole('status')).toHaveTextContent(
-          'Settings changed since last deploy'
+          '自上次部署以来设置已发生变化'
         )
       );
       expect(screen.getByRole('status')).toHaveTextContent(
@@ -165,7 +168,7 @@ describe('GitReferenceCard', () => {
       });
 
       await waitFor(() =>
-        expect(screen.getByRole('group', { name: 'Repo' })).toHaveTextContent(
+        expect(screen.getByRole('group', { name: '仓库' })).toHaveTextContent(
           deployedUrl
         )
       );
@@ -184,7 +187,7 @@ describe('GitReferenceCard', () => {
 
       await waitFor(() =>
         expect(screen.getByRole('status')).toHaveTextContent(
-          'Settings changed since last deploy'
+          '自上次部署以来设置已发生变化'
         )
       );
       expect(screen.getByRole('status')).toHaveTextContent(
@@ -196,12 +199,12 @@ describe('GitReferenceCard', () => {
       renderCard({ currentDeploymentInfo: null });
 
       await waitFor(() =>
-        expect(screen.getByRole('group', { name: 'Repo' })).toHaveTextContent(
+        expect(screen.getByRole('group', { name: '仓库' })).toHaveTextContent(
           defaultGitConfig.URL
         )
       );
       expect(
-        screen.queryByText('Settings changed since last deploy')
+        screen.queryByText('自上次部署以来设置已发生变化')
       ).not.toBeInTheDocument();
     });
   });

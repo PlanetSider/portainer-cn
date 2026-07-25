@@ -3,12 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { parseAxiosError } from '@/react/portainer/services/axios/axios';
 import { buildStackUrl } from '@/react/common/stacks/queries/buildUrl';
 import { queryKeys } from '@/react/common/stacks/queries/query-keys';
-import { withGlobalError } from '@/react-tools/react-query';
+import { withError } from '@/react-tools/react-query';
 
 import { EnvVar } from '@@/form-components/EnvironmentVariablesFieldset/types';
 
 import { AutoUpdateResponse } from '../types';
-import { AuthTypeOption } from '../../account/git-credentials/types';
 
 export interface GitStackPayload {
   env: Array<EnvVar>;
@@ -16,11 +15,6 @@ export interface GitStackPayload {
   RepositoryURL?: string;
   ConfigFilePath?: string;
   RepositoryReferenceName?: string;
-  RepositoryAuthentication?: boolean;
-  RepositoryGitCredentialID?: number;
-  RepositoryUsername?: string;
-  RepositoryPassword?: string;
-  RepositoryAuthorizationType?: AuthTypeOption;
   AutoUpdate?: AutoUpdateResponse | null;
   TLSSkipVerify?: boolean;
   Registries?: number[];
@@ -28,6 +22,7 @@ export interface GitStackPayload {
   HelmChartPath?: string;
   HelmValuesFiles?: string[];
   Atomic?: boolean;
+  SourceID?: number;
 }
 
 export async function updateGitStackSettings(
@@ -64,6 +59,6 @@ export function useUpdateGitStackSettings() {
         exact: true,
       });
     },
-    ...withGlobalError('Unable to save stack settings'),
+    ...withError('无法保存堆栈设置'),
   });
 }

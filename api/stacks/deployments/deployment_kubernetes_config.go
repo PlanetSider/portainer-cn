@@ -32,10 +32,6 @@ func CreateKubernetesStackDeploymentConfig(stack *portainer.Stack, kubeDeployer 
 	}
 }
 
-func (config *KubernetesStackDeploymentConfig) GetUsername() string {
-	return config.user.Username
-}
-
 func (config *KubernetesStackDeploymentConfig) Deploy(ctx context.Context) error {
 	fileNames := stackutils.GetStackFilePaths(config.stack, false)
 
@@ -77,6 +73,13 @@ func (config *KubernetesStackDeploymentConfig) Deploy(ctx context.Context) error
 	}
 
 	config.output = output
+	return nil
+}
+
+func (config *KubernetesStackDeploymentConfig) Undeploy(ctx context.Context) error {
+	// Kubernetes is an orchestrator that handles partial failures internally,
+	// so there is no need to remove failed resources before redeploying.
+	// This method exists only to satisfy the deployment interface.
 	return nil
 }
 

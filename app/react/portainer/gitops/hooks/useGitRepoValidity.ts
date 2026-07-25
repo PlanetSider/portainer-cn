@@ -1,54 +1,30 @@
 import { isAxiosError } from '@/portainer/services/axios/utils/isAxiosError';
 
 import { isDefaultResponse } from '../../services/axios/utils/parseAxiosError';
-import { AuthTypeOption } from '../../account/git-credentials/types';
 import { useGitRefs } from '../queries/useGitRefs';
 
-interface Creds {
-  username?: string;
-  password?: string;
-  gitCredentialId?: number;
-  authorizationType?: AuthTypeOption;
-}
-
 interface Params {
-  url: string;
-  creds?: Creds;
   force?: boolean;
-  tlsSkipVerify?: boolean;
-  createdFromCustomTemplateId?: number;
-  fromEdgeStack?: boolean;
-  stackId?: number;
+  sourceId?: number;
   enabled?: boolean;
   onSettled?(isValid?: boolean): void;
-  // run after onSettled, useful for clearing local flags like force
   onAfterSettle?(): void;
 }
 
 export function useGitRepoValidity({
-  url,
-  creds,
+  sourceId,
   force,
-  tlsSkipVerify,
-  fromEdgeStack,
-  createdFromCustomTemplateId,
-  stackId,
   enabled,
   onSettled,
   onAfterSettle,
 }: Params) {
   const query = useGitRefs(
     {
-      repository: url,
-      ...creds,
-      tlsSkipVerify,
-      createdFromCustomTemplateID: createdFromCustomTemplateId,
-      stackId,
+      sourceId: sourceId!,
       force,
-      fromEdgeStack,
     },
     {
-      enabled: !!url && enabled,
+      enabled: !!sourceId && enabled,
       select: () => true,
       suppressError: true,
       onSettled(isValid) {
@@ -62,10 +38,7 @@ export function useGitRepoValidity({
     }
   );
 
-  const hasCreds =
-    !!(creds?.username && creds?.password) || !!creds?.gitCredentialId;
-
-  const errorMessage = getGitValidityError(query.error, hasCreds);
+  const errorMessage = getGitValidityError(query.error, !!sourceId);
 
   const isChecking = query.isInitialLoading || query.isFetching;
 
@@ -82,13 +55,13 @@ export function getGitValidityError(error: unknown, hasCreds: boolean) {
   if (!isAxiosError(error)) return undefined;
   const responseData = error.response?.data;
   const details = isDefaultResponse(responseData)
-    ? responseData.details ?? ''
+    ? (responseData.details ?? '')
     : '';
   if (
     !hasCreds &&
     details === 'Authentication required: Repository not found.'
   ) {
-    return 'Git repository could not be found or is private, please ensure that the URL is correct or credentials are provided.';
+    return '找不到 Git Repository 或该 Repository 为私有，请确认 URL 正确或已提供凭据。';
   }
   return details || undefined;
 }

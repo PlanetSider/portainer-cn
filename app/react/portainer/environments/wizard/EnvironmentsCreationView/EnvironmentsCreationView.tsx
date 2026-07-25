@@ -14,7 +14,6 @@ import { Widget, WidgetBody, WidgetTitle } from '@@/Widget';
 import { PageHeader } from '@@/PageHeader';
 import { Button } from '@@/buttons';
 import { FormSection } from '@@/form-components/FormSection';
-import { Alert } from '@@/Alert';
 import { StickyFooter } from '@@/StickyFooter/StickyFooter';
 
 import {
@@ -75,8 +74,8 @@ export function EnvironmentCreationView() {
   return (
     <div className="pb-20">
       <PageHeader
-        title="快速设置"
-        breadcrumbs={[{ label: '环境向导' }]}
+        title="Quick Setup"
+        breadcrumbs={[{ label: 'Environment Wizard' }]}
         reload
       />
 
@@ -91,14 +90,9 @@ export function EnvironmentCreationView() {
       </div>
       <div className={styles.wizardWrapper}>
         <Widget>
-          <WidgetTitle icon={Wand2} title="环境向导" />
+          <WidgetTitle icon={Wand2} title="Environment Wizard" />
           <WidgetBody>
             <FormSection title={formTitles[currentStep.id]}>
-              {currentStep.id === 'kaas' && (
-                <Alert color="warn" title="已弃用功能" className="mb-2">
-                  通过 Portainer 创建 KaaS 环境的功能已被弃用，并将在未来版本中移除。你仍然可以继续使用通过此方式创建的 Kubernetes 集群，但将无法再使用任何 KaaS 专属管理功能。
-                </Alert>
-              )}
               <Component
                 onCreate={handleCreateEnvironment}
                 isDockerStandalone={isDockerStandalone}
@@ -119,7 +113,7 @@ export function EnvironmentCreationView() {
           data-cy="environment-wizard-back-button"
           size="medium"
         >
-          上一步
+          Back
         </Button>
         <Button
           color="primary"
@@ -127,7 +121,7 @@ export function EnvironmentCreationView() {
           data-cy="environment-wizard-continue-button"
           size="medium"
         >
-          {isLastStep ? '关闭' : '继续'}
+          {isLastStep ? 'Close' : 'Continue'}
         </Button>
       </StickyFooter>
     </div>
@@ -218,7 +212,8 @@ function useAnalyticsState() {
     kubernetesAgent: 0,
     kubernetesEdgeAgentAsync: 0,
     kubernetesEdgeAgentStandard: 0,
-    kaasAgent: 0,
+    kubesoloEdgeAgentStandard: 0,
+    kubesoloEdgeAgentAsync: 0,
     aciApi: 0,
     localEndpoint: 0,
   });

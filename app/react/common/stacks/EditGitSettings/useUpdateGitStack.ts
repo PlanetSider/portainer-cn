@@ -5,9 +5,7 @@ import { updateGitStack } from '@/react/portainer/gitops/queries/useUpdateGitSta
 import { updateGitStackSettings } from '@/react/portainer/gitops/queries/useUpdateGitStackSettings';
 import { queryKeys } from '@/react/common/stacks/queries/query-keys';
 import { transformAutoUpdateViewModel } from '@/react/portainer/gitops/AutoUpdateFieldset/utils';
-import { saveGitCredentialsIfNeeded } from '@/react/portainer/account/git-credentials/queries/useCreateGitCredentialsMutation';
-import { useCurrentUser } from '@/react/hooks/useUser';
-import { withGlobalError } from '@/react-tools/react-query';
+import { withError } from '@/react-tools/react-query';
 
 import { FormValues } from './types';
 
@@ -19,37 +17,25 @@ interface MutationArgs {
 
 export function useUpdateGitStack(stack: Stack) {
   const queryClient = useQueryClient();
-  const { user } = useCurrentUser();
   return useMutation({
     mutationFn: async ({
       values,
       repullImageAndRedeploy,
       webhookId,
     }: MutationArgs) => {
-      const resolvedAuth = await saveGitCredentialsIfNeeded(
-        user.Id,
-        values.git
-      );
-
       const autoUpdate = transformAutoUpdateViewModel(
         values.git.AutoUpdate,
         webhookId
       );
 
       await updateGitStackSettings(stack.Id, stack.EndpointId, {
-        RepositoryURL: values.git.RepositoryURL,
         ConfigFilePath: values.git.ComposeFilePathInRepository,
         RepositoryReferenceName: values.git.RepositoryReferenceName,
-        RepositoryAuthentication: resolvedAuth.RepositoryAuthentication,
-        RepositoryGitCredentialID: resolvedAuth.RepositoryGitCredentialID,
-        RepositoryUsername: resolvedAuth.RepositoryUsername,
-        RepositoryPassword: resolvedAuth.RepositoryPassword,
-        RepositoryAuthorizationType: resolvedAuth.RepositoryAuthorizationType,
-        TLSSkipVerify: values.git.TLSSkipVerify,
         AutoUpdate: autoUpdate,
         AdditionalFiles: values.git.AdditionalFiles,
         env: values.env,
         prune: values.prune,
+        SourceID: values.git.SourceId,
       });
 
       if (repullImageAndRedeploy === undefined) {
@@ -60,12 +46,7 @@ export function useUpdateGitStack(stack: Stack) {
         await updateGitStack(stack.Id, stack.EndpointId, {
           Env: values.env,
           Prune: values.prune,
-          StackName: values.kube.name,
-          RepositoryAuthentication: resolvedAuth.RepositoryAuthentication,
-          RepositoryGitCredentialID: resolvedAuth.RepositoryGitCredentialID,
-          RepositoryUsername: resolvedAuth.RepositoryUsername,
-          RepositoryPassword: resolvedAuth.RepositoryPassword,
-          RepositoryAuthorizationType: resolvedAuth.RepositoryAuthorizationType,
+          StackName: values.kube.name.trim() || undefined,
           RepullImageAndRedeploy: repullImageAndRedeploy,
         });
         return { redeployAttempted: true, redeployFailed: false };
@@ -78,10 +59,15 @@ export function useUpdateGitStack(stack: Stack) {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.removeQueries({
+        queryKey: queryKeys.stackFile(stack.Id, {
+          commitHash: stack?.GitConfig?.ConfigHash,
+        }),
+      });
+      return queryClient.invalidateQueries({
         queryKey: queryKeys.stack(stack.Id),
       });
     },
-    ...withGlobalError('Unable to save stack settings'),
+    ...withError('Unable to save stack settings'),
   });
 }

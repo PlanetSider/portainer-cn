@@ -15,6 +15,8 @@ import (
 	"github.com/portainer/portainer/api/internal/edge"
 	"github.com/portainer/portainer/api/internal/endpointutils"
 	"github.com/portainer/portainer/api/roar"
+	"github.com/portainer/portainer/api/set"
+	"github.com/portainer/portainer/api/slicesx"
 	"github.com/portainer/portainer/pkg/libhttp/request"
 
 	"github.com/pkg/errors"
@@ -22,23 +24,25 @@ import (
 
 type EnvironmentsQuery struct {
 	search           string
-	types            []portainer.EndpointType
-	tagIds           []portainer.TagID
-	endpointIds      []portainer.EndpointID
-	tagsPartialMatch bool
 	groupIds         []portainer.EndpointGroupID
 	status           []portainer.EndpointStatus
+	types            []portainer.EndpointType
+	platformTypes    []portainer.PlatformType
+	outdated         bool
+	excludeGroupIds  []portainer.EndpointGroupID
+	tagIds           []portainer.TagID
+	tagsPartialMatch bool
+	endpointIds      []portainer.EndpointID
+	excludeIds       []portainer.EndpointID
+	agentVersions    []string
 	// if edgeAsync not nil, will filter edge endpoints based on this value
 	edgeAsync                *bool
 	edgeDeviceUntrusted      bool
+	edgeCheckInPassedSeconds int
 	excludeSnapshots         bool
 	name                     string
-	agentVersions            []string
-	edgeCheckInPassedSeconds int
 	edgeStackId              portainer.EdgeStackID
 	edgeStackStatus          *portainer.EdgeStackStatusType
-	excludeIds               []portainer.EndpointID
-	excludeGroupIds          []portainer.EndpointGroupID
 	edgeGroupIds             []portainer.EdgeGroupID
 	excludeEdgeGroupIds      []portainer.EdgeGroupID
 }
@@ -49,54 +53,61 @@ func parseQuery(r *http.Request) (EnvironmentsQuery, error) {
 		search = strings.ToLower(search)
 	}
 
-	status, err := getNumberArrayQueryParameter[portainer.EndpointStatus](r, "status")
+	status, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointStatus](r, "status")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	groupIDs, err := getNumberArrayQueryParameter[portainer.EndpointGroupID](r, "groupIds")
+	groupIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointGroupID](r, "groupIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	endpointTypes, err := getNumberArrayQueryParameter[portainer.EndpointType](r, "types")
+	endpointTypes, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointType](r, "types")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	tagIDs, err := getNumberArrayQueryParameter[portainer.TagID](r, "tagIds")
+	platformTypes, err := request.RetrieveNumberArrayQueryParameter[portainer.PlatformType](r, "platformTypes")
+	if err != nil {
+		return EnvironmentsQuery{}, err
+	}
+
+	tagIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.TagID](r, "tagIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
 	tagsPartialMatch, _ := request.RetrieveBooleanQueryParameter(r, "tagsPartialMatch", true)
 
-	endpointIDs, err := getNumberArrayQueryParameter[portainer.EndpointID](r, "endpointIds")
+	endpointIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointID](r, "endpointIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	excludeIDs, err := getNumberArrayQueryParameter[portainer.EndpointID](r, "excludeIds")
+	excludeIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointID](r, "excludeIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	excludeGroupIDs, err := getNumberArrayQueryParameter[portainer.EndpointGroupID](r, "excludeGroupIds")
+	excludeGroupIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.EndpointGroupID](r, "excludeGroupIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	edgeGroupIDs, err := getNumberArrayQueryParameter[portainer.EdgeGroupID](r, "edgeGroupIds")
+	edgeGroupIDs, err := request.RetrieveNumberArrayQueryParameter[portainer.EdgeGroupID](r, "edgeGroupIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	excludeEdgeGroupIds, err := getNumberArrayQueryParameter[portainer.EdgeGroupID](r, "excludeEdgeGroupIds")
+	excludeEdgeGroupIds, err := request.RetrieveNumberArrayQueryParameter[portainer.EdgeGroupID](r, "excludeEdgeGroupIds")
 	if err != nil {
 		return EnvironmentsQuery{}, err
 	}
 
-	agentVersions := getArrayQueryParameter(r, "agentVersions")
+	agentVersions := request.RetrieveArrayQueryParameter(r, "agentVersions")
+
+	outdated, _ := request.RetrieveBooleanQueryParameter(r, "outdated", true)
 
 	name, _ := request.RetrieveQueryParameter(r, "name", true)
 
@@ -122,6 +133,7 @@ func parseQuery(r *http.Request) (EnvironmentsQuery, error) {
 	return EnvironmentsQuery{
 		search:                   search,
 		types:                    endpointTypes,
+		platformTypes:            platformTypes,
 		tagIds:                   tagIDs,
 		endpointIds:              endpointIDs,
 		excludeIds:               excludeIDs,
@@ -134,6 +146,7 @@ func parseQuery(r *http.Request) (EnvironmentsQuery, error) {
 		excludeSnapshots:         excludeSnapshots,
 		name:                     name,
 		agentVersions:            agentVersions,
+		outdated:                 outdated,
 		edgeCheckInPassedSeconds: edgeCheckInPassedSeconds,
 		edgeStackId:              portainer.EdgeStackID(edgeStackId),
 		edgeStackStatus:          edgeStackStatus,
@@ -249,6 +262,10 @@ func (handler *Handler) filterEndpointsByQuery(
 		filteredEndpoints = filterEndpointsByTypes(filteredEndpoints, query.types)
 	}
 
+	if len(query.platformTypes) > 0 {
+		filteredEndpoints = filterEndpointsByPlatform(filteredEndpoints, query.platformTypes)
+	}
+
 	if len(query.tagIds) > 0 {
 		filteredEndpoints = filteredEndpointsByTags(filteredEndpoints, query.tagIds, groups, query.tagsPartialMatch)
 	}
@@ -258,6 +275,13 @@ func (handler *Handler) filterEndpointsByQuery(
 			return !endpointutils.IsAgentEndpoint(&endpoint) || slices.Contains(query.agentVersions, endpoint.Agent.Version)
 		})
 	}
+
+	if query.outdated {
+		filteredEndpoints = filter(filteredEndpoints, func(endpoint portainer.Endpoint) bool {
+			return isOutdated(&endpoint)
+		})
+	}
+
 	if query.edgeStackId != 0 {
 		f, err := filterEndpointsByEdgeStack(filteredEndpoints, query.edgeStackId, query.edgeStackStatus, handler.DataStore)
 		if err != nil {
@@ -553,20 +577,19 @@ func edgeGroupMatchSearchCriteria(
 }
 
 func filterEndpointsByTypes(endpoints []portainer.Endpoint, endpointTypes []portainer.EndpointType) []portainer.Endpoint {
-	typeSet := map[portainer.EndpointType]bool{}
-	for _, endpointType := range endpointTypes {
-		typeSet[endpointType] = true
-	}
+	typeSet := set.ToSet(endpointTypes)
 
-	n := 0
-	for _, endpoint := range endpoints {
-		if typeSet[endpoint.Type] {
-			endpoints[n] = endpoint
-			n++
-		}
-	}
+	return slicesx.Filter(endpoints, func(e portainer.Endpoint) bool {
+		return typeSet[e.Type]
+	})
+}
 
-	return endpoints[:n]
+func filterEndpointsByPlatform(endpoints []portainer.Endpoint, platformTypes []portainer.PlatformType) []portainer.Endpoint {
+	typeSet := set.ToSet(platformTypes)
+
+	return slicesx.Filter(endpoints, func(e portainer.Endpoint) bool {
+		return typeSet[endpointutils.EndpointPlatformType(&e)]
+	})
 }
 
 func filteredEndpointsByTags(endpoints []portainer.Endpoint, tagIDs []portainer.TagID, endpointGroups []portainer.EndpointGroup, partialMatch bool) []portainer.Endpoint {
@@ -671,34 +694,6 @@ func filter(endpoints []portainer.Endpoint, predicate func(endpoint portainer.En
 	}
 
 	return endpoints[:n]
-}
-
-func getArrayQueryParameter(r *http.Request, parameter string) []string {
-	list, exists := r.Form[parameter+"[]"]
-	if !exists {
-		list = []string{}
-	}
-
-	return list
-}
-
-func getNumberArrayQueryParameter[T ~int](r *http.Request, parameter string) ([]T, error) {
-	list := getArrayQueryParameter(r, parameter)
-	if list == nil {
-		return []T{}, nil
-	}
-
-	var result []T
-	for _, item := range list {
-		number, err := strconv.Atoi(item)
-		if err != nil {
-			return nil, errors.Wrapf(err, "Unable to parse parameter %s", parameter)
-		}
-
-		result = append(result, T(number))
-	}
-
-	return result, nil
 }
 
 func getEdgeStackStatusParam(r *http.Request) (*portainer.EdgeStackStatusType, error) {

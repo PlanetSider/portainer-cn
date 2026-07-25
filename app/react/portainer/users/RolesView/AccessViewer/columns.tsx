@@ -6,60 +6,75 @@ import { useCurrentUser } from '@/react/hooks/useUser';
 import { Icon } from '@@/Icon';
 import { Link } from '@@/Link';
 
-import { AccessViewerPolicyModel } from './model';
+import { AccessLocation, AccessViewerPolicyModel } from './model';
+
+const ACCESS_LOCATION_LABELS: Record<AccessLocation, string> = {
+  [AccessLocation.Environment]: 'environment',
+  [AccessLocation.EnvironmentGroup]: 'environment group',
+};
 
 const helper = createColumnHelper<AccessViewerPolicyModel>();
 
 export const columns = [
-  helper.accessor('EndpointName', {
-    header: '环境',
+  helper.accessor('endpointName', {
+    header: 'Environment',
     id: 'Environment',
   }),
-  helper.accessor('RoleName', {
-    header: '角色',
+  helper.accessor('roleName', {
+    header: 'Role',
     id: 'Role',
   }),
   helper.display({
-    header: '权限来源',
+    header: 'Access Origin',
     cell: AccessCell,
   }),
 ];
+
+const manageAccessLabel = (
+  <span className="inline-flex items-center gap-1">
+    <Icon icon={Users} />
+    Manage access
+  </span>
+);
 
 function AccessCell({
   row: { original: item },
 }: CellContext<AccessViewerPolicyModel, unknown>) {
   const { isPureAdmin } = useCurrentUser();
 
-  if (item.RoleId === 0) {
+  if (item.roleId === 0) {
     return (
       <>
-        用户可访问所有环境
-        <Link
-          to="portainer.settings.edgeCompute"
-          data-cy={`manage-access-button-${item.RoleName}`}
-        >
-          <Icon icon={Users} /> 管理权限
-        </Link>
+        User access all environments
+        <div>
+          <Link
+            to="portainer.settings.edgeCompute"
+            data-cy={`manage-access-button-${item.roleName}`}
+          >
+            {manageAccessLabel}
+          </Link>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      {prefix(item.TeamName)} 的权限定义于 {item.AccessLocation}{' '}
-      {!!item.GroupName && <code>{item.GroupName}</code>}{' '}
-      {manageAccess(item, isPureAdmin)}
+      {prefix(item.teamName)} access defined on{' '}
+      {ACCESS_LOCATION_LABELS[item.accessLocation]}{' '}
+      {!!item.groupName && <code>{item.groupName}</code>}
+      <div>{manageAccess(item, isPureAdmin)}</div>
     </>
   );
 }
 
 function prefix(teamName: string | undefined) {
   if (!teamName) {
-    return '用户';
+    return 'User';
   }
   return (
     <>
-      团队 <code>{teamName}</code>
+      Team <code>{teamName}</code>
     </>
   );
 }
@@ -69,21 +84,25 @@ function manageAccess(item: AccessViewerPolicyModel, isPureAdmin: boolean) {
     return null;
   }
 
-  return item.GroupName ? (
-    <Link
-      to="portainer.groups.group.access"
-      params={{ id: item.GroupId }}
-      data-cy={`manage-access-button-${item.RoleName}`}
-    >
-      <Icon icon={Users} /> 管理权限
-    </Link>
-  ) : (
+  if (item.groupName) {
+    return (
+      <Link
+        to="portainer.groups.group"
+        params={{ id: item.groupId, tab: 'access' }}
+        data-cy={`manage-access-button-${item.roleName}`}
+      >
+        {manageAccessLabel}
+      </Link>
+    );
+  }
+
+  return (
     <Link
       to="portainer.endpoints.endpoint.access"
-      params={{ id: item.EndpointId }}
-      data-cy={`manage-access-button-${item.RoleName}`}
+      params={{ id: item.endpointId }}
+      data-cy={`manage-access-button-${item.roleName}`}
     >
-      <Icon icon={Users} /> 管理权限
+      {manageAccessLabel}
     </Link>
   );
 }

@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { Form, Formik, useFormikContext } from 'formik';
 import { useRouter } from '@uirouter/react';
+import { array, number, object } from 'yup';
 
-import { AuthFieldset } from '@/react/portainer/gitops/AuthFieldset';
 import { AutoUpdateFieldset } from '@/react/portainer/gitops/AutoUpdateFieldset';
-import { isBE } from '@/react/portainer/feature-flags/feature-flags.service';
+import { GitSourceSelector } from '@/react/portainer/gitops/sources/GitSourceSelector';
 import {
   parseAutoUpdateResponse,
   transformAutoUpdateViewModel,
@@ -11,17 +12,12 @@ import {
 import { RefField } from '@/react/portainer/gitops/RefField';
 import {
   AutoUpdateModel,
-  GitAuthModel,
   RelativePathModel,
 } from '@/react/portainer/gitops/types';
 import {
   baseEdgeStackWebhookUrl,
   createWebhookId,
 } from '@/portainer/helpers/webhookHelper';
-import {
-  parseAuthResponse,
-  transformGitAuthenticationViewModel,
-} from '@/react/portainer/gitops/AuthFieldset/utils';
 import { EdgeGroup } from '@/react/edge/edge-groups/types';
 import { DeploymentType, EdgeStack } from '@/react/edge/edge-stacks/types';
 import { EdgeGroupsSelector } from '@/react/edge/edge-stacks/components/EdgeGroupsSelector';
@@ -32,7 +28,8 @@ import { Registry } from '@/react/portainer/registries/types/registry';
 import { useRegistries } from '@/react/portainer/registries/queries/useRegistries';
 import { RelativePathFieldset } from '@/react/portainer/gitops/RelativePathFieldset/RelativePathFieldset';
 import { parseRelativePathResponse } from '@/react/portainer/gitops/RelativePathFieldset/utils';
-import { useSaveCredentialsIfRequired } from '@/react/portainer/account/git-credentials/queries/useCreateGitCredentialsMutation';
+import { isBE } from '@/react/portainer/feature-flags/feature-flags.service';
+import { GitReferenceCard } from '@/react/portainer/gitops/GitReferenceCard';
 
 import { LoadingButton } from '@@/buttons';
 import { FormSection } from '@@/form-components/FormSection';
@@ -40,6 +37,7 @@ import { TextTip } from '@@/Tip/TextTip';
 import { FormError } from '@@/form-components/FormError';
 import { EnvironmentVariablesPanel } from '@@/form-components/EnvironmentVariablesFieldset';
 import { EnvVar } from '@@/form-components/EnvironmentVariablesFieldset/types';
+import { Link } from '@@/Link';
 
 import { useEdgeGroupHasType } from '../useEdgeGroupHasType';
 import { PrivateRegistryFieldset } from '../../../components/PrivateRegistryFieldset';
@@ -54,7 +52,6 @@ interface FormValues {
   deploymentType: DeploymentType;
   autoUpdate: AutoUpdateModel;
   refName: string;
-  authentication: GitAuthModel;
   envVars: EnvVar[];
   privateRegistryId?: Registry['Id'];
   relativePath: RelativePathModel;
@@ -63,39 +60,38 @@ interface FormValues {
 export function GitForm({ stack }: { stack: EdgeStack }) {
   const router = useRouter();
   const updateStackMutation = useUpdateEdgeStackGitMutation();
-  const { saveCredentials, isLoading: isSaveCredentialsLoading } =
-    useSaveCredentialsIfRequired();
+
+  const [webhookId] = useState(
+    () => stack.AutoUpdate?.Webhook || createWebhookId()
+  );
 
   if (!stack.GitConfig) {
     return null;
   }
-
-  const gitConfig = stack.GitConfig;
 
   const initialValues: FormValues = {
     groupIds: stack.EdgeGroups,
     deploymentType: stack.DeploymentType,
     autoUpdate: parseAutoUpdateResponse(stack.AutoUpdate),
     refName: stack.GitConfig.ReferenceName,
-    authentication: parseAuthResponse(stack.GitConfig.Authentication),
     relativePath: parseRelativePathResponse(stack),
     envVars: stack.EnvVars || [],
   };
 
-  const webhookId = stack.AutoUpdate?.Webhook || createWebhookId();
-
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={formValidation()}
+    >
       {({ values, isValid }) => {
         return (
           <InnerForm
             webhookId={webhookId}
             onUpdateSettingsClick={handleUpdateSettings}
-            gitUrl={gitConfig.URL}
-            isLoading={
-              updateStackMutation.isLoading || isSaveCredentialsLoading
-            }
+            isLoading={updateStackMutation.isLoading}
             isUpdateVersion={!!updateStackMutation.variables?.updateVersion}
+            stack={stack}
           />
         );
 
@@ -104,11 +100,9 @@ export function GitForm({ stack }: { stack: EdgeStack }) {
             return;
           }
 
-          const credentialId = await saveCredentials(values.authentication);
-
-          updateStackMutation.mutate(getPayload(values, credentialId, false), {
+          updateStackMutation.mutate(getPayload(values, false), {
             onSuccess() {
-              notifySuccess('Success', 'Stack updated successfully');
+              notifySuccess('成功', '堆栈更新成功');
               router.stateService.reload();
             },
           });
@@ -118,28 +112,21 @@ export function GitForm({ stack }: { stack: EdgeStack }) {
   );
 
   async function handleSubmit(values: FormValues) {
-    const credentialId = await saveCredentials(values.authentication);
-
-    updateStackMutation.mutate(getPayload(values, credentialId, true), {
+    updateStackMutation.mutate(getPayload(values, true), {
       onSuccess() {
-        notifySuccess('Success', 'Stack updated successfully');
+        notifySuccess('成功', '堆栈更新成功');
         router.stateService.reload();
       },
     });
   }
 
   function getPayload(
-    { authentication, autoUpdate, privateRegistryId, ...values }: FormValues,
-    credentialId: number | undefined,
+    { autoUpdate, privateRegistryId, ...values }: FormValues,
     updateVersion: boolean
   ): UpdateEdgeStackGitPayload {
     return {
       updateVersion,
       id: stack.Id,
-      authentication: transformGitAuthenticationViewModel({
-        ...authentication,
-        RepositoryGitCredentialID: credentialId,
-      }),
       autoUpdate: transformAutoUpdateViewModel(autoUpdate, webhookId),
       registries:
         typeof privateRegistryId !== 'undefined'
@@ -151,17 +138,17 @@ export function GitForm({ stack }: { stack: EdgeStack }) {
 }
 
 function InnerForm({
-  gitUrl,
   isLoading,
   isUpdateVersion,
   onUpdateSettingsClick,
   webhookId,
+  stack,
 }: {
-  gitUrl: string;
   isLoading: boolean;
   isUpdateVersion: boolean;
   onUpdateSettingsClick(): void;
   webhookId: string;
+  stack: EdgeStack;
 }) {
   const registriesQuery = useRegistries();
   const { values, setFieldValue, isValid, handleSubmit, errors, dirty } =
@@ -171,6 +158,10 @@ function InnerForm({
 
   const hasKubeEndpoint = hasType(EnvironmentType.EdgeAgentOnKubernetes);
   const hasDockerEndpoint = hasType(EnvironmentType.EdgeAgentOnDocker);
+
+  if (!stack.GitConfig || !stack.GitSourceId) {
+    return null;
+  }
 
   return (
     <Form className="form-horizontal" onSubmit={handleSubmit}>
@@ -182,13 +173,18 @@ function InnerForm({
 
       {hasKubeEndpoint && hasDockerEndpoint && (
         <TextTip>
-          当你选择的边缘分组中包含多种环境类型（例如 Kubernetes 与 Docker 环境）时，将没有可用的部署类型。请选择只包含同一种环境类型的边缘分组。
+          There are no available deployment types when there is more than one
+          type of environment in your edge group selection (e.g. Kubernetes and
+          Docker environments). Please select edge groups that have environments
+          of the same type.
         </TextTip>
       )}
 
       {values.deploymentType === DeploymentType.Compose && hasKubeEndpoint && (
         <FormError>
-          在 Portainer 中，包含 Kubernetes 环境的边缘分组已不再支持 Compose 部署类型。使用 Compose 部署类型时，请选择仅包含 Docker 环境的边缘分组。
+          Edge groups with kubernetes environments no longer support compose
+          deployment types in Portainer. Please select edge groups that only
+          have docker environments when using compose deployment types.
         </FormError>
       )}
       <EdgeStackDeploymentTypeSelector
@@ -200,7 +196,14 @@ function InnerForm({
         }}
       />
 
-      <FormSection title="从 Git 仓库更新">
+      <GitReferenceCard
+        stackType="edge"
+        autoUpdate={stack.AutoUpdate}
+        gitConfig={stack.GitConfig}
+        sourceId={stack.GitSourceId}
+      />
+
+      <FormSection title="从 Git Repository 更新">
         <AutoUpdateFieldset
           webhookId={webhookId}
           value={values.autoUpdate}
@@ -219,21 +222,21 @@ function InnerForm({
         <RefField
           value={values.refName}
           onChange={(value) => setFieldValue('refName', value)}
-          model={{ ...values.authentication, RepositoryURL: gitUrl }}
+          sourceId={stack.GitSourceId}
           error={errors.refName}
-          isUrlValid
         />
 
-        <AuthFieldset
-          value={values.authentication}
-          isAuthExplanationVisible
-          onChange={(value) =>
-            Object.entries(value).forEach(([key, value]) => {
-              setFieldValue(`authentication.${key}`, value);
-            })
-          }
-          errors={errors.authentication}
-        />
+        <GitSourceSelector value={stack.GitSourceId} readOnly />
+        <TextTip>
+          凭据由来源统一管理。{' '}
+          <Link
+            to="portainer.gitops.sources.item"
+            params={{ sourceId: stack.GitSourceId }}
+            data-cy="source-item-link"
+          >
+            编辑来源
+          </Link>
+        </TextTip>
 
         {isBE && (
           <RelativePathFieldset
@@ -282,4 +285,13 @@ function InnerForm({
       </FormSection>
     </Form>
   );
+}
+
+function formValidation() {
+  return object({
+    groupIds: array()
+      .of(number().required())
+      .required()
+      .min(1, 'At least one edge group is required'),
+  });
 }

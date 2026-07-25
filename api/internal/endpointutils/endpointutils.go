@@ -2,49 +2,39 @@ package endpointutils
 
 import (
 	"errors"
-	"strings"
 	"time"
 
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
 	"github.com/portainer/portainer/api/kubernetes/cli"
+	"github.com/portainer/portainer/pkg/endpoints"
+
 	log "github.com/rs/zerolog/log"
 )
 
-// TODO: this file should be migrated to package/server-ce/pkg/endpoints
+var (
+	IsLocalEndpoint      = endpoints.IsLocalEndpoint
+	IsKubernetesEndpoint = endpoints.IsKubernetesEndpoint
+	IsDockerEndpoint     = endpoints.IsDockerEndpoint
+	IsEdgeEndpoint       = endpoints.IsEdgeEndpoint
+	IsAgentEndpoint      = endpoints.IsAgentEndpoint
+	EndpointSet          = endpoints.EndpointSet
+)
 
-// IsLocalEndpoint returns true if this is a local environment(endpoint)
-func IsLocalEndpoint(endpoint *portainer.Endpoint) bool {
-	return strings.HasPrefix(endpoint.URL, "unix://") ||
-		strings.HasPrefix(endpoint.URL, "npipe://") ||
-		endpoint.Type == portainer.KubernetesLocalEnvironment
-}
-
-// IsKubernetesEndpoint returns true if this is a kubernetes environment(endpoint)
-func IsKubernetesEndpoint(endpoint *portainer.Endpoint) bool {
-	return endpoint.Type == portainer.KubernetesLocalEnvironment ||
-		endpoint.Type == portainer.AgentOnKubernetesEnvironment ||
-		endpoint.Type == portainer.EdgeAgentOnKubernetesEnvironment
-}
-
-// IsDockerEndpoint returns true if this is a docker environment(endpoint)
-func IsDockerEndpoint(endpoint *portainer.Endpoint) bool {
-	return endpoint.Type == portainer.DockerEnvironment ||
-		endpoint.Type == portainer.AgentOnDockerEnvironment ||
-		endpoint.Type == portainer.EdgeAgentOnDockerEnvironment
-}
-
-// IsEdgeEndpoint returns true if this is an Edge endpoint
-func IsEdgeEndpoint(endpoint *portainer.Endpoint) bool {
-	return endpoint.Type == portainer.EdgeAgentOnDockerEnvironment || endpoint.Type == portainer.EdgeAgentOnKubernetesEnvironment
-}
-
-// IsAgentEndpoint returns true if this is an Agent endpoint
-func IsAgentEndpoint(endpoint *portainer.Endpoint) bool {
-	return endpoint.Type == portainer.AgentOnDockerEnvironment ||
-		endpoint.Type == portainer.EdgeAgentOnDockerEnvironment ||
-		endpoint.Type == portainer.AgentOnKubernetesEnvironment ||
-		endpoint.Type == portainer.EdgeAgentOnKubernetesEnvironment
+// EndpointPlatformType returns the type of the endpoint based on the environment and container engine
+func EndpointPlatformType(endpoint *portainer.Endpoint) portainer.PlatformType {
+	switch endpoint.Type {
+	case portainer.DockerEnvironment, portainer.AgentOnDockerEnvironment, portainer.EdgeAgentOnDockerEnvironment:
+		if endpoint.ContainerEngine == portainer.ContainerEnginePodman {
+			return portainer.PodmanPlatformType
+		}
+		return portainer.DockerPlatformType
+	case portainer.KubernetesLocalEnvironment, portainer.AgentOnKubernetesEnvironment, portainer.EdgeAgentOnKubernetesEnvironment:
+		return portainer.KubernetesPlatformType
+	case portainer.AzureEnvironment:
+		return portainer.AzurePlatformType
+	}
+	return portainer.UnknownPlatformType
 }
 
 // FilterByExcludeIDs receives an environment(endpoint) array and returns a filtered array using an excludeIds param
@@ -67,17 +57,6 @@ func FilterByExcludeIDs(endpoints []portainer.Endpoint, excludeIds []portainer.E
 	}
 
 	return filteredEndpoints
-}
-
-// EndpointSet receives an environment(endpoint) array and returns a set
-func EndpointSet(endpointIDs []portainer.EndpointID) map[portainer.EndpointID]bool {
-	set := map[portainer.EndpointID]bool{}
-
-	for _, endpointID := range endpointIDs {
-		set[endpointID] = true
-	}
-
-	return set
 }
 
 func InitialIngressClassDetection(tx dataservices.DataStoreTx, endpoint *portainer.Endpoint, factory *cli.ClientFactory) {
@@ -212,8 +191,12 @@ func UpdateEdgeEndpointHeartbeat(endpoint *portainer.Endpoint, settings *portain
 		return
 	}
 
+	endpoint.Heartbeat = GetHeartbeatStatus(endpoint, settings)
+}
+
+func GetHeartbeatStatus(endpoint *portainer.Endpoint, settings *portainer.Settings) bool {
 	checkInInterval := getEndpointCheckinInterval(endpoint, settings)
-	endpoint.Heartbeat = time.Now().Unix()-endpoint.LastCheckInDate <= int64(checkInInterval*2+20)
+	return time.Now().Unix()-endpoint.LastCheckInDate <= int64(checkInInterval*2+20)
 }
 
 func getEndpointCheckinInterval(endpoint *portainer.Endpoint, settings *portainer.Settings) int {

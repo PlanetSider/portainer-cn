@@ -32,9 +32,6 @@ type publicSettingsResponse struct {
 	// Whether team sync is enabled
 	TeamSync bool `json:"TeamSync" example:"true"`
 
-	// Whether AMT is enabled
-	IsAMTEnabled bool
-
 	Edge struct {
 		// The ping interval for edge agent - used in edge async mode [seconds]
 		PingInterval int `json:"PingInterval" example:"60"`
@@ -47,6 +44,8 @@ type publicSettingsResponse struct {
 	}
 
 	IsDockerDesktopExtension bool `json:"IsDockerDesktopExtension" example:"false"`
+	// Whether the setup wizard must send the X-Setup-Token header for admin init / restore
+	RequiresSetupToken bool `json:"RequiresSetupToken" example:"false"`
 }
 
 // @id SettingsPublic
@@ -65,6 +64,7 @@ func (handler *Handler) settingsPublic(w http.ResponseWriter, r *http.Request) *
 	}
 
 	publicSettings := generatePublicSettings(settings)
+	publicSettings.RequiresSetupToken = handler.SetupTokenRequired
 
 	return response.JSON(w, publicSettings)
 }
@@ -78,7 +78,6 @@ func generatePublicSettings(appSettings *portainer.Settings) *publicSettingsResp
 		GlobalDeploymentOptions:   appSettings.GlobalDeploymentOptions,
 		KubeconfigExpiry:          appSettings.KubeconfigExpiry,
 		Features:                  featureflags.FeatureFlags(),
-		IsAMTEnabled:              appSettings.EnableEdgeComputeFeatures && appSettings.OpenAMTConfiguration.Enabled,
 	}
 
 	publicSettings.Edge.PingInterval = appSettings.Edge.PingInterval

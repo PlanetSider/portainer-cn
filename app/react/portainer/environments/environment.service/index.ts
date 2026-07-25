@@ -1,3 +1,6 @@
+import { endpointList } from '@api/sdk.gen';
+import { PortainerEndpoint } from '@api/types.gen';
+
 import axios, { parseAxiosError } from '@/portainer/services/axios/axios';
 import {
   Environment,
@@ -18,8 +21,9 @@ import {
 } from '@/react/edge/edge-stacks/types';
 
 import { getPublicSettings } from '../../settings/settings.service';
+import { SortType } from '../queries/useEnvironmentList';
 
-import { buildUrl } from './utils';
+import { buildUrl, toEnvironment } from './utils';
 
 export type EdgeStackEnvironmentsQueryParams =
   | {
@@ -43,7 +47,6 @@ export interface BaseEnvironmentsQueryParams {
   edgeAsync?: boolean;
   edgeDeviceUntrusted?: boolean;
   excludeSnapshots?: boolean;
-  provisioned?: boolean;
   name?: string;
   /** Filter environments by partial name match (case-insensitive, searches name only) */
   nameFilter?: string;
@@ -53,6 +56,7 @@ export interface BaseEnvironmentsQueryParams {
   platformTypes?: PlatformType[];
   edgeGroupIds?: EdgeGroupId[];
   excludeEdgeGroupIds?: EdgeGroupId[];
+  outdated?: boolean;
 }
 
 export type EnvironmentsQueryParams = BaseEnvironmentsQueryParams &
@@ -61,7 +65,10 @@ export type EnvironmentsQueryParams = BaseEnvironmentsQueryParams &
 export interface GetEnvironmentsOptions {
   start?: number;
   limit?: number;
-  sort?: { by?: string; order?: 'asc' | 'desc' };
+  sort?: {
+    by?: SortType;
+    order?: 'asc' | 'desc';
+  };
   query?: EnvironmentsQueryParams;
 }
 
@@ -69,7 +76,7 @@ export async function getEnvironments(
   {
     start,
     limit,
-    sort = { by: '', order: 'asc' },
+    sort = { by: undefined, order: 'asc' },
     query = {},
   }: GetEnvironmentsOptions = { query: {} }
 ) {
@@ -85,28 +92,67 @@ export async function getEnvironments(
     };
   }
 
-  const url = buildUrl();
+  const response = await endpointList({
+    query: {
+      start,
+      limit,
+      sort: sort.by,
+      order: sort.order,
+      ...query,
+      types: query.types ? [...query.types] : undefined,
+    },
+  });
 
-  const params: Record<string, unknown> = {
-    start,
-    limit,
-    sort: sort.by,
-    order: sort.order,
-    ...query,
+  const totalCount = (response.headers['x-total-count'] || '0') as string;
+  const totalAvailable = (response.headers['x-total-available'] ||
+    '0') as string;
+  const updateAvailable = response.headers['x-update-available'] === 'true';
+
+  return {
+    totalCount: parseInt(totalCount, 10),
+    value: (response.data ?? []).map(toEnvironment),
+    totalAvailable: parseInt(totalAvailable, 10),
+    updateAvailable,
   };
+}
 
+export interface GroupCount {
+  groupName: string;
+  groupID: number;
+  count: number;
+}
+
+export interface PlatformCounts {
+  docker: number;
+  kubernetes: number;
+  podman: number;
+  azure: number;
+}
+
+export interface HealthCounts {
+  down: number;
+  up: number;
+  heartbeat: number;
+  outdated: number;
+}
+
+export interface EnvironmentSummaryCounts {
+  total: number;
+  up: number;
+  down: number;
+  outdated: number;
+  unassigned: number;
+  byGroup: GroupCount[];
+  byPlatformType: PlatformCounts;
+  byHealth: HealthCounts;
+}
+
+export async function getEnvironmentSummaryCounts() {
   try {
-    const response = await axios.get<Environment[]>(url, { params });
-    const totalCount = response.headers['x-total-count'];
-    const totalAvailable = response.headers['x-total-available'];
-    const updateAvailable = response.headers['x-update-available'] === 'true';
-
-    return {
-      totalCount: parseInt(totalCount, 10),
-      value: response.data,
-      totalAvailable: parseInt(totalAvailable, 10),
-      updateAvailable,
-    };
+    const { data } = await axios.get<EnvironmentSummaryCounts>(
+      buildUrl(undefined, 'summary')
+    );
+    return data;
   } catch (e) {
     throw parseAxiosError(e as Error);
   }
@@ -125,10 +171,13 @@ export async function getAgentVersions() {
 
 export async function getEndpoint(id: EnvironmentId, excludeSnapshot = true) {
   try {
-    const { data: endpoint } = await axios.get<Environment>(buildUrl(id), {
-      params: { excludeSnapshot },
-    });
-    return endpoint;
+    const { data: endpoint } = await axios.get<PortainerEndpoint>(
+      buildUrl(id),
+      {
+        params: { excludeSnapshot },
+      }
+    );
+    return toEnvironment(endpoint);
   } catch (e) {
     throw parseAxiosError(e as Error);
   }

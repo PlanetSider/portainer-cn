@@ -11,6 +11,7 @@ import { sidebarModule } from './react/views/sidebar';
 import environmentsModule from './environments';
 import { helpersModule } from './helpers';
 import { AccessHeaders, requiresAuthHook } from './authorization-guard';
+import { filterParam, paginationParams } from './helpers/stateParamHelper';
 
 async function initAuthentication(Authentication) {
   return await Authentication.init();
@@ -225,17 +226,6 @@ angular
         },
       };
 
-      var endpointKVM = {
-        name: 'portainer.endpoints.endpoint.kvm',
-        url: '/kvm?deviceId&deviceName',
-        views: {
-          'content@': {
-            templateUrl: './views/endpoints/kvm/endpointKVM.html',
-            controller: 'EndpointKVMController',
-          },
-        },
-      };
-
       var groups = {
         name: 'portainer.groups',
         url: '/groups',
@@ -262,6 +252,9 @@ angular
           id: {
             type: 'int',
           },
+          tab: {
+            dynamic: true,
+          },
         },
       };
 
@@ -275,20 +268,16 @@ angular
         },
       };
 
-      var groupAccess = {
-        name: 'portainer.groups.group.access',
-        url: '/access',
-        views: {
-          'content@': {
-            templateUrl: './views/groups/access/groupAccess.html',
-            controller: 'GroupAccessController',
-          },
-        },
-      };
-
       var home = {
         name: 'portainer.home',
-        url: '/home?redirect&environmentId&environmentName&route',
+        url: '/home?redirect&environmentId&environmentName&route&groupBy&groupFilter&search&order',
+        params: {
+          ...paginationParams(),
+          sort: filterParam(),
+          order: filterParam(),
+          groupBy: filterParam(),
+          groupFilter: filterParam(),
+        },
         views: {
           'content@': {
             component: 'homeView',
@@ -296,6 +285,72 @@ angular
         },
         data: {
           docs: '/user/home',
+        },
+      };
+
+      var gitopsBase = {
+        name: 'portainer.gitops',
+        url: '/gitops',
+        abstract: true,
+      };
+
+      var workflows = {
+        name: 'portainer.gitops.workflows',
+        url: '/workflows?search&sort&order&page&pageSize&status&type&platform&groupBy&groupFilter',
+        params: {
+          ...paginationParams(),
+          sort: filterParam(),
+          order: filterParam(),
+          status: filterParam(),
+          type: filterParam(),
+          platform: filterParam(),
+          groupBy: filterParam(),
+          groupFilter: filterParam(),
+        },
+        views: {
+          'content@': {
+            component: 'workflowsView',
+          },
+        },
+      };
+
+      var gitopsSources = {
+        name: 'portainer.gitops.sources',
+        url: '/sources?search&sort&order&page&pageSize&status&type',
+        params: {
+          ...paginationParams(),
+          sort: filterParam(),
+          order: filterParam(),
+          status: filterParam(),
+          type: filterParam(),
+        },
+        views: {
+          'content@': {
+            component: 'sourcesListView',
+          },
+        },
+      };
+
+      var gitopsSourceDetail = {
+        name: 'portainer.gitops.sources.item',
+        url: '/:sourceId?tab',
+        params: {
+          tab: filterParam('settings'),
+        },
+        views: {
+          'content@': {
+            component: 'sourceItemView',
+          },
+        },
+      };
+
+      const gitopsSourceCreate = {
+        name: 'portainer.gitops.sources.new',
+        url: '/new',
+        views: {
+          'content@': {
+            component: 'sourceCreateView',
+          },
         },
       };
 
@@ -413,13 +468,16 @@ angular
       $stateRegistryProvider.register(endpoints);
       $stateRegistryProvider.register(endpoint);
       $stateRegistryProvider.register(endpointAccess);
-      $stateRegistryProvider.register(endpointKVM);
       $stateRegistryProvider.register(edgeAutoCreateScript);
       $stateRegistryProvider.register(groups);
       $stateRegistryProvider.register(group);
-      $stateRegistryProvider.register(groupAccess);
       $stateRegistryProvider.register(groupCreation);
       $stateRegistryProvider.register(home);
+      $stateRegistryProvider.register(gitopsBase);
+      $stateRegistryProvider.register(workflows);
+      $stateRegistryProvider.register(gitopsSources);
+      $stateRegistryProvider.register(gitopsSourceDetail);
+      $stateRegistryProvider.register(gitopsSourceCreate);
       $stateRegistryProvider.register(init);
       $stateRegistryProvider.register(initAdmin);
       $stateRegistryProvider.register(settings);

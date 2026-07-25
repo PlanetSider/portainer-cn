@@ -72,7 +72,7 @@ describe('ServiceAccountView', () => {
   it('renders with page title', () => {
     const Wrapped = getWrapped();
     render(<Wrapped />);
-    expect(screen.getByText('Service account details')).toBeInTheDocument();
+    expect(screen.getByText('Service Account 详情')).toBeInTheDocument();
   });
 
   it('renders service account name in breadcrumb', () => {

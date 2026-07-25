@@ -1,9 +1,9 @@
-import { NodeList, Node } from 'kubernetes-types/core/v1';
+import { Node } from 'kubernetes-types/core/v1';
 import { useQuery } from '@tanstack/react-query';
 
 import axios from '@/portainer/services/axios/axios';
 import { EnvironmentId } from '@/react/portainer/environments/types';
-import { withGlobalError } from '@/react-tools/react-query';
+import { withError } from '@/react-tools/react-query';
 
 import { parseKubernetesAxiosError } from '../../axiosError';
 
@@ -12,10 +12,10 @@ import { queryKeys } from './query-keys';
 // getNodes is used to get a list of nodes using the kubernetes API
 export async function getNodes(environmentId: EnvironmentId) {
   try {
-    const { data: nodeList } = await axios.get<NodeList>(
-      `/endpoints/${environmentId}/kubernetes/api/v1/nodes`
+    const { data: nodes } = await axios.get<Node[]>(
+      `/kubernetes/${environmentId}/nodes`
     );
-    return nodeList.items;
+    return nodes;
   } catch (e) {
     throw parseKubernetesAxiosError(e, 'Unable to get nodes');
   }
@@ -30,7 +30,7 @@ export function useNodesQuery<T = Node[]>(
     queryKeys.nodes(environmentId),
     async () => getNodes(environmentId),
     {
-      ...withGlobalError(
+      ...withError(
         'Failed to get nodes from the Kubernetes api',
         'Failed to get nodes'
       ),

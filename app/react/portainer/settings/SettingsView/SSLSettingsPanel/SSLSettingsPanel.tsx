@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { SchemaOf, bool, object } from 'yup';
 
 import { withHideOnExtension } from '@/react/hooks/withHideOnExtension';
+import { notifySuccess } from '@/portainer/services/notifications';
 
 import { Widget } from '@@/Widget';
 import { LoadingButton } from '@@/buttons';
@@ -18,21 +19,25 @@ import { SwitchField } from '@@/form-components/SwitchField';
 
 import { useUpdateSSLConfigMutation } from '../useUpdateSSLConfigMutation';
 import { useSSLSettings } from '../../queries/useSSLSettings';
+import { useSettings, useUpdateSettingsMutation } from '../../queries';
 
 interface FormValues {
   certFile?: File;
   keyFile?: File;
   forceHTTPS: boolean;
+  forceSecureCookies: boolean;
 }
 
 export const SSLSettingsPanelWrapper = withHideOnExtension(SSLSettingsPanel);
 
 function SSLSettingsPanel() {
   const settingsQuery = useSSLSettings();
+  const secureSettingsQuery = useSettings((s) => s.ForceSecureCookies);
   const [reloadingPage, setReloadingPage] = useState(false);
-  const mutation = useUpdateSSLConfigMutation();
+  const sslMutation = useUpdateSSLConfigMutation();
+  const settingsMutation = useUpdateSettingsMutation();
 
-  if (!settingsQuery.data) {
+  if (!settingsQuery.data || !secureSettingsQuery.isSuccess) {
     return null;
   }
 
@@ -40,7 +45,11 @@ function SSLSettingsPanel() {
     certFile: undefined,
     keyFile: undefined,
     forceHTTPS: !settingsQuery.data.httpEnabled,
+    forceSecureCookies: secureSettingsQuery.data,
   };
+
+  const isLoading =
+    sslMutation.isLoading || settingsMutation.isLoading || reloadingPage;
 
   return (
     <Widget>
@@ -51,13 +60,16 @@ function SSLSettingsPanel() {
           onSubmit={handleSubmit}
           validationSchema={validation}
           validateOnMount
+          enableReinitialize
         >
           {({ values, setFieldValue, isValid, errors, dirty }) => (
             <Form className="form-horizontal">
               <div className="form-group">
                 <div className="col-sm-12">
                   <TextTip color="orange">
-                    强制仅使用 HTTPS 将导致 Portainer 停止监听 HTTP 端口。任何仍在使用 HTTP 的 Edge Agent 环境都将不可用。
+                    Forcing HTTPs only will cause Portainer to stop listening on
+                    the HTTP port. Any edge agent environment that is using HTTP
+                    will no longer be available.
                   </TextTip>
                 </div>
               </div>
@@ -67,7 +79,7 @@ function SSLSettingsPanel() {
                   <SwitchField
                     checked={values.forceHTTPS}
                     data-cy="settings-ssl-force-https-switch"
-                    label="仅强制使用 HTTPS"
+                    label="强制仅使用 HTTPS"
                     labelClass="col-sm-3 col-lg-2"
                     name="forceHTTPS"
                     onChange={(value) => setFieldValue('forceHTTPS', value)}
@@ -78,14 +90,42 @@ function SSLSettingsPanel() {
               <div className="form-group">
                 <div className="col-sm-12">
                   <TextTip color="blue">
-                    提供新的 SSL 证书以替换当前用于 HTTPS 连接的证书。
+                    Forcing secure cookies is intended for when users are
+                    accessing Portainer via a TLS-terminating reverse proxy or
+                    Kubernetes ingress. Forcing secure cookies when accessing
+                    Portainer over plain HTTP will break Portainer login
+                    entirely.
+                  </TextTip>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <div className="col-sm-12">
+                  <SwitchField
+                    checked={values.forceSecureCookies}
+                    data-cy="settings-force-secure-cookies-switch"
+                    label="强制使用 Secure Cookie"
+                    labelClass="col-sm-3 col-lg-2"
+                    name="forceSecureCookies"
+                    onChange={(value) =>
+                      setFieldValue('forceSecureCookies', value)
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <div className="col-sm-12">
+                  <TextTip color="blue">
+                    Provide a new SSL Certificate to replace the existing one
+                    that is used for HTTPS connections.
                   </TextTip>
                 </div>
               </div>
 
               <FormControl
                 label="SSL/TLS 证书"
-                tooltip="选择一个 X.509 证书文件，常见格式为 crt、cer 或 pem。"
+                tooltip="Select an X.509 certificate file, commonly a crt, cer or pem file."
                 inputId="ca-cert-field"
                 errors={errors.certFile}
               >
@@ -100,7 +140,7 @@ function SSLSettingsPanel() {
 
               <FormControl
                 label="SSL/TLS 私钥"
-                tooltip="选择一个私钥文件，常见格式为 key 或 pem。"
+                tooltip="Select a private key file, commonly a key, or pem file."
                 inputId="ca-cert-field"
                 errors={errors.keyFile}
               >
@@ -116,13 +156,13 @@ function SSLSettingsPanel() {
               <div className="form-group">
                 <div className="col-sm-12">
                   <LoadingButton
-                    isLoading={mutation.isLoading || reloadingPage}
+                    isLoading={isLoading}
                     data-cy="save-ssl-settings-button"
                     disabled={!dirty || !isValid}
-                    loadingText={reloadingPage ? '正在重新加载' : '正在保存'}
+                    loadingText={reloadingPage ? 'Reloading' : 'Saving'}
                     className="!ml-0"
                   >
-                    保存 SSL 设置
+                    Save SSL settings
                   </LoadingButton>
                 </div>
               </div>
@@ -133,19 +173,40 @@ function SSLSettingsPanel() {
     </Widget>
   );
 
-  function handleSubmit({ certFile, forceHTTPS, keyFile }: FormValues) {
-    mutation.mutate(
-      { certFile, httpEnabled: !forceHTTPS, keyFile },
+  function handleSubmit({
+    certFile,
+    forceHTTPS,
+    keyFile,
+    forceSecureCookies,
+  }: FormValues) {
+    settingsMutation.mutate(
+      { ForceSecureCookies: forceSecureCookies },
       {
-        async onSuccess() {
-          await new Promise((resolve) => {
-            setTimeout(resolve, 10000);
-          });
-          window.location.reload();
-          setReloadingPage(true);
+        onSuccess: () => {
+          notifySuccess('Success', 'Security settings updated');
         },
       }
     );
+
+    const sslChanged =
+      certFile !== undefined ||
+      keyFile !== undefined ||
+      forceHTTPS !== !settingsQuery.data?.httpEnabled;
+
+    if (sslChanged) {
+      sslMutation.mutate(
+        { certFile, httpEnabled: !forceHTTPS, keyFile },
+        {
+          async onSuccess() {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 10000);
+            });
+            window.location.reload();
+            setReloadingPage(true);
+          },
+        }
+      );
+    }
   }
 }
 
@@ -159,5 +220,6 @@ function validation(): SchemaOf<FormValues> {
     ]).optional(),
     keyFile: withFileExtension(file(), ['pem', 'key']).optional(),
     forceHTTPS: bool().required(),
+    forceSecureCookies: bool().required(),
   });
 }

@@ -26,12 +26,24 @@ export function EdgeInformationPanel({
 }: EdgeInformationPanelProps) {
   const disassociateMutation = useDisassociateEnvironment(environmentId);
 
+  let edgeServerAddress = '';
+  let edgeTunnelAddress = '';
+  try {
+    const decoded = atob(edgeKey + '='.repeat((4 - (edgeKey.length % 4)) % 4));
+    [edgeServerAddress = '', edgeTunnelAddress = ''] = decoded.split('|');
+  } catch {
+    // malformed edge key — leave addresses empty
+  }
+
   async function handleDisassociate() {
     const confirmed = await confirmDisassociate();
     if (confirmed) {
       disassociateMutation.mutate(undefined, {
         onSuccess() {
-          notifySuccess('环境已解除关联', '环境已成功解除关联');
+          notifySuccess(
+            'Environment disassociated',
+            'Environment successfully disassociated'
+          );
           onSuccess?.();
         },
       });
@@ -39,27 +51,34 @@ export function EdgeInformationPanel({
   }
 
   return (
-    <InformationPanel title="Edge 信息">
+    <InformationPanel title="Edge information">
       <div className="text-muted small flex flex-col gap-2">
         <TextTip>
-          此 Edge 环境已关联到一个 Edge 环境（{platformName}）。
+          This Edge environment is associated to an Edge environment (
+          {platformName}).
         </TextTip>
         <p>
-          Edge 密钥：<code>{edgeKey}</code>
+          Edge key: <code>{edgeKey}</code>
         </p>
         <p>
-          Edge 标识符：<code>{edgeId}</code>
+          Portainer API server: <code>{edgeServerAddress}</code>
+        </p>
+        <p>
+          Portainer tunnel address: <code>{edgeTunnelAddress}</code>
+        </p>
+        <p>
+          Edge identifier: <code>{edgeId}</code>
         </p>
         <p>
           <LoadingButton
             size="small"
             color="primary"
             isLoading={disassociateMutation.isLoading}
-            loadingText="解除关联中..."
+            loadingText="Disassociating..."
             onClick={handleDisassociate}
             data-cy="disassociate-environment-button"
           >
-            解除关联
+            Disassociate
           </LoadingButton>
         </p>
       </div>

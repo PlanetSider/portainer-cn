@@ -1,8 +1,6 @@
 import _ from 'lodash-es';
 import angular from 'angular';
 
-import { configureAMT } from '@/portainer/hostmanagement/open-amt/open-amt.service';
-
 angular.module('portainer.app').controller('SettingsEdgeComputeController', SettingsEdgeComputeController);
 
 /* @ngInject */
@@ -12,21 +10,11 @@ export default function SettingsEdgeComputeController($q, $async, $state, Notifi
   this.onSubmitEdgeCompute = async function (settings) {
     try {
       await SettingsService.update(settings);
-      Notifications.success('成功', '设置已更新');
+      Notifications.success('Success', 'Settings updated');
       StateManager.updateEnableEdgeComputeFeatures(settings.EnableEdgeComputeFeatures);
       $state.reload();
     } catch (err) {
-      Notifications.error('失败', err, '无法更新设置');
-    }
-  };
-
-  this.onSubmitOpenAMT = async function (formValues) {
-    try {
-      await configureAMT(formValues);
-      Notifications.success('成功', `OpenAMT 已成功${formValues.enabled ? '启用' : '禁用'}`);
-      $state.reload();
-    } catch (err) {
-      Notifications.error('失败', err, '应用更改失败');
+      Notifications.error('Failure', err, 'Unable to update settings');
     }
   };
 
@@ -50,7 +38,7 @@ export default function SettingsEdgeComputeController($q, $async, $state, Notifi
           },
         };
       } catch (err) {
-        Notifications.error('失败', err, '无法检索应用设置');
+        Notifications.error('Failure', err, 'Unable to retrieve application settings');
       }
     });
   }

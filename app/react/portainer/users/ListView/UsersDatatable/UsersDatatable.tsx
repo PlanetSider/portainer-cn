@@ -8,7 +8,7 @@ import { useSettings } from '@/react/portainer/settings/queries';
 import { notifySuccess } from '@/portainer/services/notifications';
 import {
   mutationOptions,
-  withGlobalError,
+  withError,
   withInvalidate,
 } from '@/react-tools/react-query';
 import { processItemsInBatches } from '@/react/common/processItemsInBatches';
@@ -53,17 +53,10 @@ export function UsersDatatable() {
         ...user,
         isTeamLeader: teamMembership?.Role === TeamRole.Leader,
         authMethod:
-          ({
-            Internal: '内部认证',
-            LDAP: 'LDAP',
-            AD: 'AD',
-            OAuth: 'OAuth',
-          } as Record<string, string>)[
-            AuthenticationMethod[
+          AuthenticationMethod[
             user.Id === 1
               ? AuthenticationMethod.Internal
               : settingsQuery.data.AuthenticationMethod
-            ]
           ],
       };
     });
@@ -74,21 +67,20 @@ export function UsersDatatable() {
       columns={columns}
       dataset={dataset || []}
       isLoading={!dataset}
-      title="用户"
+      title="Users"
       titleIcon={UserIcon}
       settingsManager={tableState}
       isRowSelectable={(row) => row.original.Id !== 1}
       renderTableActions={(selectedUsers) => (
         <DeleteButton
           disabled={selectedUsers.length === 0}
-          confirmMessage="确定要删除所选用户吗？删除后他们将无法再登录 Portainer。"
-          confirmButtonText="删除"
+          confirmMessage="Do you want to remove the selected users? They will not be able to login into Portainer anymore."
           onConfirmed={() =>
             removeMutation.mutate(
               selectedUsers.map((i) => i.Id),
               {
                 onSuccess: () => {
-                  notifySuccess('用户删除成功', '');
+                  notifySuccess('Users successfully removed', '');
                 },
               }
             )
@@ -108,7 +100,7 @@ function useRemoveMutation() {
   return useMutation(
     async (ids: TeamId[]) => processItemsInBatches(ids, deleteUser),
     mutationOptions(
-      withGlobalError('无法删除用户'),
+      withError('Unable to remove users'),
       withInvalidate(queryClient, [userQueryKeys.base()])
     )
   );

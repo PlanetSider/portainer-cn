@@ -1,6 +1,8 @@
 import { getEnvironments } from '@/react/portainer/environments/environment.service';
 import { restoreOptions } from '@/react/portainer/init/InitAdminView/restore-options';
 
+const REDIRECT_REASON_TIMEOUT = 'AdminInitTimeout';
+
 angular.module('portainer.app').controller('InitAdminController', [
   '$scope',
   '$state',
@@ -23,6 +25,7 @@ angular.module('portainer.app').controller('InitAdminController', [
       Username: 'admin',
       Password: '',
       ConfirmPassword: '',
+      SetupToken: '',
       restoreFormType: $scope.RESTORE_FORM_TYPES.FILE,
     };
 
@@ -51,7 +54,7 @@ angular.module('portainer.app').controller('InitAdminController', [
       var password = $scope.formValues.Password;
 
       $scope.state.actionInProgress = true;
-      UserService.initAdministrator(username, password)
+      UserService.initAdministrator(username, password, $scope.formValues.SetupToken)
         .then(function success() {
           return Authentication.login(username, password);
         })
@@ -69,8 +72,9 @@ angular.module('portainer.app').controller('InitAdminController', [
           }
         })
         .catch(function error(err) {
-          handleError(err);
-          Notifications.error('失败', err, '无法创建管理员用户');
+          if (!handleError(err)) {
+            Notifications.error('Failure', err, 'Unable to create administrator user');
+          }
         })
         .finally(function final() {
           $scope.state.actionInProgress = false;
@@ -79,21 +83,27 @@ angular.module('portainer.app').controller('InitAdminController', [
 
     function handleError(err) {
       if (err.status === 303) {
-        const headers = err.headers();
-        const REDIRECT_REASON_TIMEOUT = 'AdminInitTimeout';
-        if (headers && headers['redirect-reason'] === REDIRECT_REASON_TIMEOUT) {
+        const headers = err.response?.headers ?? {};
+        if (headers['redirect-reason'] === REDIRECT_REASON_TIMEOUT) {
           window.location.href = '/timeout.html';
         }
+        return true;
       }
+      if (err.status === 403) {
+        Notifications.error('Failure', err, 'Setup token is missing or invalid. Find the current token in the Portainer server logs.');
+        return true;
+      }
+      return false;
     }
 
     function createAdministratorFlow() {
       SettingsService.publicSettings()
         .then(function success(data) {
           $scope.requiredPasswordLength = data.RequiredPasswordLength;
+          $scope.requiresSetupToken = data.RequiresSetupToken;
         })
         .catch(function error(err) {
-          Notifications.error('失败', err, '无法检索应用设置');
+          Notifications.error('Failure', err, 'Unable to retrieve application settings');
         });
 
       UserService.administratorExists()
@@ -103,7 +113,7 @@ angular.module('portainer.app').controller('InitAdminController', [
           }
         })
         .catch(function error(err) {
-          Notifications.error('失败', err, '无法验证管理员账户是否存在');
+          Notifications.error('Failure', err, 'Unable to verify administrator account existence');
         });
     }
 
@@ -113,7 +123,7 @@ angular.module('portainer.app').controller('InitAdminController', [
       const file = $scope.formValues.BackupFile;
       const password = $scope.formValues.Password;
 
-      restoreAndRefresh(() => BackupService.uploadBackup(file, password));
+      restoreAndRefresh(() => BackupService.uploadBackup(file, password, $scope.formValues.SetupToken));
     }
 
     async function restoreAndRefresh(restoreAsyncFn) {
@@ -122,8 +132,9 @@ angular.module('portainer.app').controller('InitAdminController', [
       try {
         await restoreAsyncFn();
       } catch (err) {
-        handleError(err);
-        Notifications.error('失败', err, '无法恢复备份');
+        if (!handleError(err)) {
+          Notifications.error('Failure', err, 'Unable to restore the backup');
+        }
         $scope.state.backupInProgress = false;
 
         return;
@@ -131,11 +142,11 @@ angular.module('portainer.app').controller('InitAdminController', [
 
       try {
         await waitPortainerRestart();
-        Notifications.success('成功', '备份已成功恢复');
+        Notifications.success('Success', 'The backup has successfully been restored');
         $state.go('portainer.auth');
       } catch (err) {
         handleError(err);
-        Notifications.error('失败', err, '无法检查状态');
+        Notifications.error('Failure', err, 'Unable to check for status');
         await wait(2);
         location.reload();
       }

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import axios, { parseAxiosError } from '@/portainer/services/axios/axios';
-import { withGlobalError } from '@/react-tools/react-query';
+import { withError } from '@/react-tools/react-query';
 
 import { StackFile, StackId } from '../types';
 
@@ -10,7 +10,7 @@ import { queryKeys } from './query-keys';
 export function useStackFile(
   stackId?: StackId,
   { version, commitHash }: { version?: number; commitHash?: string } = {},
-  { enabled = true }: { enabled?: boolean } = {}
+  { enabled }: { enabled?: boolean } = {}
 ) {
   return useQuery({
     queryKey: queryKeys.stackFile(stackId, { version, commitHash }),
@@ -22,7 +22,7 @@ export function useStackFile(
         options: { signal },
       }),
 
-    ...withGlobalError('Unable to retrieve stack'),
+    ...withError('Unable to retrieve stack'),
     enabled: !!stackId && enabled,
   });
 }

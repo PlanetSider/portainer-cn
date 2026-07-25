@@ -31,7 +31,6 @@ import (
 	"github.com/portainer/portainer/api/http/handler/file"
 	"github.com/portainer/portainer/api/http/handler/gitops"
 	"github.com/portainer/portainer/api/http/handler/helm"
-	"github.com/portainer/portainer/api/http/handler/hostmanagement/openamt"
 	kubehandler "github.com/portainer/portainer/api/http/handler/kubernetes"
 	"github.com/portainer/portainer/api/http/handler/ldap"
 	"github.com/portainer/portainer/api/http/handler/motd"
@@ -91,7 +90,6 @@ type Server struct {
 	FileService                 portainer.FileService
 	DataStore                   dataservices.DataStore
 	GitService                  portainer.GitService
-	OpenAMTService              portainer.OpenAMTService
 	APIKeyService               apikey.APIKeyService
 	JWTService                  portainer.JWTService
 	LDAPService                 portainer.LDAPService
@@ -115,6 +113,7 @@ type Server struct {
 	PlatformService             platform.Service
 	PullLimitCheckDisabled      bool
 	TrustedOrigins              []string
+	SetupToken                  string
 }
 
 // Start starts the HTTP server
@@ -151,6 +150,7 @@ func (server *Server) Start(ctx context.Context) error {
 		server.ShutdownTrigger,
 		adminMonitor,
 	)
+	backupHandler.SetupToken = server.SetupToken
 
 	var roleHandler = roles.NewHandler(requestBouncer)
 	roleHandler.DataStore = server.DataStore
@@ -208,7 +208,7 @@ func (server *Server) Start(ctx context.Context) error {
 
 	var endpointHelmHandler = helm.NewHandler(requestBouncer, server.DataStore, server.JWTService, server.KubernetesDeployer, server.HelmPackageManager, server.KubeClusterAccessService)
 
-	var gitOperationHandler = gitops.NewHandler(requestBouncer, server.DataStore, server.GitService, server.FileService)
+	var gitOperationHandler = gitops.NewHandler(requestBouncer, server.DataStore, server.GitService, server.FileService, server.KubernetesClientFactory)
 
 	var helmTemplatesHandler = helm.NewTemplateHandler(requestBouncer, server.HelmPackageManager)
 
@@ -237,14 +237,10 @@ func (server *Server) Start(ctx context.Context) error {
 	settingsHandler.JWTService = server.JWTService
 	settingsHandler.LDAPService = server.LDAPService
 	settingsHandler.SnapshotService = server.SnapshotService
+	settingsHandler.SetupTokenRequired = server.SetupToken != ""
 
 	var sslHandler = sslhandler.NewHandler(requestBouncer)
 	sslHandler.SSLService = server.SSLService
-
-	openAMTHandler := openamt.NewHandler(requestBouncer)
-	openAMTHandler.OpenAMTService = server.OpenAMTService
-	openAMTHandler.DataStore = server.DataStore
-	openAMTHandler.DockerClientFactory = server.DockerClientFactory
 
 	var stackHandler = stacks.NewHandler(requestBouncer)
 	stackHandler.DataStore = server.DataStore
@@ -289,6 +285,7 @@ func (server *Server) Start(ctx context.Context) error {
 	userHandler.CryptoService = server.CryptoService
 	userHandler.AdminCreationDone = server.AdminCreationDone
 	userHandler.FileService = server.FileService
+	userHandler.SetupToken = server.SetupToken
 
 	var websocketHandler = websocket.NewHandler(server.KubernetesTokenCacheManager, requestBouncer)
 	websocketHandler.DataStore = server.DataStore
@@ -320,7 +317,6 @@ func (server *Server) Start(ctx context.Context) error {
 		HelmTemplatesHandler:   helmTemplatesHandler,
 		KubernetesHandler:      kubernetesHandler,
 		MOTDHandler:            motdHandler,
-		OpenAMTHandler:         openAMTHandler,
 		RegistryHandler:        registryHandler,
 		ResourceControlHandler: resourceControlHandler,
 		SettingsHandler:        settingsHandler,
@@ -354,7 +350,7 @@ func (server *Server) Start(ctx context.Context) error {
 			log.Info().Str("bind_address", server.BindAddress).Msg("starting HTTP server")
 			httpServer := &http.Server{
 				Addr:     server.BindAddress,
-				Handler:  middlewares.PlaintextHTTPRequest(handler),
+				Handler:  handler,
 				ErrorLog: errorLogger,
 			}
 

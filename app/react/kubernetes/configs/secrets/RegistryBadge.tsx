@@ -13,18 +13,18 @@ type Props = {
 };
 
 export function RegistryBadge({ registryId, children, dataCy }: Props) {
-  const registryQuery = useRegistry(registryId);
+  const registryQuery = useRegistry(registryId, false);
   const { isPureAdmin } = useCurrentUser();
 
   if (registryQuery.isLoading) {
-    return <InlineLoader>Loading registry...</InlineLoader>;
+    return <InlineLoader>正在加载镜像仓库...</InlineLoader>;
   }
 
   if (registryQuery.isError || !registryQuery.data) {
     return (
       <Badge type="warn">
-        Registry not found
-        <Tooltip message="The registry associated with this secret could not be found. It may have been deleted." />
+        未找到镜像仓库
+        <Tooltip message="找不到与此 Secret 关联的镜像仓库，它可能已被删除。" />
       </Badge>
     );
   }
@@ -38,7 +38,7 @@ export function RegistryBadge({ registryId, children, dataCy }: Props) {
           to="portainer.registries.registry"
           params={{ id: registryId }}
           className="!text-inherit"
-          data-cy={dataCy ? `${dataCy}-link` : undefined}
+          data-cy={dataCy ? `${dataCy}-link` : 'registry-badge-link'}
         >
           {Name}
         </Link>

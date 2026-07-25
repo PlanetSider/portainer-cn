@@ -36,6 +36,6 @@ async function getSecretYAML(
     );
     return data;
   } catch (e) {
-    throw parseKubernetesAxiosError(e, 'Unable to retrieve secret YAML');
+    throw parseKubernetesAxiosError(e, '无法获取 Secret YAML');
   }
 }

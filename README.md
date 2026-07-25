@@ -70,7 +70,7 @@ ghcr.io/planetsider/portainer-cn
 - `develop`
 - `latest`
 - `sha-<commit>`
-- 版本 tag（例如：`2.39.1` 对应的 `v2.39.1` tag 构建）
+- 版本 tag（例如：`2.43.0` 对应的 `v2.43.0` tag 构建）
 
 ---
 
@@ -87,7 +87,7 @@ docker pull ghcr.io/planetsider/portainer-cn:develop
 如果仓库已经打了版本 tag，也可以拉取对应版本：
 
 ```bash
-docker pull ghcr.io/planetsider/portainer-cn:2.39.1
+docker pull ghcr.io/planetsider/portainer-cn:2.43.0
 ```
 
 ### 一个常见运行示例

@@ -17,7 +17,7 @@ export function useGetSecretsCountQuery(
     queryKeys.list(environmentId),
     async () => getSecretsCount(environmentId),
     {
-      ...withError('Unable to get secrets count'),
+      ...withError('无法获取 Secret 数量'),
       refetchInterval() {
         return options?.autoRefreshRate ?? false;
       },
@@ -35,7 +35,7 @@ async function getSecretsCount(environmentId: EnvironmentId) {
   } catch (e) {
     throw parseAxiosError(
       e,
-      'Unable to get dashboard stats. Some counts may be inaccurate.'
+      '无法获取仪表盘统计信息，部分数量可能不准确。'
     );
   }
 }

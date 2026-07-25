@@ -5,8 +5,9 @@ import {
   Ref,
   useContext,
   useMemo,
-  useState,
 } from 'react';
+
+import { useId } from '@/react/hooks/useId';
 
 interface WidgetContextValue {
   titleId: string | undefined;
@@ -14,12 +15,6 @@ interface WidgetContextValue {
 
 const Context = createContext<null | WidgetContextValue>(null);
 Context.displayName = 'WidgetContext';
-
-// Simple ID generator for React 17 compatibility
-let idCounter = 0;
-function generateId() {
-  return `widget-title-${++idCounter}`;
-}
 
 export function useWidgetContext() {
   const context = useContext(Context);
@@ -37,14 +32,16 @@ export function Widget({
   mRef,
   id,
   'aria-label': ariaLabel,
+  'data-cy': dataCy,
 }: PropsWithChildren<{
   className?: string;
   mRef?: Ref<HTMLDivElement>;
   id?: string;
   'aria-label'?: string;
+  'data-cy'?: string;
 }>) {
-  // Only generate titleId once on mount if aria-label is not provided
-  const [titleId] = useState(() => (ariaLabel ? undefined : generateId()));
+  const generatedId = useId();
+  const titleId = ariaLabel ? undefined : `widget-title-${generatedId}`;
   const contextValue = useMemo(() => ({ titleId }), [titleId]);
 
   return (
@@ -55,6 +52,7 @@ export function Widget({
         ref={mRef}
         aria-label={ariaLabel}
         aria-labelledby={titleId}
+        data-cy={dataCy}
       >
         {children}
       </section>

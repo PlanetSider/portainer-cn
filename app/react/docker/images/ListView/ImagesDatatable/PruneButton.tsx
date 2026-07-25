@@ -19,7 +19,7 @@ interface Props {
 
 export function PruneButton({ images }: Props) {
   const environmentId = useEnvironmentId();
-  const pruneImagesMutation = usePruneImagesMutation(environmentId);
+  const pruneMutation = usePruneImagesMutation(environmentId);
 
   const hasPrunableImages = images.some((image) => !image.used);
 
@@ -28,12 +28,12 @@ export function PruneButton({ images }: Props) {
       color="default"
       icon={hasPrunableImages ? BrushCleaning : Check}
       onClick={handlePrune}
-      isLoading={pruneImagesMutation.isLoading}
-      loadingText="清理中..."
+      isLoading={pruneMutation.isLoading}
+      loadingText="Pruning..."
       data-cy="image-pruneButton"
       disabled={!hasPrunableImages}
     >
-      清理
+      Prune
     </LoadingButton>
   );
 
@@ -47,7 +47,7 @@ export function PruneButton({ images }: Props) {
 
   return (
     <Authorized authorizations="DockerImagePrune" adminOnlyCE>
-      <TooltipWithChildren message="当前没有可清理的未使用镜像">
+      <TooltipWithChildren message="No unused images available to prune">
         <span>{button}</span>
       </TooltipWithChildren>
     </Authorized>
@@ -60,15 +60,21 @@ export function PruneButton({ images }: Props) {
       return;
     }
 
-    pruneImagesMutation.mutate(
-      { all: result.pruneAll },
+    pruneMutation.mutate(
+      { all: result.pruneAll, clearBuildCache: result.clearBuildCache },
       {
-        onSuccess: (data) => {
-          const space = humanize(data.SpaceReclaimed);
-          notifySuccess('镜像已清理', `已回收 ${space}`);
+        onSuccess: ({ SpaceReclaimed, buildCacheError }) => {
+          const message =
+            SpaceReclaimed === 0
+              ? 'Reclaimed 0 B - the image layers may still be in use by other images, or are still in the Docker build cache.'
+              : `Reclaimed ${humanize(SpaceReclaimed)}`;
+          notifySuccess('Images pruned', message);
+          if (buildCacheError) {
+            notifyError('Failed to clear Docker build cache', buildCacheError);
+          }
         },
         onError: (error) => {
-          notifyError('清理镜像失败', error);
+          notifyError('Failed to prune images', error);
         },
       }
     );

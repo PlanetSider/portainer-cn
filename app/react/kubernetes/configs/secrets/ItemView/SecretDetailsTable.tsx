@@ -1,7 +1,5 @@
-import { useEnvironmentId } from '@/react/hooks/useEnvironmentId';
-import { useGetAllServiceAccountsQuery } from '@/react/kubernetes/more-resources/ServiceAccountsView/ServiceAccountsDatatable/queries/useGetAllServiceAccountsQuery';
+import { KubernetesSecretTypeOptions } from '@/kubernetes/models/configuration/models';
 
-import { Badge } from '@@/Badge';
 import { SystemBadge } from '@@/Badge/SystemBadge';
 import { DetailsRow } from '@@/DetailsTable/DetailsRow';
 import { DetailsTable } from '@@/DetailsTable/DetailsTable';
@@ -9,6 +7,8 @@ import { Link } from '@@/Link';
 import { Tooltip } from '@@/Tip/Tooltip';
 
 import { RegistryBadge } from '../RegistryBadge';
+
+import { LinkedServiceAccountsRow } from './LinkedServiceAccountsRow';
 
 type Props = {
   name: string;
@@ -31,6 +31,7 @@ export function SecretDetailsTable({
     registryId !== undefined && registryId !== ''
       ? parseInt(String(registryId), 10) || undefined
       : undefined;
+  const supportsImagePullSecrets = isImagePullSecretSecretType(secretTypeLabel);
 
   return (
     <DetailsTable
@@ -54,84 +55,32 @@ export function SecretDetailsTable({
         <DetailsRow label="Secret 类型">{secretTypeLabel}</DetailsRow>
       )}
       {parsedRegistryId && (
-        <DetailsRow label="Registry">
+        <DetailsRow label="镜像仓库">
           <RegistryBadge registryId={parsedRegistryId}>
-            <Tooltip message="该镜像仓库 Secret 由 Portainer 创建，用于允许拉取镜像。已禁用对此 Secret 的手动编辑。" />
+            <Tooltip message="此镜像仓库 Secret 由 Portainer 创建，用于拉取镜像，因此禁止手动编辑。" />
           </RegistryBadge>
         </DetailsRow>
       )}
-      <LinkedServiceAccountsRow secretName={name} namespace={namespace} />
+      {supportsImagePullSecrets && (
+        <LinkedServiceAccountsRow
+          secretName={name}
+          namespace={namespace}
+          isSystem={isSystem}
+        />
+      )}
     </DetailsTable>
   );
 }
 
-const MAX_VISIBLE_SERVICE_ACCOUNTS = 5;
+const IMAGE_PULL_SECRET_TYPES = new Set(
+  [
+    KubernetesSecretTypeOptions.DOCKERCFG.name,
+    KubernetesSecretTypeOptions.DOCKERCFG.value,
+    KubernetesSecretTypeOptions.DOCKERCONFIGJSON.name,
+    KubernetesSecretTypeOptions.DOCKERCONFIGJSON.value,
+  ].map((type) => type.toLowerCase())
+);
 
-type LinkedServiceAccountsRowProps = {
-  secretName: string;
-  namespace: string;
-};
-
-function LinkedServiceAccountsRow({
-  secretName,
-  namespace,
-}: LinkedServiceAccountsRowProps) {
-  const environmentId = useEnvironmentId();
-  const { data: allServiceAccounts = [] } =
-    useGetAllServiceAccountsQuery(environmentId);
-
-  const linked = allServiceAccounts.filter(
-    (sa) =>
-      sa.namespace === namespace &&
-      sa.imagePullSecrets?.some((s) => s.name === secretName)
-  );
-
-  const visible = linked.slice(0, MAX_VISIBLE_SERVICE_ACCOUNTS);
-  const hidden = linked.slice(MAX_VISIBLE_SERVICE_ACCOUNTS);
-
-  return (
-    <DetailsRow
-      label={
-        <span className="flex items-center">
-          关联的服务账号
-          <Tooltip message="将此 Secret 用作镜像拉取凭据的服务账号。" />
-        </span>
-      }
-    >
-      <div className="flex flex-wrap gap-2">
-        {visible.length > 0 ? (
-          <>
-            {visible.map((sa) => (
-              <Badge key={sa.uid} type="info" className="min-w-max">
-                <Link
-                  to="kubernetes.moreResources.serviceAccounts.serviceAccount"
-                  params={{ namespace: sa.namespace, name: sa.name }}
-                  data-cy={`linked-service-account-link-${sa.name}`}
-                  className="!text-inherit"
-                >
-                  {sa.name}
-                </Link>
-              </Badge>
-            ))}
-            {hidden.length > 0 && (
-              <Badge type="muted" className="min-w-max cursor-default">
-                 另有 {hidden.length} 项
-              </Badge>
-            )}
-          </>
-        ) : (
-          <span className="text-muted">
-            无，可将{' '}
-            <Link
-              to="kubernetes.moreResources.serviceAccounts"
-              data-cy="service-account-link"
-            >
-              服务账号
-            </Link>{' '}
-            通过在服务账号规范中的 <code>imagePullSecrets</code> 字段引用到此 Secret。
-          </span>
-        )}
-      </div>
-    </DetailsRow>
-  );
+function isImagePullSecretSecretType(secretTypeLabel: string) {
+  return IMAGE_PULL_SECRET_TYPES.has(secretTypeLabel.toLowerCase());
 }

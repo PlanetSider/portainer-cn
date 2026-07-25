@@ -15,11 +15,15 @@ var okHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 })
 
 func TestWithProtect_invalidTrustedOriginReturnsError(t *testing.T) {
+	t.Parallel()
+
 	_, err := WithProtect(okHandler, []string{"not-a-valid-origin"})
 	require.Error(t, err)
 }
 
 func TestWithProtect_safeMethodsAlwaysAllowed(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -34,6 +38,8 @@ func TestWithProtect_safeMethodsAlwaysAllowed(t *testing.T) {
 }
 
 func TestWithProtect_allowsPostWithNoOriginHeaders(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -45,6 +51,8 @@ func TestWithProtect_allowsPostWithNoOriginHeaders(t *testing.T) {
 }
 
 func TestWithProtect_allowsPostWithSameOriginSecFetchSite(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -57,6 +65,8 @@ func TestWithProtect_allowsPostWithSameOriginSecFetchSite(t *testing.T) {
 }
 
 func TestWithProtect_allowsPostWithNoneSecFetchSite(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -69,6 +79,8 @@ func TestWithProtect_allowsPostWithNoneSecFetchSite(t *testing.T) {
 }
 
 func TestWithProtect_blocksCrossSiteSecFetchSite(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -82,6 +94,8 @@ func TestWithProtect_blocksCrossSiteSecFetchSite(t *testing.T) {
 }
 
 func TestWithProtect_blocksSameSiteSecFetchSite(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -95,6 +109,8 @@ func TestWithProtect_blocksSameSiteSecFetchSite(t *testing.T) {
 }
 
 func TestWithProtect_allowsPostWithMatchingOriginHeader(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -108,6 +124,8 @@ func TestWithProtect_allowsPostWithMatchingOriginHeader(t *testing.T) {
 }
 
 func TestWithProtect_blocksMismatchedOriginHeader(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 
@@ -122,6 +140,8 @@ func TestWithProtect_blocksMismatchedOriginHeader(t *testing.T) {
 }
 
 func TestWithProtect_allowsPostFromTrustedOrigin(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, []string{"https://trusted.example.com"})
 	require.NoError(t, err)
 
@@ -134,46 +154,9 @@ func TestWithProtect_allowsPostFromTrustedOrigin(t *testing.T) {
 	require.Equal(t, http.StatusOK, rr.Code)
 }
 
-func TestWithProtect_skipsCsrfForApiKey(t *testing.T) {
-	handler, err := WithProtect(okHandler, nil)
-	require.NoError(t, err)
-
-	req := httptest.NewRequest(http.MethodPost, "/", nil)
-	req.Header.Set("Sec-Fetch-Site", "cross-site")
-	req.Header.Set("X-API-KEY", "my-api-key")
-
-	rr := httptest.NewRecorder()
-	handler.ServeHTTP(rr, req)
-	require.Equal(t, http.StatusOK, rr.Code)
-}
-
-func TestWithProtect_skipsCsrfForBearerToken(t *testing.T) {
-	handler, err := WithProtect(okHandler, nil)
-	require.NoError(t, err)
-
-	req := httptest.NewRequest(http.MethodPost, "/", nil)
-	req.Header.Set("Sec-Fetch-Site", "cross-site")
-	req.Header.Set("Authorization", "Bearer some-token")
-
-	rr := httptest.NewRecorder()
-	handler.ServeHTTP(rr, req)
-	require.Equal(t, http.StatusOK, rr.Code)
-}
-
-func TestWithProtect_forbidsBothApiKeyAndBearerToken(t *testing.T) {
-	handler, err := WithProtect(okHandler, nil)
-	require.NoError(t, err)
-
-	req := httptest.NewRequest(http.MethodPost, "/", nil)
-	req.Header.Set("X-API-KEY", "my-api-key")
-	req.Header.Set("Authorization", "Bearer some-token")
-
-	rr := httptest.NewRecorder()
-	handler.ServeHTTP(rr, req)
-	require.Equal(t, http.StatusForbidden, rr.Code)
-}
-
 func TestWithProtect_enforcesCsrfForCookieAuth(t *testing.T) {
+	t.Parallel()
+
 	handler, err := WithProtect(okHandler, nil)
 	require.NoError(t, err)
 

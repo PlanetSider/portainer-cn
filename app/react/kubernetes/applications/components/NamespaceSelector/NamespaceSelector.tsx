@@ -38,7 +38,7 @@ export function NamespaceSelector({
 
   return (
     <FormControl
-      label="命名空间"
+      label="Namespace"
       inputId="namespace-selector"
       isLoading={namespacesQuery.isLoading}
       errors={errors}
@@ -49,38 +49,12 @@ export function NamespaceSelector({
           options={namespaceNames}
           onChange={onChange}
           disabled={isEdit}
-          noOptionsMessage={() => '未找到命名空间'}
-          placeholder="未找到命名空间" // will only show when there are no options
+          noOptionsMessage={() => 'No namespaces found'}
+          placeholder="No namespaces found" // will only show when there are no options
           inputId="namespace-selector"
           data-cy="k8sAppCreate-nsSelect"
         />
       )}
     </FormControl>
-  );
-}
-
-/** NamespacePortainerSelect is exported for use by angular views, so that the data-cy attribute is set correctly */
-export function NamespacePortainerSelect({
-  value,
-  onChange,
-  isDisabled,
-  options,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  isDisabled: boolean;
-  options: { label: string; value: string }[];
-}) {
-  return (
-    <PortainerSelect
-      value={value}
-      options={options}
-      onChange={onChange}
-      disabled={isDisabled}
-      noOptionsMessage={() => '未找到命名空间'}
-      placeholder="未找到命名空间" // will only show when there are no options
-      inputId="namespace-selector"
-      data-cy="namespace-select"
-    />
   );
 }

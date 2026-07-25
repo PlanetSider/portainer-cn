@@ -1,13 +1,17 @@
 package stacks
 
 import (
+	"cmp"
 	"context"
 	"net/http"
 	"time"
 
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
+	"github.com/portainer/portainer/api/dataservices/source"
 	"github.com/portainer/portainer/api/git"
+	gittypes "github.com/portainer/portainer/api/git/types"
+	"github.com/portainer/portainer/api/gitops/workflows"
 	httperrors "github.com/portainer/portainer/api/http/errors"
 	"github.com/portainer/portainer/api/http/security"
 	k "github.com/portainer/portainer/api/kubernetes"
@@ -18,6 +22,7 @@ import (
 	"github.com/portainer/portainer/pkg/libhttp/response"
 
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 )
 
 type stackGitRedeployPayload struct {
@@ -26,7 +31,7 @@ type stackGitRedeployPayload struct {
 	RepositoryUsername       string
 	RepositoryPassword       string
 	Env                      []portainer.Pair
-	Prune                    bool
+	Prune                    *bool
 	// RepullImageAndRedeploy indicates whether to force repulling images and redeploying the stack
 	RepullImageAndRedeploy bool
 
@@ -56,6 +61,7 @@ func (payload *stackGitRedeployPayload) Validate(r *http.Request) error {
 // @failure 400 "Invalid request"
 // @failure 403 "Permission denied"
 // @failure 404 "Not found"
+// @failure 409 "Conflict"
 // @failure 500 "Server error"
 // @router /stacks/{id}/git/redeploy [put]
 func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
@@ -64,15 +70,41 @@ func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request)
 		return httperror.BadRequest("Invalid stack identifier route variable", err)
 	}
 
-	stack, err := handler.DataStore.Stack().Read(portainer.StackID(stackID))
-	if handler.DataStore.IsErrObjectNotFound(err) {
-		return httperror.NotFound("Unable to find a stack with the specified identifier inside the database", err)
-	} else if err != nil {
-		return httperror.InternalServerError("Unable to find a stack with the specified identifier inside the database", err)
+	securityContext, err := security.RetrieveRestrictedRequestContext(r)
+	if err != nil {
+		return httperror.InternalServerError("Unable to retrieve info from request context", err)
 	}
 
-	if stack.GitConfig == nil {
-		return httperror.BadRequest("Stack is not created from git", err)
+	var stack *portainer.Stack
+	var gitConfig *gittypes.RepoConfig
+	var sourceID portainer.SourceID
+	if err := handler.DataStore.ViewTx(func(tx dataservices.DataStoreTx) error {
+		stack, err = tx.Stack().Read(portainer.StackID(stackID))
+		if tx.IsErrObjectNotFound(err) {
+			return httperror.NotFound("Unable to find a stack with the specified identifier inside the database", err)
+		} else if err != nil {
+			return httperror.InternalServerError("Unable to find a stack with the specified identifier inside the database", err)
+		}
+
+		if stack.WorkflowID == 0 {
+			return httperror.BadRequest("Stack is not created from git", errors.New("stack has no git workflow"))
+		}
+
+		userContext := source.NewUserContext(securityContext.User, securityContext.UserMemberships)
+		gitConfig, sourceID, err = loadGitConfigForStack(tx, userContext, stack.WorkflowID, stack.ID)
+		if err != nil {
+			return httperror.InternalServerError("Unable to load git config for stack", err)
+		}
+		if gitConfig == nil {
+			return httperror.BadRequest("Stack is not created from git", errors.New("stack source has no git config"))
+		}
+
+		if stack.Status == portainer.StackStatusDeploying {
+			return httperror.Conflict("Unable to update stack", errors.New("Stack deployment is already in progress"))
+		}
+		return nil
+	}); err != nil {
+		return response.TxErrorResponse(err)
 	}
 
 	// TODO: this is a work-around for stacks created with Portainer version >= 1.17.1
@@ -95,11 +127,6 @@ func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request)
 
 	if err := handler.requestBouncer.AuthorizedEndpointOperation(r, endpoint); err != nil {
 		return httperror.Forbidden("Permission denied to access environment", err)
-	}
-
-	securityContext, err := security.RetrieveRestrictedRequestContext(r)
-	if err != nil {
-		return httperror.InternalServerError("Unable to retrieve info from request context", err)
 	}
 
 	// Only check resource control when it is a DockerSwarmStack or a DockerComposeStack
@@ -128,16 +155,23 @@ func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request)
 		return httperror.BadRequest("Invalid request payload", err)
 	}
 	payload.RepullImageAndRedeploy = payload.RepullImageAndRedeploy || payload.PullImage
-	stack.GitConfig.ReferenceName = payload.RepositoryReferenceName
-	stack.Env = payload.Env
-	if stack.Type == portainer.DockerSwarmStack || stack.Type == portainer.DockerComposeStack {
-		if stack.Option == nil {
-			stack.Option = &portainer.StackOption{}
-		}
-		stack.Option.Prune = payload.Prune
+
+	gitConfig.ReferenceName = cmp.Or(payload.RepositoryReferenceName, gitConfig.ReferenceName)
+
+	if payload.Env != nil {
+		stack.Env = payload.Env
 	}
 
-	if stack.Type == portainer.KubernetesStack {
+	if payload.Prune != nil {
+		if stack.Type == portainer.DockerSwarmStack || stack.Type == portainer.DockerComposeStack {
+			if stack.Option == nil {
+				stack.Option = &portainer.StackOption{}
+			}
+			stack.Option.Prune = *payload.Prune
+		}
+	}
+
+	if stack.Type == portainer.KubernetesStack && payload.StackName != "" {
 		stack.Name = payload.StackName
 	}
 
@@ -148,19 +182,19 @@ func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request)
 
 		// When the existing stack is using the custom username/password and the password is not updated,
 		// the stack should keep using the saved username/password
-		if repositoryPassword == "" && stack.GitConfig != nil && stack.GitConfig.Authentication != nil {
-			repositoryPassword = stack.GitConfig.Authentication.Password
+		if repositoryPassword == "" && gitConfig.Authentication != nil {
+			repositoryPassword = gitConfig.Authentication.Password
 		}
 		repositoryUsername = payload.RepositoryUsername
 	}
 
 	cloneOptions := git.CloneOptions{
 		ProjectPath:   stack.ProjectPath,
-		URL:           stack.GitConfig.URL,
-		ReferenceName: stack.GitConfig.ReferenceName,
+		URL:           gitConfig.URL,
+		ReferenceName: gitConfig.ReferenceName,
 		Username:      repositoryUsername,
 		Password:      repositoryPassword,
-		TLSSkipVerify: stack.GitConfig.TLSSkipVerify,
+		TLSSkipVerify: gitConfig.TLSSkipVerify,
 	}
 
 	clean, err := git.CloneWithBackup(context.TODO(), handler.GitService, handler.FileService, cloneOptions)
@@ -170,50 +204,85 @@ func (handler *Handler) stackGitRedeploy(w http.ResponseWriter, r *http.Request)
 
 	defer clean()
 
-	if err := handler.deployStack(r, stack, payload.RepullImageAndRedeploy, endpoint); err != nil {
-		return err
-	}
-
-	newHash, err := handler.GitService.LatestCommitID(context.TODO(), stack.GitConfig.URL, stack.GitConfig.ReferenceName, repositoryUsername, repositoryPassword, stack.GitConfig.TLSSkipVerify)
+	newHash, err := handler.GitService.LatestCommitID(context.TODO(), gitConfig.URL, gitConfig.ReferenceName, repositoryUsername, repositoryPassword, gitConfig.TLSSkipVerify)
 	if err != nil {
 		return httperror.InternalServerError("Unable get latest commit id", errors.WithMessagef(err, "failed to fetch latest commit id of the stack %v", stack.ID))
 	}
-	stack.GitConfig.ConfigHash = newHash
+
+	oldConfigHash := gitConfig.ConfigHash
+	gitConfig.ConfigHash = newHash
 
 	user, err := handler.DataStore.User().Read(securityContext.UserID)
 	if err != nil {
 		return httperror.BadRequest("Cannot find context user", errors.Wrap(err, "failed to fetch the user"))
 	}
 	stack.CurrentDeploymentInfo = &portainer.StackDeploymentInfo{
-		RepositoryURL:   stack.GitConfig.URL,
-		ConfigFilePath:  stack.GitConfig.ConfigFilePath,
+		RepositoryURL:   gitConfig.URL,
+		ReferenceName:   gitConfig.ReferenceName,
+		ConfigFilePath:  gitConfig.ConfigFilePath,
 		AdditionalFiles: stack.AdditionalFiles,
-		ConfigHash:      stack.GitConfig.ConfigHash,
+		ConfigHash:      newHash,
+		SourceID:        sourceID,
 	}
 
 	stack.UpdatedBy = user.Username
 	stack.UpdateDate = time.Now().Unix()
-	stack.Status = portainer.StackStatusActive
-	// TODO: move to async job when stack update becomes async
-	stack.DeploymentStatus = []portainer.StackDeploymentStatus{
-		{Status: portainer.StackStatusActive, Time: time.Now().Unix()},
+	stackutils.PrepareStackStatusForDeployment(stack)
+
+	postDeploy := func(ctx context.Context, deployErr error) {
+		if deployErr == nil {
+			return
+		}
+
+		if err := handler.DataStore.UpdateTx(func(tx dataservices.DataStoreTx) error {
+			liveStack, err := tx.Stack().Read(stack.ID)
+			if err != nil {
+				return err
+			}
+
+			if liveStack.CurrentDeploymentInfo != nil {
+				liveStack.CurrentDeploymentInfo.ConfigHash = oldConfigHash
+			}
+
+			if err := tx.Stack().Update(liveStack.ID, liveStack); err != nil {
+				return err
+			}
+
+			return workflows.UpdateArtifactFileForStack(tx, stack.WorkflowID, stack.ID, sourceID, func(a *portainer.ArtifactFile) {
+				a.Hash = oldConfigHash
+			})
+		}); err != nil {
+			log.Error().Err(err).Int("stack_id", int(stack.ID)).Msg("failed to revert config hash after failed redeploy")
+		}
+	}
+
+	deployGate := newDeployGate()
+	if err := handler.deployStack(r, stack, payload.RepullImageAndRedeploy, endpoint, deployGate, postDeploy); err != nil {
+		return err
 	}
 
 	if err := handler.DataStore.UpdateTx(func(tx dataservices.DataStoreTx) error {
-		return tx.Stack().Update(stack.ID, stack)
+		if err := tx.Stack().Update(stack.ID, stack); err != nil {
+			return err
+		}
+		userContext := source.NewUserContext(securityContext.User, securityContext.UserMemberships)
+		if err := saveStackGitConfig(tx, userContext, stack.WorkflowID, stack.ID, sourceID, 0, gitConfig); err != nil {
+			return err
+		}
+
+		return fillStackGitConfig(tx, userContext, stack)
 	}); err != nil {
+		deployGate.abortDeploy()
+
 		return httperror.InternalServerError("Unable to persist the stack changes inside the database", errors.Wrap(err, "failed to update the stack"))
 	}
 
-	if stack.GitConfig != nil && stack.GitConfig.Authentication != nil && stack.GitConfig.Authentication.Password != "" {
-		// Sanitize password in the http response to minimise possible security leaks
-		stack.GitConfig.Authentication.Password = ""
-	}
+	deployGate.startDeploy()
 
 	return response.JSON(w, stack)
 }
 
-func (handler *Handler) deployStack(r *http.Request, stack *portainer.Stack, pullImage bool, endpoint *portainer.Endpoint) *httperror.HandlerError {
+func (handler *Handler) deployStack(r *http.Request, stack *portainer.Stack, pullImage bool, endpoint *portainer.Endpoint, gate *deployGate, postDeploy postDeployFunc) *httperror.HandlerError {
 	var deploymentConfiger deployments.StackDeploymentConfiger
 
 	switch stack.Type {
@@ -272,9 +341,7 @@ func (handler *Handler) deployStack(r *http.Request, stack *portainer.Stack, pul
 		return httperror.InternalServerError("Unsupported stack", errors.Errorf("unsupported stack type: %v", stack.Type))
 	}
 
-	if err := deploymentConfiger.Deploy(context.TODO()); err != nil {
-		return httperror.InternalServerError(err.Error(), err)
-	}
+	go stackDeploy(handler.DataStore, stack.ID, deploymentConfiger, gate, postDeploy)
 
 	return nil
 }

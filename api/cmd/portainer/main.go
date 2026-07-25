@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"context"
 	"crypto/sha256"
+	nethttp "net/http"
 	"os"
 	"path"
 	"strings"
@@ -26,10 +27,10 @@ import (
 	"github.com/portainer/portainer/api/exec"
 	"github.com/portainer/portainer/api/filesystem"
 	"github.com/portainer/portainer/api/git"
-	"github.com/portainer/portainer/api/hostmanagement/openamt"
 	"github.com/portainer/portainer/api/http"
 	"github.com/portainer/portainer/api/http/proxy"
 	kubeproxy "github.com/portainer/portainer/api/http/proxy/factory/kubernetes"
+	"github.com/portainer/portainer/api/http/security/setuptoken"
 	"github.com/portainer/portainer/api/internal/authorization"
 	"github.com/portainer/portainer/api/internal/edge/edgestacks"
 	"github.com/portainer/portainer/api/internal/endpointutils"
@@ -52,9 +53,15 @@ import (
 	"github.com/portainer/portainer/pkg/featureflags"
 	"github.com/portainer/portainer/pkg/fips"
 	"github.com/portainer/portainer/pkg/libhelm"
+	"github.com/portainer/portainer/pkg/libhttp/ssrf"
 	"github.com/portainer/portainer/pkg/libstack/compose"
+	libswarm "github.com/portainer/portainer/pkg/libstack/swarm"
 	"github.com/portainer/portainer/pkg/validate"
 
+	gogitclient "github.com/go-git/go-git/v5/plumbing/transport/client"
+	gogitraw "github.com/go-git/go-git/v5/plumbing/transport/git"
+	gogithttp "github.com/go-git/go-git/v5/plumbing/transport/http"
+	gogitssh "github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 )
@@ -225,6 +232,32 @@ func initSnapshotService(
 	return snapshotService, nil
 }
 
+func resolveSetupToken(tx dataservices.DataStoreTx, providedToken string) (string, error) {
+	admins, err := tx.User().UsersByRole(portainer.AdministratorRole)
+	if err != nil {
+		return "", err
+	}
+	if len(admins) > 0 {
+		return "", nil
+	}
+
+	if providedToken != "" {
+		log.Info().Msg("using custom setup token; admin initialization and backup restore require this token in the X-Setup-Token header")
+		return providedToken, nil
+	}
+
+	token, err := setuptoken.Generate()
+	if err != nil {
+		return "", err
+	}
+
+	log.Info().
+		Str("setup_token", token).
+		Msg("no administrator account configured; admin initialization and backup restore require this setup token in the X-Setup-Token header. Start with --no-setup-token to disable.")
+
+	return token, nil
+}
+
 func initStatus(instanceID string) *portainer.Status {
 	return &portainer.Status{
 		Version:    portainer.APIVersion,
@@ -242,6 +275,10 @@ func updateSettingsFromFlags(dataStore dataservices.DataStore, flags *portainer.
 	settings.LogoURL = cmp.Or(*flags.Logo, settings.LogoURL)
 	settings.EnableEdgeComputeFeatures = cmp.Or(*flags.EnableEdgeComputeFeatures, settings.EnableEdgeComputeFeatures)
 	settings.TemplatesURL = cmp.Or(*flags.Templates, settings.TemplatesURL)
+
+	if flags.KubectlShellImageSet {
+		settings.KubectlShellImage = *flags.KubectlShellImage
+	}
 
 	if *flags.Labels != nil {
 		settings.BlackListedLabels = *flags.Labels
@@ -334,7 +371,6 @@ func loadEncryptionSecretKey(keyfilename string) []byte {
 }
 
 func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdownTrigger context.CancelFunc) portainer.Server {
-
 	if flags.FeatureFlags != nil {
 		featureflags.Parse(*flags.FeatureFlags, portainer.SupportedFeatureFlags)
 	}
@@ -344,7 +380,7 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		// validate if the trusted origins are valid urls
 		for origin := range strings.SplitSeq(*flags.TrustedOrigins, ",") {
 			if !validate.IsTrustedOrigin(origin) {
-				log.Fatal().Str("trusted_origin", origin).Msg("invalid url for trusted origin. Please check the trusted origins flag.")
+				log.Fatal().Str("trusted_origin", origin).Msg("invalid trusted origin: must be scheme://host or scheme://host:port (e.g. https://example.com)")
 			}
 
 			trustedOrigins = append(trustedOrigins, origin)
@@ -371,6 +407,19 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		log.Fatal().Msg("The database schema version does not align with the server version. Please consider reverting to the previous server version or addressing the database migration issue.")
 	}
 
+	if err := ssrf.Configure(dataStore.AllowList()); err != nil {
+		log.Fatal().Err(err).Msg("failed initializing ssrf service")
+	}
+
+	if dt, ok := nethttp.DefaultTransport.(*nethttp.Transport); ok {
+		nethttp.DefaultTransport = ssrf.WrapTransport(dt)
+	}
+
+	gogithttp.DefaultClient = gogithttp.NewClient(&nethttp.Client{Transport: nethttp.DefaultTransport})
+	gogitclient.InstallProtocol("git", git.NewSSRFGitTransport(gogitraw.DefaultClient))
+	gogitclient.InstallProtocol("ssh", git.NewSSRFGitTransport(gogitssh.DefaultClient))
+	gogitclient.InstallProtocol("file", nil)
+
 	instanceID, err := dataStore.Version().InstanceID()
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed getting instance id")
@@ -393,9 +442,6 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 	oauthService := oauth.NewService()
 
 	gitService := git.NewService(shutdownCtx)
-
-	// Setting insecureSkipVerify to true to preserve the old behaviour.
-	openAMTService := openamt.NewService(true)
 
 	cryptoService := crypto.Service{}
 
@@ -437,16 +483,11 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 
 	reverseTunnelService.ProxyManager = proxyManager
 
-	dockerConfigPath := fileService.GetDockerConfigPath()
-
 	composeDeployer := compose.NewComposeDeployer()
 
-	composeStackManager := exec.NewComposeStackManager(composeDeployer, proxyManager, dataStore)
+	composeStackManager := exec.NewComposeStackManager(composeDeployer, proxyManager)
 
-	swarmStackManager, err := exec.NewSwarmStackManager(*flags.Assets, dockerConfigPath, signatureService, fileService, reverseTunnelService, dataStore)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed initializing swarm stack manager")
-	}
+	swarmStackManager := exec.NewSwarmStackManager(libswarm.NewSwarmDeployer(), proxyManager)
 
 	kubernetesDeployer := initKubernetesDeployer(kubernetesTokenCacheManager, kubernetesClientFactory, dataStore, reverseTunnelService, signatureService, proxyManager)
 
@@ -512,6 +553,17 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 			adminCreationDone <- struct{}{}
 		} else {
 			log.Info().Msg("instance already has an administrator user defined, skipping admin password related flags.")
+		}
+	}
+
+	setupToken := ""
+	if adminPasswordHash == "" && !*flags.NoSetupToken {
+		if err := dataStore.ViewTx(func(tx dataservices.DataStoreTx) error {
+			var txErr error
+			setupToken, txErr = resolveSetupToken(tx, *flags.SetupToken)
+			return txErr
+		}); err != nil {
+			log.Fatal().Err(err).Msg("failed initializing setup token")
 		}
 	}
 
@@ -589,7 +641,6 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		LDAPService:                 ldapService,
 		OAuthService:                oauthService,
 		GitService:                  gitService,
-		OpenAMTService:              openAMTService,
 		ProxyManager:                proxyManager,
 		KubernetesTokenCacheManager: kubernetesTokenCacheManager,
 		KubeClusterAccessService:    kubeClusterAccessService,
@@ -607,6 +658,7 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		PlatformService:             platformService,
 		PullLimitCheckDisabled:      *flags.PullLimitCheckDisabled,
 		TrustedOrigins:              trustedOrigins,
+		SetupToken:                  setupToken,
 	}
 }
 

@@ -1,4 +1,4 @@
-<page-header ng-if="ctrl.state.viewReady" title="'从代码创建'" breadcrumbs="['部署 Kubernetes 资源']" reload="true"></page-header>
+<page-header ng-if="ctrl.state.viewReady" title="'Create from code'" breadcrumbs="['Deploy Kubernetes resources']" reload="true"></page-header>
 
 <kubernetes-view-loading view-ready="ctrl.state.viewReady"></kubernetes-view-loading>
 
@@ -11,9 +11,9 @@
         <rd-widget-body>
           <uib-tabset active="ctrl.state.activeTab" justified="true" type="pills">
             <uib-tab index="0">
-              <uib-tab-heading> <pr-icon icon="'code'"></pr-icon> 部署 </uib-tab-heading>
+              <uib-tab-heading> <pr-icon icon="'code'"></pr-icon> Deploy </uib-tab-heading>
               <form class="form-horizontal mt-6" name="ctrl.deploymentForm">
-                <div class="col-sm-12 form-section-title"> 部署来源 </div>
+                <div class="col-sm-12 form-section-title"> Deploy from </div>
                 <box-selector
                   slim="true"
                   radio-name="'method'"
@@ -24,11 +24,11 @@
                 ></box-selector>
 
                 <!-- namespace -->
-                <div class="col-sm-12 form-section-title !mt-4"> 部署到 </div>
+                <div class="col-sm-12 form-section-title !mt-4"> Deploy to </div>
                 <div class="form-group" ng-if="ctrl.formValues.Namespace">
                   <label for="toggle_logo" class="col-lg-2 col-sm-3 control-label text-left">
-                    使用清单中指定的命名空间
-                    <portainer-tooltip message="'如果你的部署文件中定义了命名空间，启用后将只在部署中使用这些命名空间。'">
+                    Use namespace(s) specified from manifest
+                    <portainer-tooltip message="'If you have defined namespaces in your deployment file turning this on will enforce the use of those only in the deployment'">
                     </portainer-tooltip>
                   </label>
                   <div class="col-sm-9 col-lg-10 vertical-center pt-1">
@@ -39,33 +39,28 @@
                   </div>
                 </div>
 
-                <div class="form-group" ng-if="ctrl.formValues.Namespace">
-                  <label for="target_namespace" class="col-lg-2 col-sm-3 control-label text-left">命名空间</label>
-                  <div class="col-sm-9 col-lg-10">
-                    <div class="mb-1">
-                      <k8s-registry-access-notice ng-if="!ctrl.formValues.namespace_toggle" namespace="ctrl.formValues.Namespace"></k8s-registry-access-notice>
+                <div ng-if="!ctrl.formValues.namespace_toggle">
+                  <div class="form-group" ng-if="ctrl.formValues.Namespace">
+                    <div class="col-sm-12">
+                      <k8s-registry-access-notice namespace="ctrl.formValues.Namespace"></k8s-registry-access-notice>
                     </div>
-                    <namespace-portainer-select
-                      ng-if="!ctrl.formValues.namespace_toggle"
-                      is-disabled="ctrl.formValues.namespace_toggle || ctrl.state.isNamespaceInputDisabled"
-                      value="ctrl.formValues.Namespace"
-                      on-change="(ctrl.onChangeNamespace)"
-                      options="ctrl.namespaceOptions"
-                    ></namespace-portainer-select>
-                    <span ng-if="ctrl.formValues.namespace_toggle" class="small text-muted pt-[7px]">将使用清单中指定的命名空间</span>
                   </div>
+                  <namespace-selector
+                    values="ctrl.formValues.Namespace"
+                    on-change="(ctrl.onChangeNamespace)"
+                    validation-data="{namespaceOptionCount: ctrl.namespaces.length}"
+                  ></namespace-selector>
                 </div>
-
-                <div class="form-group" ng-if="!ctrl.formValues.Namespace">
-                  <div class="col-sm-12 small text-warning">
-                    <pr-icon icon="'alert-triangle'" mode="'warning'"></pr-icon>
-                    你无权访问任何命名空间。请联系管理员为你授予命名空间访问权限。
+                <div class="form-group" ng-if="ctrl.formValues.namespace_toggle">
+                  <label class="col-lg-2 col-sm-3 control-label text-left">Namespace</label>
+                  <div class="col-sm-9 col-lg-10">
+                    <span class="small text-muted pt-[7px]">Namespaces specified in the manifest will be used</span>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="name" class="col-lg-2 col-sm-3 control-label text-left">名称</label>
-                  <div class="col-sm-9 col-lg-10 text-muted small pt-[7px]"> 将使用清单中指定的资源名称 </div>
+                  <label for="name" class="col-lg-2 col-sm-3 control-label text-left">Name</label>
+                  <div class="col-sm-9 col-lg-10 text-muted small pt-[7px]"> Resource names specified in the manifest will be used </div>
                 </div>
 
                 <div ng-if="!ctrl.deploymentOptions.hideStacksFunctionality">
@@ -90,6 +85,7 @@
                   is-force-pull-visible="false"
                   is-additional-files-field-visible="true"
                   is-auth-explanation-visible="true"
+                  is-source-selection-visible="true"
                   deploy-method="{{ ctrl.state.DeployType === ctrl.ManifestDeployTypes.COMPOSE ? 'compose' : 'manifest' }}"
                   base-webhook-url="{{ ctrl.state.baseWebhookUrl }}"
                   webhook-id="{{ ctrl.state.webhookId }}"
@@ -98,7 +94,7 @@
                 <!-- !repository -->
 
                 <div ng-show="ctrl.state.BuildMethod === ctrl.BuildMethods.CUSTOM_TEMPLATE">
-                  <div class="col-sm-12 form-section-title !mt-4"> 自定义模板 </div>
+                  <div class="col-sm-12 form-section-title !mt-4"> Custom template </div>
 
                   <custom-template-selector
                     new-template-path="kubernetes.templates.custom.new"
@@ -134,18 +130,17 @@
                     on-change="(ctrl.onChangeFileContent)"
                     ng-required="true"
                     yml="true"
-                    placeholder="在此定义或粘贴你的清单文件内容"
+                    placeholder="Define or paste the content of your manifest file here"
                     read-only="ctrl.state.isEditorReadOnly"
                   >
                     <editor-description>
                       <p class="vertical-center">
                         <pr-icon icon="'info'" mode="'primary'"></pr-icon>
-                        此功能允许你在当前环境中部署任意类型的 Kubernetes 资源（Deployment、Secret、ConfigMap 等）。
+                        This feature allows you to deploy any kind of Kubernetes resource in this environment (Deployment, Secret, ConfigMap...).
                       </p>
                       <p>
-                        你可以在
-                        <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/" target="_blank">官方文档</a>
-                        中了解更多 Kubernetes 文件格式信息。
+                        You can get more information about Kubernetes file format in the
+                        <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/" target="_blank">official documentation</a>.
                       </p>
                     </editor-description>
                   </web-editor-form>
@@ -154,17 +149,16 @@
 
                 <!-- url -->
                 <div ng-show="ctrl.state.BuildMethod === ctrl.BuildMethods.URL">
-                  <div class="col-sm-12 form-section-title"> 地址 URL </div>
+                  <div class="col-sm-12 form-section-title"> URL </div>
                   <div class="form-group">
                     <div class="col-sm-12 small vertical-center pt-[7px]">
                       <pr-icon icon="'info'" mode="'primary'"></pr-icon>
-                      指定
-                      <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/" target="_blank">Kubernetes 清单文件</a>
-                      的 URL。
+                      Specify the URL to the
+                      <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/" target="_blank">Kubernetes manifest.</a>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="manifest_url" class="col-sm-3 col-lg-2 control-label required text-left">地址 URL</label>
+                    <label for="manifest_url" class="col-sm-3 col-lg-2 control-label required text-left">URL</label>
                     <div class="col-sm-9 col-lg-10">
                       <input
                         type="text"
@@ -180,7 +174,7 @@
                 <!-- !url -->
 
                 <!-- actions -->
-                <div class="col-sm-12 form-section-title !mt-4"> 操作 </div>
+                <div class="col-sm-12 form-section-title !mt-4"> Actions </div>
                 <div class="form-group">
                   <div class="col-sm-12">
                     <button
@@ -195,8 +189,8 @@
                       analytics-event="kubernetes-application-advanced-deployment"
                       analytics-properties="ctrl.buildAnalyticsProperties()"
                     >
-                      <span ng-hide="ctrl.state.actionInProgress">部署</span>
-                      <span ng-show="ctrl.state.actionInProgress">部署中...</span>
+                      <span ng-hide="ctrl.state.actionInProgress">Deploy</span>
+                      <span ng-show="ctrl.state.actionInProgress">Deployment in progress...</span>
                     </button>
                   </div>
                 </div>
@@ -205,7 +199,7 @@
             </uib-tab>
 
             <uib-tab index="1" disable="ctrl.state.tabLogsDisabled">
-              <uib-tab-heading> <pr-icon icon="'file-text'"></pr-icon> 日志 </uib-tab-heading>
+              <uib-tab-heading> <pr-icon icon="'file-text'"></pr-icon> Logs </uib-tab-heading>
               <form class="form-horizontal mt-3">
                 <div class="form-group" ng-if="ctrl.state.activeTab === 1">
                   <div class="col-sm-12">

@@ -58,6 +58,7 @@ type (
 		IsTeamLeader    bool
 		UserID          portainer.UserID
 		UserMemberships []portainer.TeamMembership
+		User            *portainer.User
 	}
 
 	// tokenLookup looks up a token in the request
@@ -274,7 +275,7 @@ func (bouncer *RequestBouncer) mwUpgradeToRestrictedRequest(next http.Handler) h
 			return
 		}
 
-		requestContext, err := bouncer.newRestrictedContextRequest(tokenData.ID, tokenData.Role)
+		requestContext, err := newRestrictedContextRequest(bouncer.dataStore, tokenData.ID, tokenData.Role)
 		if err != nil {
 			httperror.WriteError(w, http.StatusInternalServerError, "Unable to create restricted request context ", err)
 			return
@@ -307,6 +308,14 @@ func (bouncer *RequestBouncer) mwIsTeamLeader(next http.Handler) http.Handler {
 // A result of a first succeeded token lookup would be used for the authentication.
 func (bouncer *RequestBouncer) mwAuthenticateFirst(tokenLookups []tokenLookup, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, hasAPIKey := extractAPIKey(r)
+		_, hasBearerToken := extractBearerToken(r)
+		if hasAPIKey && hasBearerToken {
+			httperror.WriteError(w, http.StatusUnauthorized, "API key and auth header are not allowed at the same time", httperrors.ErrUnauthorized)
+
+			return
+		}
+
 		var token *portainer.TokenData
 
 		for _, lookup := range tokenLookups {
@@ -455,19 +464,20 @@ func extractBearerToken(r *http.Request) (string, bool) {
 }
 
 // AddAuthCookie adds the jwt token to the response cookie.
-func AddAuthCookie(w http.ResponseWriter, token string, expirationTime time.Time) {
+func AddAuthCookie(w http.ResponseWriter, token string, expirationTime time.Time, secure bool) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     portainer.AuthCookieKey,
 		Value:    token,
 		Path:     "/",
 		Expires:  expirationTime,
 		HttpOnly: true,
+		Secure:   secure,
 		SameSite: http.SameSiteStrictMode,
 	})
 }
 
 // RemoveAuthCookie removes the jwt token from the response cookie.
-func RemoveAuthCookie(w http.ResponseWriter) {
+func RemoveAuthCookie(w http.ResponseWriter, secure bool) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     portainer.AuthCookieKey,
 		Value:    "",
@@ -475,6 +485,7 @@ func RemoveAuthCookie(w http.ResponseWriter) {
 		Expires:  time.Unix(0, 0),
 		HttpOnly: true,
 		MaxAge:   -1,
+		Secure:   secure,
 		SameSite: http.SameSiteStrictMode,
 	})
 }
@@ -525,15 +536,21 @@ func MWSecureHeaders(next http.Handler, hsts, csp bool) http.Handler {
 	})
 }
 
-func (bouncer *RequestBouncer) newRestrictedContextRequest(userID portainer.UserID, userRole portainer.UserRole) (*RestrictedRequestContext, error) {
+func newRestrictedContextRequest(tx dataservices.DataStoreTx, userID portainer.UserID, userRole portainer.UserRole) (*RestrictedRequestContext, error) {
+	user, err := tx.User().Read(userID)
+	if err != nil {
+		return nil, err
+	}
+
 	if userRole == portainer.AdministratorRole {
 		return &RestrictedRequestContext{
 			IsAdmin: true,
 			UserID:  userID,
+			User:    user,
 		}, nil
 	}
 
-	memberships, err := bouncer.dataStore.TeamMembership().TeamMembershipsByUserID(userID)
+	memberships, err := tx.TeamMembership().TeamMembershipsByUserID(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -547,6 +564,7 @@ func (bouncer *RequestBouncer) newRestrictedContextRequest(userID portainer.User
 		UserID:          userID,
 		IsTeamLeader:    isTeamLeader,
 		UserMemberships: memberships,
+		User:            user,
 	}, nil
 }
 
@@ -569,41 +587,4 @@ func (bouncer *RequestBouncer) EdgeComputeOperation(next http.Handler) http.Hand
 
 		next.ServeHTTP(w, r)
 	})
-}
-
-// ShouldSkipCSRFCheck checks if the CSRF check should be skipped
-//
-// It returns true if the request has no cookie token and has either (but not both):
-// - an api key header
-// - an auth header
-// if it has both headers, an error is returned
-//
-// we allow CSRF check to be skipped for the following reasons:
-// - public routes
-// - kubectl - a bearer token is needed, and no csrf token can be sent
-// - api token
-// - docker desktop extension
-func ShouldSkipCSRFCheck(r *http.Request, isDockerDesktopExtension bool) (bool, error) {
-	if isDockerDesktopExtension {
-		return true, nil
-	}
-
-	cookie, _ := r.Cookie(portainer.AuthCookieKey)
-	hasCookie := cookie != nil && cookie.Value != ""
-
-	if hasCookie {
-		return false, nil
-	}
-
-	apiKey := r.Header.Get(apiKeyHeader)
-	hasApiKey := apiKey != ""
-
-	authHeader := r.Header.Get(jwtTokenHeader)
-	hasAuthHeader := authHeader != ""
-
-	if hasApiKey && hasAuthHeader {
-		return false, errors.New("api key and auth header are not allowed at the same time")
-	}
-
-	return true, nil
 }
