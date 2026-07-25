@@ -44,7 +44,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y make
 
       - name: Install frontend dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Portainer artifacts
         run: make build-all ENV=production
