@@ -109,13 +109,29 @@ docker run -d \
 
 ## 与上游版本关系
 
-本仓库会尽量跟进上游 Portainer CE 版本。
+本仓库基于上游 [portainer/portainer](https://github.com/portainer/portainer) 维护，版本对应关系如下：
 
-当前策略是：
+| 本项目 | 上游 Portainer CE | 说明 |
+| --- | --- | --- |
+| `develop` 分支 | `release/2.43.0` | 当前同步基线 |
+| 项目版本号 `2.43.0` | 上游版本 `2.43.0` | 与上游正式版本保持一致 |
+| 项目版本支持类型 `STS` | 上游 `2.43.0 STS` | 沿用上游版本支持类型 |
+| `ghcr.io/planetsider/portainer-cn:develop` | 上游 `2.43.0` 功能基线 | 包含本项目最新汉化提交 |
+| `ghcr.io/planetsider/portainer-cn:2.43.0` | 上游 `2.43.0` | 对应本项目发布的 2.43.0 镜像 |
 
-- **功能与核心逻辑尽量保持上游一致**
-- **显示版本号尽量与上游正式版本同步**
-- **文案层面持续做中文化收敛**
+同步规则：
+
+- 上游发布新版本后，本项目以对应的上游 `release/x.y.z` 分支或正式版本 tag 作为同步基线。
+- 上游的功能、修复、依赖和安全更新会同步到本项目；已废弃的上游组件也会按上游结构移除。
+- 本项目只对用户界面文案进行中文化，尽量不改变上游业务逻辑、API 契约和版本号。
+- 同步后的汉化提交属于本项目提交，不会改变其对应的上游版本；例如本项目的 `2.43.0` 表示“基于上游 `2.43.0` 的汉化版”。
+- `develop` 镜像随分支最新提交持续更新，版本镜像用于固定使用对应版本。
+
+当前同步基线：
+
+- 上游版本：[Portainer CE 2.43.0](https://github.com/portainer/portainer/releases/tag/2.43.0)
+- 上游分支：[release/2.43.0](https://github.com/portainer/portainer/tree/release/2.43.0)
+- 本项目分支：[develop](https://github.com/PlanetSider/portainer-cn/tree/develop)
 
 上游最新版本可参考：
 
