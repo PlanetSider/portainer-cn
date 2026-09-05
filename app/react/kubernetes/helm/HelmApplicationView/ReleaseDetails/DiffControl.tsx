@@ -50,9 +50,9 @@ export function DiffControl({
     earliestRevisionNumber >= selectedRevisionNumber;
 
   const options: Array<RadioGroupOption<DiffViewMode>> = [
-    { label: 'View', value: 'view' },
+    { label: '查看', value: 'view' },
     {
-      label: 'Diff with previous',
+      label: '与上一版本对比',
       value: 'previous',
       disabled: disabledPreviousOption,
     },
@@ -83,7 +83,7 @@ export function DiffControl({
       )}
       {!!showUserSuppliedCheckbox && !!setIsUserSupplied && (
         <Checkbox
-          label="User defined only"
+          label="仅显示用户定义值"
           id="values-details-user-supplied"
           checked={isUserSupplied}
           onChange={() => setIsUserSupplied(!isUserSupplied)}
@@ -117,7 +117,7 @@ function DiffWithSpecificRevision({
 
   return (
     <>
-      <span>Diff with specific revision:</span>
+      <span>与指定修订版本对比：</span>
       <Input
         type="number"
         min={earliestRevisionNumber}

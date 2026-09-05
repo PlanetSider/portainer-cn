@@ -16,6 +16,8 @@ export const status = columnHelper.accessor((row) => row.Status, {
 });
 
 function Cell({ row: { original: item } }: CellContext<Job, string>) {
+  const status = getStatusLabel(item.Status);
+
   return (
     <>
       <span
@@ -26,7 +28,7 @@ function Cell({ row: { original: item } }: CellContext<Job, string>) {
           },
         ])}
       />
-      {item.Status ?? ''}
+      {status}
       {item.Status === 'Failed' && (
         <span className="ml-1">
           <TooltipWithChildren
@@ -45,4 +47,19 @@ function Cell({ row: { original: item } }: CellContext<Job, string>) {
       )}
     </>
   );
+}
+
+function getStatusLabel(status?: string) {
+  switch (status) {
+    case 'Failed':
+      return '失败';
+    case 'Succeeded':
+      return '成功';
+    case 'Completed':
+      return '已完成';
+    case 'Running':
+      return '运行中';
+    default:
+      return status ?? '';
+  }
 }

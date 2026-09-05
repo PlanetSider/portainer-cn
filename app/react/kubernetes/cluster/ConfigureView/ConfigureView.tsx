@@ -25,15 +25,15 @@ export function ConfigureView() {
   return (
     <>
       <PageHeader
-        title="Kubernetes features configuration"
+        title="Kubernetes 功能配置"
         breadcrumbs={[
-          { label: 'Environments', link: 'portainer.endpoints' },
+          { label: '环境', link: 'portainer.endpoints' },
           {
             label: environment?.Name || '',
             link: 'portainer.endpoints.endpoint',
             linkParams: { id: environment?.Id },
           },
-          'Kubernetes configuration',
+          'Kubernetes 配置',
         ]}
         reload
       />

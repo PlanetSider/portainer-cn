@@ -33,7 +33,7 @@ export function StorageAccessModeSelector({
       closeMenuOnSelect={false}
       onChange={(value) => onChange(value)}
       inputId={inputId}
-      placeholder="Not configured"
+      placeholder="未配置"
       data-cy={`kubeSetup-storageAccessSelect${storageClassName}`}
       id={`kubeSetup-storageAccessSelect${storageClassName}`}
     />

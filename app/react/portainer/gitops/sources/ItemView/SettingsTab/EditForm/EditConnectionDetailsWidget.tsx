@@ -31,7 +31,7 @@ export function EditConnectionDetailsWidget() {
         </FormControl>
         <FormControl
           inputId="url"
-          label="Repository URL"
+          label="仓库 URL"
           errors={errors.url}
           required
         >

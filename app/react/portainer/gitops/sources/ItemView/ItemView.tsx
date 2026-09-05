@@ -16,7 +16,7 @@ import { SourceDetail, useSource } from '../queries/useSource';
 import { SettingsTab } from './SettingsTab/SettingsTab';
 import { WorkflowsTab } from './WorkflowsTab';
 import { SourceResourceHeader } from './SourceResourceHeader';
-import { CountDot } from './CountDot';
+import { WorkflowsCountDot } from './WorkflowsCountDot';
 import { AccessTab } from './AccessTab';
 
 const breadcrumbs = [
@@ -43,7 +43,6 @@ export function ItemView() {
 
   if (!source || sourceQuery.isError) {
     const error = sourceQuery.error;
-
     return (
       <>
         <PageHeader breadcrumbs={breadcrumbs} />
@@ -81,16 +80,15 @@ function PageContent({ source }: { source: SourceDetail }) {
       {
         name: (
           <>
-            工作流{' '}
-            <CountDot value={source.workflows?.length ?? 0} type="workflow" />
+            工作流 <WorkflowsCountDot sourceId={source.id} />
           </>
         ),
         icon: GitCommit,
-        widget: <WorkflowsTab workflows={source.workflows ?? []} />,
+        widget: <WorkflowsTab sourceId={source.id} />,
         selectedTabParam: 'workflows',
       },
       {
-        name: '访问控制',
+        name: '访问权限',
         icon: UsersIcon,
         widget: (
           <AccessTab

@@ -19,7 +19,7 @@ export function useClusterResourceLimitsQuery(environmentId: EnvironmentId) {
     () => getResourceLimits(environmentId),
     {
       onError: (err) => {
-        notifyError('Failure', err as Error, 'Unable to get resource limits');
+        notifyError('失败', err as Error, '无法获取资源限制');
       },
     }
   );
@@ -32,6 +32,6 @@ async function getResourceLimits(environmentId: EnvironmentId) {
     );
     return limits;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to retrieve resource limits');
+    throw parseAxiosError(e, '无法获取资源限制');
   }
 }

@@ -41,7 +41,7 @@ func ValidateHelmRepositoryURL(repoUrl string, _ *http.Client) error {
 		return fmt.Errorf("failed to derive repo name: %w", err)
 	}
 
-	ssrfTransport := ssrf.WrapTransport(http.DefaultTransport.(*http.Transport).Clone())
+	ssrfTransport := ssrf.NewTransport(nil)
 
 	r, err := repo.NewChartRepository(
 		&repo.Entry{

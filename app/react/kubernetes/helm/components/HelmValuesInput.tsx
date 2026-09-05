@@ -46,7 +46,7 @@ export function HelmValuesInput({
           height="50vh"
           type="yaml"
           data-cy="helm-user-values-editor"
-          placeholder="在此定义或粘贴你的 values yaml 文件内容"
+          placeholder="在此定义或粘贴你的 Values YAML 文件内容"
           showToolbar={false}
         />
       </FormControl>

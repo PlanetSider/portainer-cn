@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { PropsWithChildren } from 'react';
-import { Cpu, Hexagon, LaptopMinimal, MemoryStick } from 'lucide-react';
+import { Cpu, Gpu, Hexagon, LaptopMinimal, MemoryStick } from 'lucide-react';
 
 import { Icon, IconProps } from '@/react/components/Icon';
 
@@ -40,7 +40,7 @@ interface StatsProps {
 
 export function NodeStats({ value }: StatsProps) {
   return (
-    <StatsItem icon={LaptopMinimal} title="NODES">
+    <StatsItem icon={LaptopMinimal} title="节点">
       <span className="text-left font-bold leading-none">{value}</span>
     </StatsItem>
   );
@@ -48,18 +48,26 @@ export function NodeStats({ value }: StatsProps) {
 
 export function CPUStats({ value }: StatsProps) {
   return (
-    <StatsItem icon={Cpu} title="CPUS">
+    <StatsItem icon={Cpu} title="CPU">
       <span className="min-w-[2ch] text-right font-bold tabular-nums leading-none">
         {value}
       </span>
-      <span className="align-baseline text-xs leading-none">cores</span>
+      <span className="align-baseline text-xs leading-none">核心</span>
     </StatsItem>
   );
 }
 
 export function MemoryStats({ value }: StatsProps) {
   return (
-    <StatsItem icon={MemoryStick} title="MEMORY">
+    <StatsItem icon={MemoryStick} title="内存">
+      <span className="text-left font-bold leading-none">{value}</span>
+    </StatsItem>
+  );
+}
+
+export function GpuStats({ value }: StatsProps) {
+  return (
+    <StatsItem icon={Gpu} title="GPU">
       <span className="text-left font-bold leading-none">{value}</span>
     </StatsItem>
   );
@@ -76,19 +84,23 @@ export function ContainerStats({
   running,
   stopped,
 }: ContainerStatsProps) {
-  const actualTotal = total || running + stopped;
+  const safeRunning = running || 0;
+  const safeStopped = stopped || 0;
+  const actualTotal = total || safeRunning + safeStopped;
   return (
-    <StatsItem title="CONTAINERS" icon={Hexagon}>
+    <StatsItem title="容器" icon={Hexagon}>
       <div className="flex w-full flex-col">
         <div>
-          <span className="text-base font-bold leading-none">{running}</span>
+          <span className="text-base font-bold leading-none">
+            {safeRunning}
+          </span>
           <span> / {actualTotal}</span>
         </div>
         <progress
           className="h-[4px] w-auto rounded bg-gray-4 th-dark:bg-white/10"
-          value={running}
+          value={safeRunning}
           max={Math.max(actualTotal, 1)}
-          aria-label={`${running} of ${actualTotal} containers running`}
+          aria-label={`${actualTotal} 个容器中有 ${safeRunning} 个正在运行`}
         />
       </div>
     </StatsItem>

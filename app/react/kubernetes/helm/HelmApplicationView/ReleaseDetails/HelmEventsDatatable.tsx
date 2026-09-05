@@ -31,7 +31,7 @@ export function HelmEventsDatatable({
   const eventsQuery = useEvents(environmentId, {
     namespace,
     queryOptions: {
-      autoRefreshRate: tableState.autoRefreshRate * 1000,
+      autoRefreshRate: tableState.autoRefreshRateMS,
       select: (data) => filterRelatedEvents(data, releaseResources),
     },
   });
@@ -42,8 +42,7 @@ export function HelmEventsDatatable({
         dataset={eventsQuery.data || []}
         title={
           <TextTip inline color="blue" className="!text-xs">
-            Only events for resources currently in the cluster will be
-            displayed.
+            仅显示当前存在于集群中的资源事件。
           </TextTip>
         }
         titleIcon={null}

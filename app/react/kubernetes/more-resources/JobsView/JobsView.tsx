@@ -16,13 +16,13 @@ export function JobsView() {
 
   const tabs: Tab[] = [
     {
-      name: 'Cron Jobs',
+      name: 'CronJob',
       icon: CalendarSync,
       widget: <CronJobsDatatable />,
       selectedTabParam: 'cronJobs',
     },
     {
-      name: 'Jobs',
+      name: 'Job',
       icon: CalendarCheck2,
       widget: <JobsDatatable />,
       selectedTabParam: 'jobs',
@@ -34,8 +34,8 @@ export function JobsView() {
   return (
     <>
       <PageHeader
-        title="Cron Job & Job lists"
-        breadcrumbs="Cron Jobs & Jobs"
+        title="CronJob 和 Job 列表"
+        breadcrumbs="CronJob 和 Job"
         reload
       />
       <>

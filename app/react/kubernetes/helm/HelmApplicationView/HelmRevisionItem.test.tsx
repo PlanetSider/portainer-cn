@@ -58,10 +58,10 @@ describe('HelmRevisionItem', () => {
     );
 
     // Check status badge
-    expect(screen.getByText('Deployed')).toBeInTheDocument();
+    expect(screen.getByText('已部署')).toBeInTheDocument();
 
     // Check revision number
-    expect(screen.getByText('Revision #1')).toBeInTheDocument();
+    expect(screen.getByText('修订版本 #1')).toBeInTheDocument();
 
     // Check chart name and version
     expect(screen.getByText('my-app-1.0.0')).toBeInTheDocument();

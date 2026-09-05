@@ -135,7 +135,7 @@ export function ApplicationSummaryWidget() {
                     !globalDeploymentOptionsQuery.data
                       .hideStacksFunctionality && (
                       <tr>
-                         <td>Stack</td>
+                         <td>堆栈</td>
                         <td data-cy="k8sAppDetail-stackName">
                           {application?.metadata?.labels?.[appStackNameLabel] ||
                             '-'}

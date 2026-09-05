@@ -46,10 +46,10 @@ describe('DiffControl', () => {
       showUserSuppliedCheckbox: true,
       setIsUserSupplied: vi.fn(),
     });
-    expect(queryByLabelText('View')).toBeNull();
-    expect(queryByLabelText('Diff with previous')).toBeNull();
-    expect(queryByLabelText('Diff with specific revision:')).toBeNull();
-    expect(queryByLabelText('User defined only')).toBeInTheDocument();
+    expect(queryByLabelText('查看')).toBeNull();
+    expect(queryByLabelText('与上一版本对比')).toBeNull();
+    expect(queryByLabelText('与指定修订版本对比：')).toBeNull();
+    expect(queryByLabelText('仅显示用户定义值')).toBeInTheDocument();
   });
 
   it('should not render any controls when latestRevisionNumber is 1 and showUserSuppliedCheckbox is false', () => {
@@ -57,15 +57,15 @@ describe('DiffControl', () => {
       latestRevisionNumber: 1,
       showUserSuppliedCheckbox: false,
     });
-    expect(queryByLabelText('Diff with previous')).toBeNull();
-    expect(queryByLabelText('Diff with specific revision:')).toBeNull();
-    expect(queryByLabelText('View')).toBeNull();
-    expect(queryByLabelText('User defined only')).toBeNull();
+    expect(queryByLabelText('与上一版本对比')).toBeNull();
+    expect(queryByLabelText('与指定修订版本对比：')).toBeNull();
+    expect(queryByLabelText('查看')).toBeNull();
+    expect(queryByLabelText('仅显示用户定义值')).toBeNull();
   });
 
   it('should render view option', () => {
     const { getByLabelText } = renderComponent();
-    expect(getByLabelText('View')).toBeInTheDocument();
+    expect(getByLabelText('查看')).toBeInTheDocument();
   });
 
   it('should render "Diff with previous" option when earliestRevisionNumber < selectedRevisionNumber', () => {
@@ -73,7 +73,7 @@ describe('DiffControl', () => {
       earliestRevisionNumber: 3,
       selectedRevisionNumber: 5,
     });
-    expect(getByLabelText('Diff with previous')).toBeInTheDocument();
+    expect(getByLabelText('与上一版本对比')).toBeInTheDocument();
   });
 
   it('should render "Diff with previous" option as disabled when earliestRevisionNumber >= selectedRevisionNumber', () => {
@@ -82,31 +82,31 @@ describe('DiffControl', () => {
       selectedRevisionNumber: 5,
     });
 
-    expect(getByLabelText('View')).toBeInTheDocument();
-    expect(getByLabelText('Diff with specific revision:')).toBeInTheDocument();
+    expect(getByLabelText('查看')).toBeInTheDocument();
+    expect(getByLabelText('与指定修订版本对比：')).toBeInTheDocument();
     // 'Diff with previous' should exist and be disabled
-    const diffWithPreviousOption = getByLabelText('Diff with previous');
+    const diffWithPreviousOption = getByLabelText('与上一版本对比');
     expect(diffWithPreviousOption).toBeInTheDocument();
     expect(diffWithPreviousOption).toBeDisabled();
   });
 
   it('should render "Diff with specific revision" option', () => {
     const { getByLabelText } = renderComponent();
-    expect(getByLabelText('Diff with specific revision:')).toBeInTheDocument();
+    expect(getByLabelText('与指定修订版本对比：')).toBeInTheDocument();
   });
 
   it('should render user supplied checkbox when showUserSuppliedCheckbox is true', () => {
     const { getByLabelText } = renderComponent({
       showUserSuppliedCheckbox: true,
     });
-    expect(getByLabelText('User defined only')).toBeInTheDocument();
+    expect(getByLabelText('仅显示用户定义值')).toBeInTheDocument();
   });
 
   it('should not render user supplied checkbox when showUserSuppliedCheckbox is false', () => {
     const { queryByLabelText } = renderComponent({
       showUserSuppliedCheckbox: false,
     });
-    expect(queryByLabelText('User defined only')).not.toBeInTheDocument();
+    expect(queryByLabelText('仅显示用户定义值')).not.toBeInTheDocument();
   });
 
   it('should call setDiffViewMode when a radio option is selected', async () => {
@@ -118,7 +118,7 @@ describe('DiffControl', () => {
       diffViewMode: 'view',
     });
 
-    await user.click(getByLabelText('Diff with specific revision:'));
+    await user.click(getByLabelText('与指定修订版本对比：'));
     expect(setDiffViewMode).toHaveBeenCalledWith('specific');
   });
 
@@ -132,7 +132,7 @@ describe('DiffControl', () => {
       showUserSuppliedCheckbox: true,
     });
 
-    await user.click(getByLabelText('User defined only'));
+    await user.click(getByLabelText('仅显示用户定义值'));
     expect(setIsUserSupplied).toHaveBeenCalledWith(true);
   });
 });

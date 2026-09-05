@@ -45,7 +45,7 @@ export const columns = _.compact([
     header: '状态',
     cell({ row: { original: env } }) {
       return (
-        <ul className="list-none space-y-2">
+        <ul className="m-0 list-none space-y-2 p-0">
           {env.StackStatus.Status.map((s) => (
             <li key={`status-${s.Type}-${s.Time}`}>
               <Status value={s.Type} />
@@ -60,7 +60,7 @@ export const columns = _.compact([
     header: '时间',
     cell({ row: { original: env } }) {
       return (
-        <ul className="list-none space-y-2">
+        <ul className="m-0 list-none space-y-2 p-0">
           {env.StackStatus.Status.map((s) => (
             <li key={`time-${s.Type}-${s.Time}`}>
               {isoDateFromTimestamp(s.Time)}

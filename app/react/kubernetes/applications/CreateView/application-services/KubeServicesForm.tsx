@@ -81,7 +81,7 @@ export function KubeServicesForm({
       value: 'ClusterIP',
       label: (
         <ServiceTabLabel
-          serviceTypeLabel="ClusterIP services"
+          serviceTypeLabel="ClusterIP Service"
           serviceTypeCount={serviceTypeCounts.ClusterIP}
           serviceTypeHasErrors={serviceTypeHasErrors.ClusterIP}
         />
@@ -91,7 +91,7 @@ export function KubeServicesForm({
       value: 'NodePort',
       label: (
         <ServiceTabLabel
-          serviceTypeLabel="NodePort services"
+          serviceTypeLabel="NodePort Service"
           serviceTypeCount={serviceTypeCounts.NodePort}
           serviceTypeHasErrors={serviceTypeHasErrors.NodePort}
         />
@@ -101,7 +101,7 @@ export function KubeServicesForm({
       value: 'LoadBalancer',
       label: (
         <ServiceTabLabel
-          serviceTypeLabel="LoadBalancer services"
+          serviceTypeLabel="LoadBalancer Service"
           serviceTypeCount={serviceTypeCounts.LoadBalancer}
           serviceTypeHasErrors={serviceTypeHasErrors.LoadBalancer}
         />
@@ -111,7 +111,7 @@ export function KubeServicesForm({
 
   return (
     <div className="flex flex-col">
-      <FormSection title="Publishing the application" />
+      <FormSection title="发布应用" />
       <PublishingExplaination />
       <ServiceTabs
         serviceTypeOptions={serviceTypeOptions}

@@ -23,9 +23,9 @@ export function KubernetesForm({
       <div className="form-group">
         <div className="col-sm-12">
           <SwitchField
-            label="Use namespace(s) specified from manifest"
+            label="使用清单中指定的命名空间"
             data-cy="use-manifest-namespaces-switch"
-            tooltip="If you have defined namespaces in your deployment file turning this on will enforce the use of those only in the deployment"
+            tooltip="如果部署文件中定义了命名空间，启用后部署时将仅使用这些命名空间。"
             checked={values.useManifestNamespaces}
             onChange={(value) => setFieldValue('useManifestNamespaces', value)}
           />
@@ -37,7 +37,7 @@ export function KubernetesForm({
         value={values.content}
         type="yaml"
         id="kube-manifest-editor"
-        textTip="Define or paste the content of your manifest here"
+        textTip="在此定义或粘贴清单内容"
         onChange={(value) =>
           handleContentChange(DeploymentType.Kubernetes, value)
         }
@@ -46,13 +46,13 @@ export function KubernetesForm({
         onVersionChange={handleVersionChange}
       >
         <p>
-          You can get more information about Kubernetes file format in the{' '}
+          有关 Kubernetes 文件格式的更多信息，请参阅{' '}
           <a
-            href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+            href="https://kubernetes.io/docs/concepts/overview/working-with-objects/"
             target="_blank"
             rel="noreferrer"
           >
-            official documentation
+            官方文档
           </a>
           .
         </p>

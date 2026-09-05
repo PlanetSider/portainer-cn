@@ -14,7 +14,7 @@ async function getKubernetesEndpoints(environmentId: EnvironmentId) {
     );
     return endpointsList.items;
   } catch (e) {
-    throw parseKubernetesAxiosError(e, 'Unable to retrieve endpoints');
+    throw parseKubernetesAxiosError(e, '无法获取 Kubernetes Endpoint');
   }
 }
 
@@ -26,7 +26,7 @@ export function useKubernetesEndpointsQuery(
     ['environments', environmentId, 'kubernetes', 'endpoints'],
     () => getKubernetesEndpoints(environmentId),
     {
-      ...withError('Unable to retrieve Kubernetes endpoints'),
+      ...withError('无法获取 Kubernetes Endpoint'),
       refetchInterval() {
         return options?.autoRefreshRate ?? false;
       },

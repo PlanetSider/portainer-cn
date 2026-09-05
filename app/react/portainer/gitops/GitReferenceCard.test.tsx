@@ -36,6 +36,22 @@ function renderCard(
   return render(<Component />);
 }
 
+function mockSource(overrides: Partial<{ interval: string }> = {}) {
+  server.use(
+    http.get('/api/gitops/sources/:id', () =>
+      HttpResponse.json({
+        id: 1,
+        name: 'my-source',
+        type: 'git',
+        url: 'https://github.com/portainer/portainer-compose',
+        status: 'healthy',
+        connection: {},
+        ...overrides,
+      })
+    )
+  );
+}
+
 describe('GitReferenceCard', () => {
   beforeEach(() => {
     server.use(
@@ -46,6 +62,7 @@ describe('GitReferenceCard', () => {
         HttpResponse.json(['docker-compose.yml'])
       )
     );
+    mockSource();
   });
 
   describe('Normal state (no divergence)', () => {
@@ -86,29 +103,29 @@ describe('GitReferenceCard', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('shows auto-update as Off when not set', () => {
+    it('shows a Polling row sourced from the linked Source when it has an interval', async () => {
+      mockSource({ interval: '5m' });
       renderCard();
-      expect(
-        screen.getByRole('group', { name: '自动更新' })
-      ).toHaveTextContent('关闭');
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole('group', { name: '轮询' })
+        ).toHaveTextContent('5m')
+      );
     });
 
-    it('shows auto-update as On when autoUpdate is provided', async () => {
-      renderCard({
-        autoUpdate: {
-          Interval: '5m',
-          Webhook: '',
-          ForcePullImage: false,
-          ForceUpdate: false,
-        },
-      });
+    it('hides the Polling row when the Source has no interval', async () => {
+      mockSource();
+      renderCard();
 
-      expect(
-        screen.getByRole('group', { name: '自动更新' })
-      ).toHaveTextContent('开启');
-      expect(screen.getByRole('group', { name: '间隔' })).toHaveTextContent(
-        '5m'
+      await waitFor(() =>
+        expect(screen.getByRole('group', { name: '仓库' })).toHaveTextContent(
+          defaultGitConfig.URL
+        )
       );
+      expect(
+        screen.queryByRole('group', { name: '轮询' })
+      ).not.toBeInTheDocument();
     });
   });
 

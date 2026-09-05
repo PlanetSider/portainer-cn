@@ -57,20 +57,28 @@ type AllowListService interface {
 	ReadParsed(id portainer.AllowListKey) (*portainer.ParsedAllowList, error)
 }
 
+type dialFunc func(ctx context.Context, network, addr string) (net.Conn, error)
+
 type safeDialer struct {
-	base    net.Dialer
 	service AllowListService
+	base    dialFunc
 }
 
 var globalDialer atomic.Pointer[safeDialer]
 
 // Configure initializes the global SSRF policy with the allow list data service.
+// It captures http.DefaultTransport's own dial function.
 func Configure(svc AllowListService) error {
 	if svc == nil {
 		return errors.New("unable to configure ssrf: service must not be nil")
 	}
 
-	globalDialer.Store(&safeDialer{service: svc})
+	baseTransport, ok := http.DefaultTransport.(*http.Transport)
+	if !ok {
+		return errors.New("unable to configure ssrf: http.DefaultTransport is not an *http.Transport")
+	}
+
+	globalDialer.Store(&safeDialer{service: svc, base: baseTransport.DialContext})
 	return nil
 }
 
@@ -117,33 +125,8 @@ func CheckURL(ctx context.Context, rawURL string) error {
 	return d.checkHost(ctx, host)
 }
 
-// WrapTransport clones t and replaces its DialContext with the global SSRF-filtering
-// dialer. The dialer checks the mode on every connection, so the transport is always
-// wrapped and mode changes take effect without restarting.
-func WrapTransport(t *http.Transport) *http.Transport {
-	d := globalDialer.Load()
-	if d == nil {
-		return t
-	}
-
-	cloned := t.Clone()
-	cloned.DialContext = d.DialContext
-
-	return cloned
-}
-
-// WrapTransportInternal is a documented no-op for transports that connect to
-// internally computed destinations (local Docker socket proxy, Chisel tunnels,
-// in-cluster Kubernetes API). The destination is chosen by Portainer, not
-// supplied by any user, so SSRF validation is not applicable. Using this
-// function instead of WrapTransport makes the exemption explicit and
-// satisfies the ruleguard lint rule.
-func WrapTransportInternal(t *http.Transport) *http.Transport {
-	return t
-}
-
 // DialContext resolves addr, validates all resolved IPs against the allowlist policy,
-// then dials using the first resolved IP to prevent DNS rebinding attacks.
+// then dials using d.base with the first resolved IP to prevent DNS rebinding attacks.
 func (d *safeDialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error) {
 	allowList, err := d.service.ReadParsed(portainer.AllowListSSRF)
 	if err != nil {
@@ -151,7 +134,7 @@ func (d *safeDialer) DialContext(ctx context.Context, network, addr string) (net
 	}
 
 	if allowList.Mode == portainer.SSRFModeOff {
-		return d.base.DialContext(ctx, network, addr)
+		return d.base(ctx, network, addr)
 	}
 
 	host, port, err := net.SplitHostPort(addr)
@@ -173,7 +156,7 @@ func (d *safeDialer) DialContext(ctx context.Context, network, addr string) (net
 	dialTarget := net.JoinHostPort(resolved[0].IP.String(), port)
 
 	if allowList.Hosts[host] || matchesWildcard(host, allowList.Wilds) {
-		return d.base.DialContext(ctx, network, dialTarget)
+		return d.base(ctx, network, dialTarget)
 	}
 
 	for _, a := range resolved {
@@ -187,7 +170,7 @@ func (d *safeDialer) DialContext(ctx context.Context, network, addr string) (net
 		}
 	}
 
-	return d.base.DialContext(ctx, network, dialTarget)
+	return d.base(ctx, network, dialTarget)
 }
 
 func (d *safeDialer) checkHost(ctx context.Context, host string) error {

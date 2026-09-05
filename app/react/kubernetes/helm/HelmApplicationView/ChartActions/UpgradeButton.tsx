@@ -183,7 +183,7 @@ export function UpgradeButton({
           info: {
             ...release.info,
             status: 'pending-upgrade',
-            description: 'Preparing upgrade',
+            description: '正在准备升级',
           },
         };
         updateRelease(updatedRelease);

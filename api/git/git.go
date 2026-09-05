@@ -118,7 +118,7 @@ func (c *gitClient) ListRefs(ctx context.Context, repositoryUrl string, opt *git
 		URLs: []string{repositoryUrl},
 	})
 
-	refs, err := rem.List(opt)
+	refs, err := rem.ListContext(ctx, opt)
 	if err != nil {
 		return nil, checkGitError(err)
 	}

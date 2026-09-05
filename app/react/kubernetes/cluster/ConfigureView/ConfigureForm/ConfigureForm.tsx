@@ -48,7 +48,8 @@ export function ConfigureForm() {
     ingressClasses
   );
 
-  if (!initialValues || !environment) {
+  // Wait for ingress classes before rendering; enableReinitialize would otherwise re-seed the form once the late query lands and discard in-flight edits (QE-4214)
+  if (!initialValues || !environment || ingressClassesQuery.isLoading) {
     return null;
   }
 
@@ -137,7 +138,7 @@ function InnerForm({
   return (
     <Form className="form-horizontal">
       <div className="flex flex-col">
-        <FormSection title="网络 - Services">
+        <FormSection title="网络 - Service">
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue" inline={false}>
@@ -169,10 +170,10 @@ function InnerForm({
             </div>
           </div>
         </FormSection>
-        <FormSection title="网络 - Ingresses">
+        <FormSection title="网络 - Ingress">
           <IngressClassDatatable
             onChange={onChangeControllers}
-            description="启用集群中的 ingress controller 后，它们将出现在 Portainer 界面中，供用户通过 HTTP/HTTPS 发布应用。控制器必须具备 class 名称，才会显示在这里。"
+            description="启用集群中的 Ingress Controller 后，它们将出现在 Portainer 界面中，供用户通过 HTTP/HTTPS 发布应用。控制器必须具备 Class 名称，才会显示在这里。"
             values={values.ingressClasses}
             initialValues={initialValues.ingressClasses}
             isLoading={isIngressClassesLoading}
@@ -184,8 +185,8 @@ function InnerForm({
               <SwitchField
                 name="allowNoneIngressClass"
                 data-cy="kubeSetup-allowNoneIngressClass"
-                label='允许将 ingress class 设置为 "none"'
-                tooltip='启用后，用户在配置 ingress 时可以选择 "none" 作为 ingress class。'
+                label='允许将 Ingress Class 设置为 "none"'
+                tooltip='启用后，用户在配置 Ingress 时可以选择 "none" 作为 Ingress Class。'
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.allowNoneIngressClass}
                 onChange={(checked) => {
@@ -209,8 +210,8 @@ function InnerForm({
               <SwitchField
                 name="ingressAvailabilityPerNamespace"
                 data-cy="kubeSetup-ingressAvailabilityPerNamespace"
-                label="按命名空间配置 ingress controller 可用性"
-                tooltip="允许管理员为每个命名空间配置可供用户在为应用设置 ingress 时选择的 ingress controller。"
+                label="按命名空间配置 Ingress Controller 可用性"
+                tooltip="允许管理员为每个命名空间配置可供用户在为应用设置 Ingress 时选择的 Ingress Controller。"
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.ingressAvailabilityPerNamespace}
                 onChange={(checked) =>
@@ -260,7 +261,7 @@ function InnerForm({
             </div>
           </div>
         </FormSection>
-        <FormSection title="Security">
+        <FormSection title="安全">
           <div className="form-group">
             <div className="col-sm-12">
               {!isRBACEnabled && isRBACEnabledQuery.isSuccess && <RBACAlert />}
@@ -270,9 +271,8 @@ function InnerForm({
             <div className="col-sm-12">
               <TextTip color="blue" inline={false}>
                 <p>
-                  By default, all the users have access to the default
-                  namespace. Enable this option to set accesses on the default
-                  namespace.
+                  默认情况下，所有用户都可以访问 default 命名空间。启用此选项以
+                  配置对 default 命名空间的访问权限。
                 </p>
               </TextTip>
             </div>
@@ -282,7 +282,7 @@ function InnerForm({
               <SwitchField
                 name="restrictDefaultNamespace"
                 data-cy="kubeSetup-restrictDefaultNsToggle"
-                label="Restrict access to the default namespace"
+                label="限制对 default 命名空间的访问"
                 labelClass="col-sm-5 col-lg-4"
                 checked={values.restrictDefaultNamespace}
                 onChange={(checked) =>
@@ -296,8 +296,8 @@ function InnerForm({
               <SwitchField
                 name="restrictSecrets"
                 data-cy="kubeSetup-restrictSecretsToggle"
-                label="Restrict secret contents access for non-admins (UI only)"
-                tooltip="This hides the ability to view or edit in the UI the contents of secrets that a non-admin user did not create themselves but does not prevent it via the command line."
+                label="限制非管理员访问 Secret 内容（仅限界面）"
+                tooltip="此选项会隐藏非管理员在界面中查看或编辑非其创建的 Secret 内容的功能，但不会阻止其通过命令行访问。"
                 labelClass="col-sm-5 col-lg-4"
                 checked={false}
                 featureId={FeatureId.K8S_ADM_ONLY_SECRETS}
@@ -306,21 +306,19 @@ function InnerForm({
             </div>
           </div>
         </FormSection>
-        <FormSection title="Resources and Metrics">
+        <FormSection title="资源和指标">
           <InsightsBox
             insightCloseId="resourceOverCommit"
             className="mb-4"
-            header="Allow resource over-commit - UI-only change in 2.20"
-            content="Resource over-commit has always been ENABLED in Portainer CE. However, the toggle was incorrectly shown as OFF. This has now been corrected but please note that no functionality has been removed."
+            header="允许资源超额分配 - 2.20 版仅界面变更"
+            content="Portainer CE 始终启用了资源超额分配。此前开关错误地显示为关闭，现已修正；请注意，未移除任何功能。"
           />
           <div className="form-group">
             <div className="col-sm-12">
               <TextTip color="blue" inline={false}>
                 <p>
-                  By DISABLING resource over-commit (highly recommended), you
-                  can ONLY assign namespaces CPU and memory resources that are
-                  less (in aggregate) than the cluster total minus any system
-                  resource reservation.
+                  禁用资源超额分配（强烈建议）后，只能为命名空间分配总量小于集群
+                  总资源减去系统资源预留的 CPU 和内存资源。
                 </p>
               </TextTip>
             </div>
@@ -329,10 +327,8 @@ function InnerForm({
             <div className="col-sm-12">
               <TextTip color="orange" inline={false}>
                 <p>
-                  By ENABLING resource over-commit, you can assign namespaces
-                  more resources than are physically available in the cluster.
-                  This may lead to unexpected deployment failures if there are
-                  insufficient resources to service demand.
+                  启用资源超额分配后，可为命名空间分配超出集群物理可用资源的资源。
+                  当资源不足以满足需求时，可能导致意外的部署失败。
                 </p>
               </TextTip>
             </div>
@@ -340,7 +336,7 @@ function InnerForm({
           <div className="form-group">
             <div className="col-sm-12">
               <SwitchField
-                label="Allow resource over-commit"
+                label="允许资源超额分配"
                 labelClass="col-sm-5 col-lg-4"
                 name="resourceOverCommitPercentage"
                 checked
@@ -362,14 +358,13 @@ function InnerForm({
             value={values.useServerMetrics}
           />
         </FormSection>
-        <FormSection title="Available storage options">
+        <FormSection title="可用存储选项">
           {initialValues.storageClasses.length === 0 && (
             <div className="form-group">
               <div className="col-sm-12">
                 <TextTip color="orange" inline={false}>
-                  Unable to detect any storage class available to persist data.
-                  Users won&apos;t be able to persist application data inside
-                  this cluster.
+                  未检测到可用于持久化数据的存储类。用户将无法在此集群中持久化
+                  应用数据。
                 </TextTip>
               </div>
             </div>
@@ -380,20 +375,17 @@ function InnerForm({
                 <div className="col-sm-12">
                   <TextTip color="blue" inline={false}>
                     <p>
-                      Select which storage options will be available for use
-                      when deploying applications. Have a look at your storage
-                      driver documentation to figure out which access policy to
-                      configure and if the volume expansion capability is
-                      supported.
+                      请选择部署应用时可用的存储选项。请参阅存储驱动文档，确定应
+                      配置的访问策略以及是否支持卷扩展功能。
                     </p>
                     <p>
-                      You can find more information about access modes{' '}
+                      有关访问模式的更多信息，请参阅{' '}
                       <a
                         href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes"
                         target="_blank"
                         rel="noreferrer"
                       >
-                        in the official Kubernetes documentation
+                        Kubernetes 官方文档
                       </a>
                       .
                     </p>
@@ -407,8 +399,8 @@ function InnerForm({
           )}
         </FormSection>
         <FormActions
-          submitLabel="Save configuration"
-          loadingText="Saving configuration"
+          submitLabel="保存配置"
+          loadingText="正在保存配置"
           isLoading={isSubmitting}
           isValid={
             isValid &&

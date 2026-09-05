@@ -133,7 +133,7 @@ function KubeDeployDescription() {
       <div>
         你可以在
         <a
-          href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+          href="https://kubernetes.io/docs/concepts/overview/working-with-objects/"
           target="_blank"
           rel="noreferrer"
         >

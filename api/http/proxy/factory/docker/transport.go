@@ -22,6 +22,7 @@ import (
 	"github.com/portainer/portainer/api/internal/authorization"
 	"github.com/portainer/portainer/api/logs"
 	"github.com/portainer/portainer/api/slicesx"
+	httprequest "github.com/portainer/portainer/pkg/libhttp/request"
 	"github.com/portainer/portainer/pkg/libhttp/ssrf"
 
 	"github.com/docker/docker/api/types/network"
@@ -30,8 +31,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/segmentio/encoding/json"
 )
-
-var apiVersionRe = regexp.MustCompile(`(/v[0-9]\.[0-9]*)?`)
 
 type (
 	// Transport is a custom transport for Docker API reverse proxy. It allows
@@ -136,10 +135,13 @@ func isAdminOnlyRoute(method string, path string) bool {
 // ProxyDockerRequest intercepts a Docker API request and apply logic based
 // on the requested operation.
 func (transport *Transport) ProxyDockerRequest(request *http.Request) (*http.Response, error) {
-	// from : /v1.47/containers/{id}/json
-	// or   : /containers/{id}/json
-	// to   : /containers/{id}/json
-	unversionedPath := apiVersionRe.ReplaceAllString(request.URL.Path, "")
+	// A percent-encoded path separator lets a request dodge the operation authorization.
+	// Docker API paths never need encoded separators, so reject them outright.
+	if httprequest.ContainsEncodedSeparator(request.URL.EscapedPath()) {
+		return utils.WriteAccessDeniedResponse()
+	}
+
+	unversionedPath := httprequest.TrimDockerVersion(request.URL.Path)
 
 	if transport.endpoint.Type == portainer.AgentOnDockerEnvironment || transport.endpoint.Type == portainer.EdgeAgentOnDockerEnvironment {
 		signature, err := transport.signatureService.CreateSignature(portainer.PortainerAgentSignatureMessage)

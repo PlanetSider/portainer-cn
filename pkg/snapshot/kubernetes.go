@@ -58,15 +58,34 @@ func kubernetesSnapshotNodes(snapshot *portainer.KubernetesSnapshot, cli kuberne
 		return nil
 	}
 
+	totalGPU := make(map[string]int64)
 	var totalCPUs, totalMemory int64
+	var gpuNodeCount int
+
 	for _, node := range nodeList.Items {
 		totalCPUs += node.Status.Capacity.Cpu().Value()
 		totalMemory += node.Status.Capacity.Memory().Value()
+
+		nodeHasGPU := false
+		for resourceName, quantity := range node.Status.Capacity {
+			if strings.HasPrefix(string(resourceName), "nvidia.com/") {
+				totalGPU[string(resourceName)] += quantity.Value()
+				nodeHasGPU = true
+			}
+		}
+		if nodeHasGPU {
+			gpuNodeCount++
+		}
 	}
+
 	snapshot.TotalCPU = totalCPUs
 	snapshot.TotalMemory = totalMemory
 	snapshot.NodeCount = len(nodeList.Items)
 	snapshot.ClusterType = clusterTypeFromProviderID(nodeList.Items[0].Spec.ProviderID)
+	snapshot.GPUNodeCount = gpuNodeCount
+	if len(totalGPU) > 0 {
+		snapshot.TotalGPU = totalGPU
+	}
 
 	return nil
 }

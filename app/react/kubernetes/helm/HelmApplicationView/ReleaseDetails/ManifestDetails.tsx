@@ -37,7 +37,7 @@ export function ManifestDetails({
           data-cy="helm-manifest"
           value={manifest}
           readonly
-          fileName={`Revision #${selectedRevisionNumber}`}
+          fileName={`修订版本 #${selectedRevisionNumber}`}
           placeholder="未找到 Manifest"
           height="60vh"
         />

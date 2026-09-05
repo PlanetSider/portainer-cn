@@ -121,7 +121,7 @@ describe('HelmTemplatesList', () => {
 
     // Check for the title with registry name
     expect(
-      screen.getByText('Select a helm chart from Test Registry')
+      screen.getByText('从 Test Registry 选择 Helm Chart')
     ).toBeInTheDocument();
 
     // Check for charts
@@ -153,7 +153,7 @@ describe('HelmTemplatesList', () => {
     const user = userEvent.setup();
 
     // Find search input and type "nginx"
-    const searchInput = screen.getByPlaceholderText('Search...');
+    const searchInput = screen.getByPlaceholderText('搜索...');
     await user.type(searchInput, 'nginx');
 
     // Wait 300ms for debounce
@@ -174,7 +174,7 @@ describe('HelmTemplatesList', () => {
     const user = userEvent.setup();
 
     // Find the category select
-    const categorySelect = screen.getByText('Select a category');
+    const categorySelect = screen.getByText('选择分类');
     await user.click(categorySelect);
 
     // Select "web" category
@@ -193,9 +193,9 @@ describe('HelmTemplatesList', () => {
     renderComponent({ loading: true, charts: [] });
 
     // Check for loading message
-    expect(screen.getByText('Loading helm charts...')).toBeInTheDocument();
+    expect(screen.getByText('正在加载 Helm Chart...')).toBeInTheDocument();
     expect(
-      screen.getByText('Initial download of Helm charts can take a few minutes')
+      screen.getByText('Helm Chart 首次下载可能需要几分钟')
     ).toBeInTheDocument();
   });
 
@@ -210,7 +210,7 @@ describe('HelmTemplatesList', () => {
 
     // Check for empty message
     expect(
-      screen.getByText('No helm charts available in this repository.')
+      screen.getByText('此仓库中没有可用的 Helm Chart。')
     ).toBeInTheDocument();
   });
 
@@ -220,7 +220,7 @@ describe('HelmTemplatesList', () => {
     // Check for message
     expect(
       screen.getByText(
-        'Please select a repository to view available Helm charts.'
+        '请选择仓库以查看可用的 Helm Chart。'
       )
     ).toBeInTheDocument();
   });
@@ -230,7 +230,7 @@ describe('HelmTemplatesList', () => {
     const user = userEvent.setup();
 
     // Find search input and type text that won't match any charts
-    const searchInput = screen.getByPlaceholderText('Search...');
+    const searchInput = screen.getByPlaceholderText('搜索...');
     await user.type(searchInput, 'nonexistent chart');
 
     // Wait 300ms for debounce
@@ -241,7 +241,7 @@ describe('HelmTemplatesList', () => {
     });
 
     // Check for no results message
-    expect(screen.getByText('No Helm charts found')).toBeInTheDocument();
+    expect(screen.getByText('未找到 Helm Chart')).toBeInTheDocument();
   });
 
   it('should handle keyboard navigation and selection', async () => {

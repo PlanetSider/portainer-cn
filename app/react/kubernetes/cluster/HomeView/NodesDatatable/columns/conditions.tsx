@@ -11,10 +11,10 @@ import { columnHelper } from './helper';
 export const conditions = columnHelper.accessor((row) => getConditions(row), {
   header: () => (
     <>
-      Conditions
+      条件
       <Tooltip
         position="top"
-        message="Empty indicates the node is healthy. Orange indicates the node is experiencing MemoryPressure, DiskPressure, NetworkUnavailable or PIDPressure."
+        message="空白表示节点运行正常。橙色表示节点出现内存压力、磁盘压力、网络不可用或进程 ID 压力。"
       />
     </>
   ),
@@ -35,12 +35,21 @@ function ConditionsCell({
               key={condition.type?.toString()}
               type={condition.status === 'True' ? 'warn' : 'success'}
             >
-              {condition.type}
+              {getConditionLabel(condition.type)}
             </Badge>
           ))
         : '-'}
     </div>
   );
+}
+
+function getConditionLabel(type?: string) {
+  return {
+    MemoryPressure: '内存压力',
+    DiskPressure: '磁盘压力',
+    NetworkUnavailable: '网络不可用',
+    PIDPressure: '进程 ID 压力',
+  }[type ?? ''] ?? type;
 }
 
 function getConditions(node: NodeRowData) {

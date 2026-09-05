@@ -8,7 +8,7 @@ import { NodeRowData } from '../types';
 import { columnHelper } from './helper';
 
 export const memory = columnHelper.accessor((row) => getMemory(row), {
-  header: 'Memory',
+  header: '内存',
   cell: ({ row: { original: node } }) => getMemory(node),
 });
 

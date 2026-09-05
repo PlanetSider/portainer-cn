@@ -27,7 +27,7 @@ export function useUserHelmRepositories<T = string[]>({
     {
       enabled: !!user.Id,
       select,
-      ...withError('Unable to retrieve helm registries'),
+      ...withError('无法获取 Helm 仓库'),
     }
   );
 }
@@ -77,7 +77,7 @@ async function getUserHelmRepositories(userId: UserId) {
     );
     return data;
   } catch (err) {
-    throw parseAxiosError(err, 'Unable to retrieve helm repositories for user');
+    throw parseAxiosError(err, '无法获取用户 Helm 仓库');
   }
 }
 

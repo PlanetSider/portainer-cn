@@ -14,7 +14,7 @@ export function useClusterResourceLimitsQuery(environmentId: EnvironmentId) {
     [environmentId, 'clusterResourceLimits'],
     async () => getNodes(environmentId),
     {
-      ...withError('Unable to retrieve resource limit data', 'Failure'),
+      ...withError('无法获取资源限制数据', '失败'),
       enabled: !!environmentId,
       select: aggregateResourceLimits,
     }

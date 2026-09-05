@@ -37,7 +37,7 @@ export function HelmTemplatesList({
     !isLoadingCharts && charts.length === 0 && selectedRegistry;
 
   return (
-    <section className="datatable" aria-label="Helm charts">
+    <section className="datatable" aria-label="Helm Chart 列表">
       <div className="toolBar vertical-center relative w-full !gap-x-5 !gap-y-1 overflow-auto !px-0">
         <div className="toolBarTitle vertical-center whitespace-nowrap">
           从 {selectedRegistry?.name} 选择 Helm Chart
@@ -46,7 +46,7 @@ export function HelmTemplatesList({
         <SearchBar
           value={textFilter}
           onChange={(value) => setTextFilter(value)}
-            placeholder="搜索..."
+          placeholder="搜索..."
           data-cy="helm-templates-search"
           className="!mr-0 h-9"
         />

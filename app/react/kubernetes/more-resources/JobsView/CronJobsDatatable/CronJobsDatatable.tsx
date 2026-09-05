@@ -52,7 +52,7 @@ export function CronJobsDatatable() {
   );
 
   const cronJobsQuery = useCronJobs(environmentId, {
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
   });
   const cronJobsRowData = cronJobsQuery.data;
 
@@ -77,7 +77,7 @@ export function CronJobsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={cronJobsQuery.isLoading}
-      title="Cron Jobs"
+      title="CronJob"
       titleIcon={CalendarSync}
       getRowId={(row) => row.Id}
       isRowSelectable={(row) => !row.original.IsSystem}
@@ -131,10 +131,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteCronJobsMutation.isLoading}
-        loadingText="Removing Cron Jobs..."
+        loadingText="正在删除 CronJob..."
         data-cy="k8s-cronJobs-removeCronJobButton"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton
@@ -147,7 +147,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
   async function handleRemoveClick(cronJobs: SelectedCronJob[]) {
     const confirmed = await confirmDelete(
       <>
-        <p>Are you sure you want to delete the selected Cron Jobs?</p>
+        <p>确定要删除选中的 CronJob 吗？</p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {cronJobs.map((s, index) => (
             <li key={index}>
@@ -172,14 +172,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Cron Jobs successfully removed',
+            'CronJob 已成功删除',
             cronJobs.map((r) => `${r.Namespace}/${r.Name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete Cron Jobs',
+            '无法删除 CronJob',
             error as Error,
             cronJobs.map((r) => `${r.Namespace}/${r.Name}`).join(', ')
           );

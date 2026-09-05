@@ -36,7 +36,7 @@ export function PlacementsDatatable({
     <ExpandableDatatable
       isLoading={isLoading}
       getRowCanExpand={(row) => !row.original.acceptsApplication}
-      title="Nodes vs. placement constraints/preferences"
+      title="节点与调度约束/偏好"
       titleIcon={Minimize2}
       dataset={dataset}
       settingsManager={tableState}
@@ -46,20 +46,18 @@ export function PlacementsDatatable({
       description={
         hasPlacementWarning ? (
           <TextTip>
-            Based on the placement rules, the application pod can&apos;t be
-            scheduled on any nodes.
+            根据调度规则，应用 Pod 无法调度到任何节点。
           </TextTip>
         ) : (
           <TextTip color="blue">
-            The table below shows whether or not this application can be
-            deployed on the nodes listed.
+            下表显示此应用是否可以部署到列出的节点上。
           </TextTip>
         )
       }
       renderTableSettings={() => (
         <TableSettingsMenu>
           <TableSettingsMenuAutoRefresh
-            value={tableState.autoRefreshRate}
+            value={tableState.autoRefreshRateMS}
             onChange={tableState.setAutoRefreshRate}
           />
         </TableSettingsMenu>

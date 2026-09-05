@@ -23,9 +23,9 @@ interface Props {
 
 export function ResourceDetailHeader({
   icon,
-  iconBackgroundClassName = 'bg-group-accent-3 th-dark:bg-group-accent-10',
+  iconBackgroundClassName = 'bg-group-accent-3 th-dark:bg-group-accent-10 th-highcontrast:bg-transparent',
   subtitleLabel,
-  subtitleClassName = 'text-group-accent-10 th-dark:text-group-accent-8',
+  subtitleClassName = 'text-group-accent-10 th-dark:text-group-accent-8 th-highcontrast:text-white',
   title,
   badge,
   description,
@@ -38,7 +38,7 @@ export function ResourceDetailHeader({
     <Widget>
       <Widget.Body loading={isLoading}>
         {errorMessage && (
-          <Alert color="error" title="Error">
+          <Alert color="error" title="错误">
             {errorMessage}
           </Alert>
         )}

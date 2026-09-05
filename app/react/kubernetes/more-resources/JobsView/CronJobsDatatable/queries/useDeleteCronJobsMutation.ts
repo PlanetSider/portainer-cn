@@ -10,7 +10,7 @@ export function useDeleteCronJobsMutation(environmentId: EnvironmentId) {
   const queryClient = useQueryClient();
   return useMutation(deleteCronJob, {
     ...withInvalidate(queryClient, [queryKeys.list(environmentId)]),
-    ...withError('Unable to delete Cron Jobs'),
+    ...withError('无法删除 CronJob'),
   });
 }
 
@@ -29,6 +29,6 @@ export async function deleteCronJob({
       data
     );
   } catch (e) {
-    throw parseAxiosError(e, `Unable to delete Cron Jobs`);
+    throw parseAxiosError(e, '无法删除 CronJob');
   }
 }

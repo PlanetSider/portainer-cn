@@ -122,7 +122,7 @@ describe('UpgradeButton', () => {
   test('should display the upgrade button', () => {
     renderButton();
 
-    const button = screen.getByRole('button', { name: /Upgrade/i });
+    const button = screen.getByRole('button', { name: /编辑\/升级/i });
     expect(button).toBeInTheDocument();
   });
 
@@ -138,7 +138,7 @@ describe('UpgradeButton', () => {
 
     renderButton();
 
-    const button = screen.getByRole('button', { name: /Upgrade/i });
+    const button = screen.getByRole('button', { name: /编辑\/升级/i });
     expect(button).toBeDisabled();
   });
 
@@ -154,7 +154,7 @@ describe('UpgradeButton', () => {
     renderButton();
 
     expect(
-      screen.getByText('Checking for new versions...')
+      screen.getByText('正在检查新版本...')
     ).toBeInTheDocument();
   });
 
@@ -170,7 +170,7 @@ describe('UpgradeButton', () => {
 
     renderButton();
 
-    expect(screen.getByText(/No versions available/)).toBeInTheDocument();
+    expect(screen.getByText(/没有可用版本/)).toBeInTheDocument();
   });
 
   test('should open upgrade modal when clicked', async () => {
@@ -204,7 +204,7 @@ describe('UpgradeButton', () => {
 
     renderButton({ release: mockRelease });
 
-    const button = screen.getByRole('button', { name: /Upgrade/i });
+    const button = screen.getByRole('button', { name: /编辑\/升级/i });
     await user.click(button);
 
     await waitFor(() => {
@@ -233,7 +233,7 @@ describe('UpgradeButton', () => {
     const user = userEvent.setup();
     renderButton({ updateRelease: mockUpdateRelease });
 
-    const button = screen.getByRole('button', { name: /Upgrade/i });
+    const button = screen.getByRole('button', { name: /编辑\/升级/i });
     await user.click(button);
 
     await waitFor(() => {

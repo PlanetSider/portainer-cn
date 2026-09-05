@@ -44,7 +44,7 @@ export function IngressClassDatatable({
         dataset={values || []}
         columns={columns}
         isLoading={isLoading}
-        title="Ingress Controllers"
+        title="Ingress 控制器"
         titleIcon={Route}
         getRowId={(row) => `${row.Name}-${row.ClassName}-${row.Type}`}
         renderTableActions={(selectedRows) => renderTableActions(selectedRows)}
@@ -145,7 +145,7 @@ export function IngressClassDatatable({
 
       if (usedControllersToDisallow.length > 0) {
         const confirmed = await confirm({
-            title: '禁用正在使用的 ingress controller？',
+            title: '禁用正在使用的 Ingress Controller？',
           modalType: ModalType.Warn,
           message: (
             <div>

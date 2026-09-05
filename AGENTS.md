@@ -1,17 +1,17 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-08-04
-**Commit:** 3eee911a9
+**Generated:** 2026-09-05
+**Upstream baseline:** d79ba726c (`2.45.0`)
 **Branch:** develop
 
 ## OVERVIEW
-`portainer-cn` 是基于上游 [portainer/portainer](https://github.com/portainer/portainer) CE **2.43.0 (STS)** 的**中文汉化 fork**：只改前端可见文案，不改业务逻辑 / API 契约 / 版本号。前端为 **AngularJS 1.8 + React 17 混合**架构（`app/`），后端为 **Go**（`api/` + `pkg/`，module path 仍为 `github.com/portainer/portainer`）。镜像发布到 `ghcr.io/planetsider/portainer-cn`。
+`portainer-cn` 是基于上游 [portainer/portainer](https://github.com/portainer/portainer) CE **2.45.0 (LTS)** 的**中文汉化 fork**：只改前端可见文案，不改业务逻辑 / API 契约 / 版本号。前端为 **AngularJS 1.8 + React 17 混合**架构（`app/`），后端为 **Go**（`api/` + `pkg/`，module path 仍为 `github.com/portainer/portainer`）。镜像发布到 `ghcr.io/planetsider/portainer-cn`。
 
 ## STRUCTURE
 ```
 portainer-cn/
 ├── app/                 # 前端：legacy AngularJS + 新 React 混合（见 app/AGENTS.md）
-│   ├── react/           #   新 React 前端主目录 ~2900 个 TS/TSX（见 app/react/AGENTS.md）
+│   ├── react/           #   新 React 前端主目录 ~3020 个 TS/TSX（见 app/react/AGENTS.md）
 │   ├── react-tools/     #   AngularJS↔React 桥接（react2angular、withUIRouter…）
 │   ├── docker|kubernetes|edge|agent|portainer|azure/  # legacy AngularJS 模块
 │   ├── index.js         #   webpack 入口（entry.main='./app'）
@@ -22,7 +22,7 @@ portainer-cn/
 │   ├── http/            #   handler / middlewares / security / proxy
 │   ├── datastore/       #   BoltDB + migrator（迁移顺序不可改）
 │   ├── dataservices/    #   领域仓储（DataStore 接口 + BaseDataService）
-│   └── portainer.go     #   APIVersion="2.43.0" APIVersionSupport="STS"
+│   └── portainer.go     #   APIVersion="2.45.0" APIVersionSupport="LTS"
 ├── pkg/                 # 共享 Go 库（libhelm/libstack/libhttp…，见 pkg/AGENTS.md）
 ├── build/               # Dockerfile（linux/windows/docker-extension）
 ├── translations/        # i18next 骨架 en/zh-CN（各 30 行，非主要汉化机制）
@@ -36,7 +36,10 @@ portainer-cn/
 |---|---|---|
 | 汉化 React 界面文案 | `app/react/**` | 直接内联中文字符串，不用 useTranslation |
 | 汉化 legacy 界面 | `app/{docker,kubernetes,edge,portainer}/**` | .html 模板 + .js 控制器内联中文 |
+| Kubernetes 重点界面 | `app/react/kubernetes/{cluster,ingresses,helm,more-resources}/` | 节点、Ingress、Helm、Job、RBAC、ServiceAccount |
 | 新 React 查询/表单 | `app/react/**/queries/`、`**/CreateView|ListView|ItemView/` | React Query v4 + Formik/Yup |
+| 实时资源统计 | `app/react/docker/containers/StatsView/`、`app/react/kubernetes/**/StatsView/` | Recharts 折线图，容器、应用和节点统计 |
+| GitOps 来源/工作流 | `app/react/portainer/gitops/{sources,workflows}/` | 来源创建与管理、工作流列表和详情 |
 | Go handler / 路由 | `api/http/handler/**` | gorilla/mux + `httperror.LoggerHandler` |
 | 版本号同步 | `api/portainer.go`、`package.json`、`api/http/handler/handler.go` | 三处必须一致（`@version` 注释） |
 | 数据库迁移 | `api/datastore/migrator/migrator.go` | 已发布迁移禁止修改 |
@@ -52,14 +55,15 @@ portainer-cn/
 | `main()` / `buildServer()` | 函数 | `api/cmd/portainer/main.go` | 后端入口 + 依赖装配 |
 | `Handler.ServeHTTP` | 方法 | `api/http/handler/handler.go` | 顶层 `/api` 路径分发（strings.HasPrefix） |
 | `DataStore` 接口 | 接口 | `api/dataservices/interface.go` | 领域仓储聚合接口 |
-| `APIVersion` / `APIVersionSupport` | 常量 | `api/portainer.go` | `"2.43.0"` / `"STS"` |
+| `APIVersion` / `APIVersionSupport` | 常量 | `api/portainer.go` | `"2.45.0"` / `"LTS"` |
+| `workflows/ListView` / `workflows/ItemView` | React 页面 | `app/react/portainer/gitops/workflows/` | GitOps 工作流的列表、状态汇总与详情 |
 
 ## CONVENTIONS
 - **汉化策略**（README 权威）：可直接中文表达的内容优先中文化；专业术语保留或中英混合；命令名/协议名/格式名/键名通常保留。
 - **保留/中英混合术语**：`Docker`、`Kubernetes`、`Helm`、`Ingress`、`Registry`、`Webhook`、`TLS`、`ConfigMap`、`Secret`、`YAML`。
 - **汉化实现方式**：直接内联中文字符串（`.tsx`/`.ts`/`.js`/`.html`），**不要引入 i18next 抽象**（依赖存在但生产代码未用；`translations/` 仅是骨架）。
 - **测试断言**：已汉化的 UI 用中文断言；仍为英文的消息保留英文断言，不盲目翻译。
-- **提交风格**：英文 plain（无 conventional 前缀），如 `sync upstream portainer 2.43.0`、`clarify upstream version mapping`。
+- **提交风格**：英文 plain（无 conventional 前缀），如 `sync upstream portainer 2.45.0`、`clarify upstream version mapping`。
 - 前端：strict TS、`@/`（app）、`@@/`（app/react/components）、`@api/`（generated-api）别名；命名函数组件；`data-cy` 测试 ID。
 - 后端：module path 保持 `github.com/portainer/portainer`，**不要改成 portainer-cn**；handler 返回 `*httperror.HandlerError`。
 - CI：`pnpm install --no-frozen-lockfile`（勿改回 frozen，会触发 `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`）。
@@ -100,8 +104,8 @@ make dev              # dev-server + dev-client
 ```
 
 ## NOTES
-- **本机（Windows）无 node/pnpm/go/docker**，构建/测试验证依赖 GitHub Actions（`gh` CLI 可用）。
-- CI 只构建 `linux/amd64`；`v*` tag 不剥 `v` 前缀（metadata 无 strip 配置，README 示例 `2.43.0` 与实际 tag 输出 `v2.43.0` 存在出入）。
-- 上游同步基线：`upstream/release/2.43.0`（tag `2.43.0` 指向 `e78428fa8`）；本地无 `v2.43.0` 发布 tag。
+- **本机（Windows）有 Node/pnpm 运行时，但未安装 `node_modules`，且无 Go/Docker**；完整构建与测试验证依赖 GitHub Actions（`gh` CLI 可用）。
+- CI 只构建 `linux/amd64`；`v*` tag 不剥 `v` 前缀（metadata 无 strip 配置，版本镜像应使用 `v2.45.0` 形式的 tag）。
+- 上游同步基线：`upstream/release/2.45.0`（tag `2.45.0` 指向 `d79ba726c`）；本地无 `v2.45.0` 发布 tag。
 - `CLAUDE.md` 引用 `docs/guidelines/*` 但本 fork **无 `docs/` 目录**（上游遗留的死链，勿依赖）。
 - 本机 `pnpm lint-staged` 无显式配置（husky pre-commit 仅调用命令）。

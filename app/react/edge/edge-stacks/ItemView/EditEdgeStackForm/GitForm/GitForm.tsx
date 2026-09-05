@@ -203,7 +203,7 @@ function InnerForm({
         sourceId={stack.GitSourceId}
       />
 
-      <FormSection title="从 Git Repository 更新">
+      <FormSection title="从 Git 仓库更新">
         <AutoUpdateFieldset
           webhookId={webhookId}
           value={values.autoUpdate}
@@ -214,7 +214,6 @@ function InnerForm({
             })
           }
           baseWebhookUrl={baseEdgeStackWebhookUrl()}
-          errors={errors.autoUpdate}
         />
       </FormSection>
 
@@ -228,13 +227,13 @@ function InnerForm({
 
         <GitSourceSelector value={stack.GitSourceId} readOnly />
         <TextTip>
-          凭据由来源统一管理。{' '}
+          Credentials are managed by the source.{' '}
           <Link
             to="portainer.gitops.sources.item"
             params={{ sourceId: stack.GitSourceId }}
             data-cy="source-item-link"
           >
-            编辑来源
+            Edit source
           </Link>
         </TextTip>
 
@@ -263,25 +262,27 @@ function InnerForm({
       />
 
       <FormSection title="操作">
-        <LoadingButton
-          disabled={dirty || !isValid || isLoading}
-          data-cy="pull-and-update-stack-button"
-          isLoading={isUpdateVersion && isLoading}
-          loadingText="正在更新堆栈..."
-        >
-          拉取并更新堆栈
-        </LoadingButton>
+        <div className="flex items-center gap-2">
+          <LoadingButton
+            disabled={dirty || !isValid || isLoading}
+            data-cy="pull-and-update-stack-button"
+            isLoading={isUpdateVersion && isLoading}
+            loadingText="updating stack..."
+          >
+            Pull and update stack
+          </LoadingButton>
 
-        <LoadingButton
-          type="button"
-          disabled={!dirty || !isValid || isLoading}
-          isLoading={!isUpdateVersion && isLoading}
-          loadingText="正在更新设置..."
-          onClick={onUpdateSettingsClick}
-          data-cy="edge-stack-update-settings-button"
-        >
-          更新设置
-        </LoadingButton>
+          <LoadingButton
+            type="button"
+            disabled={!dirty || !isValid || isLoading}
+            isLoading={!isUpdateVersion && isLoading}
+            loadingText="updating settings..."
+            onClick={onUpdateSettingsClick}
+            data-cy="edge-stack-update-settings-button"
+          >
+            Update settings
+          </LoadingButton>
+        </div>
       </FormSection>
     </Form>
   );

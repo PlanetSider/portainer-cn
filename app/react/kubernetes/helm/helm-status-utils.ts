@@ -29,20 +29,20 @@ export function getStatusColor(status?: string) {
 export function getStatusText(status?: string) {
   switch (status?.toLowerCase()) {
     case DeploymentStatus.DEPLOYED:
-      return 'Deployed';
+      return '已部署';
     case DeploymentStatus.FAILED:
-      return 'Failed';
+      return '失败';
     case DeploymentStatus.PENDING:
-      return 'Pending install';
+      return '等待安装';
     case DeploymentStatus.PENDINGUPGRADE:
-      return 'Pending upgrade';
+      return '等待升级';
     case DeploymentStatus.PENDINGROLLBACK:
-      return 'Pending rollback';
+      return '等待回滚';
     case DeploymentStatus.UNINSTALLING:
-      return 'Uninstalling';
+      return '卸载中';
     case DeploymentStatus.SUPERSEDED:
-      return 'Superseded';
+      return '已替代';
     default:
-      return 'Unknown';
+      return '未知';
   }
 }

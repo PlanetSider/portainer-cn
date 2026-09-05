@@ -4,6 +4,7 @@ import { updateAxiosAdapter } from '@/react/portainer/services/axios/axios';
 import { PortainerEndpointTypes } from '@/portainer/models/endpoint/models';
 import { cache } from '@/react/portainer/services/axios/axios';
 import { CACHE_REFRESH_EVENT, CACHE_DURATION } from '../portainer/services/http-request.helper';
+import { AccessHeaders } from '../portainer/authorization-guard';
 
 import registriesModule from './registries';
 import customTemplateModule from './custom-templates';
@@ -207,7 +208,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: 'Service 详情',
-          breadcrumbLabel: 'Services',
+          breadcrumbLabel: '服务',
           breadcrumbLink: 'kubernetes.services',
           resourceType: 'service',
           apiVersion: 'v1',
@@ -566,15 +567,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
     };
 
-    const volumesBase = {
-      name: 'kubernetes.volumes',
-      url: '/volumes',
-      abstract: true,
-    };
-
     const volumes = {
-      name: 'kubernetes.volumes.index',
-      url: '?tab',
+      name: 'kubernetes.volumes',
+      url: '/volumes?tab',
       views: {
         'content@': {
           component: 'kubernetesVolumesView',
@@ -608,9 +603,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Persistent Volume details',
-          breadcrumbLabel: 'Volumes',
-          breadcrumbLink: 'kubernetes.volumes.index',
+          title: '持久卷详情',
+          breadcrumbLabel: '卷',
+          breadcrumbLink: 'kubernetes.volumes',
           breadcrumbTab: 'volumes',
           resourceType: 'persistentvolume',
           apiVersion: 'v1',
@@ -632,9 +627,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Storage Class details',
-          breadcrumbLabel: 'Volumes',
-          breadcrumbLink: 'kubernetes.volumes.index',
+          title: '存储类详情',
+          breadcrumbLabel: '卷',
+          breadcrumbLink: 'kubernetes.volumes',
           breadcrumbTab: 'storage',
           resourceType: 'storageclass',
           apiVersion: 'storage.k8s.io/v1',
@@ -666,6 +661,9 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
         'content@': {
           component: 'kubernetesRegistryAccessView',
         },
+      },
+      data: {
+        access: AccessHeaders.Admin,
       },
     };
 
@@ -725,7 +723,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: 'Job 详情',
-          breadcrumbLabel: 'Cron Jobs & Jobs',
+          breadcrumbLabel: 'CronJob 和 Job',
           breadcrumbLink: 'kubernetes.moreResources.jobs',
           breadcrumbTab: 'jobs',
           resourceType: 'job',
@@ -747,8 +745,8 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       },
       data: {
         resourceConfig: {
-          title: 'Cron Job 详情',
-          breadcrumbLabel: 'Cron Jobs & Jobs',
+          title: 'CronJob 详情',
+          breadcrumbLabel: 'CronJob 和 Job',
           breadcrumbLink: 'kubernetes.moreResources.jobs',
           breadcrumbTab: 'cronJobs',
           resourceType: 'cronjob',
@@ -810,7 +808,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: '集群角色详情',
-          breadcrumbLabel: 'Cluster Roles',
+          breadcrumbLabel: '集群角色',
           breadcrumbLink: 'kubernetes.moreResources.clusterRoles',
           breadcrumbTab: 'clusterRoles',
           resourceType: 'clusterrole',
@@ -833,7 +831,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: '集群角色绑定详情',
-          breadcrumbLabel: 'Cluster Roles',
+          breadcrumbLabel: '集群角色',
           breadcrumbLink: 'kubernetes.moreResources.clusterRoles',
           breadcrumbTab: 'clusterRoleBindings',
           resourceType: 'clusterrolebinding',
@@ -869,7 +867,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: '角色详情',
-          breadcrumbLabel: 'Roles',
+          breadcrumbLabel: '角色',
           breadcrumbLink: 'kubernetes.moreResources.roles',
           breadcrumbTab: 'roles',
           resourceType: 'role',
@@ -892,7 +890,7 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
       data: {
         resourceConfig: {
           title: '角色绑定详情',
-          breadcrumbLabel: 'Roles',
+          breadcrumbLabel: '角色',
           breadcrumbLink: 'kubernetes.moreResources.roles',
           breadcrumbTab: 'roleBindings',
           resourceType: 'rolebinding',
@@ -935,7 +933,6 @@ angular.module('portainer.kubernetes', ['portainer.app', registriesModule, custo
     $stateRegistryProvider.register(namespaceCreation);
     $stateRegistryProvider.register(namespace);
     $stateRegistryProvider.register(namespaceAccess);
-    $stateRegistryProvider.register(volumesBase);
     $stateRegistryProvider.register(volumes);
     $stateRegistryProvider.register(volume);
     $stateRegistryProvider.register(persistentVolume);

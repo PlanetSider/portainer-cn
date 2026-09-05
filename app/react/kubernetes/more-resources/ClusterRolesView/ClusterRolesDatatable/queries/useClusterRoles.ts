@@ -20,7 +20,7 @@ export function useClusterRoles(
       return compact(clusterRoles);
     },
     {
-      ...withError('Unable to get cluster roles'),
+      ...withError('无法获取集群角色'),
       refetchInterval: options?.autoRefreshRate,
     }
   );
@@ -34,6 +34,6 @@ async function getClusterRoles(environmentId: EnvironmentId) {
 
     return roles;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to get cluster roles');
+    throw parseAxiosError(e, '无法获取集群角色');
   }
 }

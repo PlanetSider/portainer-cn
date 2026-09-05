@@ -9,7 +9,7 @@ export function IngressesDatatableView() {
         title="Ingress 列表"
         breadcrumbs={[
           {
-            label: 'Ingresses',
+            label: 'Ingress',
           },
         ]}
         reload

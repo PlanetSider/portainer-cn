@@ -135,6 +135,10 @@ func (handler *Handler) parseHeaders(r *http.Request, endpoint *portainer.Endpoi
 	version := r.Header.Get(portainer.PortainerAgentHeader)
 	endpoint.Agent.Version = version
 
+	if gpuOperatorHeader := r.Header.Get(portainer.HTTPResponseAgentGPUOperator); gpuOperatorHeader != "" {
+		endpoint.Kubernetes.Flags.GPUOperator = gpuOperatorHeader == "true"
+	}
+
 	return nil
 }
 
@@ -319,9 +323,7 @@ func cacheResponse(w http.ResponseWriter, endpointID portainer.EndpointID, statu
 
 func (handler *Handler) respondFromCache(w http.ResponseWriter, r *http.Request, endpointID portainer.EndpointID) bool {
 	inmHeader := r.Header.Get("If-None-Match")
-	etags := strings.Split(inmHeader, ",")
-
-	if len(inmHeader) == 0 || etags[0] == "" {
+	if inmHeader == "" {
 		return false
 	}
 
@@ -330,7 +332,7 @@ func (handler *Handler) respondFromCache(w http.ResponseWriter, r *http.Request,
 		return false
 	}
 
-	for _, etag := range etags {
+	for etag := range strings.SplitSeq(inmHeader, ",") {
 		if !bytes.Equal([]byte(etag), cachedETag) {
 			continue
 		}

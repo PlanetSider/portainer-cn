@@ -12,8 +12,8 @@ export function ServiceAccountsView() {
   return (
     <>
       <PageHeader
-        title="Service Account 列表"
-        breadcrumbs="Service Accounts"
+        title="服务账号列表"
+        breadcrumbs="服务账号"
         reload
       />
       <ServiceAccountsDatatable />

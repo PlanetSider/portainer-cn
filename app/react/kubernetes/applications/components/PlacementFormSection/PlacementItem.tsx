@@ -36,7 +36,7 @@ export function PlacementItem({
           <Select
             options={labelOptions}
             value={{ label: item.label, value: item.label }}
-            noOptionsMessage={() => 'No available node labels.'}
+            noOptionsMessage={() => '没有可用的节点标签。'}
             onChange={(labelOption) => {
               const newValues = nodesLabels[labelOption?.value || ''];
               onChange({

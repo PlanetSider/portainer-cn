@@ -121,7 +121,8 @@ func TestTransport_adminProxy(t *testing.T) {
 		require.NoError(t, tx.User().Create(&admin))
 		require.NoError(t, tx.User().Create(&std1))
 		require.NoError(t, tx.User().Create(&std2))
-		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{ID: 1, Name: "env",
+		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{
+			ID: 1, Name: "env",
 			UserAccessPolicies: portainer.UserAccessPolicies{std1.ID: portainer.AccessPolicy{RoleID: 1}},
 		}))
 
@@ -313,7 +314,8 @@ func TestTransport_proxyNetworkRequest(t *testing.T) {
 		require.NoError(t, tx.User().Create(&admin))
 		require.NoError(t, tx.User().Create(&std1))
 		require.NoError(t, tx.User().Create(&std2))
-		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{ID: 1, Name: "env",
+		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{
+			ID: 1, Name: "env",
 			UserAccessPolicies: portainer.UserAccessPolicies{std1.ID: portainer.AccessPolicy{RoleID: 1}},
 		}))
 
@@ -688,7 +690,8 @@ func TestTransport_proxyImageRequest_Prune(t *testing.T) {
 	require.NoError(t, ds.UpdateTx(func(tx dataservices.DataStoreTx) error {
 		require.NoError(t, tx.User().Create(&admin))
 		require.NoError(t, tx.User().Create(&std1))
-		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{ID: 1, Name: "env",
+		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{
+			ID: 1, Name: "env",
 			UserAccessPolicies: portainer.UserAccessPolicies{std1.ID: portainer.AccessPolicy{RoleID: 1}},
 		}))
 
@@ -752,7 +755,8 @@ func TestTransport_proxyBuildRequest_Prune(t *testing.T) {
 	require.NoError(t, ds.UpdateTx(func(tx dataservices.DataStoreTx) error {
 		require.NoError(t, tx.User().Create(&admin))
 		require.NoError(t, tx.User().Create(&std1))
-		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{ID: 1, Name: "env",
+		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{
+			ID: 1, Name: "env",
 			UserAccessPolicies: portainer.UserAccessPolicies{std1.ID: portainer.AccessPolicy{RoleID: 1}},
 		}))
 
@@ -821,7 +825,8 @@ func TestTransport_proxyContainerRequest(t *testing.T) {
 		require.NoError(t, tx.User().Create(&admin))
 		require.NoError(t, tx.User().Create(&std1))
 		require.NoError(t, tx.User().Create(&std2))
-		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{ID: 1, Name: "env",
+		require.NoError(t, tx.Endpoint().Create(&portainer.Endpoint{
+			ID: 1, Name: "env",
 			UserAccessPolicies: portainer.UserAccessPolicies{std1.ID: portainer.AccessPolicy{RoleID: 1}},
 		}))
 		require.NoError(t, tx.ResourceControl().Create(authorization.NewPrivateResourceControl(containerID, portainer.ContainerResourceControl, std1.ID)))
@@ -906,5 +911,48 @@ func TestTransport_proxyContainerRequest(t *testing.T) {
 	r, err = test(http.MethodPost, "/containers/prune", std1Token)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusForbidden, r.StatusCode)
+	require.NoError(t, r.Body.Close())
+}
+
+func TestTransport_ProxyDockerRequest_rejectsEncodedSeparator(t *testing.T) {
+	t.Parallel()
+
+	srv, version := mockDockerAPIServer(t, RoutesDefinition{
+		{http.MethodGet, "/images/alpine/get"}: nil,
+	})
+	defer srv.Close()
+
+	transport := &Transport{
+		endpoint:      &portainer.Endpoint{URL: srv.URL},
+		dataStore:     nil,
+		HTTPTransport: &http.Transport{},
+	}
+
+	proxy := func(url string) (*http.Response, error) {
+		req := httptest.NewRequest(http.MethodGet, srv.URL+"/v"+version+url, nil)
+		require.NotNil(t, req)
+
+		return transport.ProxyDockerRequest(req)
+	}
+
+	// encoded slash path is rejected.
+	for _, encoded := range []string{
+		"/images%2falpine%2fget",
+		"/images%2Falpine%2Fget",
+		"/exec%2fabc123%2fstart",
+		"/images%5calpine%5cget",
+	} {
+		r, err := proxy(encoded)
+		require.NoError(t, err)
+		require.NotNil(t, r)
+		require.Equal(t, http.StatusForbidden, r.StatusCode, "expected %q to be rejected", encoded)
+		require.NoError(t, r.Body.Close())
+	}
+
+	// Literal slash path passes the guard and reaches the daemon.
+	r, err := proxy("/images/alpine/get")
+	require.NoError(t, err)
+	require.NotNil(t, r)
+	require.Equal(t, http.StatusOK, r.StatusCode)
 	require.NoError(t, r.Body.Close())
 }

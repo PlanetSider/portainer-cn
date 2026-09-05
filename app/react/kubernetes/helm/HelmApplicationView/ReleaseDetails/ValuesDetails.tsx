@@ -45,7 +45,7 @@ export function ValuesDetails({
               : (values?.computedValues ?? '')
           }
           readonly
-          fileName={`Revision #${selectedRevisionNumber}`}
+          fileName={`修订版本 #${selectedRevisionNumber}`}
           placeholder="未找到值"
           height="60vh"
         />

@@ -32,7 +32,7 @@ export function NodeApplicationsDatatable() {
   } = useCurrentStateAndParams();
   const applicationsQuery = useApplications(envId, {
     nodeName,
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
   });
   const applications = applicationsQuery.data ?? [];
 
@@ -44,13 +44,13 @@ export function NodeApplicationsDatatable() {
       settingsManager={tableState}
       columns={columns}
       disableSelect
-      title="Applications running on this node"
+      title="在此节点上运行的应用"
       titleIcon={LaptopCode}
       isLoading={applicationsQuery.isLoading}
       renderTableSettings={() => (
         <TableSettingsMenu>
           <TableSettingsMenuAutoRefresh
-            value={tableState.autoRefreshRate}
+            value={tableState.autoRefreshRateMS}
             onChange={tableState.setAutoRefreshRate}
           />
         </TableSettingsMenu>

@@ -167,7 +167,7 @@ describe('HelmEventsDatatable', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          'Only events for resources currently in the cluster will be displayed.'
+          '仅显示当前存在于集群中的资源事件。'
         )
       ).toBeInTheDocument();
     });

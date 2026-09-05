@@ -40,7 +40,7 @@ function Cell({ name, namespace, podName, containerName }: CellProps) {
       data-cy={`job-logs-${namespace}-${name}-${containerName}`}
     >
       <Icon icon={FileText} />
-      Logs
+      日志
     </Link>
   );
 }

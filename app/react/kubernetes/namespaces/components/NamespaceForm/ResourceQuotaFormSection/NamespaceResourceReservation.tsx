@@ -38,7 +38,7 @@ export function NamespaceResourceReservation({
       resourceUsage={resourceUsage}
       cpuLimit={cpuLimit}
       memoryLimit={memoryLimit}
-      description="Resource reservation represents the total amount of resource assigned to all the applications deployed inside this namespace."
+      description="资源预留表示分配给此命名空间中所有已部署应用程序的资源总量。"
       isLoading={isLoading}
     />
   );

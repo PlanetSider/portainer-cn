@@ -1,4 +1,4 @@
-import { array, string, boolean, object } from 'yup';
+import { array, string, boolean, number, object } from 'yup';
 
 import { buildUniquenessTest } from '@@/form-components/validate-unique';
 
@@ -9,10 +9,10 @@ import { buildUniquenessTest } from '@@/form-components/validate-unique';
 // unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),
 // could contain dashes (-), underscores (_), dots (.), and alphanumerics between.
 const labelKeyValidation = string()
-  .required('Label key is required')
+  .required('标签键为必填项')
   .test(
     'prefix-test',
-    'Label key prefix must be a valid DNS subdomain',
+    '标签键前缀必须是有效的 DNS 子域名',
     (value) => {
       if (!value) return true; // handled by required()
 
@@ -40,7 +40,7 @@ const labelKeyValidation = string()
   )
   .test(
     'name-test',
-    'Label key must start and end with an alphanumeric character, and contain only alphanumeric characters, hyphens, underscores, and dots',
+    '标签键必须以字母或数字开头和结尾，且只能包含字母、数字、连字符、下划线和点',
     (value) => {
       if (!value) return true; // handled by required()
 
@@ -58,10 +58,10 @@ const labelKeyValidation = string()
   );
 
 const labelValueValidation = string()
-  .max(63, 'Label value must be 63 characters or less')
+  .max(63, '标签值不能超过 63 个字符')
   .test(
     'value-format',
-    'Label value must start/end with alphanumeric and contain only alphanumeric, hyphens, underscores, and dots',
+    '标签值必须以字母或数字开头和结尾，且只能包含字母、数字、连字符、下划线和点',
     (value) => {
       if (!value || value === '') return true; // empty values are allowed
 
@@ -86,14 +86,27 @@ const labelSchema = object({
 });
 
 const taintSchema = object({
-  key: string().required('Taint key is required'),
+  key: string().required('污点键为必填项'),
   value: string(),
   effect: string()
     .oneOf(['NoSchedule', 'PreferNoSchedule', 'NoExecute'])
-    .required('Effect is required'),
+    .required('效果为必填项'),
   needsDeletion: boolean().default(false),
   isNew: boolean().default(false),
   isChanged: boolean().default(false),
+});
+
+const drainOptionsSchema = object({
+  ignoreDaemonSets: boolean().default(true),
+  timeoutSeconds: number()
+    .min(0, '超时时间必须为零或正数秒')
+    .required('超时时间为必填项'),
+  gracePeriodSeconds: number()
+    .min(-1, '宽限期必须为 -1 或正数秒')
+    .required('宽限期为必填项'),
+  force: boolean().default(false),
+  deleteEmptyDirData: boolean().default(true),
+  disableEviction: boolean().default(false),
 });
 
 export function createValidationSchema(
@@ -106,7 +119,7 @@ export function createValidationSchema(
       .oneOf(['Active', 'Pause', 'Drain'])
       .test(
         'only-node-drain',
-        'Cannot drain the only node in cluster',
+        '无法排空集群中的唯一节点',
         (value) => {
           if (value === 'Drain' && isOnlyNode) {
             return false;
@@ -116,7 +129,7 @@ export function createValidationSchema(
       )
       .test(
         'other-node-drain',
-        'Cannot drain node when another node is currently being drained',
+        '其他节点正在排空时，无法排空此节点',
         (value) => {
           if (value === 'Drain' && hasDrainOperation) {
             return false;
@@ -126,7 +139,7 @@ export function createValidationSchema(
       )
       .test(
         'portainer-drain',
-        'Cannot drain node where the Portainer instance is running',
+        '无法排空运行 Portainer 实例的节点',
         (value) => {
           if (value === 'Drain' && containsPortainer) {
             return false;
@@ -134,16 +147,17 @@ export function createValidationSchema(
           return true;
         }
       )
-      .required('Availability is required'),
+      .required('可用性为必填项'),
     labels: array(labelSchema).test(
       'unique-label-keys',
-      'Duplicate label keys are not allowed',
-      buildUniquenessTest(() => 'This label key is already defined', 'key')
+      '不允许使用重复的标签键',
+      buildUniquenessTest(() => '此标签键已定义', 'key')
     ),
     taints: array(taintSchema).test(
       'unique-taint-keys',
-      'Duplicate taint keys are not allowed',
-      buildUniquenessTest(() => 'This taint key is already defined', 'key')
+      '不允许使用重复的污点键',
+      buildUniquenessTest(() => '此污点键已定义', 'key')
     ),
+    drainOptions: drainOptionsSchema,
   });
 }

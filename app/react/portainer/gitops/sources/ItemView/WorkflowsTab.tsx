@@ -5,41 +5,90 @@ import { Card } from '@@/primitives/Card';
 import { Icon } from '@@/Icon';
 import { Link } from '@@/Link';
 
+import { WorkflowTarget, WorkflowType } from '../../workflows/types';
+import { StatusBadge } from '../../components/StatusBadge';
+import { getWorkflowLink } from '../../workflows/utils';
+import { effectiveWorkflowStatus } from '../../workflows/status';
 import {
-  effectiveWorkflowStatus,
-  Workflow,
-  WorkflowTarget,
-  WorkflowType,
-} from '../../WorkflowsView/types';
-import { StatusBadge } from '../../WorkflowsView/WorkflowBadges';
+  SourceWorkflow,
+  useSourceWorkflows,
+} from '../queries/useSourceWorkflows';
+import { Source } from '../types';
 
 interface Props {
-  workflows: Workflow[];
+  sourceId: Source['id'];
 }
 
-export function WorkflowsTab({ workflows }: Props) {
+export function WorkflowsTab({ sourceId }: Props) {
+  const workflowsQuery = useSourceWorkflows(sourceId);
+  const workflows = workflowsQuery.data;
+
   return (
     <Card.Container>
       <Card.Header
         icon={GitCommitIcon}
         title="工作流"
-        subtitle={`${workflows.length} 个工作流正在使用此来源`}
+        subtitle={
+          workflows
+            ? `有 ${workflows.length} 个工作流使用此来源`
+            : undefined
+        }
       />
 
-      {workflows.length === 0 ? (
-        <Card.Body>
-          <p className="text-muted text-sm">
-            没有工作流使用此来源。
-          </p>
-        </Card.Body>
-      ) : (
-        <WorkflowsList workflows={workflows} />
-      )}
+      <WorkflowsBody
+        workflows={workflows}
+        isLoading={workflowsQuery.isLoading}
+      />
     </Card.Container>
   );
 }
 
-function WorkflowsList({ workflows }: { workflows: Array<Workflow> }) {
+function WorkflowsBody({
+  workflows,
+  isLoading,
+}: {
+  workflows: Array<SourceWorkflow> | undefined;
+  isLoading: boolean;
+}) {
+  if (isLoading) {
+    return <WorkflowsSkeleton />;
+  }
+
+  if (!workflows) {
+    return (
+      <Card.Body>
+        <p className="text-muted text-sm">无法加载工作流。</p>
+      </Card.Body>
+    );
+  }
+
+  if (workflows.length === 0) {
+    return (
+      <Card.Body>
+        <p className="text-muted text-sm">
+          没有工作流使用此来源。
+        </p>
+      </Card.Body>
+    );
+  }
+
+  return <WorkflowsList workflows={workflows} />;
+}
+
+function WorkflowsSkeleton() {
+  return (
+    <div className="space-y-2 p-4">
+      {Array.from({ length: 3 }).map((_, index) => (
+        <div
+          key={index}
+          className="h-16 animate-pulse rounded-lg bg-gray-3 th-dark:bg-gray-8"
+        />
+      ))}
+    </div>
+  );
+}
+
+function WorkflowsList({ workflows }: { workflows: Array<SourceWorkflow> }) {
   return (
     <div className="space-y-2">
       {workflows.map((wf) => (
@@ -49,12 +98,14 @@ function WorkflowsList({ workflows }: { workflows: Array<Workflow> }) {
   );
 }
 
-function WorkflowCard({ item }: { item: Workflow }) {
+function WorkflowCard({ item }: { item: SourceWorkflow }) {
+  const { to, params } = getWorkflowLink(item);
+
   return (
     <Link
       className="group flex items-center gap-3 p-4 text-inherit hover:bg-cyan-4/10 hover:text-current hover:!no-underline"
-      to="portainer.gitops.workflows.item"
-      params={{ id: item.id }}
+      to={to}
+      params={params}
       data-cy="workflow-item"
     >
       <div className="me-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-4 text-blue-7">
@@ -68,9 +119,11 @@ function WorkflowCard({ item }: { item: Workflow }) {
           <StatusBadge status={effectiveWorkflowStatus(item).status} />
         </div>
         <div className="flex items-center gap-3">
-          <code className="bg-transparent p-0">
-            {item.gitConfig?.ConfigFilePath}
-          </code>
+          {item.gitConfig?.ConfigFilePath && (
+            <code className="bg-transparent p-0">
+              {item.gitConfig.ConfigFilePath}
+            </code>
+          )}
           <span>
             上次同步：{' '}
             {item.lastSyncDate

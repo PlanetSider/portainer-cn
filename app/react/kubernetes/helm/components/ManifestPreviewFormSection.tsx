@@ -50,7 +50,7 @@ export function ManifestPreviewFormSection({
 
   // only show loading state or the error to keep the view simple (omitting the preview section because there is nothing to preview)
   if (manifestPreviewQuery.isInitialLoading) {
-    return <InlineLoader>正在生成 manifest 预览...</InlineLoader>;
+    return <InlineLoader>正在生成 Manifest 预览...</InlineLoader>;
   }
 
   return (
@@ -77,7 +77,7 @@ export function ManifestPreviewFormSection({
         <Alert color="error" title="Helm Chart 配置错误">
           <ExpandableMessageByLines>
             {manifestPreviewQuery.error?.message ||
-              '生成 manifest 预览失败'}
+              '生成 Manifest 预览失败'}
           </ExpandableMessageByLines>
         </Alert>
       ) : (
@@ -98,7 +98,7 @@ function ManifestPreview({
   newManifest: string;
 }) {
   if (!newManifest) {
-    return <TextTip color="blue">没有可用的 manifest 预览</TextTip>;
+    return <TextTip color="blue">没有可用的 Manifest 预览</TextTip>;
   }
 
   if (currentManifest) {

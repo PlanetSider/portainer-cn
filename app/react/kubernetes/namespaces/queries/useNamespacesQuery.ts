@@ -29,7 +29,7 @@ export function useNamespacesQuery<T = PortainerNamespace[]>(
         options?.withUnhealthyEvents
       ),
     {
-      ...withError('Unable to get namespaces.'),
+      ...withError('无法获取命名空间。'),
       refetchInterval() {
         return options?.autoRefreshRate ?? false;
       },
@@ -55,6 +55,6 @@ export async function getNamespaces(
     );
     return namespaces;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to retrieve namespaces');
+    throw parseAxiosError(e, '无法获取命名空间');
   }
 }

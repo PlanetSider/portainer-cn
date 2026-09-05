@@ -175,7 +175,7 @@ export function getServicePatchPayload(
 
 function getServicePayload(service: ServiceFormValues): Service {
   if (!service.Name || !service.Namespace) {
-    throw new Error('Service name and namespace are required');
+    throw new Error('Service 名称和命名空间为必填项');
   }
 
   // metadata

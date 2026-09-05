@@ -58,7 +58,7 @@ async function getServiceAccountYAML(
   } catch (e) {
     throw parseKubernetesAxiosError(
       e,
-      '无法获取 ServiceAccount YAML'
+      '无法获取服务账号 YAML'
     );
   }
 }

@@ -7,20 +7,22 @@ export async function confirmUpdateAppIngress(
 ) {
   const hasOneIngress = ingressesToUpdate.length === 1;
   const hasOnePort = servicePortsToUpdate.length === 1;
-  const rulePlural = !hasOneIngress ? 'rules' : 'rule';
+  const ingressRuleDescription = hasOneIngress
+    ? '该 Ingress 规则'
+    : '这些 Ingress 规则';
   const noMatchSentence = !hasOnePort
-    ? `Service ports in this application no longer match the ingress ${rulePlural}.`
-    : `A service port in this application no longer matches the ingress ${rulePlural} which may break ingress rule paths.`;
-  const inputLabel = `Update ingress ${rulePlural} to match the service port changes`;
+    ? `此应用中的 Service 端口不再与${ingressRuleDescription}匹配。`
+    : `此应用中的一个 Service 端口不再与${ingressRuleDescription}匹配，可能导致 Ingress 路径失效。`;
+  const inputLabel = `更新${ingressRuleDescription}以匹配 Service 端口变更`;
 
-  const result = await openSwitchPrompt('Are you sure?', inputLabel, {
+  const result = await openSwitchPrompt('确定要更新吗？', inputLabel, {
     message: (
       <ul className="ml-3">
-        <li>Updating the application may cause a service interruption.</li>
+        <li>更新应用可能导致服务中断。</li>
         <li>{noMatchSentence}</li>
       </ul>
     ),
-    confirmButton: buildConfirmButton('Update'),
+    confirmButton: buildConfirmButton('更新'),
     'data-cy': 'kube-update-ingress-prompt-switch',
   });
 

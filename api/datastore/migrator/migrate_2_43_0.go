@@ -69,7 +69,13 @@ type sourceDedupeKey struct {
 }
 
 func gitSourceKey(cfg *gittypes.RepoConfig) sourceDedupeKey {
-	key := sourceDedupeKey{url: cfg.URL}
+	url, err := gittypes.NormalizeURL(gittypes.SanitizeURL(cfg.URL))
+	if err != nil {
+		log.Warn().Err(err).Str("url", cfg.URL).Msg("failed to normalize git URL for deduplication, using raw URL")
+		url = cfg.URL
+	}
+
+	key := sourceDedupeKey{url: url}
 	if cfg.Authentication != nil {
 		key.username = cfg.Authentication.Username
 		key.password = cfg.Authentication.Password
@@ -110,7 +116,7 @@ func (m *Migrator) migrateGitConfigToSources_2_43_0() error {
 	sourcesByKey := make(map[sourceDedupeKey]portainer.SourceID, len(existingSources))
 	for _, src := range existingSources {
 		if src.Git != nil {
-			sourcesByKey[gitSourceKey(src.Git)] = src.ID
+			sourcesByKey[gitSourceKey(&gittypes.RepoConfig{URL: src.Git.URL, Authentication: src.Git.Authentication})] = src.ID
 		}
 	}
 
@@ -159,7 +165,7 @@ func (m *Migrator) migrateGitConfigToSources_2_43_0() error {
 				src := &portainer.Source{
 					Name: gittypes.RepoName(cfg.URL),
 					Type: portainer.SourceTypeGit,
-					Git: &gittypes.RepoConfig{
+					Git: &gittypes.GitSource{
 						URL:            cfg.URL,
 						Authentication: cfg.Authentication,
 						TLSSkipVerify:  cfg.TLSSkipVerify,
@@ -238,7 +244,7 @@ func (m *Migrator) migrateCustomTemplateGitConfigToSources_2_43_0() error {
 	sourcesByKey := make(map[sourceDedupeKey]portainer.SourceID, len(existingSources))
 	for _, src := range existingSources {
 		if src.Git != nil {
-			sourcesByKey[gitSourceKey(src.Git)] = src.ID
+			sourcesByKey[gitSourceKey(&gittypes.RepoConfig{URL: src.Git.URL, Authentication: src.Git.Authentication})] = src.ID
 		}
 	}
 
@@ -248,13 +254,13 @@ func (m *Migrator) migrateCustomTemplateGitConfigToSources_2_43_0() error {
 			continue
 		}
 
-		cfg := &gittypes.RepoConfig{
+		cfg := &gittypes.GitSource{
 			URL:            gittypes.SanitizeURL(t.GitConfig.URL),
 			Authentication: t.GitConfig.Authentication,
 			TLSSkipVerify:  t.GitConfig.TLSSkipVerify,
 		}
 
-		key := gitSourceKey(cfg)
+		key := gitSourceKey(&gittypes.RepoConfig{URL: cfg.URL, Authentication: cfg.Authentication})
 
 		var newSrcID portainer.SourceID
 

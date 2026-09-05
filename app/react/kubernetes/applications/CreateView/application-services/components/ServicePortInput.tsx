@@ -17,12 +17,12 @@ export function ServicePortInput({
 }: Props) {
   return (
     <InputGroup size="small">
-      <InputGroup.Addon required>Service port</InputGroup.Addon>
+      <InputGroup.Addon required>Service 端口</InputGroup.Addon>
       <InputGroup.Input
         type="number"
         className="form-control min-w-max"
         name={`service_port_${portIndex}`}
-        placeholder="e.g. 80"
+        placeholder="例如 80"
         min="1"
         max="65535"
         value={value ?? ''}

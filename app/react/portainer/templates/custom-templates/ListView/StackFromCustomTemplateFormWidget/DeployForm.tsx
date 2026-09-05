@@ -131,7 +131,7 @@ export function DeployForm({
               <p>
                 你可以在{' '}
                 <a
-                  href="https://docs.docker.com/compose/compose-file/"
+                  href="https://docs.docker.com/reference/compose-file/"
                   target="_blank"
                   rel="noreferrer"
                 >

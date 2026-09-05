@@ -62,7 +62,7 @@ export function LoggerConfig({
         这里设置的日志驱动会覆盖 Docker 守护进程的默认日志驱动。
         如果你不想覆盖默认值，请选择“默认日志驱动”。支持的日志驱动可查看{' '}
         <a
-          href="https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers"
+          href="https://docs.docker.com/engine/logging/configure/#supported-logging-drivers"
           target="_blank"
           rel="noreferrer"
         >

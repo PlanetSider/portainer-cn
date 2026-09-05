@@ -33,7 +33,7 @@ export function ClusterRolesDatatable() {
   const tableState = useTableState(settingsStore, storageKey);
 
   const clusterRolesQuery = useClusterRoles(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
   });
   const clusterRoleBindingsQuery = useClusterRoleBindings(environmentId);
   const roleBindingsQuery = useRoleBindings(environmentId);
@@ -67,8 +67,8 @@ export function ClusterRolesDatatable() {
       columns={columns}
       isLoading={isLoading}
       settingsManager={tableState}
-      emptyContentLabel="No supported cluster roles found"
-      title="Cluster Roles"
+      emptyContentLabel="未找到支持的集群角色"
+      title="集群角色"
       titleIcon={UserCheck}
       getRowId={(row) => row.uid}
       isRowSelectable={(row) => !row.original.isSystem}
@@ -108,7 +108,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
   async function handleRemoveClick(roles: SelectedRole[]) {
     const confirmed = await confirmDelete(
       <>
-        <p>Are you sure you want to delete the selected cluster role(s)?</p>
+        <p>确定要删除选中的集群角色吗？</p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {roles.map((s, index) => (
             <li key={index}>{s.name}</li>
@@ -130,14 +130,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Roles successfully removed',
+            '集群角色已成功删除',
             roles.map((r) => `${r.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete cluster roles',
+            '无法删除集群角色',
             error as Error,
             roles.map((r) => `${r.name}`).join(', ')
           );
@@ -156,10 +156,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteClusterRolesMutation.isLoading}
-        loadingText="Removing cluster roles..."
+        loadingText="正在删除集群角色..."
         data-cy="k8sClusterRoles-removeRoleButton"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton

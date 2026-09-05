@@ -53,12 +53,12 @@ export function useUpdateNamespaceMutation(environmentId: EnvironmentId) {
           typeof failure.reason?.err?.message === 'string'
             ? failure.reason?.err?.message
             : '';
-        notifyError('Unable to update namespace', undefined, errorMessage);
+        notifyError('无法更新命名空间', undefined, errorMessage);
       });
       return updatedNamespace;
     },
     {
-      ...withError('Unable to update namespace'),
+      ...withError('无法更新命名空间'),
       //
       ...withInvalidate(queryClient, [
         environmentQueryKeys.item(environmentId),
@@ -80,6 +80,6 @@ async function updateNamespace(
     );
     return ns;
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to create namespace');
+    throw parseAxiosError(e as Error, '无法更新命名空间');
   }
 }

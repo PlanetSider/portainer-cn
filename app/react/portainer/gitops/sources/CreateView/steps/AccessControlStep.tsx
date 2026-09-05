@@ -18,7 +18,7 @@ export function AccessControlStep() {
       />
       <Widget.Body>
         <EditDetails
-          resourceName="来源"
+          resourceName="source"
           values={values}
           onChange={({ ownership, authorizedTeams, authorizedUsers }) => {
             setValues((values) => ({

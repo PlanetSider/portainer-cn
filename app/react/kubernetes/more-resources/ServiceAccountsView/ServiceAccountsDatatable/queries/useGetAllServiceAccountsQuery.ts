@@ -19,7 +19,7 @@ export function useGetAllServiceAccountsQuery(
     queryKeys.list(environmentId),
     async () => getAllServiceAccounts(environmentId),
     {
-      ...withError('无法获取 ServiceAccount'),
+      ...withError('无法获取服务账号'),
       ...options,
     }
   );
@@ -33,6 +33,6 @@ async function getAllServiceAccounts(environmentId: EnvironmentId) {
 
     return services;
   } catch (e) {
-    throw parseAxiosError(e, '无法获取 ServiceAccount');
+    throw parseAxiosError(e, '无法获取服务账号');
   }
 }

@@ -17,7 +17,7 @@ export function WebhookSettings({
 
   return (
     <FormControl
-      label="Webhook 地址"
+      label="Webhook URL"
       tooltip={
         !!docsLink && (
           <>

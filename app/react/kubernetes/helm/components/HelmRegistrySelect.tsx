@@ -133,7 +133,7 @@ function CreateUserRepoMessage() {
       >
         用户设置 - Helm 仓库
       </Link>
-      中定义 <b>repositories</b>。
+      中定义 Helm 仓库。
     </>
   );
 }

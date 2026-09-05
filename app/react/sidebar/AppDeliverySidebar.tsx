@@ -14,7 +14,7 @@ export function AppDeliverySidebar() {
       />
 
       <SidebarItem
-        label="来源"
+        label="GitOps 来源"
         to="portainer.gitops.sources"
         icon={Database}
         data-cy="portainerSidebar-sources"

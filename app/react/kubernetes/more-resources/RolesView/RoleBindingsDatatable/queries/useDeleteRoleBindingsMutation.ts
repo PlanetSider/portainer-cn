@@ -10,7 +10,7 @@ export function useDeleteRoleBindingsMutation(environmentId: EnvironmentId) {
   const queryClient = useQueryClient();
   return useMutation(deleteRoleBindings, {
     ...withInvalidate(queryClient, [queryKeys.list(environmentId)]),
-    ...withError('Unable to delete role bindings'),
+    ...withError('无法删除角色绑定'),
   });
 }
 
@@ -27,6 +27,6 @@ export async function deleteRoleBindings({
       data
     );
   } catch (e) {
-    throw parseAxiosError(e, `Unable to delete role bindings`);
+    throw parseAxiosError(e, '无法删除角色绑定');
   }
 }

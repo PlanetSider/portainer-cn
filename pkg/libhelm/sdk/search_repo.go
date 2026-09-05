@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"net/http"
-	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -13,6 +11,7 @@ import (
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api/filesystem"
 	"github.com/portainer/portainer/api/logs"
 	"github.com/portainer/portainer/pkg/libhelm/options"
 	"github.com/portainer/portainer/pkg/libhttp/ssrf"
@@ -218,7 +217,7 @@ func downloadRepoIndexFromHttpRepo(repoURLString string, repoSettings *cli.EnvSe
 		Str("repo_name", repoName).
 		Msg("Creating chart repository object")
 
-	ssrfTransport := ssrf.WrapTransport(http.DefaultTransport.(*http.Transport).Clone())
+	ssrfTransport := ssrf.NewTransport(nil)
 
 	// Create chart repository object
 	rep, err := repo.NewChartRepository(
@@ -370,7 +369,7 @@ func downloadRepoIndexFromOciRegistry(registry *portainer.Registry, repoSettings
 	indexFile.SortEntries()
 
 	fileNameSafe := strings.ReplaceAll(chartPath, "/", "-")
-	destPath := filepath.Join(repoSettings.RepositoryCache, fmt.Sprintf("%s-%d-index.yaml", fileNameSafe, time.Now().UnixNano()))
+	destPath := filesystem.JoinPaths(repoSettings.RepositoryCache, fmt.Sprintf("%s-%d-index.yaml", fileNameSafe, time.Now().UnixNano()))
 
 	if err := indexFile.WriteFile(destPath, 0644); err != nil {
 		return "", errors.Wrap(err, "failed to write OCI index file")

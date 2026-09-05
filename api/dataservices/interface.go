@@ -1,6 +1,8 @@
 package dataservices
 
 import (
+	"io"
+
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/database/models"
 )
@@ -49,6 +51,7 @@ type (
 		Rollback(force bool) error
 		CheckCurrentEdition() error
 		Backup(path string) (string, error)
+		BackupTo(w io.Writer) error
 		Export(filename string) (err error)
 
 		DataStoreTx
@@ -208,6 +211,7 @@ type (
 		Exists(context SourceServiceUserContext, ID portainer.SourceID) (bool, error)
 		ReadAll(context SourceServiceUserContext, predicates ...func(portainer.Source) bool) ([]portainer.Source, error)
 		Update(context SourceServiceUserContext, ID portainer.SourceID, source *portainer.Source) error
+		UpdateSyncStatus(context SourceServiceUserContext, ID portainer.SourceID, status portainer.SourceStatus, statusError string) error
 		Delete(context SourceServiceUserContext, ID portainer.SourceID) error
 		FindOrCreateGitSource(context SourceServiceUserContext, source *portainer.Source) (*portainer.Source, error)
 	}
@@ -219,7 +223,6 @@ type (
 		StacksByName(name string) ([]portainer.Stack, error)
 		GetNextIdentifier() int
 		StackByWebhookID(ID string) (*portainer.Stack, error)
-		RefreshableStacks() ([]portainer.Stack, error)
 	}
 
 	// TagService represents a service for managing tag data

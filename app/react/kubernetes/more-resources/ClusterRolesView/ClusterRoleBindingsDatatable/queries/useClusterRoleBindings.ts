@@ -20,7 +20,7 @@ export function useClusterRoleBindings(
       return compact(cluerRoleBindings);
     },
     {
-      ...withError('Unable to get cluster role bindings'),
+      ...withError('无法获取集群角色绑定'),
       refetchInterval() {
         return options?.autoRefreshRate ?? false;
       },
@@ -36,6 +36,6 @@ async function getClusterRoleBindings(environmentId: EnvironmentId) {
 
     return roles;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to get cluster role bindings');
+    throw parseAxiosError(e, '无法获取集群角色绑定');
   }
 }

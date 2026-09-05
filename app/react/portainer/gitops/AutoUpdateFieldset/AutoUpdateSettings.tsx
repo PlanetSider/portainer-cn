@@ -1,15 +1,10 @@
-import { FormikErrors } from 'formik';
-
 import { FeatureId } from '@/react/portainer/feature-flags/enums';
 import { type AutoUpdateModel } from '@/react/portainer/gitops/types';
 
-import { ButtonSelector } from '@@/form-components/ButtonSelector/ButtonSelector';
-import { FormControl } from '@@/form-components/FormControl';
 import { SwitchField } from '@@/form-components/SwitchField';
 import { TextTip } from '@@/Tip/TextTip';
 
 import { ForceDeploymentSwitch } from './ForceDeploymentSwitch';
-import { IntervalField } from './IntervalField';
 import { WebhookSettings } from './WebhookSettings';
 
 export function AutoUpdateSettings({
@@ -17,7 +12,6 @@ export function AutoUpdateSettings({
   onChange,
   environmentType,
   showForcePullImage,
-  errors,
   baseWebhookUrl,
   webhookId,
   webhookDocs,
@@ -26,44 +20,21 @@ export function AutoUpdateSettings({
   onChange: (value: Partial<AutoUpdateModel>) => void;
   environmentType?: 'DOCKER' | 'KUBERNETES';
   showForcePullImage: boolean;
-  errors?: FormikErrors<AutoUpdateModel>;
   baseWebhookUrl: string;
   webhookId: string;
   webhookDocs?: string;
 }) {
   return (
     <>
+      <WebhookSettings
+        baseUrl={baseWebhookUrl}
+        value={webhookId}
+        docsLink={webhookDocs}
+      />
+
       <TextTip color="orange" className="mb-2">
         通过 Portainer 在本地，或直接在集群中对该堆栈/应用所做的任何更改，都将被 Git 仓库中的内容覆盖，这可能会导致服务中断。
       </TextTip>
-
-      <FormControl label="触发方式">
-        <ButtonSelector
-          size="small"
-          options={[
-            { value: 'Interval', label: '轮询' },
-            { value: 'Webhook', label: 'Webhook' },
-          ]}
-          value={value.RepositoryMechanism || 'Interval'}
-          onChange={(value) => onChange({ RepositoryMechanism: value })}
-        />
-      </FormControl>
-
-      {value.RepositoryMechanism === 'Webhook' && (
-        <WebhookSettings
-          baseUrl={baseWebhookUrl}
-          value={webhookId}
-          docsLink={webhookDocs}
-        />
-      )}
-
-      {value.RepositoryMechanism === 'Interval' && (
-        <IntervalField
-          value={value.RepositoryFetchInterval || ''}
-          onChange={(value) => onChange({ RepositoryFetchInterval: value })}
-          errors={errors?.RepositoryFetchInterval}
-        />
-      )}
 
       {showForcePullImage && (
         <div className="form-group">

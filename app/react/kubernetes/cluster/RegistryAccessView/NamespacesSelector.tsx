@@ -31,7 +31,7 @@ export function NamespacesSelector({
 }: Props) {
   const options = useMemo(() => {
     if (allowSelectAll) {
-      return [{ id: 'all', name: 'Select all' }, ...namespaces];
+      return [{ id: 'all', name: '全选' }, ...namespaces];
     }
     return namespaces;
   }, [namespaces, allowSelectAll]);

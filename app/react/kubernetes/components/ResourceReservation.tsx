@@ -34,7 +34,7 @@ export function ResourceReservation({
   cpuLimit,
   memoryLimit,
   description,
-  title = 'Resource reservation',
+  title = '资源预留',
   isLoading = false,
   displayWarning = false,
   warningMessage = '',
@@ -81,7 +81,7 @@ export function ResourceReservation({
           <ResourceUsageItem
             value={resourceReservation.memory}
             total={memoryLimit}
-            label="Memory reservation"
+            label="内存预留"
             annotation={memoryReservationAnnotation}
             isLoading={isLoading}
             dataCy="memory-reservation"
@@ -91,7 +91,7 @@ export function ResourceReservation({
           <ResourceUsageItem
             value={resourceUsage.memory}
             total={memoryLimit}
-            label="Memory usage"
+            label="内存使用量"
             annotation={memoryUsageAnnotation}
             isLoading={isLoading}
             dataCy="memory-usage"
@@ -101,7 +101,7 @@ export function ResourceReservation({
           <ResourceUsageItem
             value={resourceReservation.cpu}
             total={cpuLimit}
-            label="CPU reservation"
+            label="CPU 预留"
             annotation={cpuReservationAnnotation}
             isLoading={isLoading}
             dataCy="cpu-reservation"
@@ -111,7 +111,7 @@ export function ResourceReservation({
           <ResourceUsageItem
             value={resourceUsage.cpu}
             total={cpuLimit}
-            label="CPU usage"
+            label="CPU 使用量"
             annotation={cpuUsageAnnotation}
             isLoading={isLoading}
             dataCy="cpu-usage"

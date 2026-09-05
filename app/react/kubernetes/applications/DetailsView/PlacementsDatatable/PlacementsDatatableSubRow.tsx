@@ -29,7 +29,7 @@ export function SubRow({ node, cellCount }: SubRowProps) {
           })}
         >
           <td colSpan={cellCount}>
-            Placement constraint not respected for that node.
+            该节点不满足调度约束。
           </td>
         </tr>
       )}
@@ -43,7 +43,7 @@ export function SubRow({ node, cellCount }: SubRowProps) {
           })}
         >
           <td colSpan={cellCount}>
-            Placement label not respected for that node.
+            该节点不满足调度标签要求。
           </td>
         </tr>
       )}
@@ -101,7 +101,7 @@ function UnmetTaintsInfo({
           key={taint.key}
         >
           <td colSpan={cellCount}>
-            This application is missing a toleration for the taint
+            此应用缺少对污点
             <code className="space-left">
               {taint.key}
               {taint.value ? `=${taint.value}` : ''}:{taint.effect}
@@ -133,8 +133,8 @@ function UnmatchedLabelsInfo({
           key={label.key}
         >
           <td colSpan={cellCount}>
-            This application can only be scheduled on a node where the label{' '}
-            <code>{label.key}</code> is set to <code>{label.value}</code>
+            此应用只能调度到标签{' '}
+            <code>{label.key}</code>设置为<code>{label.value}</code>的节点上
           </td>
         </tr>
       ))}
@@ -160,8 +160,7 @@ function UnmatchedAffinitiesInfo({
         })}
       >
         <td colSpan={cellCount}>
-          This application can only be scheduled on nodes respecting one of the
-          following labels combination:
+          此应用只能调度到满足以下任一标签组合的节点上：
         </td>
       </tr>
       {affinities.map((aff) => (

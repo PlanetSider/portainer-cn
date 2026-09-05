@@ -8,6 +8,7 @@ import { UserViewModel } from '@/portainer/models/user';
 import { withUserProvider } from '@/react/test-utils/withUserProvider';
 import { mockCodeMirror } from '@/setup-tests/mock-codemirror';
 import { mockLocalizeDate } from '@/setup-tests/mock-localizeDate';
+import { suppressConsoleLogs } from '@/setup-tests/suppress-console';
 
 import { HelmApplicationView } from './HelmApplicationView';
 
@@ -231,7 +232,7 @@ describe('HelmApplicationView', () => {
     const { findByText, findAllByText } = renderComponent();
 
     // Check for the page header
-    expect(await findByText('Helm details')).toBeInTheDocument();
+    expect(await findByText('Helm 详情')).toBeInTheDocument();
 
     // Check for the details content - these values should appear somewhere in the card
     expect(await findByText('default')).toBeInTheDocument(); // namespace
@@ -245,10 +246,10 @@ describe('HelmApplicationView', () => {
     expect(await findAllByText(/test-chart/)).toHaveLength(2); // chart name appears twice
 
     // There shouldn't be a notes tab when there are no notes
-    expect(screen.queryByText(/Notes/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/备注/)).not.toBeInTheDocument();
 
     // There shouldn't be an app version badge when it's missing
-    expect(screen.queryByText(/App version/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/应用版本/)).not.toBeInTheDocument();
 
     // Ensure there are no console errors
     // eslint-disable-next-line no-console
@@ -266,22 +267,20 @@ describe('HelmApplicationView', () => {
       )
     );
 
-    // Mock console.error to prevent test output pollution
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const restoreConsole = suppressConsoleLogs();
 
     renderComponent();
 
     // Wait for the error message to appear
     expect(
       await screen.findByText(
-        'Failed to load Helm application details',
+        '加载 Helm 应用详情失败',
         {},
         { timeout: 6500 }
       )
     ).toBeInTheDocument();
 
-    // Restore console.error
-    vi.spyOn(console, 'error').mockRestore();
+    restoreConsole();
   });
 
   it('should display additional details when available in helm release', async () => {
@@ -293,15 +292,15 @@ describe('HelmApplicationView', () => {
 
     const { findByText } = renderComponent();
 
-    expect(await findByText('Helm details')).toBeInTheDocument();
+    expect(await findByText('Helm 详情')).toBeInTheDocument();
 
     await waitFor(() => {
       // Look for specific tab text
-      expect(screen.getByText('Resources')).toBeInTheDocument();
-      expect(screen.getByText('Values')).toBeInTheDocument();
+      expect(screen.getByText('资源')).toBeInTheDocument();
+      expect(screen.getByText('值')).toBeInTheDocument();
       expect(screen.getByText('Manifest')).toBeInTheDocument();
-      expect(screen.getByText('Notes')).toBeInTheDocument();
-      expect(screen.getByText('Events')).toBeInTheDocument();
+      expect(screen.getByText('备注')).toBeInTheDocument();
+      expect(screen.getByText('事件')).toBeInTheDocument();
     });
 
     // Check for the app version in the summary section

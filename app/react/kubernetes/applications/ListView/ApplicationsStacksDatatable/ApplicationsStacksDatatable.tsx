@@ -36,7 +36,7 @@ export function ApplicationsStacksDatatable({
   const namespaceListQuery = useNamespacesQuery(environmentId);
   const { authorized: hasWriteAuth } = useAuthorizations('K8sApplicationsW');
   const applicationsQuery = useApplications(environmentId, {
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
     namespace: tableState.namespace,
   });
   const ingressesQuery = useIngresses(environmentId);
@@ -59,7 +59,7 @@ export function ApplicationsStacksDatatable({
   return (
     <ExpandableDatatable
       getRowCanExpand={(row) => row.original.Applications.length > 0}
-      title="Stacks"
+      title="堆栈"
       titleIcon={List}
       dataset={stacks}
       isLoading={applicationsQuery.isLoading || namespaceListQuery.isLoading}

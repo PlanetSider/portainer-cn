@@ -190,11 +190,11 @@ describe('NodeDetails', () => {
     });
 
     // Find the availability select and select Drain
-    const availabilitySelect = screen.getByLabelText('Availability');
-    await select(availabilitySelect, 'Drain', { user });
+    const availabilitySelect = screen.getByLabelText('可用性');
+    await select(availabilitySelect, '排空', { user });
 
     // Try to submit the form to trigger validation
-    const submitButton = screen.getByRole('button', { name: /update node/i });
+    const submitButton = screen.getByRole('button', { name: /更新节点/i });
     await user.click(submitButton);
 
     // Check that the confirmation modal is called with drain warning
@@ -218,16 +218,16 @@ describe('NodeDetails', () => {
       expect(screen.getByText('test-node')).toBeInTheDocument();
     });
 
-    const availabilitySelect = screen.getByLabelText('Availability');
-    await select(availabilitySelect, 'Drain', { user });
+    const availabilitySelect = screen.getByLabelText('可用性');
+    await select(availabilitySelect, '排空', { user });
 
     await waitFor(() => {
       expect(
-        screen.getByText(/cannot drain node where.*portainer.*running/i)
+        screen.getByText(/无法排空运行 Portainer 实例的节点/i)
       ).toBeInTheDocument();
     });
 
-    const submitButton = screen.getByRole('button', { name: /update node/i });
+    const submitButton = screen.getByRole('button', { name: /更新节点/i });
     expect(submitButton).toBeDisabled();
   });
 
@@ -241,16 +241,16 @@ describe('NodeDetails', () => {
       expect(screen.getByText('test-node')).toBeInTheDocument();
     });
 
-    const availabilitySelect = screen.getByLabelText('Availability');
-    await select(availabilitySelect, 'Drain', { user });
+    const availabilitySelect = screen.getByLabelText('可用性');
+    await select(availabilitySelect, '排空', { user });
 
     await waitFor(() => {
       expect(
-        screen.getByText(/cannot drain.*only node.*cluster/i)
+        screen.getByText(/无法排空集群中的唯一节点/i)
       ).toBeInTheDocument();
     });
 
-    const submitButton = screen.getByRole('button', { name: /update node/i });
+    const submitButton = screen.getByRole('button', { name: /更新节点/i });
     expect(submitButton).toBeDisabled();
   });
 
@@ -277,12 +277,12 @@ describe('NodeDetails', () => {
       expect(screen.getByText('test-node')).toBeInTheDocument();
     });
 
-    const availabilitySelect = screen.getByLabelText('Availability');
-    await select(availabilitySelect, 'Drain', { user });
+    const availabilitySelect = screen.getByLabelText('可用性');
+    await select(availabilitySelect, '排空', { user });
 
     await waitFor(() => {
       expect(
-        screen.getByText(/cannot drain.*another node.*currently.*drained/i)
+        screen.getByText(/其他节点正在排空时，无法排空此节点/i)
       ).toBeInTheDocument();
     });
   });
@@ -297,10 +297,10 @@ describe('NodeDetails', () => {
       expect(screen.getByText('test-node')).toBeInTheDocument();
     });
 
-    const availabilitySelect = screen.getByLabelText('Availability');
-    await select(availabilitySelect, 'Pause', { user });
+    const availabilitySelect = screen.getByLabelText('可用性');
+    await select(availabilitySelect, '暂停', { user });
 
-    const submitButton = screen.getByRole('button', { name: /update node/i });
+    const submitButton = screen.getByRole('button', { name: /更新节点/i });
     await user.click(submitButton);
 
     // Verify confirmation modal was called with cordon warning
@@ -325,7 +325,7 @@ describe('NodeDetails', () => {
 
     // Form actions should not be present
     expect(
-      screen.queryByRole('button', { name: /update node/i })
+      screen.queryByRole('button', { name: /更新节点/i })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: /cancel/i })

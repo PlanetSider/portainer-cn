@@ -51,7 +51,7 @@ describe('DescribeModal', () => {
     });
 
     renderComponent();
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('正在加载...')).toBeInTheDocument();
   });
 
   it('should display resource details when data is loaded successfully', () => {
@@ -68,7 +68,7 @@ describe('DescribeModal', () => {
     renderComponent();
 
     // Check for modal title
-    expect(screen.getByText('Describe Deployment')).toBeInTheDocument();
+    expect(screen.getByText('查看 Deployment 详情')).toBeInTheDocument();
 
     // Check for content
     const editor = screen.getByTestId('describe-resource');
@@ -88,7 +88,7 @@ describe('DescribeModal', () => {
     renderComponent();
 
     expect(
-      screen.getByText('Error loading resource details')
+      screen.getByText('加载资源详情时出错')
     ).toBeInTheDocument();
   });
 

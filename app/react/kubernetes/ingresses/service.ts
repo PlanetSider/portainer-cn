@@ -14,7 +14,7 @@ export async function getIngress(
     );
     return ingress[0];
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to retrieve the ingress');
+    throw parseAxiosError(e as Error, '无法获取 Ingress');
   }
 }
 
@@ -29,7 +29,7 @@ export async function getIngresses(
     );
     return ingresses;
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to retrieve ingresses');
+    throw parseAxiosError(e as Error, '无法获取 Ingress 列表');
   }
 }
 
@@ -45,7 +45,7 @@ export async function getIngressControllers(
     );
     return ingresscontrollers;
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to retrieve ingresses');
+    throw parseAxiosError(e as Error, '无法获取 Ingress 控制器');
   }
 }
 
@@ -59,7 +59,7 @@ export async function createIngress(
       ingress
     );
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to create an ingress');
+    throw parseAxiosError(e as Error, '无法创建 Ingress');
   }
 }
 
@@ -70,7 +70,7 @@ export async function updateIngress(
   try {
     await axios.put(buildUrl(environmentId, ingress.Namespace), ingress);
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to update an ingress');
+    throw parseAxiosError(e as Error, '无法更新 Ingress');
   }
 }
 
@@ -84,7 +84,7 @@ export async function deleteIngresses(
       data
     );
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to delete ingresses');
+    throw parseAxiosError(e as Error, '无法删除 Ingress');
   }
 }
 

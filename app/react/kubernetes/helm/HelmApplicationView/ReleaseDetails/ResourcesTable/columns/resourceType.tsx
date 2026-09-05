@@ -7,10 +7,10 @@ import { ResourceRow } from '../types';
 import { columnHelper } from './helper';
 
 export const resourceType = columnHelper.accessor((row) => row.resourceType, {
-  header: 'Resource type',
+  header: '资源类型',
   id: 'resourceType',
   meta: {
-    filter: filterHOC('Filter by resource type'),
+    filter: filterHOC('按资源类型筛选'),
   },
   enableColumnFilter: true,
   filterFn: (row: Row<ResourceRow>, _: string, filterValue: string[]) =>

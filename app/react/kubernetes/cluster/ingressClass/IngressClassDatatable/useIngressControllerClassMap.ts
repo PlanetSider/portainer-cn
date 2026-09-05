@@ -35,7 +35,7 @@ export function useIngressControllerClassMapQuery({
       });
     },
     {
-      ...withError('Failure', 'Unable to get ingress controllers.'),
+      ...withError('失败', '无法获取 Ingress Controller。'),
       enabled: !!environmentId,
     }
   );
@@ -61,7 +61,7 @@ export async function getIngressControllerClassMap({
     );
     return controllerMaps;
   } catch (e) {
-    throw new PortainerError('Unable to get ingress controllers.', e as Error);
+    throw new PortainerError('无法获取 Ingress Controller。', e as Error);
   }
 }
 
@@ -78,7 +78,7 @@ export async function updateIngressControllerClassMap(
     return controllerMaps;
   } catch (e) {
     throw new PortainerError(
-      'Unable to update ingress controllers.',
+      '无法更新 Ingress Controller。',
       e as Error
     );
   }

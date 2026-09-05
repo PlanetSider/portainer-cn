@@ -28,24 +28,24 @@ export function KubectlShellView() {
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 z-[10000] bg-black text-white">
       {shellState === 'connecting' && (
-        <div className="px-4 pt-2">Loading Terminal...</div>
+        <div className="px-4 pt-2">正在加载终端...</div>
       )}
       {shellState === 'disconnected' && (
         <div className="p-4">
-          <Alert color="info" title="Console disconnected">
+          <Alert color="info" title="终端已断开连接">
             <div className="mt-4 flex items-center gap-2">
               <Button
                 onClick={() => window.location.reload()}
                 data-cy="k8sShell-reloadButton"
               >
-                Reload
+                重新加载
               </Button>
               <Button
                 onClick={() => window.close()}
                 color="default"
                 data-cy="k8sShell-closeButton"
               >
-                Close
+                关闭
               </Button>
             </div>
           </Alert>
@@ -58,8 +58,8 @@ export function KubectlShellView() {
         initialCommands={[
           ...LINUX_SHELL_INIT_COMMANDS,
 
-          '# Run kubectl commands inside here',
-          '# e.g. kubectl get all',
+          '# 在此处运行 kubectl 命令\n',
+          '# 例如：kubectl get all\n',
           '',
         ]}
         onResize={supportsResizeOverSocket ? 'socket' : null}

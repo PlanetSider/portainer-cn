@@ -23,12 +23,8 @@ export function useCreateNamespaceMutation(environmentId: EnvironmentId) {
       updateRegistriesPayload: UpdateRegistryPayload[];
       namespaceIngressControllerPayload: IngressControllerClassMap[];
     }) => {
-      try {
-        // create the namespace first, so that it exists before referencing it in the registry access request
-        await createNamespace(environmentId, createNamespacePayload);
-      } catch (e) {
-        throw new Error(e as string);
-      }
+      // create the namespace first, so that it exists before referencing it in the registry access request
+      await createNamespace(environmentId, createNamespacePayload);
 
       // collect promises
       const updateRegistriesPromises = updateRegistriesPayload.map(
@@ -53,7 +49,7 @@ export function useCreateNamespaceMutation(environmentId: EnvironmentId) {
       ]);
     },
     {
-      ...withError('Unable to create namespace'),
+      ...withError('无法创建命名空间'),
       ...withInvalidate(queryClient, [queryKeys.list(environmentId)]),
     }
   );
@@ -71,7 +67,7 @@ async function createNamespace(
     );
     return ns;
   } catch (e) {
-    throw parseAxiosError(e as Error, 'Unable to create namespace');
+    throw parseAxiosError(e as Error, '无法创建命名空间');
   }
 }
 

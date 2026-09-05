@@ -47,7 +47,7 @@ export function HelmInstallForm({
   const versions = helmRepoVersionsQuery.data;
   const versionOptions: Option<ChartVersion>[] = versions.map(
     (version, index) => ({
-      label: index === 0 ? `${version.Version} (latest)` : version.Version,
+      label: index === 0 ? `${version.Version}（最新）` : version.Version,
       value: version,
     })
   );
@@ -90,9 +90,9 @@ export function HelmInstallForm({
 
     if (!previewIsValid) {
       const confirmed = await confirm({
-        title: 'Chart validation failed',
+        title: 'Chart 校验失败',
         message:
-          'The Helm manifest preview validation failed, which may indicate configuration issues. This can be normal when creating new resources. Do you want to proceed with the installation?',
+          'Helm Manifest 预览校验失败，这可能表示存在配置问题。在创建新资源时这也可能是正常现象。是否继续安装？',
       });
       if (!confirmed) {
         return;
@@ -110,7 +110,7 @@ export function HelmInstallForm({
       },
       {
         onSuccess() {
-          notifySuccess('Success', 'Helm chart successfully installed');
+          notifySuccess('成功', 'Helm Chart 安装成功');
 
           // Reset the form so page can be navigated away from without getting "Are you sure?"
           formikRef.current?.resetForm();

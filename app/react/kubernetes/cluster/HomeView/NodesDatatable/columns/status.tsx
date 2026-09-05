@@ -25,7 +25,7 @@ function StatusCell({
   return (
     <div className="inline-flex gap-x-2 whitespace-nowrap">
       <StatusBadge color={status === 'Ready' ? 'success' : 'warning'}>
-        {status}
+        {status === 'Ready' ? '就绪' : status}
       </StatusBadge>
       {node.spec?.unschedulable && (
         <StatusBadge color="warning">已禁用调度</StatusBadge>

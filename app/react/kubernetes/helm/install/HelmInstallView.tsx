@@ -40,13 +40,13 @@ export function HelmInstallView() {
 
   return (
     <>
-      <PageHeader title="Helm install" breadcrumbs="Helm install" reload />
+      <PageHeader title="Helm 安装" breadcrumbs="Helm 安装" reload />
       <div className="row">
         <div className="col-sm-12 form-horizontal">
           <Widget>
             <WidgetBody>
-              <FormSection title="Deploy to">
-                <FormControl label="Namespace" required>
+              <FormSection title="部署到">
+                <FormControl label="命名空间" required>
                   <div className="mb-1">
                     <K8sRegistryAccessNotice
                       namespace={namespace}
@@ -61,11 +61,11 @@ export function HelmInstallView() {
                   />
                 </FormControl>
 
-                <FormControl label="Release name" required>
+                <FormControl label="发布名称" required>
                   <Input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. my-app"
+                    placeholder="例如 my-app"
                     data-cy="k8sHelmInstall-nameInput"
                   />
                 </FormControl>

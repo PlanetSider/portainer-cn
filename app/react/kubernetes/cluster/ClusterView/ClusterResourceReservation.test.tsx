@@ -7,6 +7,7 @@ import {
   createMockEnvironment,
   createMockQueryResult,
 } from '@/react-tools/test-mocks';
+import { suppressConsoleLogs } from '@/setup-tests/suppress-console';
 
 import { ClusterResourceReservation } from './ClusterResourceReservation';
 
@@ -169,8 +170,7 @@ describe('ClusterResourceReservation', () => {
       http.get('/api/kubernetes/3/metrics/nodes', () => HttpResponse.error())
     );
 
-    // Mock console.error so test logs are not polluted
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const restoreConsole = suppressConsoleLogs();
 
     renderComponent();
 
@@ -201,11 +201,10 @@ describe('ClusterResourceReservation', () => {
     // Should show the warning message
     expect(
       await screen.findByText(
-        /Resource usage is not currently available as Metrics Server is not responding/
+        /当前无法获取资源使用情况，因为 Metrics Server 未响应/
       )
     ).toBeVisible();
 
-    // Restore console.error
-    vi.spyOn(console, 'error').mockRestore();
+    restoreConsole();
   });
 });

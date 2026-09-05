@@ -50,7 +50,7 @@ export function useHelmRepoVersions(
           queryFn: () => getSearchHelmRepo({ repo, chart, useCache }),
           enabled: !!chart && !!repo,
           staleTime,
-          ...withError(`Unable to retrieve versions from ${repo}`),
+          ...withError(`无法从 ${repo} 获取版本`),
         })),
       [repoSources, chart, staleTime, useCache]
     ),
@@ -98,6 +98,6 @@ async function getSearchHelmRepo(
       })) ?? []
     );
   } catch (err) {
-    throw parseAxiosError(err, 'Unable to retrieve helm repositories for user');
+    throw parseAxiosError(err, '无法获取用户 Helm 仓库');
   }
 }

@@ -23,7 +23,7 @@ async function getDescribeResource(
   try {
     // This should never happen, but to keep the linter happy...
     if (!name || !resourceType) {
-      throw new Error('Name and kind are required');
+      throw new Error('名称和类型为必填项');
     }
 
     const params: DescribeAPIParams = {
@@ -40,7 +40,7 @@ async function getDescribeResource(
     );
     return data;
   } catch (err) {
-    throw parseAxiosError(err, 'Unable to retrieve resource details');
+    throw parseAxiosError(err, '无法获取资源详情');
   }
 }
 
@@ -56,7 +56,7 @@ export function useDescribeResource(
     () => getDescribeResource(environmentId, name, resourceType, namespace),
     {
       enabled: !!environmentId && !!name && !!resourceType,
-      ...withError('Enable to retrieve data for resource'),
+      ...withError('无法获取资源数据'),
     }
   );
 }

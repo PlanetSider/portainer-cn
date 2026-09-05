@@ -18,7 +18,7 @@ export function ApplicationYAMLEditor() {
         <div className="col-sm-12">
           <Widget>
             <WidgetBody>
-              <InlineLoader>Loading application YAML...</InlineLoader>
+              <InlineLoader>正在加载应用 YAML...</InlineLoader>
             </WidgetBody>
           </Widget>
         </div>

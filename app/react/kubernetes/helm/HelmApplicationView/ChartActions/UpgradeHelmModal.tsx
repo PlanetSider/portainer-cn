@@ -47,7 +47,7 @@ export function UpgradeHelmModal({
       version.Version === helmReleaseInitialValues.version;
 
     const label = `${repo}@${version.Version}${
-      isCurrentVersion ? ' (current)' : ''
+      isCurrentVersion ? '（当前）' : ''
     }`;
 
     return {
@@ -101,7 +101,7 @@ export function UpgradeHelmModal({
         title={
           <div className="inline-flex items-center gap-1 px-5">
             <WidgetIcon icon={ArrowUp} />
-            <h2 className="m-0 ml-1 text-base">Upgrade</h2>
+            <h2 className="m-0 ml-1 text-base">升级</h2>
           </div>
         }
       />
@@ -109,7 +109,7 @@ export function UpgradeHelmModal({
         <Modal.Body>
           <div className="form-horizontal">
             <FormControl
-              label="Release name"
+              label="发布名称"
               inputId="release-name-input"
               size="medium"
             >
@@ -200,7 +200,7 @@ export function UpgradeHelmModal({
                 const confirmed = await confirm({
                   title: 'Chart 校验失败',
                   message:
-                    'Helm manifest 预览校验失败，这可能表示存在配置问题。在创建新资源时这也可能是正常现象。是否继续升级？',
+                    'Helm Manifest 预览校验失败，这可能表示存在配置问题。在创建新资源时这也可能是正常现象。是否继续升级？',
                 });
                 if (!confirmed) {
                   return;

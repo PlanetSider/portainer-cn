@@ -2,15 +2,33 @@ import angular from 'angular';
 import uuidv4 from 'uuid/v4';
 import { getEnvironments } from '@/react/portainer/environments/environment.service';
 import { dispatchCacheRefreshEvent } from '@/portainer/services/http-request.helper';
+import { isSameDocumentUrl, isValidReturnUrl } from '@/portainer/helpers/url-utils';
+import { storeReturnUrl, getReturnUrl, cleanReturnUrl } from '@/react/portainer/helpers/returnUrl';
 
 class AuthenticationController {
   /* @ngInject */
-  constructor($async, $scope, $state, $stateParams, $window, Authentication, UserService, StateManager, Notifications, SettingsService, URLHelper, LocalStorage, StatusService) {
+  constructor(
+    $async,
+    $scope,
+    $state,
+    $stateParams,
+    $window,
+    $urlService,
+    Authentication,
+    UserService,
+    StateManager,
+    Notifications,
+    SettingsService,
+    URLHelper,
+    LocalStorage,
+    StatusService
+  ) {
     this.$async = $async;
     this.$scope = $scope;
     this.$state = $state;
     this.$stateParams = $stateParams;
     this.$window = $window;
+    this.$urlService = $urlService;
     this.Authentication = Authentication;
     this.UserService = UserService;
     this.StateManager = StateManager;
@@ -104,6 +122,25 @@ class AuthenticationController {
     return savedUUID && state && savedUUID === state;
   }
 
+  // A same-document returnUrl is a ui-router route, not a page load: location.href would leave us on /auth with the spinner up.
+  // Returns false when the route goes nowhere, so callers fall back to their normal destination.
+  followReturnUrl(returnUrl) {
+    if (!isSameDocumentUrl(returnUrl)) {
+      this.$window.location.href = returnUrl;
+      return true;
+    }
+
+    const path = new URL(returnUrl, this.$window.location.href).hash.replace(/^#!/, '');
+    const match = this.$urlService.match({ path });
+    if (match?.rule?.type !== 'STATE' || match.rule.state.name === this.$state.current.name) {
+      return false;
+    }
+
+    this.$urlService.url(path);
+    this.$urlService.sync();
+    return true;
+  }
+
   /**
    * END UTILS FUNCTIONS SECTION
    */
@@ -123,9 +160,15 @@ class AuthenticationController {
 
       if (endpoints.value.length === 0 && isAdmin) {
         return this.$state.go('portainer.wizard');
-      } else {
-        return this.$state.go('portainer.home');
       }
+
+      const returnUrl = getReturnUrl();
+      cleanReturnUrl();
+      if (returnUrl && isValidReturnUrl(returnUrl) && this.followReturnUrl(returnUrl)) {
+        return;
+      }
+
+      return this.$state.go('portainer.home');
     } catch (err) {
       this.error(err, '无法获取环境');
     }
@@ -219,6 +262,11 @@ class AuthenticationController {
       this.state.showStandardLogin = !this.state.showOAuthLogin;
       this.state.OAuthLoginURI = settings.OAuthLoginURI;
       this.state.OAuthProvider = this.determineOauthProvider(settings.OAuthLoginURI);
+
+      const returnUrl = new URLSearchParams(this.$window.location.search).get('returnUrl');
+      if (returnUrl && isValidReturnUrl(returnUrl)) {
+        storeReturnUrl(returnUrl);
+      }
 
       const code = this.URLHelper.getParameter('code');
       const state = this.URLHelper.getParameter('state');

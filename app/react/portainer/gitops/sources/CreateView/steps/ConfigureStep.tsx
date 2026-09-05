@@ -16,8 +16,8 @@ const panels: Record<
   FormValues['type'],
   { title: string; component: ComponentType }
 > = {
-  git: { title: 'Git Repository', component: ConfigureGit },
-  helm: { title: 'Helm Repository', component: ConfigureHelm },
+  git: { title: 'Git 仓库', component: ConfigureGit },
+  helm: { title: 'Helm 仓库', component: ConfigureHelm },
   registry: { title: 'OCI Registry', component: ConfigureRegistry },
 };
 

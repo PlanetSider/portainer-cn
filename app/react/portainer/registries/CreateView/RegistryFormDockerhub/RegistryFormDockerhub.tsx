@@ -48,7 +48,7 @@ export function RegistryFormDockerhub({
               <p>
                 如需了解如何生成 DockerHub Access Token，请参考{' '}
                 <a
-                  href="https://docs.docker.com/docker-hub/access-tokens/"
+                  href="https://docs.docker.com/security/access-tokens/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

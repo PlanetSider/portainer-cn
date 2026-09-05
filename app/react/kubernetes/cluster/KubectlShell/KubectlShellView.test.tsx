@@ -44,7 +44,11 @@ function triggerStateChange(state: ShellState) {
 beforeEach(() => {
   vi.clearAllMocks();
   Object.defineProperty(window, 'location', {
-    value: { protocol: 'https:', host: 'localhost:3000' },
+    value: {
+      protocol: 'https:',
+      host: 'localhost:3000',
+      href: 'https://localhost:3000/',
+    },
     writable: true,
   });
 });
@@ -60,7 +64,11 @@ describe('KubectlShellView', () => {
 
     it('builds ws:// URL when location is http', () => {
       Object.defineProperty(window, 'location', {
-        value: { protocol: 'http:', host: 'localhost:3000' },
+        value: {
+          protocol: 'http:',
+          host: 'localhost:3000',
+          href: 'http://localhost:3000/',
+        },
         writable: true,
       });
       renderComponent();
@@ -79,13 +87,13 @@ describe('KubectlShellView', () => {
     it('shows loading indicator when connecting', () => {
       renderComponent();
       triggerStateChange('connecting');
-      expect(screen.getByText('Loading Terminal...')).toBeInTheDocument();
+      expect(screen.getByText('正在加载终端...')).toBeInTheDocument();
     });
 
     it('shows disconnected panel when disconnected', () => {
       renderComponent();
       triggerStateChange('disconnected');
-      expect(screen.getByText('Console disconnected')).toBeInTheDocument();
+      expect(screen.getByText('终端已断开连接')).toBeInTheDocument();
     });
 
     it('calls terminalClose when state becomes disconnected', () => {
@@ -96,9 +104,9 @@ describe('KubectlShellView', () => {
 
     it('shows nothing initially (idle state)', () => {
       renderComponent();
-      expect(screen.queryByText('Loading Terminal...')).not.toBeInTheDocument();
+      expect(screen.queryByText('正在加载终端...')).not.toBeInTheDocument();
       expect(
-        screen.queryByText('Console disconnected')
+        screen.queryByText('终端已断开连接')
       ).not.toBeInTheDocument();
     });
   });
@@ -111,13 +119,13 @@ describe('KubectlShellView', () => {
 
     it('renders Reload button', () => {
       expect(screen.getByTestId('k8sShell-reloadButton')).toHaveTextContent(
-        'Reload'
+        '重新加载'
       );
     });
 
     it('renders Close button', () => {
       expect(screen.getByTestId('k8sShell-closeButton')).toHaveTextContent(
-        'Close'
+        '关闭'
       );
     });
 

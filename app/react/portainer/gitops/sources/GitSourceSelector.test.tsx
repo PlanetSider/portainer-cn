@@ -37,7 +37,7 @@ describe('GitSourceSelector', () => {
   it('renders the source selector', async () => {
     renderComponent();
 
-    expect(await screen.findByLabelText('来源')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Source')).toBeInTheDocument();
   });
 
   it('shows the create new source button', async () => {

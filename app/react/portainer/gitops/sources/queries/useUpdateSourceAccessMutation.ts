@@ -31,6 +31,6 @@ export function useUpdateSourceAccessMutation(id: Source['id']) {
       queryClient.invalidateQueries({
         queryKey: sourceQueryKeys.detail(id),
       }),
-    ...withError('无法更新来源访问权限'),
+    ...withError('Unable to update source access'),
   });
 }

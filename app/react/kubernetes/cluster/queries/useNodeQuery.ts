@@ -25,7 +25,7 @@ async function getNode(
     );
     return node;
   } catch (e) {
-    throw parseKubernetesAxiosError(e, 'Unable to get node details');
+    throw parseKubernetesAxiosError(e, '无法获取节点详情');
   }
 }
 
@@ -42,7 +42,7 @@ export function useNodeQuery<T = Node>(
     queryKeys.node(environmentId, nodeName, queryOptions?.isYaml),
     () => getNode(environmentId, nodeName, queryOptions?.isYaml),
     {
-      ...withError('Unable to get node details'),
+      ...withError('无法获取节点详情'),
       ...queryOptions,
     }
   );

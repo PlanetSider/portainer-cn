@@ -48,7 +48,7 @@ export function GitForm({
   const [value, setValue] = useState(initialValue); // TODO: remove this state when form is not inside angularjs
 
   return (
-    <FormSection title="Git Repository">
+    <FormSection title="Git 仓库">
       <GitSourceSelector
         value={value.SourceId}
         onChange={(source) =>
@@ -96,7 +96,6 @@ export function GitForm({
           value={value.AutoUpdate}
           onChange={(value) => handleChange({ AutoUpdate: value })}
           isForcePullVisible={isForcePullVisible}
-          errors={errors.AutoUpdate as FormikErrors<GitFormModel['AutoUpdate']>}
           webhooksDocs={webhooksDocs}
         />
       )}
@@ -132,7 +131,7 @@ export function buildGitValidationSchema(
         ? '必须填写 Compose 文件路径'
         : '必须填写 Manifest 文件路径'
     ),
-    AdditionalFiles: array(string().required('必须填写路径')).default([]),
+    AdditionalFiles: array(string().required('路径为必填项')).default([]),
     AutoUpdate: autoUpdateValidation().nullable(),
     SourceId: number()
       .min(1, '必须选择来源')

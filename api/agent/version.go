@@ -28,7 +28,7 @@ func GetAgentVersionAndPlatform(endpointUrl string, tlsConfig *tls.Config) (port
 	httpCli := &http.Client{Timeout: 3 * time.Second}
 
 	if tlsConfig != nil {
-		httpCli.Transport = ssrf.WrapTransport(&http.Transport{TLSClientConfig: tlsConfig})
+		httpCli.Transport = ssrf.NewTransport(tlsConfig)
 	}
 
 	parsedURL, err := url.ParseURL(endpointUrl + "/ping")

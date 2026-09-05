@@ -49,12 +49,11 @@ export function ComposePathField({
           </span>
           {isDockerStandalone && (
             <span className="ml-2">
-              若要在 Docker Standalone 环境中启用对已存在镜像的重新构建，请在 Compose 文件中加入
-              <code>pull_policy: build</code>，并参考{' '}
-              <a href="https://docs.docker.com/compose/compose-file/#pull_policy">
+              若要在 Docker standalone 环境中重新构建已存在的镜像，请按照{' '}
+              <a href="https://docs.docker.com/reference/compose-file/services/#pull_policy">
                 Docker 文档
               </a>
-              进行配置。
+              中的说明，在 compose 文件中加入 <code>pull_policy: build</code>。
             </span>
           )}
         </TextTip>

@@ -24,7 +24,7 @@ export function useDeleteNamespaces(environmentId: number) {
       deleteNamespaces(environmentId, namespaceNames),
     {
       ...withInvalidate(queryClient, [queryKeys.list(environmentId)]),
-      ...withError('Unable to delete namespaces'),
+      ...withError('无法删除命名空间'),
       // onSuccess handled by the caller
     }
   );
@@ -42,6 +42,6 @@ async function deleteNamespaces(
       }
     );
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to delete namespace');
+    throw parseAxiosError(e, '无法删除命名空间');
   }
 }

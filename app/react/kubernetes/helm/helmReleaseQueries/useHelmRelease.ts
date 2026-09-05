@@ -39,7 +39,7 @@ export function useHelmRelease<T = HelmRelease>(
     {
       enabled:
         !!environmentId && !!name && !!namespace && (options.enabled ?? true),
-      ...withError('Unable to retrieve helm application details'),
+    ...withError('无法获取 Helm 应用详情'),
       retry: 3,
       // occasionally the application shows before the release is created, take some more time to refetch
       retryDelay: 2000,
@@ -73,6 +73,6 @@ async function getHelmRelease(
     );
     return data;
   } catch (err) {
-    throw parseAxiosError(err, 'Unable to retrieve helm application details');
+    throw parseAxiosError(err, '无法获取 Helm 应用详情');
   }
 }

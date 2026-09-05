@@ -45,11 +45,11 @@ export function HomeView() {
                       <br />
                       请确认你的环境已正确暴露。安装帮助请访问{' '}
                       <a
-                        href="https://documentation.portainer.io/quickstart/"
+                        href="https://docs.portainer.io/start/intro"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        https://documentation.portainer.io/quickstart
+                        https://docs.portainer.io/start/intro
                       </a>
                     </p>
                   )}

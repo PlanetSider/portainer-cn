@@ -55,13 +55,13 @@ export function kubeServicesValidation(
       Selector: object(),
       Ports: array(
         object({
-          port: nanNumberSchema('Service port number is required.')
-            .required('Service port number is required.')
-            .min(1, 'Service port number must be inside the range 1-65535.')
-            .max(65535, 'Service port number must be inside the range 1-65535.')
+          port: nanNumberSchema('Service 端口号为必填项。')
+            .required('Service 端口号为必填项。')
+            .min(1, 'Service 端口号必须在 1-65535 范围内。')
+            .max(65535, 'Service 端口号必须在 1-65535 范围内。')
             .test(
               'service-port-is-unique',
-              'Service port number must be unique.',
+              'Service 端口号不能重复。',
               (servicePort, context) => {
                 // test for duplicate service ports within this service.
                 // yup gives access to context.parent which gives one ServicePort object.
@@ -87,12 +87,12 @@ export function kubeServicesValidation(
                 return duplicateServicePortCount <= 1;
               }
             ),
-          targetPort: nanNumberSchema('Container port number is required.')
-            .required('Container port number is required.')
-            .min(1, 'Container port number must be inside the range 1-65535.')
+          targetPort: nanNumberSchema('容器端口号为必填项。')
+            .required('容器端口号为必填项。')
+            .min(1, '容器端口号必须在 1-65535 范围内。')
             .max(
               65535,
-              'Container port number must be inside the range 1-65535.'
+              '容器端口号必须在 1-65535 范围内。'
             ),
           name: string(),
           serviceName: string(),
@@ -100,7 +100,7 @@ export function kubeServicesValidation(
           nodePort: number()
             .test(
               'node-port-is-unique-in-service',
-              'Node port is already used in this service.',
+              '此 Service 中已使用该 NodePort。',
               (nodePort, context) => {
                 if (nodePort === undefined || validationData === undefined) {
                   return true;
@@ -125,7 +125,7 @@ export function kubeServicesValidation(
             )
             .test(
               'node-port-is-unique-in-cluster',
-              'Node port is already used.',
+              '该 NodePort 已被使用。',
               (nodePort, context) => {
                 if (nodePort === undefined || validationData === undefined) {
                   return true;
@@ -172,7 +172,7 @@ export function kubeServicesValidation(
             )
             .test(
               'node-port-minimum',
-              'Nodeport number must be inside the range 30000-32767 or blank for system allocated.',
+              'NodePort 必须在 30000-32767 范围内，或留空由系统分配。',
               (nodePort, context) => {
                 if (nodePort === undefined || validationData === undefined) {
                   return true;
@@ -190,7 +190,7 @@ export function kubeServicesValidation(
             )
             .test(
               'node-port-maximum',
-              'Nodeport number must be inside the range 30000-32767 or blank for system allocated.',
+              'NodePort 必须在 30000-32767 范围内，或留空由系统分配。',
               (nodePort, context) => {
                 if (nodePort === undefined || validationData === undefined) {
                   return true;
@@ -209,12 +209,12 @@ export function kubeServicesValidation(
           ingressPaths: array(
             object({
               IngressName: string().required(),
-              Host: string().required('Ingress hostname is required.'),
+              Host: string().required('Ingress 主机名为必填项。'),
               Path: string()
-                .required('Ingress path is required.')
+                .required('Ingress 路径为必填项。')
                 .test(
                   'path-is-unique',
-                  'Ingress path is already in use for this hostname.',
+                  '此主机名已使用该 Ingress 路径。',
                   (path, context) => {
                     if (
                       path === undefined ||

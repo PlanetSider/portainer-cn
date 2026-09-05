@@ -28,7 +28,7 @@ export function useServiceAccount(
     async () => getServiceAccount(environmentId, namespace, name),
     {
       enabled: !!environmentId && !!namespace && !!name,
-      ...withError('无法获取 ServiceAccount'),
+    ...withError('无法获取服务账号'),
     }
   );
 }
@@ -44,6 +44,6 @@ async function getServiceAccount(
     );
     return data;
   } catch (e) {
-    throw parseAxiosError(e, '无法获取 ServiceAccount');
+    throw parseAxiosError(e, '无法获取服务账号');
   }
 }

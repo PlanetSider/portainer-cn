@@ -17,7 +17,7 @@ export async function getNodes(environmentId: EnvironmentId) {
     );
     return nodes;
   } catch (e) {
-    throw parseKubernetesAxiosError(e, 'Unable to get nodes');
+    throw parseKubernetesAxiosError(e, '无法获取节点');
   }
 }
 
@@ -31,8 +31,8 @@ export function useNodesQuery<T = Node[]>(
     async () => getNodes(environmentId),
     {
       ...withError(
-        'Failed to get nodes from the Kubernetes api',
-        'Failed to get nodes'
+        '无法从 Kubernetes API 获取节点',
+        '无法获取节点'
       ),
       refetchInterval: options?.autoRefreshRate ?? false,
       select: options?.select,

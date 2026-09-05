@@ -40,7 +40,7 @@ export function ServiceAccountsDatatable() {
     })
   );
   const serviceAccountsQuery = useGetAllServiceAccountsQuery(environmentId, {
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
   });
   const filteredServiceAccounts = useMemo(
     () =>
@@ -56,8 +56,8 @@ export function ServiceAccountsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={serviceAccountsQuery.isLoading}
-      emptyContentLabel="未找到 Service Account"
-      title="Service Accounts"
+      emptyContentLabel="未找到服务账号"
+      title="服务账号"
       titleIcon={User}
       getRowId={(row) => row.uid}
       isRowSelectable={(row) => !row.original.isSystem}
@@ -102,7 +102,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
         confirmMessage={
           <>
             <p>
-              你确定要删除所选 Service Account 吗？
+              你确定要删除所选服务账号吗？
             </p>
             <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
               {selectedItems.map((s, index) => (
@@ -132,14 +132,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Service Account 已成功删除',
+            '服务账号已成功删除',
             serviceAccounts.map((sa) => `${sa.namespace}/${sa.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            '无法删除 Service Account',
+            '无法删除服务账号',
             error as Error,
             serviceAccounts.map((sa) => `${sa.namespace}/${sa.name}`).join(', ')
           );

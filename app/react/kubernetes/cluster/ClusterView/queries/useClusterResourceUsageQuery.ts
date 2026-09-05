@@ -24,7 +24,7 @@ export function useClusterResourceUsageQuery(
         !!environmentId &&
         nodes.length > 0,
       select: aggregateResourceUsage,
-      ...withError('Unable to retrieve resource usage data.', 'Failure'),
+      ...withError('无法获取资源使用数据。', '失败'),
     }
   );
 }

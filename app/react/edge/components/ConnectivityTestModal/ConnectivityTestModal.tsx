@@ -66,7 +66,7 @@ export function ConnectivityTestModal({
               copyText={command}
               data-cy="copy-connectivity-test-command-button"
             >
-              Copy command
+              复制命令
             </CopyButton>
           </div>
         </>
@@ -75,20 +75,21 @@ export function ConnectivityTestModal({
   });
 
   return (
-    <Modal onDismiss={onDismiss} aria-label="Test connectivity" size="lg">
-      <Modal.Header title="Test connectivity" />
+    <Modal onDismiss={onDismiss} aria-label="测试连接" size="lg">
+      <Modal.Header title="测试连接" />
       <Modal.Body>
         <p className="mb-4">
-          Run the command in the environment where the Edge Agent will be
-          deployed to verify it can reach the Portainer server.
+          在部署 Edge Agent 的环境中运行该命令，以验证它能否连接到
+          Portainer 服务器。每个目标会在探测前显示，并在探测完成后输出结果。
+          请预留最多 30 秒，因为无法连接的主机需要等待超时。
         </p>
         <div className="mb-4">
           <SwitchField
             checked={insecurePoll}
             onChange={setInsecurePoll}
-            label="Allow self-signed certificates"
+            label="允许自签名证书"
             labelClass="col-sm-4 col-lg-3"
-            tooltip="Include EDGE_INSECURE_POLL=1 in the script. Enable this if your Portainer instance uses a self-signed or untrusted certificate."
+            tooltip="在脚本中加入 EDGE_INSECURE_POLL=1。当 Portainer 实例使用自签名或不受信任的证书时，请启用此选项。"
             data-cy="connectivity-insecure-poll-switch"
           />
         </div>
@@ -106,7 +107,7 @@ export function ConnectivityTestModal({
           color="default"
           data-cy="close-connectivity-test-modal-button"
         >
-          Close
+          关闭
         </Button>
       </Modal.Footer>
     </Modal>

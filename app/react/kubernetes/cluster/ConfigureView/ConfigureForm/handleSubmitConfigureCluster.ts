@@ -24,7 +24,7 @@ export async function handleSubmitConfigureCluster(
   environment?: Environment
 ) {
   if (!environment) {
-    notifyError('Unable to save configuration: environment not found');
+    notifyError('保存配置失败：未找到环境');
     return;
   }
 
@@ -53,7 +53,7 @@ export async function handleSubmitConfigureCluster(
     },
     {
       onSuccess: () => {
-        notifySuccess('Success', 'Configuration successfully applied');
+        notifySuccess('成功', '配置已成功应用');
         resetForm();
       },
     }

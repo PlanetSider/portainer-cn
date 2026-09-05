@@ -61,7 +61,7 @@ describe('HelmTemplatesSelectedItem', () => {
     // Check for chart details
     expect(screen.getByText('test-chart')).toBeInTheDocument();
     expect(screen.getByText('Test Chart Description')).toBeInTheDocument();
-    expect(screen.getByText('Clear selection')).toBeInTheDocument();
+    expect(screen.getByText('清除选择')).toBeInTheDocument();
     expect(screen.getByText('https://example.com')).toBeInTheDocument();
   });
 });

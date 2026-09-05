@@ -11,7 +11,7 @@ export function useDeleteClusterRolesMutation(environmentId: EnvironmentId) {
   return useMutation(deleteClusterRoles, {
     onSuccess: () =>
       queryClient.invalidateQueries(queryKeys.list(environmentId)),
-    ...withError('Unable to delete cluster roles'),
+    ...withError('无法删除集群角色'),
   });
 }
 
@@ -28,6 +28,6 @@ export async function deleteClusterRoles({
       data
     );
   } catch (e) {
-    throw parseAxiosError(e, `Unable to delete cluster roles`);
+    throw parseAxiosError(e, '无法删除集群角色');
   }
 }

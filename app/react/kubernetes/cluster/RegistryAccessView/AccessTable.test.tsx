@@ -69,7 +69,7 @@ describe('AccessTable', () => {
 
     render(<Wrapped dataset={dataset} onRemove={mockOnRemove} />);
 
-    expect(screen.getByText('Namespace')).toBeInTheDocument();
+    expect(screen.getByText('命名空间')).toBeInTheDocument();
   });
 
   it('should render delete button with correct data-cy attribute', () => {

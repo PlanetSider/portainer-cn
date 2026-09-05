@@ -12,7 +12,7 @@ export function useDeleteClusterRoleBindingsMutation(
   const queryClient = useQueryClient();
   return useMutation(deleteClusterRoleBindings, {
     ...withInvalidate(queryClient, [queryKeys.list(environmentId)]),
-    ...withError('Unable to delete cluster role bindings'),
+    ...withError('无法删除集群角色绑定'),
   });
 }
 
@@ -29,6 +29,6 @@ export async function deleteClusterRoleBindings({
       data
     );
   } catch (e) {
-    throw parseAxiosError(e, `Unable to delete cluster role bindings`);
+    throw parseAxiosError(e, '无法删除集群角色绑定');
   }
 }

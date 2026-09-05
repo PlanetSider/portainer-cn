@@ -23,7 +23,7 @@ export const namespace = columnHelper.accessor((row) => row.Namespace, {
     </Link>
   ),
   meta: {
-    filter: filterHOC('Filter by namespace'),
+    filter: filterHOC('按命名空间筛选'),
   },
   enableColumnFilter: true,
   filterFn: (row: Row<Job>, _columnId: string, filterValue: string[]) =>

@@ -44,7 +44,7 @@ export function JobsDatatable() {
   );
 
   const jobsQuery = useJobs(environmentId, {
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
   });
   const jobsRowData = jobsQuery.data;
 
@@ -71,7 +71,7 @@ export function JobsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={jobsQuery.isLoading}
-      title="Jobs"
+      title="Job"
       titleIcon={CalendarCheck2}
       getRowId={(row) => row.Id}
       isRowSelectable={(row) => !row.original.IsSystem}
@@ -119,10 +119,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteJobsMutation.isLoading}
-        loadingText="Removing jobs..."
+        loadingText="正在删除 Job..."
         data-cy="k8s-jobs-removeJobButton"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton
@@ -135,7 +135,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
   async function handleRemoveClick(jobs: SelectedJob[]) {
     const confirmed = await confirmDelete(
       <>
-        <p>Are you sure you want to delete the selected job(s)?</p>
+        <p>确定要删除选中的 Job 吗？</p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {jobs.map((s, index) => (
             <li key={index}>
@@ -160,14 +160,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Jobs successfully removed',
+            'Job 已成功删除',
             jobs.map((r) => `${r.Namespace}/${r.Name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete jobs',
+            '无法删除 Job',
             error as Error,
             jobs.map((r) => `${r.Namespace}/${r.Name}`).join(', ')
           );

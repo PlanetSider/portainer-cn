@@ -35,7 +35,7 @@ Go backend, roughly 977 files, retaining the upstream Portainer shape under `api
 - Use the filesystem helper for joins, not `path.Join` or `filepath.Join`. In stack code, `filesystem.JoinPaths` performs the required path handling.
 - Follow `.golangci.yaml` and `.golangci-forward.yaml`. Prohibited imports include `encoding/json`, `golang.org/x/crypto`, legacy YAML/JWT/UUID/semver packages, and deprecated shared packages. Use `crypto.CreateTLSConfiguration()`.
 - Keep the module path `github.com/portainer/portainer`; do not change it to `portainer-cn`.
-- `api/portainer.go` defines `APIVersion="2.43.0"` and `APIVersionSupport="STS"`. Keep version metadata aligned with `package.json` and the `@version` in `http/handler/handler.go`; the parent guide defines the three-way rule.
+- `api/portainer.go` defines `APIVersion="2.45.0"` and `APIVersionSupport="LTS"`. Keep version metadata aligned with `package.json` and the `@version` in `http/handler/handler.go`; the parent guide defines the three-way rule.
 - `api/stacks/stackutils/util.go:IsRelativePathStack` must always return `false` in CE.
 
 ## ANTI-PATTERNS

@@ -60,11 +60,11 @@ function Cell({
           )}
           {item.RunningPodsCount >= 0 && item.TotalPodsCount >= 0 && (
             <span>
-              <code aria-label="Running Pods" title="Running Pods">
+              <code aria-label="运行中的 Pod" title="运行中的 Pod">
                 {item.RunningPodsCount}
               </code>{' '}
               /{' '}
-              <code aria-label="Total Pods" title="Total Pods">
+              <code aria-label="Pod 总数" title="Pod 总数">
                 {item.TotalPodsCount}
               </code>
             </span>

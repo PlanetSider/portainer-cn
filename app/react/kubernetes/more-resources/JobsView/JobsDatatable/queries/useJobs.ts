@@ -16,7 +16,7 @@ export function useJobs(
     queryKeys.list(environmentId),
     async () => getAllJobs(environmentId),
     {
-      ...withError('Unable to get Jobs'),
+      ...withError('无法获取 Job'),
       refetchInterval() {
         return options?.refetchInterval ?? false;
       },
@@ -33,6 +33,6 @@ async function getAllJobs(environmentId: EnvironmentId) {
 
     return jobs;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to get Jobs');
+    throw parseAxiosError(e, '无法获取 Job');
   }
 }

@@ -59,7 +59,7 @@ function getResourceRow(resource: GenericResource): ResourceRow {
       resourceType: resource.kind,
     },
     status: {
-      label: reason ?? 'Unknown',
+      label: reason ?? '未知',
       type: statusToColorMap[status] ?? 'default',
     },
     statusMessage: message ?? '-',

@@ -47,7 +47,7 @@ export function HelmTemplatesSelectedItem({
               onClick={clearHelmChart}
               data-cy="clear-selection"
             >
-              Clear selection
+              清除选择
               <Icon icon={X} className="ml-1" />
             </Button>
           </div>

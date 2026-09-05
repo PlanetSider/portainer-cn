@@ -40,7 +40,7 @@ export function ResourcesTable() {
   const tableState = useTableState(settingsStore, storageKey);
   const helmReleaseQuery = useHelmRelease(environmentId, name, namespace, {
     showResources: true,
-    refetchInterval: tableState.autoRefreshRate * 1000,
+    refetchInterval: tableState.autoRefreshRateMS,
     revision: revisionNumber,
   });
   const rows = useResourceRows(helmReleaseQuery.data?.info?.resources);
@@ -55,10 +55,10 @@ export function ResourcesTable() {
         columns={columns}
         includeSearch
         settingsManager={tableState}
-        emptyContentLabel="No resources found"
+        emptyContentLabel="未找到资源"
         title={
           <TextTip inline color="blue" className="!text-xs">
-            Only resources currently in the cluster will be displayed.
+            仅显示当前存在于集群中的资源。
           </TextTip>
         }
         disableSelect
@@ -67,7 +67,7 @@ export function ResourcesTable() {
         renderTableSettings={() => (
           <TableSettingsMenu>
             <TableSettingsMenuAutoRefresh
-              value={tableState.autoRefreshRate}
+              value={tableState.autoRefreshRateMS}
               onChange={(value) => tableState.setAutoRefreshRate(value)}
             />
           </TableSettingsMenu>

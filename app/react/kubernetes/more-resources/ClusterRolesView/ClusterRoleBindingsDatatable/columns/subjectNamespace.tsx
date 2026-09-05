@@ -8,7 +8,7 @@ import { columnHelper } from './helper';
 export const subjectNamespace = columnHelper.accessor(
   (row) => row.subjects?.flatMap((sub) => sub.namespace || '-') || [],
   {
-    header: 'Subject Namespace',
+    header: '主体命名空间',
     id: 'subjectNamespace',
     cell: ({ row }) =>
       row.original.subjects?.map((sub, index) => (
@@ -33,7 +33,7 @@ export const subjectNamespace = columnHelper.accessor(
     // use a custom filter, to remove empty namespace values
     meta: {
       filter: filterHOC(
-        'Filter by subject namespace',
+        '按主体命名空间筛选',
         filterNamespaceOptionsTransformer
       ),
     },

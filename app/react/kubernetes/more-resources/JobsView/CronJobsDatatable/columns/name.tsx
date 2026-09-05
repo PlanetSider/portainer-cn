@@ -7,7 +7,7 @@ export const name = columnHelper.accessor(
   (row) => {
     let result = row.Name;
     if (row.IsSystem) {
-      result += ' system';
+      result += ' 系统';
     }
     return result;
   },

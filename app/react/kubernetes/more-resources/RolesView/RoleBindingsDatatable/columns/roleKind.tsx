@@ -3,7 +3,7 @@ import { Link } from '@@/Link';
 import { columnHelper } from './helper';
 
 export const roleKind = columnHelper.accessor('roleRef.kind', {
-  header: 'Role Kind',
+  header: '角色类型',
   id: 'roleKind',
   cell: ({ row }) => {
     const to =

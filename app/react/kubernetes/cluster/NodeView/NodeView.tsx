@@ -61,7 +61,7 @@ export function NodeView() {
       <PageHeader
         title="节点详情"
         breadcrumbs={[
-          { label: 'Cluster', link: 'kubernetes.cluster' },
+          { label: '集群', link: 'kubernetes.cluster' },
           nodeName,
         ]}
         reload

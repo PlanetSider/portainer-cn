@@ -29,7 +29,7 @@ export function useNamespaceQuery<T = PortainerNamespace>(
     {
       enabled: !!environmentId && !!namespace && enabled,
       onError: (err) => {
-        notifyError('Failure', err as Error, 'Unable to get namespace.');
+        notifyError('失败', err as Error, '无法获取命名空间。');
       },
       select,
     }
@@ -51,6 +51,6 @@ export async function getNamespace(
     );
     return ns;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to retrieve namespace');
+    throw parseAxiosError(e, '无法获取命名空间');
   }
 }

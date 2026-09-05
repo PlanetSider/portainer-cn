@@ -105,7 +105,7 @@ describe('HelmRegistrySelect', () => {
   describe('Basic rendering', () => {
     it('should render with default placeholder', () => {
       renderComponent();
-      expect(screen.getByText('Select a repository')).toBeInTheDocument();
+      expect(screen.getByText('选择仓库')).toBeInTheDocument();
     });
 
     it('should render with custom placeholder', () => {
@@ -121,7 +121,7 @@ describe('HelmRegistrySelect', () => {
     it('should render error state', () => {
       renderComponent({ isError: true });
       expect(
-        screen.getByText('Unable to load registry options.')
+        screen.getByText('无法加载镜像仓库选项。')
       ).toBeInTheDocument();
     });
   });
@@ -179,7 +179,7 @@ describe('HelmRegistrySelect', () => {
       });
 
       expect(
-        screen.getByText(/There are no repositories available./)
+        screen.getByText(/没有可用仓库。/)
       ).toBeInTheDocument();
     });
 
@@ -191,7 +191,7 @@ describe('HelmRegistrySelect', () => {
       });
 
       expect(
-        screen.queryByText('There are no repositories available.')
+        screen.queryByText('没有可用仓库。')
       ).not.toBeInTheDocument();
     });
 
@@ -201,7 +201,7 @@ describe('HelmRegistrySelect', () => {
       });
 
       expect(
-        screen.queryByText('There are no repositories available.')
+        screen.queryByText('没有可用仓库。')
       ).not.toBeInTheDocument();
     });
   });
@@ -211,7 +211,7 @@ describe('HelmRegistrySelect', () => {
       renderComponent({}, { isPureAdmin: true });
 
       // Verify that the component renders the main label
-      expect(screen.getByText('Helm chart source')).toBeInTheDocument();
+      expect(screen.getByText('Helm Chart 来源')).toBeInTheDocument();
 
       expect(screen.getByRole('combobox')).toBeInTheDocument();
     });
@@ -227,7 +227,7 @@ describe('HelmRegistrySelect', () => {
       });
 
       expect(
-        screen.queryByText('There are no repositories available.')
+        screen.queryByText('没有可用仓库。')
       ).not.toBeInTheDocument();
     });
 
@@ -240,7 +240,7 @@ describe('HelmRegistrySelect', () => {
       });
 
       expect(
-        screen.getByText('Unable to load registry options.')
+        screen.getByText('无法加载镜像仓库选项。')
       ).toBeInTheDocument();
     });
   });

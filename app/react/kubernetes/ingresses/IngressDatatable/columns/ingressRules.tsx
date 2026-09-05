@@ -15,10 +15,10 @@ export const ingressRules = columnHelper.accessor(
       const isHttp = isHTTP(TLS || [], path.Host);
       return `${isHttp ? 'http' : 'https'}://${path.Host}${path.Path}${
         path.ServiceName
-      }:${path.Port} ${!path.HasService && "Service doesn't exist"}`;
+      }:${path.Port} ${!path.HasService && 'Service 不存在'}`;
     }).join(','),
   {
-    header: 'Rules and Paths',
+    header: '规则和路径',
     id: 'ingressRules',
     cell: Cell,
   }
@@ -46,7 +46,7 @@ function Cell({ row }: CellContext<Ingress, string>) {
             {!path.HasService && (
               <Badge type="warn" className="ml-1 gap-1">
                 <Icon icon={AlertTriangle} />
-                Service doesn&apos;t exist
+                Service 不存在
               </Badge>
             )}
           </span>

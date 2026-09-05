@@ -59,7 +59,7 @@ export function NodeResourceReservation({
       cpuLimit={cpuAvailable}
       memoryLimit={memoryAvailable}
       memoryUnit="MiB"
-      description="Resource reservation represents the total amount of resource assigned to all the applications running on this node."
+      description="资源预留表示分配给此节点上所有运行中应用的资源总量。"
     />
   );
 }

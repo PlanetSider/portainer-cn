@@ -28,7 +28,7 @@ const storageClassFormValuesSchema = array()
     // invalid if any storage class is not selected or
     // if it's selected and at least one access mode is selected
     'accessModes',
-    'Shared access policy configuration required.',
+    '必须配置共享访问策略。',
     (storageClasses) => {
       const isValid = storageClasses?.every(
         (value) =>
@@ -44,7 +44,7 @@ const endpointChangeWindowSchema = object().shape({
   Enabled: boolean().required(),
   StartTime: string().test(
     'startTime should not be the same as endTime',
-    'The chosen time configuration is invalid.',
+    '所选时间配置无效。',
     (value, context) => {
       const { EndTime, Enabled } = context.parent;
       return !Enabled || value !== EndTime;

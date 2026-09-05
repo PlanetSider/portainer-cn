@@ -28,9 +28,9 @@ export function useHelmChartValues(params: Params, isLatestVersion = false) {
     select: (data) => ({
       values: data,
     }),
-    retry: 1,
+    retry: 2,
     staleTime: 60 * 1000 * 20, // 60 minutes, because values are not expected to change often
-    ...withError('Unable to get Helm chart values'),
+    ...withError('无法获取 Helm Chart 值'),
   });
 }
 
@@ -41,6 +41,6 @@ async function getHelmChartValues(params: Params) {
     });
     return response.data;
   } catch (err) {
-    throw parseAxiosError(err, 'Unable to get Helm chart values');
+    throw parseAxiosError(err, '无法获取 Helm Chart 值');
   }
 }

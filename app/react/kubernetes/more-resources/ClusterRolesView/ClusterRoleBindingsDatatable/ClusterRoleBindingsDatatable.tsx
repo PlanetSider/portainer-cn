@@ -30,7 +30,7 @@ export function ClusterRoleBindingsDatatable() {
   const environmentId = useEnvironmentId();
   const tableState = useTableState(settingsStore, storageKey);
   const clusterRoleBindingsQuery = useClusterRoleBindings(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
   });
 
   const filteredClusterRoleBindings = useMemo(
@@ -51,8 +51,8 @@ export function ClusterRoleBindingsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={clusterRoleBindingsQuery.isLoading}
-      emptyContentLabel="No supported cluster role bindings found"
-      title="Cluster Role Bindings"
+      emptyContentLabel="未找到支持的集群角色绑定"
+      title="集群角色绑定"
       titleIcon={LinkIcon}
       getRowId={(row) => row.uid}
       isRowSelectable={(row) => !row.original.isSystem}
@@ -106,7 +106,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
     const confirmed = await confirmDelete(
       <>
         <p>
-          Are you sure you want to delete the selected cluster role binding(s)?
+          确定要删除选中的集群角色绑定吗？
         </p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {roles.map((s, index) => (
@@ -129,14 +129,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Roles successfully removed',
+            '集群角色绑定已成功删除',
             roles.map((r) => `${r.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete cluster role bindings',
+            '无法删除集群角色绑定',
             error as Error,
             roles.map((r) => `${r.name}`).join(', ')
           );
@@ -155,10 +155,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteClusterRoleBindingsMutation.isLoading}
-        loadingText="Removing cluster role bindings..."
+        loadingText="正在删除集群角色绑定..."
         data-cy="k8s-cluster-role-bindings-remove-button"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton

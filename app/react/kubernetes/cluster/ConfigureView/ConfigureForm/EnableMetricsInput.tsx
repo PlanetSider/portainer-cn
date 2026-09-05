@@ -28,7 +28,7 @@ export function EnableMetricsInput({ value, error, environmentId }: Props) {
           启用指标功能后，用户可以使用 Pod 水平自动扩缩容，并查看容器和节点的资源使用情况。
           这需要在集群中运行{' '}
           <a
-            href="https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/#metrics-server"
+            href="https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-metrics-pipeline/#metrics-server"
             target="_blank"
             rel="noreferrer"
           >

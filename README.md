@@ -38,6 +38,7 @@
 
 - 大量 Portainer 前端界面已完成中文化
 - React 新界面与 Angular/legacy 界面都做了持续清理
+- 已完成 2.45.0 新增 Kubernetes 节点、Ingress、Helm 与“更多资源”界面的重点汉化
 - 保留专业术语，避免过度直译导致误解
 - 已配置 GitHub Actions 自动构建镜像
 - 可通过 GHCR 直接拉取镜像使用
@@ -70,7 +71,7 @@ ghcr.io/planetsider/portainer-cn
 - `develop`
 - `latest`
 - `sha-<commit>`
-- 版本 tag（例如：`2.43.0` 对应的 `v2.43.0` tag 构建）
+- 版本 tag（例如：Git tag `v2.45.0` 会构建镜像 tag `v2.45.0`）
 
 ---
 
@@ -87,7 +88,7 @@ docker pull ghcr.io/planetsider/portainer-cn:develop
 如果仓库已经打了版本 tag，也可以拉取对应版本：
 
 ```bash
-docker pull ghcr.io/planetsider/portainer-cn:2.43.0
+docker pull ghcr.io/planetsider/portainer-cn:v2.45.0
 ```
 
 ### 一个常见运行示例
@@ -113,24 +114,24 @@ docker run -d \
 
 | 本项目 | 上游 Portainer CE | 说明 |
 | --- | --- | --- |
-| `develop` 分支 | `release/2.43.0` | 当前同步基线 |
-| 项目版本号 `2.43.0` | 上游版本 `2.43.0` | 与上游正式版本保持一致 |
-| 项目版本支持类型 `STS` | 上游 `2.43.0 STS` | 沿用上游版本支持类型 |
-| `ghcr.io/planetsider/portainer-cn:develop` | 上游 `2.43.0` 功能基线 | 包含本项目最新汉化提交 |
-| `ghcr.io/planetsider/portainer-cn:2.43.0` | 上游 `2.43.0` | 对应本项目发布的 2.43.0 镜像 |
+| `develop` 分支 | `release/2.45.0` | 当前同步基线 |
+| 项目版本号 `2.45.0` | 上游版本 `2.45.0` | 与上游正式版本保持一致 |
+| 项目版本支持类型 `LTS` | 上游 `2.45.0 LTS` | 沿用上游版本支持类型 |
+| `ghcr.io/planetsider/portainer-cn:develop` | 上游 `2.45.0` 功能基线 | 包含本项目最新汉化提交 |
+| `ghcr.io/planetsider/portainer-cn:v2.45.0` | 上游 `2.45.0` | 对应本项目发布的 2.45.0 镜像 |
 
 同步规则：
 
 - 上游发布新版本后，本项目以对应的上游 `release/x.y.z` 分支或正式版本 tag 作为同步基线。
 - 上游的功能、修复、依赖和安全更新会同步到本项目；已废弃的上游组件也会按上游结构移除。
 - 本项目只对用户界面文案进行中文化，尽量不改变上游业务逻辑、API 契约和版本号。
-- 同步后的汉化提交属于本项目提交，不会改变其对应的上游版本；例如本项目的 `2.43.0` 表示“基于上游 `2.43.0` 的汉化版”。
+- 同步后的汉化提交属于本项目提交，不会改变其对应的上游版本；例如本项目的 `2.45.0` 表示“基于上游 `2.45.0` 的汉化版”。
 - `develop` 镜像随分支最新提交持续更新，版本镜像用于固定使用对应版本。
 
 当前同步基线：
 
-- 上游版本：[Portainer CE 2.43.0](https://github.com/portainer/portainer/releases/tag/2.43.0)
-- 上游分支：[release/2.43.0](https://github.com/portainer/portainer/tree/release/2.43.0)
+- 上游版本：[Portainer CE 2.45.0](https://github.com/portainer/portainer/releases/tag/2.45.0)
+- 上游分支：[release/2.45.0](https://github.com/portainer/portainer/tree/release/2.45.0)
 - 本项目分支：[develop](https://github.com/PlanetSider/portainer-cn/tree/develop)
 
 上游最新版本可参考：

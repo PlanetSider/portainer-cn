@@ -50,7 +50,7 @@ export function useConfigureClusterMutation() {
       ...withInvalidate(queryClient, [environmentQueryKeys.base()], {
         skipRefresh: true,
       }),
-      ...withError('Unable to apply configuration', 'Failure'),
+      ...withError('无法应用配置', '失败'),
     }
   );
 }
@@ -71,6 +71,6 @@ async function patchStorageClass(
       }
     );
   } catch (e) {
-    throw parseAxiosError(e, `Unable to patch StorageClass ${name}`);
+    throw parseAxiosError(e, `无法更新 StorageClass ${name}`);
   }
 }

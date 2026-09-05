@@ -66,11 +66,11 @@ export function ReleaseTabs({ release, selectedRevision }: Props) {
       selectedCompareRevisionNumber
     );
 
-  const { autoRefreshRate } = useHelmEventsTableState();
+  const { autoRefreshRateMS } = useHelmEventsTableState();
   const { data: eventWarningCount } = useEvents(environmentId, {
     namespace: release.namespace ?? '',
     queryOptions: {
-      autoRefreshRate: autoRefreshRate * 1000,
+      autoRefreshRate: autoRefreshRateMS,
       select: (data) => {
         const relatedEvents = filterRelatedEvents(
           data,
@@ -155,14 +155,14 @@ function helmTabs(
 
   return compact([
     {
-      label: 'Resources',
+      label: '资源',
       id: 'resources',
       children: <ResourcesTable />,
     },
     {
       label: (
         <>
-          Events
+          事件
           {eventWarningCount >= 1 && (
             <Badge type="warnSecondary">
               <Icon icon={AlertTriangle} className="!mr-1" />
@@ -180,7 +180,7 @@ function helmTabs(
       ),
     },
     {
-      label: 'Values',
+      label: '值',
       id: 'values',
       children: (
         <ValuesDetails
@@ -238,7 +238,7 @@ function helmTabs(
       ),
     },
     !!release.info?.notes && {
-      label: 'Notes',
+      label: '备注',
       id: 'notes',
       children: (
         <NotesDetails

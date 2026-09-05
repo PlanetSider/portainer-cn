@@ -21,7 +21,7 @@ export function useHelmDryRun(
         payload,
         { dryRun: true },
         {
-          errorMessage: 'Unable to get Helm manifest preview',
+          errorMessage: '无法获取 Helm Manifest 预览',
         }
       ),
     // don't display error toast, handle it within the component

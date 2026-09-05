@@ -65,7 +65,7 @@ const defaultProps = {
     repo: 'test-repo',
   },
   onChangePreviewValidation: mockOnChangePreviewValidation,
-  title: 'Manifest Preview',
+  title: 'Manifest 预览',
   environmentId: 1,
 };
 
@@ -101,9 +101,9 @@ describe('ManifestPreviewFormSection', () => {
     renderComponent();
 
     expect(
-      screen.getByText('Generating manifest preview...')
+      screen.getByText('正在生成 Manifest 预览...')
     ).toBeInTheDocument();
-    expect(screen.queryByText('Manifest Preview')).not.toBeInTheDocument();
+    expect(screen.queryByText('Manifest 预览')).not.toBeInTheDocument();
   });
 
   it("should show error when there's an error", async () => {
@@ -116,7 +116,7 @@ describe('ManifestPreviewFormSection', () => {
 
     renderComponent();
 
-    expect(screen.queryByText('Manifest Preview')).toBeInTheDocument();
+    expect(screen.queryByText('Manifest 预览')).toBeInTheDocument();
     // there should be an error badge
     expect(
       screen.queryByTestId('helm-manifest-preview-error-badge')
@@ -125,7 +125,7 @@ describe('ManifestPreviewFormSection', () => {
     await userEvent.click(expandButton);
 
     expect(
-      screen.getByText('Error with Helm chart configuration')
+      screen.getByText('Helm Chart 配置错误')
     ).toBeInTheDocument();
     expect(screen.getByText('Invalid chart configuration')).toBeInTheDocument();
   });
@@ -141,7 +141,7 @@ describe('ManifestPreviewFormSection', () => {
 
     renderComponent();
 
-    expect(screen.getByText('Manifest Preview')).toBeInTheDocument();
+    expect(screen.getByText('Manifest 预览')).toBeInTheDocument();
 
     // Expand the FormSection to see the content
     const expandButton = screen.getByLabelText('Expand');
@@ -166,7 +166,7 @@ describe('ManifestPreviewFormSection', () => {
 
     renderComponent({ currentManifest });
 
-    expect(screen.getByText('Manifest Preview')).toBeInTheDocument();
+    expect(screen.getByText('Manifest 预览')).toBeInTheDocument();
 
     // Expand the FormSection to see the content
     const expandButton = screen.getByLabelText('Expand');

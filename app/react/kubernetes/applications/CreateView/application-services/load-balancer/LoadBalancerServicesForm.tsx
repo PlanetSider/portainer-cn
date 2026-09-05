@@ -5,7 +5,7 @@ import { useIsEdgeAdmin } from '@/react/hooks/useUser';
 import { useEnvironment } from '@/react/portainer/environments/queries';
 import { useEnvironmentId } from '@/react/hooks/useEnvironmentId';
 
-import { Card } from '@@/Card';
+import { Card } from '@@/primitives/Card';
 import { TextTip } from '@@/Tip/TextTip';
 import { Button } from '@@/buttons';
 import { FormError } from '@@/form-components/FormError';
@@ -58,98 +58,98 @@ export function LoadBalancerServicesForm({
     (service) => service.Type === 'LoadBalancer'
   ).length;
   return (
-    <Card className="pb-5">
-      <div className="flex flex-col gap-6">
-        <TextTip color="blue">
-          Allow access to traffic <b>external</b> to the cluster via a{' '}
-          <b>LoadBalancer service</b>. If running on a cloud platform, this auto
-          provisions a cloud load balancer.
-        </TextTip>
-        {!loadBalancerEnabled && loadBalancerEnabledQuery.isSuccess && (
-          <div className="flex flex-col">
-            <FormError>
-              {isAdmin ? (
-                <>
-                  Load balancer use is not currently enabled in this cluster.
-                  Configure via{' '}
-                  <Link
-                    to="kubernetes.cluster.setup"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-cy="k8sAppCreate-clusterSetupLink"
-                  >
-                    Cluster Setup
-                  </Link>{' '}
-                  and then refresh this tab
-                </>
-              ) : (
-                'Load balancer use is not currently enabled in this cluster, contact your administrator.'
-              )}
-            </FormError>
-            <div className="flex">
-              <Button
-                icon={RefreshCw}
-                data-cy="k8sAppCreate-refreshLoadBalancerButton"
-                color="default"
-                className="!ml-0"
-                onClick={() => loadBalancerEnabledQuery.refetch()}
-              >
-                Refresh
-              </Button>
+    <Card.Container variant="filled">
+      <Card.Body className="pb-5">
+        <div className="flex flex-col gap-6">
+          <TextTip color="blue">
+            通过 <b>LoadBalancer Service</b> 允许访问集群<b>外部</b>的流量。
+            如果运行在云平台上，将自动配置云负载均衡器。
+          </TextTip>
+          {!loadBalancerEnabled && loadBalancerEnabledQuery.isSuccess && (
+            <div className="flex flex-col">
+              <FormError>
+                {isAdmin ? (
+                  <>
+                    此集群当前未启用负载均衡器。请通过{' '}
+                    <Link
+                      to="kubernetes.cluster.setup"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cy="k8sAppCreate-clusterSetupLink"
+                    >
+                      集群设置
+                    </Link>{' '}
+                    ，然后刷新此标签页
+                  </>
+                ) : (
+                  '此集群当前未启用负载均衡器，请联系管理员。'
+                )}
+              </FormError>
+              <div className="flex">
+                <Button
+                  icon={RefreshCw}
+                  data-cy="k8sAppCreate-refreshLoadBalancerButton"
+                  color="default"
+                  className="!ml-0"
+                  onClick={() => loadBalancerEnabledQuery.refetch()}
+                >
+                  刷新
+                </Button>
+              </div>
             </div>
+          )}
+          {loadBalancerServiceCount > 0 && (
+            <div className="flex w-full flex-col gap-4">
+              {services.map((service, index) =>
+                service.Type === 'LoadBalancer' ? (
+                  <LoadBalancerServiceForm
+                    key={index}
+                    serviceName={service.Name}
+                    servicePorts={service.Ports}
+                    errors={errors?.[index]?.Ports}
+                    onChangePort={(servicePorts: ServicePort[]) => {
+                      const newServices = [...services];
+                      newServices[index].Ports = servicePorts;
+                      onChangeService(newServices);
+                    }}
+                    services={services}
+                    serviceIndex={index}
+                    onChangeService={onChangeService}
+                    namespace={namespace}
+                    isEditMode={isEditMode}
+                  />
+                ) : null
+              )}
+            </div>
+          )}
+          <div className="flex">
+            <Button
+              color="secondary"
+              className="!ml-0"
+              icon={Plus}
+              size="small"
+              onClick={() => {
+                // create a new service form value and add it to the list of services
+                const newService = structuredClone(serviceFormDefaultValues);
+                newService.Name = generateUniqueName(
+                  appName,
+                  services.length + 1,
+                  services
+                );
+                newService.Type = 'LoadBalancer';
+                const newServicePort = newPort(newService.Name);
+                newService.Ports = [newServicePort];
+                newService.Selector = selector;
+                onChangeService([...services, newService]);
+              }}
+              disabled={!loadBalancerEnabled}
+              data-cy="k8sAppCreate-createServiceButton"
+            >
+              创建服务
+            </Button>
           </div>
-        )}
-        {loadBalancerServiceCount > 0 && (
-          <div className="flex w-full flex-col gap-4">
-            {services.map((service, index) =>
-              service.Type === 'LoadBalancer' ? (
-                <LoadBalancerServiceForm
-                  key={index}
-                  serviceName={service.Name}
-                  servicePorts={service.Ports}
-                  errors={errors?.[index]?.Ports}
-                  onChangePort={(servicePorts: ServicePort[]) => {
-                    const newServices = [...services];
-                    newServices[index].Ports = servicePorts;
-                    onChangeService(newServices);
-                  }}
-                  services={services}
-                  serviceIndex={index}
-                  onChangeService={onChangeService}
-                  namespace={namespace}
-                  isEditMode={isEditMode}
-                />
-              ) : null
-            )}
-          </div>
-        )}
-        <div className="flex">
-          <Button
-            color="secondary"
-            className="!ml-0"
-            icon={Plus}
-            size="small"
-            onClick={() => {
-              // create a new service form value and add it to the list of services
-              const newService = structuredClone(serviceFormDefaultValues);
-              newService.Name = generateUniqueName(
-                appName,
-                services.length + 1,
-                services
-              );
-              newService.Type = 'LoadBalancer';
-              const newServicePort = newPort(newService.Name);
-              newService.Ports = [newServicePort];
-              newService.Selector = selector;
-              onChangeService([...services, newService]);
-            }}
-            disabled={!loadBalancerEnabled}
-            data-cy="k8sAppCreate-createServiceButton"
-          >
-            Create service
-          </Button>
         </div>
-      </div>
-    </Card>
+      </Card.Body>
+    </Card.Container>
   );
 }

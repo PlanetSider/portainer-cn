@@ -28,9 +28,9 @@ export function ClusterResourceReservation() {
               cpuLimit={cpuLimit}
               memoryLimit={memoryLimit}
               memoryUnit="MiB"
-              description="Resource reservation represents the total amount of resource assigned to all the applications inside the cluster."
+              description="资源预留量表示集群内所有应用被分配的资源总量。"
               displayWarning={displayWarning}
-              warningMessage="Resource usage is not currently available as Metrics Server is not responding. If you've recently upgraded, Metrics Server may take a while to restart, so please check back shortly."
+              warningMessage="当前无法获取资源使用情况，因为 Metrics Server 未响应。如果你最近升级过，Metrics Server 可能需要一些时间重启，请稍后再试。"
             />
           </WidgetBody>
         </Widget>

@@ -45,7 +45,7 @@ describe('RollbackButton', () => {
   test('should display the revision to rollback to', () => {
     renderButton();
 
-    const button = screen.getByRole('button', { name: /Rollback to #2/i });
+    const button = screen.getByRole('button', { name: /回滚到 #2/i });
     expect(button).toBeInTheDocument();
   });
 
@@ -74,13 +74,13 @@ describe('RollbackButton', () => {
     renderButton();
 
     const user = userEvent.setup();
-    const button = screen.getByRole('button', { name: /Rollback to #2/i });
+    const button = screen.getByRole('button', { name: /回滚到 #2/i });
 
     (confirm as Mock).mockResolvedValueOnce(true);
     await user.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText('Rolling back...')).toBeInTheDocument();
+      expect(screen.getByText('正在回滚...')).toBeInTheDocument();
     });
 
     resolveRequest();
@@ -90,15 +90,15 @@ describe('RollbackButton', () => {
     renderButton();
 
     const user = userEvent.setup();
-    const button = screen.getByRole('button', { name: /Rollback to #2/i });
+    const button = screen.getByRole('button', { name: /回滚到 #2/i });
 
     await user.click(button);
 
     expect(confirm).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: 'Are you sure?',
+        title: '确定吗？',
         message: expect.stringContaining(
-          'Rolling back will restore the application to revision #2'
+          '回滚会将应用恢复到修订版本 #2'
         ),
       })
     );
@@ -121,7 +121,7 @@ describe('RollbackButton', () => {
     renderButton();
 
     const user = userEvent.setup();
-    const button = screen.getByRole('button', { name: /Rollback to #2/i });
+    const button = screen.getByRole('button', { name: /回滚到 #2/i });
 
     (confirm as Mock).mockResolvedValueOnce(true);
     await user.click(button);
@@ -134,8 +134,8 @@ describe('RollbackButton', () => {
     expect(requestParams.revision).toBe('2');
 
     expect(notifySuccess).toHaveBeenCalledWith(
-      'Success',
-      'Application rolled back to revision #2 successfully.'
+      '成功',
+      '应用已成功回滚到修订版本 #2。'
     );
   });
 
@@ -155,7 +155,7 @@ describe('RollbackButton', () => {
     renderButton();
 
     const user = userEvent.setup();
-    const button = screen.getByRole('button', { name: /Rollback to #2/i });
+    const button = screen.getByRole('button', { name: /回滚到 #2/i });
 
     (confirm as Mock).mockResolvedValueOnce(false);
     await user.click(button);

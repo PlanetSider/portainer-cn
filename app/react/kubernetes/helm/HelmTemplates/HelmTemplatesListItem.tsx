@@ -32,7 +32,7 @@ export function HelmTemplatesListItem(props: HelmTemplatesListItemProps) {
             src={model.icon}
             fallbackIcon={HelmIcon}
             className="blocklist-item-logo h-16 w-auto"
-            alt="Helm chart icon"
+            alt="Helm Chart 图标"
           />
         </span>
 

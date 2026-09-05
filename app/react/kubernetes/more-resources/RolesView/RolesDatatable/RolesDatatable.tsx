@@ -43,10 +43,10 @@ export function RolesDatatable() {
     })
   );
   const rolesQuery = useRoles(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
   });
   const roleBindingsQuery = useRoleBindings(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
   });
   const roleRowData = useRoleRowData(rolesQuery.data, roleBindingsQuery.data);
 
@@ -64,8 +64,8 @@ export function RolesDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={rolesQuery.isLoading || roleBindingsQuery.isLoading}
-      emptyContentLabel="No roles found"
-      title="Roles"
+      emptyContentLabel="未找到角色"
+      title="角色"
       titleIcon={UserCheck}
       getRowId={(row) => row.uid}
       isRowSelectable={(row) => !row.original.isSystem}
@@ -110,10 +110,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteRolesMutation.isLoading}
-        loadingText="Removing roles..."
+        loadingText="正在删除角色..."
         data-cy="k8s-roles-removeRoleButton"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton
@@ -126,7 +126,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
   async function handleRemoveClick(roles: SelectedRole[]) {
     const confirmed = await confirmDelete(
       <>
-        <p>Are you sure you want to delete the selected role(s)?</p>
+        <p>确定要删除选中的角色吗？</p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {roles.map((s, index) => (
             <li key={index}>
@@ -151,14 +151,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Roles successfully removed',
+            '角色已成功删除',
             roles.map((r) => `${r.namespace}/${r.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete roles',
+            '无法删除角色',
             error as Error,
             roles.map((r) => `${r.namespace}/${r.name}`).join(', ')
           );

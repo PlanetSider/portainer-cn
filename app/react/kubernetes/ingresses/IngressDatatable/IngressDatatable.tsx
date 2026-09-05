@@ -41,7 +41,7 @@ export function IngressDatatable() {
   );
   const namespacesQuery = useNamespacesQuery(environmentId);
   const { data: ingresses, ...ingressesQuery } = useIngresses(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
     withServices: true,
   });
 
@@ -83,7 +83,7 @@ export function IngressDatatable() {
       columns={columns}
       isLoading={ingressesQuery.isLoading || namespacesQuery.isLoading}
       emptyContentLabel="未找到受支持的 Ingress"
-      title="Ingresses"
+      title="Ingress"
       titleIcon={Route}
       getRowId={(row) => row.Name + row.Type + row.Namespace}
       isRowSelectable={(row) =>

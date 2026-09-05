@@ -42,7 +42,7 @@ export function RoleBindingsDatatable() {
     })
   );
   const roleBindingsQuery = useRoleBindings(environmentId, {
-    autoRefreshRate: tableState.autoRefreshRate * 1000,
+    autoRefreshRate: tableState.autoRefreshRateMS,
   });
   const filteredRoleBindings = useMemo(
     () =>
@@ -62,8 +62,8 @@ export function RoleBindingsDatatable() {
       columns={columns}
       settingsManager={tableState}
       isLoading={roleBindingsQuery.isLoading}
-      emptyContentLabel="No role bindings found"
-      title="Role Bindings"
+      emptyContentLabel="未找到角色绑定"
+      title="角色绑定"
       titleIcon={LinkIcon}
       getRowId={(row) => row.uid}
       isRowSelectable={(row) => !row.original.isSystem}
@@ -117,7 +117,7 @@ function TableActions({ selectedItems }: TableActionsProps) {
   async function handleRemoveClick(roles: SelectedRole[]) {
     const confirmed = await confirmDelete(
       <>
-        <p>Are you sure you want to delete the selected role binding(s)?</p>
+        <p>确定要删除选中的角色绑定吗？</p>
         <ul className="mt-2 max-h-96 list-inside overflow-hidden overflow-y-auto text-sm">
           {roles.map((r, index) => (
             <li key={index}>
@@ -142,14 +142,14 @@ function TableActions({ selectedItems }: TableActionsProps) {
       {
         onSuccess: () => {
           notifySuccess(
-            'Role binding(s) successfully removed',
+            '角色绑定已成功删除',
             roles.map((r) => `${r.namespace}/${r.name}`).join(', ')
           );
           router.stateService.reload();
         },
         onError: (error) => {
           notifyError(
-            'Unable to delete role bindings(s)',
+            '无法删除角色绑定',
             error as Error,
             roles.map((r) => `${r.namespace}/${r.name}`).join(', ')
           );
@@ -168,10 +168,10 @@ function TableActions({ selectedItems }: TableActionsProps) {
         onClick={() => handleRemoveClick(selectedItems)}
         icon={Trash2}
         isLoading={deleteRoleBindingsMutation.isLoading}
-        loadingText="Removing role bindings..."
+        loadingText="正在删除角色绑定..."
         data-cy="k8s-role-bindings-remove-button"
       >
-        Remove
+        删除
       </LoadingButton>
 
       <CreateFromManifestButton

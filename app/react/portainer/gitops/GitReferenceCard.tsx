@@ -16,7 +16,7 @@ import { StackDeploymentInfo } from '@/react/common/stacks/types';
 import { useSource } from '@/react/portainer/gitops/sources/queries/useSource';
 
 import { CopyButton } from '@@/buttons';
-import { Card } from '@@/Card';
+import { Card } from '@@/primitives/Card';
 import { Icon } from '@@/Icon';
 import { Alert } from '@@/Alert';
 import { Link } from '@@/Link';
@@ -92,7 +92,7 @@ export function GitReferenceCard({
       fileCheckQuery.isError ||
       (fileCheckQuery.isFetched && !foundFile));
 
-  const { Interval: autoUpdateInterval, Webhook: webhook } = autoUpdate || {};
+  const { Webhook: webhook } = autoUpdate || {};
   const webhookUrl = webhook ? `${baseStackWebhookUrl()}/${webhook}` : '';
 
   const isRefLoading = refCheckQuery.isFetching;
@@ -106,126 +106,122 @@ export function GitReferenceCard({
   const infoMessage = explainedError || repoError;
 
   return (
-    <Card>
-      <div className="form-section-title !mt-0 flex items-center gap-2">
-        <Icon icon={GitMerge} /> 由 Git 管理
-      </div>
-      {hasError && (
-        <>
-          <Alert color="error" className="mb-5">
-            <div className="flex flex-col">
-              {hasRepoError && (
-                <div>
-                  无法访问 Git Repository <span>{url || ''}</span>。
-                </div>
-              )}
-              {hasRefError && (
-                <div>
-                  在远程 Repository 中找不到 Git 引用{' '}
-                  <span>{reference || ''}</span>。
-                </div>
-              )}
-              {hasFileError && (
-                <div>
-                  在远程 Repository 中找不到引用的文件{' '}
-                  <span className="muted">{configFilePath || ''}</span>。
-                </div>
-              )}
-            </div>
-          </Alert>
-          {!!infoMessage && (
-            <Alert color="info" className="mb-5">
-              {infoMessage}
+    <Card.Container variant="filled">
+      <Card.Body>
+        <div className="form-section-title !mt-0 flex items-center gap-2">
+          <Icon icon={GitMerge} /> Managed by Git
+        </div>
+        {hasError && (
+          <>
+            <Alert color="error" className="mb-5">
+              <div className="flex flex-col">
+                {hasRepoError && (
+                  <div>
+                    The git repository <span>{url || ''}</span> could not be
+                    reached.
+                  </div>
+                )}
+                {hasRefError && (
+                  <div>
+                    The git reference <span>{reference || ''}</span> could not
+                    be found on the remote repository.
+                  </div>
+                )}
+                {hasFileError && (
+                  <div>
+                    引用的文件{' '}
+                    <span className="muted">{configFilePath || ''}</span> could
+                    在远程仓库中未找到。
+                  </div>
+                )}
+              </div>
             </Alert>
-          )}
-        </>
-      )}
+            {!!infoMessage && (
+              <Alert color="info" className="mb-5">
+                {infoMessage}
+              </Alert>
+            )}
+          </>
+        )}
 
-      <div
-        className="grid grid-cols-1 gap-x-6 gap-y-1 text-sm lg:grid-cols-2 xl:grid-cols-3"
-        data-cy="git-reference-card-info"
-      >
-        <LineItem
-          label="仓库"
-          value={url || '缺失'}
-          title={url || '缺失'}
-          isLoading={isRefLoading}
-          isValid={!!url && !hasRepoError}
-          isError={!url || hasRepoError}
-          data-cy="git-url"
-        />
-        <LineItem
-          label="引用"
-          value={reference || '缺失'}
-          title={reference || '缺失'}
-          isLoading={isRefLoading}
-          isValid={foundRef}
-          isError={!reference || hasRefError}
-          data-cy="git-ref"
-        />
-        {enableFileCheck && (
+        <div
+          className="grid grid-cols-1 gap-x-6 gap-y-1 text-sm lg:grid-cols-2 xl:grid-cols-3"
+          data-cy="git-reference-card-info"
+        >
           <LineItem
-            label="文件"
-            value={configFilePath || '缺失'}
-            title={configFilePath || '缺失'}
-            isLoading={isFileLoading}
-            isValid={foundFile}
-            isError={!configFilePath || hasFileError}
-            data-cy="git-file-path"
+            label="仓库"
+            value={url || '未设置'}
+            title={url || '未设置'}
+            isLoading={isRefLoading}
+            isValid={!!url && !hasRepoError}
+            isError={!url || hasRepoError}
+            data-cy="git-url"
+          />
+          <LineItem
+            label="引用"
+            value={reference || '未设置'}
+            title={reference || '未设置'}
+            isLoading={isRefLoading}
+            isValid={foundRef}
+            isError={!reference || hasRefError}
+            data-cy="git-ref"
+          />
+          {enableFileCheck && (
+            <LineItem
+              label="文件"
+              value={configFilePath || '未设置'}
+              title={configFilePath || '未设置'}
+              isLoading={isFileLoading}
+              isValid={foundFile}
+              isError={!configFilePath || hasFileError}
+              data-cy="git-file-path"
+            />
+          )}
+
+          {!!sourceIdToShow && <SourceLineItem sourceId={sourceIdToShow} />}
+          {!!commitId && (
+            <LineItem
+              label="提交"
+              value={
+                <GitCommitLink baseURL={url || ''} commitHash={commitId} />
+              }
+              title={commitId}
+              data-cy="git-commit"
+            />
+          )}
+          {!!sourceIdToShow && (
+            <AutoUpdateIntervalLineItem sourceId={sourceIdToShow} />
+          )}
+          {!!webhook && (
+            <LineItem
+              label="Webhook"
+              value={
+                <>
+                  <span data-cy="git-webhook-url">
+                    {truncateLeftRight(webhookUrl, 0, 10, 25)}
+                  </span>
+                  <CopyButton
+                    copyText={webhookUrl}
+                    color="light"
+                    data-cy="git-webhook-copy-button"
+                  >
+                    复制链接
+                  </CopyButton>
+                </>
+              }
+              title="webhook"
+              data-cy="git-webhook"
+            />
+          )}
+        </div>
+        {currentDeploymentInfo && hasDivergence && (
+          <DivergenceAlert
+            gitConfig={gitConfig}
+            currentDeploymentInfo={currentDeploymentInfo}
           />
         )}
-        {!!sourceIdToShow && <SourceLineItem sourceId={sourceIdToShow} />}
-        {!!commitId && (
-          <LineItem
-            label="提交"
-            value={<GitCommitLink baseURL={url || ''} commitHash={commitId} />}
-            title={commitId}
-            data-cy="git-commit"
-          />
-        )}
-        <LineItem
-          label="自动更新"
-          value={autoUpdate ? '开启' : '关闭'}
-          title="自动更新"
-          data-cy="git-auto-update"
-        />
-        {!!autoUpdateInterval && (
-          <LineItem
-            label="间隔"
-            value={autoUpdateInterval}
-            title="自动更新间隔"
-            data-cy="git-interval"
-          />
-        )}
-        {!!webhook && (
-          <LineItem
-            label="Webhook"
-            value={
-              <>
-                <span data-cy="git-webhook-url">
-                  {truncateLeftRight(webhookUrl, 0, 10, 25)}
-                </span>
-                <CopyButton
-                  copyText={webhookUrl}
-                  color="light"
-                  data-cy="git-webhook-copy-button"
-                >
-                  复制链接
-                </CopyButton>
-              </>
-            }
-            title="Webhook 地址"
-            data-cy="git-webhook"
-          />
-        )}
-      </div>
-      {currentDeploymentInfo && hasDivergence && (
-        <DivergenceAlert
-          gitConfig={gitConfig}
-          currentDeploymentInfo={currentDeploymentInfo}
-        />
-      )}
-    </Card>
+      </Card.Body>
+    </Card.Container>
   );
 }
 
@@ -256,6 +252,24 @@ function SourceLineItem({ sourceId }: { sourceId: number }) {
       isError={sourceQuery.isError || (!sourceQuery.isLoading && !sourceName)}
       isValid={!!sourceName}
       data-cy="git-source"
+    />
+  );
+}
+
+function AutoUpdateIntervalLineItem({ sourceId }: { sourceId: number }) {
+  const sourceQuery = useSource(sourceId);
+  const pollingInterval = sourceQuery.data?.interval;
+
+  if (!pollingInterval) {
+    return null;
+  }
+
+  return (
+    <LineItem
+      label="轮询"
+      value={pollingInterval}
+      title="轮询间隔"
+      data-cy="git-polling-interval"
     />
   );
 }

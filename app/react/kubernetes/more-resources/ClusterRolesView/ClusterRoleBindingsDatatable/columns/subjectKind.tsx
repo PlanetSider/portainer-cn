@@ -3,7 +3,7 @@ import { columnHelper } from './helper';
 export const subjectKind = columnHelper.accessor(
   (row) => row.subjects?.map((sub) => sub.kind).join(', '),
   {
-    header: 'Subject Kind',
+    header: '主体类型',
     id: 'subjectKind',
     cell: ({ row }) =>
       row.original.subjects?.map((sub, index) => (

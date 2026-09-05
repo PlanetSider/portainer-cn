@@ -27,6 +27,7 @@ import (
 	"github.com/portainer/portainer/api/exec"
 	"github.com/portainer/portainer/api/filesystem"
 	"github.com/portainer/portainer/api/git"
+	"github.com/portainer/portainer/api/gitops/scheduling"
 	"github.com/portainer/portainer/api/http"
 	"github.com/portainer/portainer/api/http/proxy"
 	kubeproxy "github.com/portainer/portainer/api/http/proxy/factory/kubernetes"
@@ -65,6 +66,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 )
+
+const swarmStackStatusCheckInterval = time.Minute
 
 func initCLI() *portainer.CLIFlags {
 	cliService := cli.Service{}
@@ -251,9 +254,7 @@ func resolveSetupToken(tx dataservices.DataStoreTx, providedToken string) (strin
 		return "", err
 	}
 
-	log.Info().
-		Str("setup_token", token).
-		Msg("no administrator account configured; admin initialization and backup restore require this setup token in the X-Setup-Token header. Start with --no-setup-token to disable.")
+	setuptoken.LogToken(token)
 
 	return token, nil
 }
@@ -274,6 +275,8 @@ func updateSettingsFromFlags(dataStore dataservices.DataStore, flags *portainer.
 	settings.SnapshotInterval = cmp.Or(*flags.SnapshotInterval, settings.SnapshotInterval)
 	settings.LogoURL = cmp.Or(*flags.Logo, settings.LogoURL)
 	settings.EnableEdgeComputeFeatures = cmp.Or(*flags.EnableEdgeComputeFeatures, settings.EnableEdgeComputeFeatures)
+	settings.EdgePortainerURL = cmp.Or(*flags.EdgePortainerURL, settings.EdgePortainerURL)
+	settings.TrustOnFirstConnect = cmp.Or(*flags.EdgeTrustOnFirstConnect, settings.TrustOnFirstConnect)
 	settings.TemplatesURL = cmp.Or(*flags.Templates, settings.TemplatesURL)
 
 	if flags.KubectlShellImageSet {
@@ -348,7 +351,7 @@ func dbSecretPath(keyFilenameFlag string) string {
 	if path.IsAbs(keyFilenameFlag) {
 		return keyFilenameFlag
 	}
-	return path.Join("/run/secrets", keyFilenameFlag)
+	return filesystem.JoinPaths("/run/secrets", keyFilenameFlag)
 }
 
 func loadEncryptionSecretKey(keyfilename string) []byte {
@@ -411,8 +414,8 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		log.Fatal().Err(err).Msg("failed initializing ssrf service")
 	}
 
-	if dt, ok := nethttp.DefaultTransport.(*nethttp.Transport); ok {
-		nethttp.DefaultTransport = ssrf.WrapTransport(dt)
+	if !ssrf.WrapDefaultTransport() {
+		log.Fatal().Msg("failed to wrap default HTTP transport with SSRF protection")
 	}
 
 	gogithttp.DefaultClient = gogithttp.NewClient(&nethttp.Client{Transport: nethttp.DefaultTransport})
@@ -447,7 +450,7 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 
 	signatureService := initDigitalSignatureService()
 
-	edgeStacksService := edgestacks.NewService(dataStore)
+	edgeStacksService := edgestacks.NewService(dataStore, fileService)
 
 	sslService, err := initSSLService(*flags.AddrHTTPS, *flags.TLSCert, *flags.TLSKey, fileService, dataStore, shutdownTrigger)
 	if err != nil {
@@ -571,11 +574,29 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		log.Fatal().Err(err).Msg("failed starting tunnel server")
 	}
 
-	scheduler := scheduler.NewScheduler(shutdownCtx)
+	sched := scheduler.NewScheduler(shutdownCtx)
 	stackDeployer := deployments.NewStackDeployer(swarmStackManager, composeStackManager, kubernetesDeployer, dockerClientFactory, dataStore)
-	if err := deployments.StartStackSchedules(scheduler, stackDeployer, dataStore, gitService); err != nil {
-		log.Fatal().Err(err).Msg("failed to start stack scheduler")
+	sourceScheduler := scheduling.NewSourceScheduler(sched, dataStore, scheduling.Deployers{
+		Stack: func(ctx context.Context, stackID portainer.StackID) error {
+			return deployments.RedeployWhenChanged(ctx, stackID, stackDeployer, dataStore, gitService)
+		},
+		StackExists: dataStore.Stack().Exists,
+		EdgeStackExists: func(edgeStackID portainer.EdgeStackID) (bool, error) {
+			_, err := dataStore.EdgeStack().EdgeStack(edgeStackID)
+			if dataservices.IsErrObjectNotFound(err) {
+				return false, nil
+			}
+
+			return err == nil, err
+		},
+	})
+	if err := sourceScheduler.ReconcileAll(); err != nil {
+		log.Fatal().Err(err).Msg("failed to start source scheduler")
 	}
+
+	sched.StartJobEvery(swarmStackStatusCheckInterval, func() error {
+		return deployments.ReconcileSwarmStackStatus(shutdownCtx, dataStore, swarmStackManager)
+	})
 
 	sslDBSettings, err := dataStore.SSLSettings().Settings()
 	if err != nil {
@@ -649,7 +670,7 @@ func buildServer(flags *portainer.CLIFlags, shutdownCtx context.Context, shutdow
 		SSLService:                  sslService,
 		DockerClientFactory:         dockerClientFactory,
 		KubernetesClientFactory:     kubernetesClientFactory,
-		Scheduler:                   scheduler,
+		SourceScheduler:             sourceScheduler,
 		ShutdownTrigger:             shutdownTrigger,
 		StackDeployer:               stackDeployer,
 		UpgradeService:              upgradeService,

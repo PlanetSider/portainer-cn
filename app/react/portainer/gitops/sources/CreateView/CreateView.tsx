@@ -1,7 +1,6 @@
 import { useWizardSteps } from '@@/Stepper/useWizardSteps';
 import { PageHeader } from '@@/PageHeader';
 
-import { TypeSelectStep, validateTypeSelectStep } from './steps/TypeSelectStep';
 import { ConfigureStep, validateConfigureStep } from './steps/ConfigureStep';
 import { WizardStep, WizardProvider } from './WizardContext';
 import { CreateForm } from './CreateForm';
@@ -11,12 +10,6 @@ import {
 } from './steps/AccessControlStep';
 
 const steps: WizardStep[] = [
-  {
-    id: 'type',
-    label: '选择来源类型',
-    component: TypeSelectStep,
-    validateStep: validateTypeSelectStep,
-  },
   {
     id: 'configure',
     label: '配置连接',

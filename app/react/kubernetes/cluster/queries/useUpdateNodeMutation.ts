@@ -26,7 +26,7 @@ export function useUpdateNodeMutation(
         queryKeys.nodes(environmentId),
         queryKeys.node(environmentId, nodeName),
       ]),
-      ...withError('Unable to update node'),
+      ...withError('无法更新节点'),
     }
   );
 }
@@ -50,7 +50,7 @@ async function updateNode(
     );
     return data;
   } catch (e) {
-    throw parseKubernetesAxiosError(e, 'Unable to update node');
+    throw parseKubernetesAxiosError(e, '无法更新节点');
   }
 }
 
@@ -130,7 +130,9 @@ export function buildLabels(
 
 function getSystemLabels(originalLabels: Record<string, string>) {
   return Object.fromEntries(
-    Object.entries(originalLabels).filter(([key]) => isSystemLabel(key))
+    Object.entries(originalLabels).filter(
+      ([key]) => isSystemLabel(key) && key !== KubernetesPortainerNodeDrainLabel
+    )
   );
 }
 

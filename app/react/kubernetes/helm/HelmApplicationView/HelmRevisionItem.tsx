@@ -31,7 +31,7 @@ export function HelmRevisionItem({
           <Badge type={getStatusColor(item.info?.status)}>
             {getStatusText(item.info?.status)}
           </Badge>
-          <span className="text-muted text-xs">Revision #{item.version}</span>
+          <span className="text-muted text-xs">修订版本 #{item.version}</span>
         </div>
         <div className="flex flex-wrap justify-between gap-1">
           <span className="text-muted text-xs">

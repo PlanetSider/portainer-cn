@@ -18,9 +18,9 @@ export function FilterBarActiveIndicator({ label, onClear }: Props) {
       </span>
       <button
         type="button"
-        className="cursor-pointer border-0 bg-transparent p-0 text-[21px] font-bold leading-none text-[var(--button-close-color)] opacity-[var(--button-opacity)] hover:opacity-[var(--button-opacity-hover)]"
+        className="cursor-pointer border-0 bg-transparent p-0 text-xl font-bold leading-none text-[var(--button-close-color)] opacity-[var(--button-opacity)] hover:opacity-[var(--button-opacity-hover)]"
         onClick={onClear}
-        aria-label="Clear filter"
+        aria-label="清除筛选"
         data-cy="clear-filter-button"
       >
         &times;

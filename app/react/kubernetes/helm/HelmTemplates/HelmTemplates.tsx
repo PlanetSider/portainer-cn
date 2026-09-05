@@ -38,7 +38,7 @@ export function HelmTemplates({ onSelectHelmChart, namespace, name }: Props) {
   return (
     <div className="row">
       <div className="col-sm-12 p-0">
-        <FormSection title="Helm chart">
+        <FormSection title="Helm Chart">
           {selectedChart ? (
             <>
               <HelmTemplatesSelectedItem

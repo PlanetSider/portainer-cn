@@ -19,9 +19,9 @@ export function StorageClassDatatable({ storageClassValues }: Props) {
         <table className="table table-fixed">
           <tbody>
             <tr className="text-muted">
-              <td>Storage</td>
-              <td>Shared access policy</td>
-              <td>Volume expansion</td>
+              <td>存储</td>
+              <td>共享访问策略</td>
+              <td>卷扩展</td>
             </tr>
             {storageClassValues.map((storageClassValue, index) => (
               <tr
@@ -83,7 +83,7 @@ export function StorageClassDatatable({ storageClassValues }: Props) {
       {!hasValidStorageConfiguration(storageClassValues) && (
         <div className="col-sm-12">
           <TextTip color="orange">
-            Shared access policy configuration required.
+            必须配置共享访问策略。
           </TextTip>
         </div>
       )}

@@ -19,7 +19,7 @@ export function useRoles(
     queryKeys.list(environmentId),
     async () => getAllRoles(environmentId),
     {
-      ...withError('Unable to get roles'),
+      ...withError('无法获取角色'),
       refetchInterval() {
         return options?.autoRefreshRate ?? false;
       },
@@ -36,6 +36,6 @@ async function getAllRoles(environmentId: EnvironmentId) {
 
     return roles;
   } catch (e) {
-    throw parseAxiosError(e, 'Unable to get roles');
+    throw parseAxiosError(e, '无法获取角色');
   }
 }

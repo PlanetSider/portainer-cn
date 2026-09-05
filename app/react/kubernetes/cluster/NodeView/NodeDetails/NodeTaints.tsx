@@ -22,9 +22,9 @@ interface Props {
 }
 
 const taintEffectOptions: Option<TaintEffect>[] = [
-  { label: 'NoSchedule', value: 'NoSchedule' },
-  { label: 'PreferNoSchedule', value: 'PreferNoSchedule' },
-  { label: 'NoExecute', value: 'NoExecute' },
+  { label: '禁止调度', value: 'NoSchedule' },
+  { label: '尽量不调度', value: 'PreferNoSchedule' },
+  { label: '禁止执行', value: 'NoExecute' },
 ];
 
 export function NodeTaints({

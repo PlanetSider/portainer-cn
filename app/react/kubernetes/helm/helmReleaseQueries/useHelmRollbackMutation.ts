@@ -54,7 +54,7 @@ export function useHelmRollbackMutation(environmentId: EnvironmentId) {
   return useMutation({
     mutationFn: ({ releaseName, params }: RollbackPayload) =>
       rollbackRelease({ releaseName, params, environmentId }),
-    ...withError('Unable to rollback Helm release'),
+    ...withError('无法回滚 Helm 发布'),
     ...withInvalidate(queryClient, [
       queryKeys.releases(environmentId),
       applicationsQueryKeys.applications(environmentId),

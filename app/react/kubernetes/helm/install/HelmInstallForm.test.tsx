@@ -112,8 +112,8 @@ describe('HelmInstallForm', () => {
   it('should render the form with version selector and values editor', async () => {
     renderComponent();
 
-    expect(screen.getByText('Version')).toBeInTheDocument();
-    expect(screen.getByText('Install')).toBeInTheDocument();
+    expect(screen.getByText('版本')).toBeInTheDocument();
+    expect(screen.getByText('安装')).toBeInTheDocument();
   });
 
   it('should install helm chart when install button is clicked', async () => {
@@ -135,8 +135,8 @@ describe('HelmInstallForm', () => {
       )
     );
 
-    await screen.findByText('1.0.0 (latest)');
-    await user.click(screen.getByText('Install'));
+    await screen.findByText('1.0.0（最新）');
+    await user.click(screen.getByText('安装'));
 
     await waitFor(() => {
       expect(capturedBody).toMatchObject({
@@ -152,15 +152,15 @@ describe('HelmInstallForm', () => {
 
   it('should disable install button when namespace or name is undefined', () => {
     renderComponent({ namespace: '' });
-    expect(screen.getByText('Install')).toBeDisabled();
+    expect(screen.getByText('安装')).toBeDisabled();
   });
 
   it('should call success handlers when installation succeeds', async () => {
     const user = userEvent.setup();
     renderComponent();
 
-    await screen.findByText('1.0.0 (latest)');
-    await user.click(screen.getByText('Install'));
+    await screen.findByText('1.0.0（最新）');
+    await user.click(screen.getByText('安装'));
 
     await waitFor(() => {
       expect(mockNotifySuccess).toHaveBeenCalledWith(

@@ -48,6 +48,7 @@ export function ServiceAccountDetailsWidget({ namespace, name }: Props) {
                   : '-'}
               </DetailsRow>
               <DetailsRow
+                ariaLabel="自动挂载令牌"
                 label={
                   <>
                     自动挂载令牌

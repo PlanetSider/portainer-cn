@@ -36,7 +36,7 @@ export function ConnectionDetailsWidget({ source }: Props) {
             )}
           </DetailField>
         </div>
-        <DetailField label="Repository URL">
+        <DetailField label="仓库 URL">
           <code
             className="bg-transparent p-0 font-mono text-sm"
             data-cy="source-url"

@@ -18,7 +18,7 @@ export function CronJobsExecutionsInnerDatatable({
       columns={columns}
       getRowId={(row) => row.Id}
       data-cy="k8s-cronJobs-executions-datatable"
-      title="Executions"
+      title="执行记录"
       titleIcon={CalendarCheck2}
     />
   );
