@@ -1,7 +1,6 @@
 package sources
 
 import (
-	"errors"
 	"net/http"
 
 	portainer "github.com/portainer/portainer/api"

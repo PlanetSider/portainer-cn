@@ -5,9 +5,9 @@ import (
 
 	portainer "github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/dataservices"
-	gittypes "github.com/portainer/portainer/api/git/types"
 	ce "github.com/portainer/portainer/api/gitops/workflows"
 	"github.com/portainer/portainer/api/set"
+	"github.com/portainer/portainer/api/slicesx"
 )
 
 // FetchSourceWorkflows returns the workflows and stats for a single source.
@@ -27,18 +27,7 @@ func FetchSourceWorkflows(tx dataservices.DataStoreTx, src *portainer.Source) ([
 		return nil, ce.SourceStats{}, nil
 	}
 
-	wfIDSet := make(map[portainer.WorkflowID]struct{}, len(wfs))
-	artifactByStack := make(map[portainer.StackID]portainer.ArtifactFile)
-	for _, wf := range wfs {
-		wfIDSet[wf.ID] = struct{}{}
-		for _, art := range wf.Artifacts {
-			for _, f := range art.Files {
-				if f.SourceID == src.ID {
-					artifactByStack[art.StackID] = f
-				}
-			}
-		}
-	}
+	wfIDSet := set.ToSet(slicesx.Map(wfs, func(wf portainer.Workflow) portainer.WorkflowID { return wf.ID }))
 
 	stacks, err := tx.Stack().ReadAll(func(s portainer.Stack) bool {
 		_, ok := wfIDSet[s.WorkflowID]
@@ -85,19 +74,4 @@ func FetchSourceWorkflows(tx dataservices.DataStoreTx, src *portainer.Source) ([
 	}
 
 	return items, stats, nil
-}
-
-func gitConfigForArtifact(src *gittypes.RepoConfig, af portainer.ArtifactFile) *gittypes.RepoConfig {
-	if src == nil {
-		return nil
-	}
-
-	return &gittypes.RepoConfig{
-		URL:            src.URL,
-		Authentication: src.Authentication,
-		TLSSkipVerify:  src.TLSSkipVerify,
-		ReferenceName:  af.Ref,
-		ConfigFilePath: af.Path,
-		ConfigHash:     af.Hash,
-	}
 }
